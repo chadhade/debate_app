@@ -11,19 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111025211722) do
+ActiveRecord::Schema.define(:version => 20111026043826) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
     t.integer  "debate_id"
     t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "debater_debates", :force => true do |t|
-    t.integer  "debater_id"
-    t.integer  "debate_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -36,6 +29,13 @@ ActiveRecord::Schema.define(:version => 20111025211722) do
   end
 
   create_table "debates", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "debations", :force => true do |t|
+    t.integer  "debater_id"
+    t.integer  "debate_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

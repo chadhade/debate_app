@@ -1,5 +1,5 @@
 class Debate < ActiveRecord::Base
-  has_many :debater_debates
-  has_many :debaters, :through => :debater_debates
+  has_many :debations
+  has_many :debaters, :through => :debations
   has_many :arguments
 end
