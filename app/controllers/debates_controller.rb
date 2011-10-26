@@ -11,11 +11,22 @@ class DebatesController < ApplicationController
 	@debate.save
 	current_debater.debations.create(:debate_id => @debate.id)
 	
-	# create a new post
+	# create a new argument object
 	@content_of_post = params[:argument][:content]
 	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id)
 	
 	redirect_to @debate
+  end
+  
+  def join
+    # link debater to debate
+	# current_debater.debations.create(:debate_id => params[:id])
+	
+	# create a new argument object
+	# @content_of_post = params[:argument][:content]
+	# @argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id)
+	
+	# redirect_to @debate
   end
   
   def show

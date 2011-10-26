@@ -5,14 +5,20 @@
 
 <br>
 
-<%-# allow new arguments %>
-<%= form_for Argument.new do |f| %>
-	<div class = "field">
-		<%= f.label :content %> <br />
-		<%= f.text_field :content %>
-	</div>
-	<%= f.hidden_field :debate_id, :value => @debate.id %>
-	<div class = "action">
-		<%= f.submit "argument" %>
-	</div>	
+<%-# allow new arguments if it is the debaters turn or if no one has joined the debate%>
+<% if (@debate.current_turn.nil? and !current_debater.creator?(@debate)) || @debate.current_turn?(current_debater) %>
+  <%= form_for Argument.new do |f| %>
+	  <div class = "field">
+		  <%= f.label :content %> <br />
+		  <%= f.text_field :content %>
+	  </div>
+	  <%= f.hidden_field :debate_id, :value => @debate.id %>
+	  <div class = "action">
+		  <%= f.submit "argument" %>
+	  </div>	
+  <% end %>
 <% end %>
+
+<br>
+
+<%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.name %>
