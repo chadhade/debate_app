@@ -3,7 +3,12 @@ DebateApp::Application.routes.draw do
   resources :debaters, :only => [:new, :create, :show]
   resources :sessions, :only => [:new, :create, :destroy] 
   
-  resources :debates
+  resources :debates do
+    member do
+	  post 'join'
+	end
+  end
+  
   resources :arguments
   
   # root :to => 'debaters#new'

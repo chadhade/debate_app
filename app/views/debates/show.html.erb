@@ -5,18 +5,11 @@
 
 <br>
 
-<%-# allow new arguments if it is the debaters turn or if no one has joined the debate%>
-<% if (@debate.current_turn.nil? and !current_debater.creator?(@debate)) || @debate.current_turn?(current_debater) %>
-  <%= form_for Argument.new do |f| %>
-	  <div class = "field">
-		  <%= f.label :content %> <br />
-		  <%= f.text_field :content %>
-	  </div>
-	  <%= f.hidden_field :debate_id, :value => @debate.id %>
-	  <div class = "action">
-		  <%= f.submit "argument" %>
-	  </div>	
-  <% end %>
+<%-# allow debater to join debate or argue if it is his turn%>
+<% if @debate.debaters.size == 1 %>
+  <%= render 'debates/form_join_debate' if !@debate.creator?(current_debater) %>
+<% else %>
+  <%= render 'arguments/form_argument' if @debate.current_turn?(current_debater) %>
 <% end %>
 
 <br>

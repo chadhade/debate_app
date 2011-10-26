@@ -1,0 +1,10 @@
+<%= form_for Argument.new, :url => {:controller => "debates", :action => "join"} do |f| %>
+	<div class = "field">
+		<%= f.label :content %> <br />
+		<%= f.text_field :content %>
+	</div>
+    <%= f.hidden_field :debate_id, :value => @debate.id %>
+	<div class = "action">
+		<%= f.submit "argument" %>
+	</div>	
+<% end %>

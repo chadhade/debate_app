@@ -20,13 +20,13 @@ class DebatesController < ApplicationController
   
   def join
     # link debater to debate
-	# current_debater.debations.create(:debate_id => params[:id])
+	current_debater.debations.create(:debate_id => params[:id])
 	
 	# create a new argument object
-	# @content_of_post = params[:argument][:content]
-	# @argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id)
+	@content_of_post = params[:argument][:content]
+	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id])
 	
-	# redirect_to @debate
+	redirect_to Debate.find(params[:id])
   end
   
   def show
