@@ -1,4 +1,6 @@
 class DebatesController < ApplicationController
+  $total_debate_time = minutes_to_seconds(6)
+  $individual_response_time = minutes_to_seconds(1)
 
   def new
     # creating a new debate is the same as creating the first argument
