@@ -1,7 +1,10 @@
 DebateApp::Application.routes.draw do
   
   resources :debaters, :only => [:new, :create, :show]
-  resources :sessions, :only => [:new, :create, :destroy]  
+  resources :sessions, :only => [:new, :create, :destroy] 
+  
+  resources :debates
+  resources :arguments
   
   # root :to => 'debaters#new'
   
