@@ -6,10 +6,12 @@ class DebatersController < ApplicationController
   
   def create
     @debater = Debater.new(params[:debater])
-	# if the input was ok, go to show page
-	# otherwise, go to new page
-	redirect_to @debater and return if @debater.save
-	render 'new'
+	if @debater.save	  
+	  sign_in @debater
+	  redirect_to @debater
+	else
+	  render 'new'
+	end
   end
   
   def show
