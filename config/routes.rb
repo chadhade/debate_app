@@ -3,7 +3,7 @@ DebateApp::Application.routes.draw do
   resources :debaters, :only => [:new, :create, :show]
   resources :sessions, :only => [:new, :create, :destroy]  
   
-  root :to => 'debaters#new'
+  # root :to => 'debaters#new'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

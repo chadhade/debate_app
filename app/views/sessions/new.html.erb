@@ -1,2 +1,9 @@
-<h1>Sessions#new</h1>
-<p>Find me in app/views/sessions/new.html.erb</p>
+<%= form_for(:session, :url => sessions_path) do |f| %>
+	<div class = "field">
+		<%= f.label :name %> <br />
+		<%= f.text_field :name %>
+	</div>
+	<div class = "action">
+		<%= f.submit "#" %>
+	</div>	
+<% end %>
