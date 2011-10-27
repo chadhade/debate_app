@@ -24,4 +24,14 @@ class Debate < ActiveRecord::Base
   def topic
     @topic = self.arguments.first.content
   end
+  
+  def self.search(search)
+	if search
+      @debates = Array.new; all.each {|debate| @debates << debate if debate.topic.match(/#{search}/)}
+	  @debates
+    else
+      find(:all)
+    end    
+  end
+  
 end

@@ -38,6 +38,7 @@ class DebatesController < ApplicationController
   end
   
   def index
+    @debates = Debate.search(params[:search])
   end
 
 end
