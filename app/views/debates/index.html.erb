@@ -1,8 +1,8 @@
 <h1>Ongoing Debates</h1>
 
-<p id="testing">No AJAX</p>
+<p class="testing">No AJAX</p>
 
-<%= form_tag debates_path, :method => 'get', :remote => true do %>
+<%= form_tag debates_path, :method => 'get', :remote => true, :class => 'search_debates' do %>
   <p>
     <%= text_field_tag :search, params[:search] %>
     <%= submit_tag "Search", :name => nil %>

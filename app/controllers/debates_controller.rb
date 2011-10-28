@@ -1,7 +1,7 @@
 class DebatesController < ApplicationController
   $total_debate_time = 6*60
   $individual_response_time = 1*60
-
+  
   def new
     # creating a new debate is the same as creating the first argument
 	@argument = Argument.new
@@ -38,7 +38,9 @@ class DebatesController < ApplicationController
   end
   
   def index
-    @debates = Debate.search(params[:search])
+    # returns debates that match search criterion or all debates if empty string submitted
+	@debates = Debate.search(params[:search])
+	
 	respond_to do |format|
 	  format.html
 	  format.js
