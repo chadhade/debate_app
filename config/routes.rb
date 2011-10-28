@@ -11,7 +11,7 @@ DebateApp::Application.routes.draw do
   
   resources :arguments
   
-  # root :to => 'debaters#new'
+  root :to => 'debaters#new'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

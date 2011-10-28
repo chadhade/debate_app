@@ -1,3 +1,4 @@
+<h1>Ongoing Debates</h1>
 <%= form_tag debates_path, :method => 'get' do %>
   <p>
     <%= text_field_tag :search, params[:search] %>
@@ -6,5 +7,7 @@
 <% end %>
 
 <% @debates.each do |debate| %>
-  <%= debate.topic %> <br>
+  <li> <%= link_to debate.topic, debate %> </li>
 <% end %>
+
+<p>What to create a new debate? <%= link_to "Create!", new_debate_path %></p>

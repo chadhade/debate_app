@@ -8,7 +8,7 @@ class DebatersController < ApplicationController
     @debater = Debater.new(params[:debater])
 	if @debater.save	  
 	  sign_in @debater
-	  redirect_to @debater
+	  redirect_to debates_path
 	else
 	  render 'new'
 	end

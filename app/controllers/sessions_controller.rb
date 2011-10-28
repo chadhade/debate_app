@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
   def create
     @debater = Debater.find_by_name(params[:session][:name])
 	sign_in @debater
-	redirect_to @debater
+	redirect_to debates_path
   end
 
   def destroy

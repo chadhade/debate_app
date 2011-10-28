@@ -15,3 +15,5 @@
 <br>
 
 <%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.name %>
+
+<p><%= link_to "Back to Debate List", debates_path %></p>
