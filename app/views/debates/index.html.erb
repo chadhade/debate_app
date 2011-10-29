@@ -1,7 +1,5 @@
 <h1>Ongoing Debates</h1>
 
-<p class="testing">No AJAX</p>
-
 <%= form_tag debates_path, :method => 'get', :remote => true, :class => 'search_debates' do %>
   <p>
     <%= text_field_tag :search, params[:search] %>
@@ -9,6 +7,6 @@
   </p>
 <% end %>
 
-<p class="list_of_debates"><%= render 'debates/list_of_debates' %></p>
+<div id="list_of_debates"><%= render 'debates/list_of_debates' %></div>
 
 <p>What to create a new debate? <%= link_to "Create!", new_debate_path %></p>

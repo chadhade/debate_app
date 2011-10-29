@@ -1,3 +1,3 @@
 $(function(){    
-  $("p.testing").html("Yes AJAX");
+  $("#list_of_debates").html('<%= escape_javascript(render 'debates/list_of_debates') %>');
 });
