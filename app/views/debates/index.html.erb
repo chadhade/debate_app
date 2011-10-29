@@ -9,8 +9,6 @@
   </p>
 <% end %>
 
-<% @debates.each do |debate| %>
-  <li> <%= link_to debate.topic, debate %> </li>
-<% end %>
+<p class="list_of_debates"><%= render 'debates/list_of_debates' %></p>
 
 <p>What to create a new debate? <%= link_to "Create!", new_debate_path %></p>
