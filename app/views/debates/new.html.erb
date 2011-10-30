@@ -1,7 +1,10 @@
 <%= form_for @argument, :url => {:controller => "debates", :action => "create"} do |f| %>
+
 	<div class = "field">
 		<%= f.label :content %> <br />
-		<%= f.text_field :content %>
+		<%= f.text_field :content %> <br />
+		<%= f.label "Allotted Minutes" %> <br/>
+		<%= f.number_field :time_left %>
 	</div>
 	<div class = "action">
 		<%= f.submit "argument" %>

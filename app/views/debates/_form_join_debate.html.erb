@@ -1,7 +1,9 @@
 <%= form_for Argument.new, :url => {:controller => "debates", :action => "join"} do |f| %>
 	<div class = "field">
 		<%= f.label :content %> <br />
-		<%= f.text_field :content %>
+		<%= f.text_field :content %><br />
+		<%= f.label "Allotted Minutes" %> <br/>
+		<%= f.number_field :time_left %>
 	</div>
     <%= f.hidden_field :debate_id, :value => @debate.id %>
 	<div class = "action">

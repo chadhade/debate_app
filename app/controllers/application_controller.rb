@@ -4,4 +4,9 @@ class ApplicationController < ActionController::Base
   # include SessionsHelper in all controllers
   # they are in all views by default
   include SessionsHelper
-end
+
+	def time_left(thisdebate)
+		@timeleft = thisdebate.arguments[-2].time_left - (Time.now - thisdebate.arguments.last.created_at).seconds.to_i
+	end
+  
+  end
