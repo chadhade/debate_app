@@ -3,7 +3,6 @@
 $(function() {
   setTimeout(updateArguments, 5000);
 });
-
 function updateArguments() {
   var debate_id = $("#debate").attr("data-id");
   if ($(".argument").length > 0) {
@@ -39,11 +38,7 @@ function updateArguments() {
 <br>
 
 <%-# allow debater to join debate or argue if it is his turn%>
-<% if @debate.debaters.size == 1 %>
-  <%= render 'debates/form_join_debate' if !@debate.creator?(current_debater) %>
-<% else %>
-  <%= render 'arguments/form_argument' if @debate.current_turn?(current_debater) %>
-<% end %>
+<div id="post_to_debate"> <%= render '/debates/post_to_debate' %> </div>
 
 <br>
 
