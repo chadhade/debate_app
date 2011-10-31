@@ -1,3 +1,17 @@
+<%-# JAVASCRIPT FOR AJAX - BEGINNING%>
+<script type="text/javascript">
+$(function() {
+  updateArguments();
+});
+
+function updateArguments() {
+  var debate_id = $("#debate").attr("data-id");
+  var after = $(".argument:last-child").attr("data-time");
+  $.getScript("/arguments.js?debate_id=" + debate_id + "&after=" + after, function() {updateArguments()});
+}
+</script>
+<%-# JAVASCRIPT FOR AJAX - END%>
+
 <script type="text/javascript">
 	// This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
@@ -7,12 +21,14 @@
 	});
 </script>
 
+<div id="debate" data-id="<%= @debate.id %>"> This is debate id = <%= @debate.id %> </div>
 <div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="position_1"></div>
 <div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="position_2"></div>
 <br />
+
 <%-# list arguments for the debate %>
 <% @arguments.each do |argument| %>
-  <%= argument.content %> <br>
+  <div class="argument" data-time="<%= argument.created_at.to_i %>"> <%= argument.content %> </div> <br>
 <% end %>  
 
 <br>
