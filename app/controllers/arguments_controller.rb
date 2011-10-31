@@ -17,7 +17,20 @@ class ArgumentsController < ApplicationController
   end
   
   def index
-    # @comments = Comment.where("article_id = ? and created_at > ?", params[:article_id], Time.at(params[:after].to_i + 1))
+	@arguments = Argument.where("debate_id = ? and created_at > ?", params[:debate_id], Time.at(params[:after].to_i + 1))
+  end
+  
+  # for long polling, not used right now
+  def check_for_new_args(debate_id, after, increment, timeout_length)
+	sleep(increment)
+	@arguments = Argument.where("debate_id = ? and created_at > ?", debate_id, after)    
+	t = 0
+	t += increment
+	until t > timeout_length || !@arguments.empty?
+	  sleep(increment)
+	  @arguments = Argument.where("debate_id = ? and created_at > ?", debate_id, after)
+	  t += increment
+	end
   end
   
 end

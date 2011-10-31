@@ -1,13 +1,18 @@
 <%-# JAVASCRIPT FOR AJAX - BEGINNING%>
 <script type="text/javascript">
 $(function() {
-  updateArguments();
+  setTimeout(updateArguments, 5000);
 });
 
 function updateArguments() {
   var debate_id = $("#debate").attr("data-id");
-  var after = $(".argument:last-child").attr("data-time");
-  $.getScript("/arguments.js?debate_id=" + debate_id + "&after=" + after, function() {updateArguments()});
+  if ($(".argument").length > 0) {
+    var after = $(".argument:last").attr("data-time");
+  } else {
+    var after = "0";
+  }
+  $.getScript("/arguments.js?debate_id=" + debate_id + "&after=" + after);
+  setTimeout(updateArguments, 5000);
 }
 </script>
 <%-# JAVASCRIPT FOR AJAX - END%>
@@ -27,9 +32,11 @@ function updateArguments() {
 <br />
 
 <%-# list arguments for the debate %>
+<div id="arguments">
 <% @arguments.each do |argument| %>
   <div class="argument" data-time="<%= argument.created_at.to_i %>"> <%= argument.content %> </div> <br>
 <% end %>  
+</div>
 
 <br>
 

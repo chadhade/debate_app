@@ -1,1 +1,3 @@
-alert("testing 1 2 3");
+<% unless @arguments.empty? %>
+$("#arguments").append("<%=raw escape_javascript(@arguments.last.content) %>");
+<% end %>
