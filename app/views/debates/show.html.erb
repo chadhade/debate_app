@@ -33,9 +33,7 @@ function updateArguments() {
 
 <%-# list arguments for the debate %>
 <div id="arguments">
-<% @arguments.each do |argument| %>
-  <div class="argument" data-time="<%= argument.created_at.to_i %>"> <%= argument.content %> </div> <br>
-<% end %>  
+  <%= render @arguments %>
 </div>
 
 <br>
