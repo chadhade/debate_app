@@ -11,10 +11,18 @@ class Debate < ActiveRecord::Base
     self.creator == debater
   end
   
+  def last_debater
+	Debater.find_by_id(self.arguments.last.debater_id)
+  end
+  
   # assumes toggling between two debaters
   # this may need to be rewritten
   def current_turn
-    self.arguments.size % 2 == 0 ? self.creator : self.debaters[1]
+    if self.arguments.last.Repeat_Turn == true 
+		self.last_debater
+	else
+		self.arguments.size % 2 == 0 ? self.creator : self.debaters[1]
+	end
   end
   
   def current_turn?(debater)
