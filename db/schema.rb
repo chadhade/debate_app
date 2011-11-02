@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111030201031) do
+ActiveRecord::Schema.define(:version => 20111102191614) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20111030201031) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "time_left"
+    t.boolean  "Repeat_Turn"
   end
 
   create_table "debaters", :force => true do |t|

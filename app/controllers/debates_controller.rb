@@ -41,23 +41,37 @@ class DebatesController < ApplicationController
     # pull all arguments from that debate and pass debate object
 	@debate = Debate.find(params[:id])
 	@arguments = @debate.arguments
+	@previoustimeleft = @debate.arguments.last.time_left
 	
 	# Calculate the amount of time left for use in javascript timers
 	# If there is only 1 debater, debater 2 has 0 seconds left
 	if @debate.debaters.size == 1
 		@movingclock = 0
-		@staticclock = @debate.arguments.last.time_left
+		@staticclock = @previoustimeleft
 		@movingposition = 2
 	else
-		#Otherwise, determine the order of debaters
-		if @debate.current_turn == @debate.creator
-			@movingclock = @debate.arguments[-2].time_left - (Time.now - @debate.arguments.last.created_at).seconds.to_i 
-			@staticclock = @debate.arguments.last.time_left
-			@movingposition = 1
+		@timeleft = time_left(@debate)
+		
+		#If a debater has run out of time, the other debater can continuously post
+		@timeleft <=0 ? @debate.arguments.last.update_attributes(:Repeat_Turn => true,
+						:time_left => @previoustimeleft + @arguments[-2].time_left) : nil
+		  
+		if @debate.arguments.last.Repeat_Turn == true
+			@movingclock = time_left(@debate) #The result is now different due to the repeat_turn column
+			@staticclock = 0
+			@movingposition = (@debate.arguments.last.debater_id != @debate.creator.id) ? 2 : 1
 		else
-			@staticclock = @debate.arguments.last.time_left
-			@movingclock = @debate.arguments[-2].time_left - (Time.now - @debate.arguments.last.created_at).seconds.to_i 
-			@movingposition = 2
+		
+			#Otherwise, determine the order of debaters
+			if @debate.current_turn == @debate.creator
+				@movingclock = @timeleft 
+				@staticclock = @previoustimeleft
+				@movingposition = 1
+			else
+				@staticclock = @previoustimeleft
+				@movingclock = @timeleft 
+				@movingposition = 2
+			end
 		end
 	end
 end

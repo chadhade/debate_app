@@ -13,6 +13,7 @@ class ArgumentsController < ApplicationController
 	else
 		# redirect without creating argument
 		redirect_to debate_path(params[:argument][:debate_id])
+		@debate.arguments.last.update_attributes(:Repeat_Turn => true)
 	end		
   end
   
