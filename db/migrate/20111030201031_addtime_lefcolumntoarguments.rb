@@ -1,8 +1,5 @@
 class AddtimeLefcolumntoarguments < ActiveRecord::Migration
-  def up
+  def change
 	add_column :arguments, :time_left, :integer
-  end
-
-  def down
   end
 end

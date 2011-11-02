@@ -1,4 +1,6 @@
 class Debater < ActiveRecord::Base
+  acts_as_voter
+  
   has_many :debations
   has_many :debates, :through => :debations
   has_many :arguments

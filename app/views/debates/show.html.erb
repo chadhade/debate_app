@@ -1,4 +1,4 @@
-<%-# JAVASCRIPT FOR AJAX - BEGINNING%>
+<%-# JAVASCRIPT FOR SHORT POLLING - BEGINNING%>
 <script type="text/javascript">
 $(function() {
   setTimeout(updateArguments, 5000);
@@ -14,7 +14,19 @@ function updateArguments() {
   setTimeout(updateArguments, 5000);
 }
 </script>
-<%-# JAVASCRIPT FOR AJAX - END%>
+<%-# JAVASCRIPT FOR SHORT POLLING - END%>
+
+<%-# JAVASCRIPT FOR VOTING - BEGINNING%>
+<script type="text/javascript">
+function incrementVotesFor(argument_id) {
+  $(".votes_for[data-argument_id="+argument_id+"]").text(parseInt($(".votes_for[data-argument_id="+argument_id+"]").text())+1);
+}
+
+function incrementVotesAgainst(argument_id) {
+  $(".votes_against[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against[data-argument_id="+argument_id+"]").text())+1);
+}
+</script>
+<%-# JAVASCRIPT FOR VOTING - END%>
 
 <script type="text/javascript">
 	// This function assures that the javascript runs only once the whole page is loaded

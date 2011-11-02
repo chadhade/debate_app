@@ -1,1 +1,18 @@
 <div class="argument" data-time="<%= argument.created_at.to_i %>"> <%= argument.content %> </div>
+
+<%= form_for Vote.new, :remote => true, :class => 'vote_for', :html => {:onsubmit => 'incrementVotesFor(' + argument.id.to_s + ')'} do |f| %>
+  <%= f.hidden_field :votable_id, :value => argument.id %>
+  <%= f.hidden_field :vote, :value => true %>  
+  <%= f.submit "(+)" %>
+<% end %>
+
+<div class = "votes_for" data-argument_id = "<%= argument.id %>"> <%= argument.votes_for_by(current_debater) %> </div>
+
+<%= form_for Vote.new, :remote => true, :class => 'vote_against', :html => {:onsubmit => 'incrementVotesAgainst(' + argument.id.to_s + ')'} do |f| %>
+  <%= f.hidden_field :votable_id, :value => argument.id %>
+  <%= f.hidden_field :vote, :value => false %>  
+  <%= f.submit "(-)" %>
+<% end %>
+
+<div class = "votes_against" data-argument_id = "<%= argument.id %>"> <%= argument.votes_against_by(current_debater) %> </div>
+
