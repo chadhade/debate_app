@@ -6,7 +6,7 @@ class VotesController < ApplicationController
 	current_debater.vote(@argument, :direction => :down) if @vote == "false"
 	respond_to do |format|
 	  format.html
-	  format.js
+	  format.js {render :nothing => true}
 	end	
   end
 

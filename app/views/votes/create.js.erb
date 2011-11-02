@@ -1,7 +1,0 @@
-<% if @vote == "true" %>
-  $(".votes_for[data-argument_id=<%= @argument.id %>]").text(parseInt($(".votes_for[data-argument_id=<%= @argument.id %>]").text())+1);
-<% end %>
-
-<% if @vote == "false" %>
-  $(".votes_against[data-argument_id=<%= @argument.id %>]").text(parseInt($(".votes_against[data-argument_id=<%= @argument.id %>]").text())+1);
-<% end %>
