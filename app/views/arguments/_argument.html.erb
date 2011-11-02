@@ -1,11 +1,15 @@
 <div class="argument" data-time="<%= argument.created_at.to_i %>"> <%= argument.content %> </div>
 
-<%= form_tag votes_path, :method => 'post', :remote => true, :class => 'vote' do %>
-  <%= submit_tag "(+)", :vote => true %>
+<%= form_for Vote.new, :remote => true, :class => 'vote_for' do |f| %>
+  <%= f.hidden_field :votable_id, :value => argument.id %>
+  <%= f.hidden_field :vote, :value => true %>  
+  <%= f.submit "(+)" %>
 <% end %>
 
-<%= form_tag votes_path, :method => 'post', :remote => true, :class => 'vote' do %>
-  <%= submit_tag "(-)", :vote => false %>
+<%= form_for Vote.new, :remote => true, :class => 'vote_against' do |f| %>
+  <%= f.hidden_field :votable_id, :value => argument.id %>
+  <%= f.hidden_field :vote, :value => false %>  
+  <%= f.submit "(-)" %>
 <% end %>
 
 <%-# form for upvote with javascript, number of upvotes; form for downvotes, number of downvotes %>
