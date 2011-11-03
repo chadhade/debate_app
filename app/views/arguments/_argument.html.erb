@@ -6,7 +6,7 @@
   <%= f.submit "(+)" %>
 <% end %>
 
-<div class = "votes_for" data-argument_id = "<%= argument.id %>"> <%= argument.votes_for_by(current_debater) %> </div>
+<div class = "votes_for" data-argument_id = "<%= argument.id %>"> <%= argument.votes_for %> </div>
 
 <%= form_for Vote.new, :remote => true, :class => 'vote_against', :html => {:onsubmit => 'incrementVotesAgainst(' + argument.id.to_s + ')'} do |f| %>
   <%= f.hidden_field :votable_id, :value => argument.id %>
@@ -14,5 +14,5 @@
   <%= f.submit "(-)" %>
 <% end %>
 
-<div class = "votes_against" data-argument_id = "<%= argument.id %>"> <%= argument.votes_against_by(current_debater) %> </div>
+<div class = "votes_against" data-argument_id = "<%= argument.id %>"> <%= argument.votes_against %> </div>
 
