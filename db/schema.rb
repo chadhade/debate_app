@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111102191614) do
+ActiveRecord::Schema.define(:version => 20111104195757) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -36,6 +36,13 @@ ActiveRecord::Schema.define(:version => 20111102191614) do
   end
 
   create_table "debations", :force => true do |t|
+    t.integer  "debater_id"
+    t.integer  "debate_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "trackings", :force => true do |t|
     t.integer  "debater_id"
     t.integer  "debate_id"
     t.datetime "created_at"

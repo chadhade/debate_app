@@ -1,6 +1,14 @@
 class Debate < ActiveRecord::Base
+  
+  # associations for debate participation
   has_many :debations
   has_many :debaters, :through => :debations
+  
+  # associations for debate tracking
+  has_many :trackings
+  has_many :debaters_tracking, :class_name => "Debater", :through => :trackings  
+  
+  # associations for arguments
   has_many :arguments
   
   def creator
