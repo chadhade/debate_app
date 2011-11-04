@@ -5,6 +5,7 @@ $(function() {
 });
 function updateArguments() {
   var debate_id = $("#debate").attr("data-id");
+ 
   if ($(".argument").length > 0) {
     var after = $(".argument:last").attr("data-time");
   } else {
@@ -14,6 +15,7 @@ function updateArguments() {
   setTimeout(updateArguments, 5000);
 }
 </script>
+
 <%-# JAVASCRIPT FOR SHORT POLLING - END%>
 
 <%-# JAVASCRIPT FOR VOTING - BEGINNING%>
@@ -44,6 +46,7 @@ function startTracking() {
 </script>
 <%-# JAVASCRIPT FOR TRACKING - END%>
 
+<%-# JAVASCRIPT FOR STARTING TIMERS - BEGINNING%>
 <script type="text/javascript">
 	// This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
@@ -52,6 +55,7 @@ function startTracking() {
 		javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>);
 	});
 </script>
+<%-# JAVASCRIPT FOR STARTING TIMERS - END%>
 
 <div id="debate" data-id="<%= @debate.id %>"> This is debate id = <%= @debate.id %> </div>
 <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= current_debater.id %>" onclick="startTracking()"> Click to start tracking this debate</div>
@@ -75,12 +79,15 @@ function startTracking() {
 
 <p><%= link_to "Back to Debate List", debates_path %></p>
 
+<%-# JAVASCRIPT FOR TIMERS - BEGINNING%>
 <script>
 var javascript_countdown = function () {
 	
-	var keep_counting = 1;
+	keep_counting = 1;
+	abort_timer = 0;
+	
 	var no_time_left_message = 'This Debater has no time!';
- 
+	
 	
 	function countdown() {
 		
@@ -131,13 +138,16 @@ var javascript_countdown = function () {
 		
 		timer: function () {
 			if(keep_counting) {
-				setTimeout("javascript_countdown.timer();", 1000);
+				timeout_var = setTimeout("javascript_countdown.timer();", 1000);
 				javascript_countdown.count();
 				
 				if (keep_counting == 0) {
 					no_time_left(output_element_id);
 				} 
 				
+				if (abort_timer == 1) {
+					return;
+				}
 			}
 		},
 		//Kristian Messer requested recalculation of time that is left
@@ -152,6 +162,8 @@ var javascript_countdown = function () {
 			
 			moving_clock = t;
 			static_clock = t2;
+			move_position = moving_position // For use in short polling javascript function
+			abort_timer = 0;
 			
 			if (moving_position == 1) {
 				output_element_id = "position_1";
@@ -166,5 +178,5 @@ var javascript_countdown = function () {
 		}
 	};
 }();
- 
 </script>
+<%-# JAVASCRIPT FOR TIMERS - END%>

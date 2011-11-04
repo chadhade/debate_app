@@ -20,6 +20,7 @@ class ArgumentsController < ApplicationController
   def index
 	@arguments = Argument.where("debate_id = ? and created_at > ?", params[:debate_id], Time.at(params[:after].to_i + 1))
 	@debate = Debate.find_by_id(params[:debate_id])
+	@debateid = @debate.id
   end
   
   # for long polling, not used right now
