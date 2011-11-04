@@ -2,7 +2,10 @@ DebateApp::Application.routes.draw do
   
   resources :votes, :only => :create
 
-  resources :debaters, :only => [:new, :create, :show]
+  resources :debaters, :only => [:new, :create, :show] do
+    resources :trackings, :only => [:index, :new, :create, :destroy]
+  end
+  
   resources :sessions, :only => [:new, :create, :destroy] 
   
   resources :debates do
