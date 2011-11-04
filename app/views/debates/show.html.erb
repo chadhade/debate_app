@@ -28,6 +28,22 @@ function incrementVotesAgainst(argument_id) {
 </script>
 <%-# JAVASCRIPT FOR VOTING - END%>
 
+<%-# JAVASCRIPT FOR TRACKING - BEGINNING%>
+<script type="text/javascript">
+function startTracking() {
+	var debater_id = $("#tracking").attr("data-debater_id");
+	var debate_id = $("#debate").attr("data-id");
+	$.ajax({
+      type: "POST",
+      url: "/debaters/" + debater_id + "/trackings.js?debate_id=" + debate_id,
+      success: function(){
+        alert("started tracking debate");
+      }
+    });
+}
+</script>
+<%-# JAVASCRIPT FOR TRACKING - END%>
+
 <script type="text/javascript">
 	// This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
@@ -38,6 +54,7 @@ function incrementVotesAgainst(argument_id) {
 </script>
 
 <div id="debate" data-id="<%= @debate.id %>"> This is debate id = <%= @debate.id %> </div>
+<div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= current_debater.id %>" onclick="startTracking()"> Click to start tracking this debate</div>
 <div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="position_1"></div>
 <div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="position_2"></div>
 <br />
