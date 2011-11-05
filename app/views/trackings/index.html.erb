@@ -2,10 +2,7 @@
 
 <%= @tracking_debates.size %><br><%= @tracking_debates %>
 <br><br>
-<%= @tracking_debates_arguments.size %><br><%= @tracking_debates_arguments %>
-<br><br>
 
-<% @tracking_debates.each_with_index do |debate, index| %>
-  <% arguments = @tracking_debates_arguments[index] %>
-  <%= render :partial => "/debates/debate", :locals => {:debate => debate, :arguments => arguments} %>
+<% @tracking_debates.each do |debate| %>
+  <%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
 <% end %>
