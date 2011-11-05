@@ -1,7 +1,4 @@
-<h1>Trackings#index</h1>
-
-<%= @tracking_debates.size %><br><%= @tracking_debates %>
-<br><br>
+<h1>Tracking debates</h1>
 
 <% @tracking_debates.each do |debate| %>
   <%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
