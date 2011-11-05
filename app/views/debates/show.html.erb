@@ -20,11 +20,11 @@ function updateArguments() {
 <%-# JAVASCRIPT FOR VOTING - BEGINNING%>
 <script type="text/javascript">
 function incrementVotesFor(argument_id) {
-  $(".votes_for[data-argument_id="+argument_id+"]").text(parseInt($(".votes_for[data-argument_id="+argument_id+"]").text())+1);
+  $(".votes_for_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_for_count[data-argument_id="+argument_id+"]").text())+1);
 }
 
 function incrementVotesAgainst(argument_id) {
-  $(".votes_against[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against[data-argument_id="+argument_id+"]").text())+1);
+  $(".votes_against_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against_count[data-argument_id="+argument_id+"]").text())+1);
 }
 </script>
 <%-# JAVASCRIPT FOR VOTING - END%>
@@ -166,10 +166,7 @@ var javascript_countdown = function () {
 <div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="position_2"></div>
 <br />
 
-<%-# list arguments for the debate %>
-<div id="arguments">
-  <%= render @arguments %>
-</div>
+<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>
 
 <br>
 

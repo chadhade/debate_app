@@ -6,7 +6,7 @@
     <%= f.submit "(+)" %>
     </div>	
   <% end %> 
-  <div class = "votes_for_count"><%= argument.votes_for %></div>
+  <div class = "votes_for_count" data-argument_id = "<%= argument.id %>"><%= argument.votes_for %></div>
 </div>
 <br />
 
@@ -18,6 +18,6 @@
     <%= f.submit "(-)" %>
     </div>
   <% end %>
-  <div class = "votes_against_count"><%= argument.votes_against %></div>
+  <div class = "votes_against_count" data-argument_id = "<%= argument.id %>"><%= argument.votes_against %></div>
 </div>
 <br />
