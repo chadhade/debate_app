@@ -15,7 +15,6 @@ function updateArguments() {
   setTimeout(updateArguments, 5000);
 }
 </script>
-
 <%-# JAVASCRIPT FOR SHORT POLLING - END%>
 
 <%-# JAVASCRIPT FOR VOTING - BEGINNING%>
@@ -56,28 +55,6 @@ function startTracking() {
 	});
 </script>
 <%-# JAVASCRIPT FOR STARTING TIMERS - END%>
-
-<div id="debate" data-id="<%= @debate.id %>"> This is debate id = <%= @debate.id %> </div>
-<div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= current_debater.id %>" onclick="startTracking()"> Click to start tracking this debate</div>
-<div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="position_1"></div>
-<div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="position_2"></div>
-<br />
-
-<%-# list arguments for the debate %>
-<div id="arguments">
-  <%= render @arguments %>
-</div>
-
-<br>
-
-<%-# allow debater to join debate or argue if it is his turn%>
-<div id="post_to_debate"> <%= render '/debates/post_to_debate' %> </div>
-
-<br>
-
-<%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.name %>
-
-<p><%= link_to "Back to Debate List", debates_path %></p>
 
 <%-# JAVASCRIPT FOR TIMERS - BEGINNING%>
 <script>
@@ -180,3 +157,28 @@ var javascript_countdown = function () {
 }();
 </script>
 <%-# JAVASCRIPT FOR TIMERS - END%>
+
+<%-# -----------------------------------end of javascript----------------------------------------------%>
+
+<div id="debate" data-id="<%= @debate.id %>"> This is debate id = <%= @debate.id %> </div>
+<div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= current_debater.id %>" onclick="startTracking()"> Click to start tracking this debate</div>
+<div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="position_1"></div>
+<div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="position_2"></div>
+<br />
+
+<%-# list arguments for the debate %>
+<div id="arguments">
+  <%= render @arguments %>
+</div>
+
+<br>
+
+<%-# allow debater to join debate or argue if it is his turn%>
+<div id="post_to_debate"> <%= render '/debates/post_to_debate' %> </div>
+
+<br>
+
+<%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.name %>
+
+<p><%= link_to "Back to Debate List", debates_path %></p>
+
