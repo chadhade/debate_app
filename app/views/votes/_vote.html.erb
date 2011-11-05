@@ -1,20 +1,23 @@
-<%= form_for Vote.new, :remote => true, :html => {:onsubmit => 'incrementVotesFor(' + argument.id.to_s + ')'} do |f| %>
-  <div class = "button">
-  <%= f.hidden_field :votable_id, :value => argument.id %>
-  <%= f.hidden_field :vote, :value => true %>  
-  <%= f.submit "(+)" %>
-  </div>	
+<div class = "votes_for" data-argument_id = "<%= argument.id %>">
+  <%= form_for Vote.new, :remote => true, :html => {:class => "vote_for_form", :onsubmit => 'incrementVotesFor(' + argument.id.to_s + ')'} do |f| %>
+    <div class = "button">
+    <%= f.hidden_field :votable_id, :value => argument.id %>
+    <%= f.hidden_field :vote, :value => true %>  
+    <%= f.submit "(+)" %>
+    </div>	
+  <% end %> 
+  <div class = "votes_for_count"><%= argument.votes_for %></div>
+</div>
+<br />
+
+<div class = "votes_against" data-argument_id = "<%= argument.id %>"> 
+  <%= form_for Vote.new, :remote => true, :html => {:class => "vote_against_form", :onsubmit => 'incrementVotesAgainst(' + argument.id.to_s + ')'} do |f| %>
+    <div class = "button">
+    <%= f.hidden_field :votable_id, :value => argument.id %>
+    <%= f.hidden_field :vote, :value => false %>  
+    <%= f.submit "(-)" %>
+    </div>
   <% end %>
-
-<div class = "votes_for" data-argument_id = "<%= argument.id %>"> <%= argument.votes_for %> </div>
-
-<%= form_for Vote.new, :remote => true, :html => {:onsubmit => 'incrementVotesAgainst(' + argument.id.to_s + ')'} do |f| %>
-  <div class = "button">
-  <%= f.hidden_field :votable_id, :value => argument.id %>
-  <%= f.hidden_field :vote, :value => false %>  
-  <%= f.submit "(-)" %>
-  </div>
-  <% end %>
-
-<div class = "votes_against" data-argument_id = "<%= argument.id %>"> <%= argument.votes_against %> </div>
+  <div class = "votes_against_count"><%= argument.votes_against %></div>
+</div>
 <br />
