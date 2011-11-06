@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   # include SessionsHelper in all controllers
   # they are in all views by default
   include SessionsHelper
+  
 
 	def time_left(thisdebate)
 		if thisdebate.arguments.last.Repeat_Turn == true

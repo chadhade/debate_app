@@ -42,6 +42,8 @@ class DebatesController < ApplicationController
 	@debate = Debate.find(params[:id])
 	@arguments = @debate.arguments
 	@previoustimeleft = @debate.arguments.last.time_left
+	@currentdebater = current_debater
+	@currentid = @currentdebater.id
 	
 	# Calculate the amount of time left for use in javascript timers
 	# If there is only 1 debater, debater 2 has 0 seconds left
