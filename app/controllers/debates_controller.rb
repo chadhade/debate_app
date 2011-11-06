@@ -1,7 +1,5 @@
 class DebatesController < ApplicationController
-  $total_debate_time = 6*60
-  $individual_response_time = 1*60
-  
+    
   def new
     # creating a new debate is the same as creating the first argument
 	@argument = Argument.new
@@ -41,7 +39,8 @@ class DebatesController < ApplicationController
     # pull all arguments from that debate and pass debate object
 	@debate = Debate.find(params[:id])
 	@arguments = @debate.arguments
-	@previoustimeleft = @debate.arguments.last.time_left
+	@argument_last = @arguments.last
+	@previoustimeleft = @argument_last.time_left
 	@currentdebater = current_debater
 	@currentid = @currentdebater.id
 	
@@ -51,31 +50,26 @@ class DebatesController < ApplicationController
 		@movingclock = 0
 		@staticclock = @previoustimeleft
 		@movingposition = 2
-	else
-		@timeleft = time_left(@debate)
-		
-		#If a debater has run out of time, the other debater can continuously post
-		@timeleft <=0 ? @debate.arguments.last.update_attributes(:Repeat_Turn => true,
-						:time_left => @previoustimeleft + @arguments[-2].time_left) : nil
-		  
-		if @debate.arguments.last.Repeat_Turn == true
-			@movingclock = time_left(@debate) #The result is now different due to the repeat_turn column
-			@staticclock = 0
-			@movingposition = (@debate.arguments.last.debater_id != @debate.creator.id) ? 2 : 1
-		else
-		
-			#Otherwise, determine the order of debaters
-			if @debate.current_turn == @debate.creator
-				@movingclock = @timeleft 
-				@staticclock = @previoustimeleft
-				@movingposition = 1
-			else
-				@staticclock = @previoustimeleft
-				@movingclock = @timeleft 
-				@movingposition = 2
-			end
-		end
+		return
 	end
+	
+	@timeleft = time_left(@debate)
+	#If a debater has run out of time, the other debater can continuously post
+	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
+		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true)
+		@movingclock = @argument_last.time_left - (Time.now - @arglast.created_at).seconds.to_i
+		@staticclock = 0
+		@movingposition = (@argument_last.debater_id != @debate.creator.id) ? 2 : 1
+		@debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
+		return
+	end
+	
+	#Otherwise, determine the order of debaters
+	@argument_last.Repeat_Turn == true ? @previoustimeleft = 0 : nil
+	@movingclock = @timeleft 
+	@staticclock = @previoustimeleft
+	@debate.current_turn == @debate.creator ? @movingposition = 1 : @movingposition = 2
+		
 end
   
   def index

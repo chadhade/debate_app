@@ -83,11 +83,8 @@ function startTracking() {
 <script>
 var javascript_countdown = function () {
 	
-	keep_counting = 1;
 	abort_timer = 0;
-	
 	var no_time_left_message = 'This Debater has no time!';
-	
 	
 	function countdown() {
 		
@@ -159,12 +156,11 @@ var javascript_countdown = function () {
 		},
 		init: function (t, t2, moving_position) {
 			
-			
+			keep_counting = 1;
+			abort_timer = 0;
 			moving_clock = t;
 			static_clock = t2;
-			move_position = moving_position // For use in short polling javascript function
-			abort_timer = 0;
-			
+		
 			if (moving_position == 1) {
 				output_element_id = "position_1";
 				static_element_id = "position_2";

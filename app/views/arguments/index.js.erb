@@ -1,7 +1,6 @@
 <% unless @arguments.empty? %>
 $("#arguments").append("<%=raw escape_javascript(render @arguments) %>");
-$("#post_to_debate").html("<%=raw escape_javascript(render '/debates/post_to_debate') %>")
-
+$("#post_to_debate").html("<%=raw escape_javascript(render '/debates/post_to_debate') %>");
 abort_timer = 1; clearTimeout(timeout_var); // Stop the previous timer from running right away
 $.getScript("/debates/<%= @debateid %>.js");
 <% end %>
