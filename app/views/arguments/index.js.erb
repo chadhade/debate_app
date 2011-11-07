@@ -5,3 +5,12 @@
   abort_timer = 1; clearTimeout(timeout_var); // Stop the previous timer from running right away
   $.getScript("/debates/<%= @debateid %>.js");
 <% end %>
+
+<% @votes.each do |votes| %>
+  <% unless votes[:updated_counts][:for].nil? %>
+    $(".votes_for_count[data-argument_id=" + <%= votes[:id] %> + "]").html("<%= votes[:updated_counts][:for] %>");
+  <% end %>
+  <% unless votes[:updated_counts][:against].nil? %>
+    $(".votes_against_count[data-argument_id=" + <%= votes[:id] %> + "]").html("<%= votes[:updated_counts][:against] %>");
+  <% end %>
+<% end %>
