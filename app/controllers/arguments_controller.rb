@@ -3,17 +3,24 @@ class ArgumentsController < ApplicationController
   def create    	
 	@debate_id = params[:argument][:debate_id]
     @debate = Debate.find_by_id(@debate_id)
+	@lastargument = @debate.arguments.last	
 	@timeleft = time_left(@debate)
 	
 	# Check if argument is made on time
-	if @timeleft > 0
-		# create a new argument and redirect to debate page
-		current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], :time_left => @timeleft)
+	if (@timeleft > 0) && (@debate.current_turn?(current_debater))
+		# create a new argument and redirect to debate page 
+		  # -- Make the repeat_turn column true if it was true before
+		if @lastargument.Repeat_Turn == true 
+			current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], 
+										     :time_left => @timeleft, :Repeat_Turn => true)
+		else 
+		  # -- Don't make the repeat_turn column true
+			current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
+		end
 		redirect_to debate_path(params[:argument][:debate_id])
 	else
 		# redirect without creating argument
 		redirect_to debate_path(params[:argument][:debate_id])
-		@debate.arguments.last.update_attributes(:Repeat_Turn => true)
 	end		
   end
   
@@ -21,10 +28,10 @@ class ArgumentsController < ApplicationController
 	@arguments = Argument.where("debate_id = ? and created_at > ?", params[:debate_id], Time.at(params[:after].to_i + 1))
 	@debate = Debate.find_by_id(params[:debate_id])
 	@debateid = @debate.id
+	@currentdebater = current_debater
 	
 	@voting_params = parse_voting_params_string(params[:voting_params])
 	@votes = new_votes(@voting_params)
-	# in index.js: unless @votes is empty, replace the votes with the ones here
   end
   
   # parse voting_params_string and put into an array of hashes:: :id => 1, :times => {:for_time => x, :against_time => y}
