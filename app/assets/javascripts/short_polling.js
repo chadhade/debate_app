@@ -2,7 +2,7 @@ $(function() {
   setTimeout(updateArguments, 5000);
 });
 function updateArguments() {
-  var debate_id = $("#debate").attr("data-id");
+  var debate_id = $(".debate").attr("data-id");
  
   var voting_params_string = "voting_params=";
   $(".votes").each(function() {
@@ -31,7 +31,7 @@ function incrementVotesAgainst(argument_id) {
 
 function startTracking() {
 	var debater_id = $("#tracking").attr("data-debater_id");
-	var debate_id = $("#debate").attr("data-id");
+	var debate_id = $(".debate").attr("data-id");
 	$.ajax({
       type: "POST",
       url: "/debaters/" + debater_id + "/trackings.js?debate_id=" + debate_id,
