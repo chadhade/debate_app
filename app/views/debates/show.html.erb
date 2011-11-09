@@ -6,26 +6,33 @@ $(function() {
 function updateArguments() {
   var debate_id = $("#debate").attr("data-id");
  
+  var voting_params_string = "voting_params=";
+  $(".votes").each(function() {
+    var arg_id = $(this).attr("data-argument_id");
+	var for_time = $(".votes_for_count", this).attr("data-time");
+	var against_time = $(".votes_against_count", this).attr("data-time");
+	voting_params_string = voting_params_string + arg_id + ":" + for_time + ":" + against_time + "@";
+  });
+ 
   if ($(".argument").length > 0) {
     var after = $(".argument:last").attr("data-time");
   } else {
     var after = "0";
   }
-  $.getScript("/arguments.js?debate_id=" + debate_id + "&after=" + after);
+  $.getScript("/arguments.js?debate_id=" + debate_id + "&after=" + after + "&" + voting_params_string);
   setTimeout(updateArguments, 5000);
 }
 </script>
-
 <%-# JAVASCRIPT FOR SHORT POLLING - END%>
 
 <%-# JAVASCRIPT FOR VOTING - BEGINNING%>
 <script type="text/javascript">
 function incrementVotesFor(argument_id) {
-  $(".votes_for[data-argument_id="+argument_id+"]").text(parseInt($(".votes_for[data-argument_id="+argument_id+"]").text())+1);
+  $(".votes_for_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_for_count[data-argument_id="+argument_id+"]").text())+1);
 }
 
 function incrementVotesAgainst(argument_id) {
-  $(".votes_against[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against[data-argument_id="+argument_id+"]").text())+1);
+  $(".votes_against_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against_count[data-argument_id="+argument_id+"]").text())+1);
 }
 </script>
 <%-# JAVASCRIPT FOR VOTING - END%>
@@ -57,27 +64,6 @@ function startTracking() {
 </script>
 <%-# JAVASCRIPT FOR STARTING TIMERS - END%>
 
-<div id="debate" data-id="<%= @debate.id %>"> This is debate id = <%= @debate.id %> </div>
-<div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
-<div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="position_1"></div>
-<div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="position_2"></div>
-<br />
-
-<%-# list arguments for the debate %>
-<div id="arguments">
-  <%= render @arguments %>
-</div>
-
-<br>
-
-<%-# allow debater to join debate or argue if it is his turn%>
-<div id="post_to_debate"> <%= render '/debates/post_to_debate' %> </div>
-
-<br>
-
-<%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.email %>
-
-<p><%= link_to "Back to Debate List", debates_path %></p>
 
 <%-# JAVASCRIPT FOR TIMERS - BEGINNING%>
 <script>
@@ -176,3 +162,25 @@ var javascript_countdown = function () {
 }();
 </script>
 <%-# JAVASCRIPT FOR TIMERS - END%>
+
+<%-# -----------------------------------end of javascript----------------------------------------------%>
+
+<div id="debate" data-id="<%= @debate.id %>"> This is debate id = <%= @debate.id %> </div>
+<div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
+<div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="position_1"></div>
+<div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="position_2"></div>
+<br />
+
+<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>
+
+<br>
+
+<%-# allow debater to join debate or argue if it is his turn%>
+<div id="post_to_debate"> <%= render '/debates/post_to_debate' %> </div>
+
+<br>
+
+<%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.email %>
+
+<p><%= link_to "Back to Debate List", debates_path %></p>
+

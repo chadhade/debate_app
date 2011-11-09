@@ -1,4 +1,5 @@
-<h1>Trackings#index</h1>
-<p>Find me in app/views/trackings/index.html.erb</p>
+<h1>Tracking debates</h1>
 
-<%= current_debater.trackings %>
+<% @tracking_debates.each do |debate| %>
+  <%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
+<% end %>

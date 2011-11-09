@@ -29,6 +29,32 @@ class ArgumentsController < ApplicationController
 	@debate = Debate.find_by_id(params[:debate_id])
 	@debateid = @debate.id
 	@currentdebater = current_debater
+	
+	@voting_params = parse_voting_params_string(params[:voting_params])
+	@votes = new_votes(@voting_params)
+  end
+  
+  # parse voting_params_string and put into an array of hashes:: :id => 1, :times => {:for_time => x, :against_time => y}
+  def parse_voting_params_string(params_string)
+	voting_params = Array.new
+	params_string.split("@").each do |arg_entry|
+	  voting_params << {:id => arg_entry.split(":")[0], :times => {:for_time => arg_entry.split(":")[1], :against_time => arg_entry.split(":")[2]}} 
+	end
+	voting_params
+  end
+  
+  # get array of hashes with new values in @votes:: :id => 1, :updated_counts => {:for => x or nil, :against => y or nil}
+  def new_votes(voting_params)
+    votes = Array.new
+	voting_params.each do |arg_entry|
+	  argument = Argument.find(arg_entry[:id])
+	  new_for_entries = argument.votes.where("vote = ? and created_at > ?", "t", Time.at(arg_entry[:times][:for_time].to_i + 1))
+	  new_for_count = new_for_entries ? argument.votes_for : nil
+	  new_against_entries = argument.votes.where("vote = ? and created_at > ?", "f", Time.at(arg_entry[:times][:against_time].to_i + 1))
+	  new_against_count = new_against_entries ? argument.votes_against : nil
+	  votes << {:id => arg_entry[:id], :updated_counts => {:for => new_for_count, :against => new_against_count}}
+	end
+	votes
   end
   
   # for long polling, not used right now
