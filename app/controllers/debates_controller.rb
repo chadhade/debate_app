@@ -42,7 +42,7 @@ class DebatesController < ApplicationController
 	@argument_last = @arguments.last
 	@previoustimeleft = @argument_last.time_left
 	@currentdebater = current_debater
-	@currentid = @currentdebater.id
+	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
 	
 	# Calculate the amount of time left for use in javascript timers
 	# If there is only 1 debater, debater 2 has 0 seconds left
