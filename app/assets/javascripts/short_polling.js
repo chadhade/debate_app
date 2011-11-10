@@ -13,8 +13,8 @@ function updateArguments() {
   var arguments_params_string = "arguments_params=";
   $(".debate").each(function() {  
     var debate_id = $(this).attr("data-id");
-    if ($(".argument").length > 0) {
-      var after = $(".argument:last").attr("data-time");
+    if ($(".argument", this).length > 0) {
+      var after = $(".argument:last", this).attr("data-time");
     } else {
       var after = "0";
     }

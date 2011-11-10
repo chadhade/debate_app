@@ -17,11 +17,13 @@ class ArgumentsController < ApplicationController
 		  # -- Don't make the repeat_turn column true
 			current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
 		end
-        respond_to do |format|
+        # can probably get rid of this block, there is never an html request and js renders nothing
+		respond_to do |format|
 	      format.html {redirect_to debate_path(params[:argument][:debate_id])}
 	      format.js {render :nothing => true}
 	    end		
 	else
+		# can probably get rid of this block, there is never an html request and js renders nothing
 		# redirect without creating argument
         respond_to do |format|
 	      format.html {redirect_to debate_path(params[:argument][:debate_id])}
