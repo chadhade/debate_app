@@ -1,12 +1,16 @@
 DebateApp::Application.routes.draw do
   
+  devise_for :debaters
+  
+  namespace :debater do
+	root :to => "debates#index"
+  end
+
   resources :votes, :only => :create
 
   resources :debaters, :only => [:new, :create, :show] do
     resources :trackings, :only => [:index, :new, :create, :destroy]
   end
-  
-  resources :sessions, :only => [:new, :create, :destroy] 
   
   resources :debates do
     member do
@@ -16,7 +20,7 @@ DebateApp::Application.routes.draw do
   
   resources :arguments
   
-  root :to => 'debaters#new'
+  root :to => 'debates#index'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

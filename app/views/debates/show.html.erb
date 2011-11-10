@@ -11,6 +11,7 @@
 </script>
 <%-# JAVASCRIPT FOR STARTING TIMERS - END%>
 
+
 <%-# JAVASCRIPT FOR TIMERS - BEGINNING%>
 <script>
 var javascript_countdown = function () {
@@ -112,7 +113,7 @@ var javascript_countdown = function () {
 <%-# -----------------------------------end of javascript----------------------------------------------%>
 
 <div> This is debate id = <%= @debate.id %> </div>
-<div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= current_debater.id %>" onclick="startTracking()"> Click to start tracking this debate</div>
+<div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
 <div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="position_1"></div>
 <div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="position_2"></div>
 <br />
@@ -126,7 +127,7 @@ var javascript_countdown = function () {
 
 <br>
 
-<%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.name %>
+<%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.email %>
 
 <p><%= link_to "Back to Debate List", debates_path %></p>
 
