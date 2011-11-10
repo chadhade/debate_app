@@ -17,10 +17,16 @@ class ArgumentsController < ApplicationController
 		  # -- Don't make the repeat_turn column true
 			current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
 		end
-		redirect_to debate_path(params[:argument][:debate_id])
+        respond_to do |format|
+	      format.html {redirect_to debate_path(params[:argument][:debate_id])}
+	      format.js {render :nothing => true}
+	    end		
 	else
 		# redirect without creating argument
-		redirect_to debate_path(params[:argument][:debate_id])
+        respond_to do |format|
+	      format.html {redirect_to debate_path(params[:argument][:debate_id])}
+	      format.js {render :nothing => true}
+	    end		
 	end		
   end
   
