@@ -1,9 +1,13 @@
 <% unless @arguments.empty? %>
-  $(".debate[data-id="+<%= @debateid %>+"]").append("<%=raw escape_javascript(render @arguments) %>");
-  $("#post_to_debate").html("<%=raw escape_javascript(render '/debates/post_to_debate') %>")
-
-  abort_timer = 1; clearTimeout(timeout_var); // Stop the previous timer from running right away
-  $.getScript("/debates/<%= @debateid %>.js");
+  <% @arguments.each do |arguments| %>
+    $(".debate[data-id="+<%= arguments[:id] %>+"]").append("<%=raw escape_javascript(render arguments[:new_arguments]) %>");
+    
+	<% debate = Debate.find(arguments[:id]) %>
+	$(".post_to_debate[data-id="+<%= arguments[:id] %>+"]").html("<%=raw escape_javascript(render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater}) %>")
+  
+    abort_timer = 1; clearTimeout(timeout_var); // Stop the previous timer from running right away
+    $.getScript("/debates/<%= debate.id %>.js");
+  <% end %>
 <% end %>
 
 <% @votes.each do |votes| %>

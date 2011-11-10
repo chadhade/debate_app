@@ -4,4 +4,5 @@
 
 <% @tracking_debates.each do |debate| %>
   <%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
+  <%= render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater} %>
 <% end %>

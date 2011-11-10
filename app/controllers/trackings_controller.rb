@@ -3,6 +3,7 @@ class TrackingsController < ApplicationController
 	# load all debates that this debater is tracking into @tracking_debates
 	@debater = Debater.find(params[:debater_id])
 	@tracking_debates = @debater.tracking_debates
+	@currentdebater = current_debater
   end
 
   def new

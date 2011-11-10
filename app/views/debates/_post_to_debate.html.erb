@@ -1,5 +1,7 @@
-<% if @debate.debaters.size == 1 %>
-  <%= render 'debates/form_join_debate' if !@debate.creator?(@currentdebater) %>
-<% else %>
-  <%= render 'arguments/form_argument' if @debate.current_turn?(@currentdebater) %>
-<% end %>
+<div class = "post_to_debate", data-id = "<%= debate.id %>">
+  <% if debate.debaters.size == 1 %>
+    <%= render :partial => "debates/form_join_debate", :locals => {:debate => debate} if !debate.creator?(currentdebater) %>
+  <% else %>
+    <%= render :partial => "arguments/form_argument", :locals => {:debate => debate} if debate.current_turn?(currentdebater) %>
+  <% end %>
+</div>

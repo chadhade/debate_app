@@ -5,7 +5,7 @@
 		<%= f.label "Allotted Minutes" %> <br/>
 		<%= f.number_field :time_left, :value => 10 %>
 	</div>
-    <%= f.hidden_field :debate_id, :value => @debate.id %>
+    <%= f.hidden_field :debate_id, :value => debate.id %>
 	<div class = "action">
 		<%= f.submit "argument" %>
 	</div>	

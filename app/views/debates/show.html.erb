@@ -122,7 +122,7 @@ var javascript_countdown = function () {
 <br>
 
 <%-# allow debater to join debate or argue if it is his turn%>
-<div id="post_to_debate"> <%= render '/debates/post_to_debate' %> </div>
+<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
 
 <br>
 

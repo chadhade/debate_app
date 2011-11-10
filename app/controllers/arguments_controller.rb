@@ -25,13 +25,35 @@ class ArgumentsController < ApplicationController
   end
   
   def index
-	@arguments = Argument.where("debate_id = ? and created_at > ?", params[:debate_id], Time.at(params[:after].to_i + 1))
-	@debate = Debate.find_by_id(params[:debate_id])
-	@debateid = @debate.id
+	@arguments_params = parse_arguments_params_string(params[:arguments_params])
+	@arguments = new_arguments(@arguments_params)
+	
+	# @debate = Debate.find_by_id(params[:debate_id])
+	# @debateid = @debate.id
 	@currentdebater = current_debater
 	
 	@voting_params = parse_voting_params_string(params[:voting_params])
 	@votes = new_votes(@voting_params)
+  end
+  
+  # parse arguments_params_string and put into an array of hashes:: :id => #, :after => last argument time
+  def parse_arguments_params_string(params_string)
+	arguments_params = Array.new
+	params_string.split("@").each do |debate_entry|
+	  arguments_params << {:id => debate_entry.split(":")[0], :after => debate_entry.split(":")[1]} 
+	end
+	arguments_params
+  end
+  
+  # get array of hashes with new arguments:: :id => #, :new_arguments => array of argument objects
+  def new_arguments(arguments_params)
+    arguments = Array.new
+	arguments_params.each do |debate_entry|
+      debate_id = debate_entry[:id]
+	  new_arguments = Argument.where("debate_id = ? and created_at > ?", debate_entry[:id], Time.at(debate_entry[:after].to_i + 1))
+	  arguments << {:id => debate_id, :new_arguments => new_arguments} unless new_arguments.empty?
+	end
+	arguments
   end
   
   # parse voting_params_string and put into an array of hashes:: :id => 1, :times => {:for_time => x, :against_time => y}

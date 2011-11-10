@@ -2,8 +2,6 @@ $(function() {
   setTimeout(updateArguments, 5000);
 });
 function updateArguments() {
-  var debate_id = $(".debate").attr("data-id");
- 
   var voting_params_string = "voting_params=";
   $(".votes").each(function() {
     var arg_id = $(this).attr("data-argument_id");
@@ -12,12 +10,18 @@ function updateArguments() {
 	voting_params_string = voting_params_string + arg_id + ":" + for_time + ":" + against_time + "@";
   });
  
-  if ($(".argument").length > 0) {
-    var after = $(".argument:last").attr("data-time");
-  } else {
-    var after = "0";
-  }
-  $.getScript("/arguments.js?debate_id=" + debate_id + "&after=" + after + "&" + voting_params_string);
+  var arguments_params_string = "arguments_params=";
+  $(".debate").each(function() {  
+    var debate_id = $(this).attr("data-id");
+    if ($(".argument").length > 0) {
+      var after = $(".argument:last").attr("data-time");
+    } else {
+      var after = "0";
+    }
+	arguments_params_string = arguments_params_string + debate_id + ":" + after + "@";
+  });
+  
+  $.getScript("/arguments.js?" + arguments_params_string + "&" + voting_params_string);
   setTimeout(updateArguments, 5000);
 }
 
