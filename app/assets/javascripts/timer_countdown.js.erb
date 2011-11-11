@@ -63,13 +63,8 @@ var javascript_countdown = function () {
 		
 		timer: function () {
 			for (debateclock in moving_clock) {
-				if (abort_timer[debateclock] == 1) {
-						return;
-					}
-				else
-				{
 					if(keep_counting[debateclock]) {
-						//alert(moving_clock[debateclock]);
+						
 						javascript_countdown.count(debateclock);
 				
 						timer_movingclock = moving_clock;
@@ -78,8 +73,7 @@ var javascript_countdown = function () {
 							no_time_left(output_element_id[debateclock]);
 						} 
 					}
-				}
-			}	
+				}				
 			timeout_var = setTimeout("javascript_countdown.timer()", 1000);
 				
 		},
@@ -109,7 +103,7 @@ var javascript_countdown = function () {
 				
 			document.getElementById(static_element_id[debateid]).innerHTML = format_output(static_clock[debateid]);
 			
-			//pauser = setTimeout("javascript_countdown.passtime()", 1000);
+			
 		}
 	};
 }();
