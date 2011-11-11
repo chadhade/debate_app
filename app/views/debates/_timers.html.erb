@@ -1,0 +1,14 @@
+<%= javascript_include_tag "timer_countdown" %>
+
+<div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="timer1-<%= debateid %>"></div>
+<div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="timer2-<%= debateid %>"></div>
+<script>
+
+	// This function assures that the javascript runs only once the whole page is loaded
+	$(document).ready(function() {
+	
+		//time to countdown in seconds, and element ID
+		javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
+		javascript_countdown.startTimers();
+	});
+</script>

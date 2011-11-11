@@ -1,8 +1,20 @@
 <%= javascript_include_tag "short_polling" %>
+<%= javascript_include_tag "timer_countdown" %>
 
 <h1>Tracking debates</h1>
 
 <% @tracking_debates.each do |debate| %>
+  <div style="float:left";>Time Left for Debater 1: &nbsp;</div><div id="timer1-<%= debate.id %>"></div>
+  <div style="float:left";>Time Left for Debater 2: &nbsp;</div><div id="timer2-<%= debate.id %>"></div>
+  <script>$.getScript("/debates/<%= debate.id %>.js");</script>
   <%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
   <%= render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater} %>
 <% end %>
+
+<script>
+// This function assures that the javascript runs only once the whole page is loaded
+	$(document).ready(function() {
+		//clearTimeout(pauser);
+		setTimeout("javascript_countdown.startTimers()", 6000); 
+	});
+</script>

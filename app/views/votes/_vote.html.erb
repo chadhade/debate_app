@@ -14,7 +14,7 @@
       <%= argument.votes_for %>
     </div>
   </div>
-  <br />
+ 
   <div class = "votes_against" data-argument_id = "<%= argument.id %>"> 
     <%= form_for Vote.new, :remote => true, :html => {:class => "vote_against_form", :onsubmit => 'incrementVotesAgainst(' + argument.id.to_s + ')'} do |f| %>
       <div class = "button">
@@ -26,6 +26,8 @@
     <div class = "votes_against_count" data-argument_id = "<%= argument.id %>" data-time="<%= last_vote_against.created_at.to_i unless last_vote_against.nil? %>">
       <%= argument.votes_against %>
     </div>
+	
   </div>
-  <br />
+  
 </div>
+<br /><br/>
