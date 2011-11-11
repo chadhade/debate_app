@@ -1,4 +1,6 @@
 class Debate < ActiveRecord::Base
+  # associations for viewings
+  has_many :viewings
   
   # associations for debate participation
   has_many :debations
