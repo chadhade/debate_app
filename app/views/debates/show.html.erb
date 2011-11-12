@@ -1,14 +1,5 @@
 <%= javascript_include_tag "short_polling" %>
-
-<%-# JAVASCRIPT FOR EXIT TRACKING - BEGINNING%>
-<script type="text/javascript">
-  window.onbeforeunload = OnBeforeUnLoad;
-  function OnBeforeUnLoad () {
-	$.getScript(window.location.pathname + "/leaving.js");
-	return "Goodbye";
-  }
-</script>
-<%-# JAVASCRIPT FOR EXIT TRACKING - END%>
+<%= javascript_include_tag "exit_tracking" %>
 
 <%-# JAVASCRIPT FOR STARTING TIMERS - BEGINNING%>
 <script type="text/javascript">
