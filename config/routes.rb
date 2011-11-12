@@ -1,7 +1,7 @@
 DebateApp::Application.routes.draw do
   
-  match 'debates/:id/leaving' => 'viewings#leaving_page'
-  match 'debaters/:id/trackings/leaving' => 'viewings#leaving_page'
+  match 'debates/:debate_id/leaving' => 'viewings#leaving_page'
+  match 'debaters/:debater_id/trackings/leaving' => 'viewings#leaving_page'
 
   devise_for :debaters
   
