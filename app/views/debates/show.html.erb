@@ -4,6 +4,7 @@
 <script type="text/javascript">
   window.onbeforeunload = OnBeforeUnLoad;
   function OnBeforeUnLoad () {
+	$.getScript(window.location.pathname + "/leaving.js");
 	return "All data that you have entered will be lost!";
   }
 </script>
