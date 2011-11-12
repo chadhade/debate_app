@@ -18,3 +18,7 @@
     $(".votes_against_count[data-argument_id=" + <%= votes[:id] %> + "]").html("<%= votes[:updated_counts][:against] %>");
   <% end %>
 <% end %>
+
+<% @currently_viewing_counts.each do |currently_viewing_count| %>
+  $(".currently_viewing_count[data-id=" + <%= currently_viewing_count[:id] %> + "]").html("<%= currently_viewing_count[:currently_viewing_count] %>");
+<% end %>

@@ -1,5 +1,6 @@
 <%= debate.id %>
 <div class="debate" data-id="<%= debate.id %>">  
-  <div class="currently_viewing_count">Currently viewing: <%= Viewing.where("debate_id = ? and currently_viewing = ?", debate.id, true).count %></div>
+  Currently viewing: 
+  <div class="currently_viewing_count" data-id="<%= debate.id %>"><%= Viewing.where("debate_id = ? and currently_viewing = ?", debate.id, true).count %></div>
   <%= render debate.arguments %>
 </div>
