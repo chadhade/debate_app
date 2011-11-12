@@ -1,5 +1,15 @@
 <%= javascript_include_tag "short_polling" %>
 
+<%-# JAVASCRIPT FOR EXIT TRACKING - BEGINNING%>
+<script type="text/javascript">
+  window.onbeforeunload = OnBeforeUnLoad;
+  function OnBeforeUnLoad () {
+	$.getScript(window.location.pathname + "/leaving.js");
+	return "Goodbye";
+  }
+</script>
+<%-# JAVASCRIPT FOR EXIT TRACKING - END%>
+
 <h1>Tracking debates</h1>
 
 <% @tracking_debates.each do |debate| %>
