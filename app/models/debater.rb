@@ -1,4 +1,7 @@
 class Debater < ActiveRecord::Base
+  # associations for viewings
+  has_many :viewings, :as => :viewer
+  
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

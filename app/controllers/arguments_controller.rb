@@ -42,6 +42,20 @@ class ArgumentsController < ApplicationController
 	
 	@voting_params = parse_voting_params_string(params[:voting_params])
 	@votes = new_votes(@voting_params)
+	
+	@debates = Array.new
+	@arguments_params.each {|debate_entry| @debates << debate_entry[:id]}
+	@currently_viewing_counts = updated_currently_viewing_counts(@debates)
+  end
+  
+  # create a hash of updated currently viewing counts:: :id => debate id, :currently_viewing_count => count
+  def updated_currently_viewing_counts(debates)
+    currently_viewing_counts = Array.new
+	@debates.each do |debate_id|
+	  currently_viewing_count = Viewing.where("debate_id = ? and currently_viewing = ?", debate_id, true).count
+	  currently_viewing_counts << {:id => debate_id, :currently_viewing_count => currently_viewing_count}
+	end
+	currently_viewing_counts
   end
   
   # parse arguments_params_string and put into an array of hashes:: :id => #, :after => last argument time

@@ -1,12 +1,17 @@
-class TrackingsController < ApplicationController
-  def index
-	# load all debates that this debater is tracking into @tracking_debates
-	@debater = Debater.find(params[:debater_id])
-	@tracking_debates = @debater.tracking_debates
-	@currentdebater = current_debater
-	
-	# for viewings
-	update_viewings(@currentdebater, @tracking_debates)	
+class ViewingsController < ApplicationController
+  def leaving_page
+    @currentdebater = current_debater
+
+	if !params[:debate_id].nil?
+	  update_viewings(@currentdebater, Debate.find(params[:debate_id]))
+	else
+	  update_viewings(@currentdebater, @currentdebater.tracking_debates)
+	end
+    
+	respond_to do |format|
+	  format.html
+	  format.js {render :nothing => true}
+	end
   end
   
 ##############################################################################  
@@ -30,26 +35,11 @@ class TrackingsController < ApplicationController
   def update_viewings_for_viewer_debate(viewer, debate)
 	existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
 	if existing_viewing.empty?
-	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true)
+	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => false)
 	else
-	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => true)} # unless existing_viewing.currently_viewing == true
+	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => false)} # unless existing_viewing.currently_viewing == true
 	end    
   end
 ##############################################################################  
-
-  def new
-  end
-
-  def create
-	@debate_id = params[:debate_id]
-	current_debater.trackings.create(:debate_id => @debate_id)
-    respond_to do |format|
-	  format.html
-	  format.js {render :nothing => true}
-	end
-  end
-
-  def destroy
-  end
 
 end

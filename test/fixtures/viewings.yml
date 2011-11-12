@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  debate_id: 1
+  viewer_id: 1
+  viewer_type: MyString
+  currently_viewing: false
+
+two:
+  debate_id: 1
+  viewer_id: 1
+  viewer_type: MyString
+  currently_viewing: false
