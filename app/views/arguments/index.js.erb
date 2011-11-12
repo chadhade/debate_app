@@ -4,10 +4,11 @@
     
 	<% debate = Debate.find(arguments[:id]) %>
 	$(".post_to_debate[data-id="+<%= arguments[:id] %>+"]").html("<%=raw escape_javascript(render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater}) %>")
-  
-    abort_timer = 1; clearTimeout(timeout_var); // Stop the previous timer from running right away
+    
+    abort_timer[<%= debate.id %>] = 1; clearTimeout(timeout_var[<%= debate.id %>]); // Stop the previous timer from running right away
     $.getScript("/debates/<%= debate.id %>.js");
   <% end %>
+	setTimeout("javascript_countdown.startTimers()", 4000); 
 <% end %>
 
 <% @votes.each do |votes| %>

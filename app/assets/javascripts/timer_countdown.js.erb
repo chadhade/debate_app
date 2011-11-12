@@ -1,0 +1,109 @@
+var javascript_countdown = function () {
+	abort_timer = new Array();
+	moving_clock = new Array();
+	static_clock = new Array();
+	keep_counting = new Array();
+	moving_position = new Array();
+	output_element_id = new Array();
+	static_element_id = new Array();
+	
+	timeout_var = new Array();
+	
+	var no_time_left_message = 'This Debater has no time!';
+	
+	function countdown(singleclock_count) {
+		
+			if(moving_clock[singleclock_count] < 2) {
+				keep_counting[singleclock_count] = 0;
+			}
+				
+			moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
+		
+	}
+ 
+	function add_leading_zero(n) {
+		if(n.toString().length < 2) {
+			return '0' + n;
+		} else {
+			return n;
+		}
+	}
+
+	function format_output(timetoformat) {
+		var hours, minutes, seconds;
+		seconds = timetoformat % 60;
+		minutes = Math.floor(timetoformat / 60) % 60;
+		hours = Math.floor(timetoformat / 3600);
+ 
+		seconds = add_leading_zero( seconds );
+		minutes = add_leading_zero( minutes );
+		hours = add_leading_zero( hours );
+ 
+		return hours + ':' + minutes + ':' + seconds;
+	}
+	
+	function show_time_left(output, showclock) {
+					
+			document.getElementById(output[showclock]).innerHTML = format_output(moving_clock[showclock]);
+		
+		
+	}
+ 
+	function no_time_left(output) {
+		document.getElementById(output).innerHTML = no_time_left_message;
+	}
+ 
+	return {
+		
+		count: function (singleclock) {
+			
+			countdown(singleclock);
+			show_time_left(output_element_id, singleclock);
+		},
+		
+		timer: function () {
+			for (debateclock in moving_clock) {
+					if(keep_counting[debateclock]) {
+						
+						javascript_countdown.count(debateclock);
+				
+						timer_movingclock = moving_clock;
+				
+						if (keep_counting[debateclock] == 0) {
+							no_time_left(output_element_id[debateclock]);
+						} 
+					}
+				}				
+			timeout_var = setTimeout("javascript_countdown.timer()", 1000);
+				
+		},
+		
+		startTimers: function () {
+			
+			javascript_countdown.timer();
+		},
+		
+				
+		init: function (t, t2, move_position, debateid) {
+			
+			keep_counting[debateid] = 1;
+			abort_timer[debateid] = 0;
+			
+			moving_clock[debateid] = t;
+			static_clock[debateid] = t2;
+			moving_position[debateid] = move_position;
+			
+			if (moving_position[debateid] == 1) {
+				output_element_id[debateid] = "timer1-" + debateid;
+				static_element_id[debateid] = "timer2-" + debateid;
+			} else {
+				output_element_id[debateid] = "timer2-" + debateid;
+				static_element_id[debateid] = "timer1-" + debateid;
+			}
+				
+			document.getElementById(static_element_id[debateid]).innerHTML = format_output(static_clock[debateid]);
+			
+			
+		}
+	};
+}();
