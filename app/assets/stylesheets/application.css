@@ -5,3 +5,68 @@
  *= require_self
  *= require_tree . 
 */
+
+h1 {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	text-align: center;
+	font-size: 40px;
+	margin: 10px 5px;
+}
+
+.trackingbody {
+	height: 1000px;
+	margin: 1em;
+	padding: .5em;
+	background-color: #CCCCCC;
+	border-style: outset;
+}
+
+.trackingdebatecontainer {
+	float:left;
+	padding: 5px;
+	width: 30%;
+	height: 400px;
+	overflow: auto;
+	background-color: #FFFFFF;
+	margin: 5px 0;
+	border-style: outset;
+	border-color: #0099FF;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	
+
+} 
+
+.debateid {
+	height: auto;
+	text-align: center;
+	font-size: 14px;
+	color: #FFFFFF;
+	background-color: #0000FF;
+}
+
+.timer {
+	color: #0099FF;
+	background-color: #FFFFFF;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	font-size: 16px;
+	padding: 3px;
+	float:right;
+}
+
+.timertitle {
+	float: left;
+	color: #000000;
+}
+
+.debate {
+	padding: 10px;
+	clear:both;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size: 16px;
+	background-color: #FFFFCC;
+		
+}

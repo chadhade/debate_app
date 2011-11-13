@@ -1,14 +1,15 @@
 <% unless @arguments.empty? %>
   <% @arguments.each do |arguments| %>
+  
+    abort_timer[<%= arguments[:id] %>] = 1;  // Stop the previous timer from running
+      
     $(".debate[data-id="+<%= arguments[:id] %>+"]").append("<%=raw escape_javascript(render arguments[:new_arguments]) %>");
-    
 	<% debate = Debate.find(arguments[:id]) %>
+	
 	$(".post_to_debate[data-id="+<%= arguments[:id] %>+"]").html("<%=raw escape_javascript(render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater}) %>")
-    
-    abort_timer[<%= debate.id %>] = 1; clearTimeout(timeout_var[<%= debate.id %>]); // Stop the previous timer from running right away
-    $.getScript("/debates/<%= debate.id %>.js");
+    $.getScript("/debates/<%= arguments[:id] %>.js"); // Initialize the timers for every debate
   <% end %>
-	setTimeout("javascript_countdown.startTimers()", 4000); 
+	
 <% end %>
 
 <% @votes.each do |votes| %>
