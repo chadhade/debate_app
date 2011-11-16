@@ -9,7 +9,7 @@ var javascript_countdown = function () {
 	
 	timeout_var = new Array();
 	
-	var no_time_left_message = 'This Debater has no time!';
+	var no_time_left_message = 'No Time';
 	
 	function countdown(singleclock_count) {
 		
@@ -63,15 +63,17 @@ var javascript_countdown = function () {
 		
 		timer: function () {
 			for (debateclock in moving_clock) {
-					if(keep_counting[debateclock]) {
+					if ((keep_counting[debateclock]) && (abort_timer[debateclock] == 0)){
 						
 						javascript_countdown.count(debateclock);
 				
-						timer_movingclock = moving_clock;
-				
+					}
+					else {
+						
 						if (keep_counting[debateclock] == 0) {
 							no_time_left(output_element_id[debateclock]);
-						} 
+						}
+						
 					}
 				}				
 			timeout_var = setTimeout("javascript_countdown.timer()", 1000);
@@ -79,7 +81,6 @@ var javascript_countdown = function () {
 		},
 		
 		startTimers: function () {
-			
 			javascript_countdown.timer();
 		},
 		
@@ -87,8 +88,7 @@ var javascript_countdown = function () {
 		init: function (t, t2, move_position, debateid) {
 			
 			keep_counting[debateid] = 1;
-			abort_timer[debateid] = 0;
-			
+			abort_timer[debateid] = 0;			
 			moving_clock[debateid] = t;
 			static_clock[debateid] = t2;
 			moving_position[debateid] = move_position;

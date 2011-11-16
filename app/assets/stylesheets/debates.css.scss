@@ -1,3 +1,35 @@
 // Place all the styles related to the Debates controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.debateid {
+	height: auto;
+	text-align: center;
+	font-size: 14px;
+	color: #FFFFFF;
+	background-color: #0000FF;
+}
+
+.timer {
+	color: #0099FF;
+	background-color: #FFFFFF;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	font-size: 16px;
+	padding: 3px;
+	float:right;
+}
+
+.timertitle {
+	float: left;
+	color: #000000;
+}
+
+.debate {
+	padding: 10px;
+	clear:both;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size: 16px;
+	background-color: #FFFFCC;
+		
+}

@@ -1,3 +1,37 @@
 // Place all the styles related to the Trackings controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+h1 {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	text-align: center;
+	font-size: 40px;
+	margin: 10px 5px;
+}
+
+.trackingbody {
+	height: 1000px;
+	margin: 1em;
+	padding: .5em;
+	background-color: #CCCCCC;
+	border-style: outset;
+}
+
+.trackingdebatecontainer {
+	float:left;
+	padding: 5px;
+	width: 30%;
+	height: 400px;
+	overflow: auto;
+	background-color: #FFFFFF;
+	margin: 5px 0;
+	border-style: outset;
+	border-color: #0099FF;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	
+
+}
