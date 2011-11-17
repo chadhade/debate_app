@@ -9,7 +9,8 @@
 <body>
 <div id="debater_nav">
     <% if debater_signed_in? %>
-        Signed in as <%= current_debater.email %>. MEP!
+        <%= link_to current_debater.email, current_debater %> |
+		<%= link_to 'Trackings', debater_trackings_path(current_debater) %> |
         <%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %>
     <% else %>
         <%= link_to 'Register', new_debater_registration_path %> or <%= link_to 'Sign in', new_debater_session_path %>
