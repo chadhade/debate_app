@@ -13,7 +13,7 @@
 		<%= link_to 'Trackings', debater_trackings_path(current_debater) %> |
         <%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %> |
     <% else %>
-        <%= link_to 'Register', new_debater_registration_path %> or <%= link_to 'Sign in', new_debater_session_path %> |
+        <%= link_to 'Register', new_debater_registration_path %> | <%= link_to 'Sign in', new_debater_session_path %> |
     <% end %>
 	<%= link_to 'List of debates', debates_path %>
 </div>
