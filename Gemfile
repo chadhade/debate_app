@@ -16,7 +16,7 @@ gem 'devise'
 # for some reason it won't install on my machine 
 # but apparently isn't necessary to run the app on my local server
 
-gem 'therubyracer'
+#gem 'therubyracer'
 
 
 # Gems used only for assets and not required

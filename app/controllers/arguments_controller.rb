@@ -11,25 +11,19 @@ class ArgumentsController < ApplicationController
 		# create a new argument and redirect to debate page 
 		  # -- Make the repeat_turn column true if it was true before
 		if @lastargument.Repeat_Turn == true 
-			current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], 
+			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], 
 										     :time_left => @timeleft, :Repeat_Turn => true)
 		else 
 		  # -- Don't make the repeat_turn column true
-			current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
+			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], 
+								:debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
 		end
-        # can probably get rid of this block, there is never an html request and js renders nothing
-		respond_to do |format|
-	      format.html {redirect_to debate_path(params[:argument][:debate_id])}
-	      format.js {render :nothing => true}
-	    end		
-	else
-		# can probably get rid of this block, there is never an html request and js renders nothing
-		# redirect without creating argument
-        respond_to do |format|
-	      format.html {redirect_to debate_path(params[:argument][:debate_id])}
-	      format.js {render :nothing => true}
-	    end		
-	end		
+        
+	end
+  
+	# Check if there are footnotes attached
+	@current_argument.has_footnote? ? @current_argument.save_footnote : nil
+
   end
   
   def index
