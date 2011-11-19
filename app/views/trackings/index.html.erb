@@ -4,19 +4,21 @@
 
 <h1>Tracking debates</h1>
 
-<div class = "trackingbody">
+<div id = "debatebody">
 <% @tracking_debates.each do |debate| %>
   <div class="trackingdebatecontainer">
-	<div class="timer"><div class="timertitle">Time Left for Debater 1: &nbsp;</div><div id="timer1-<%= debate.id %>"></div></div>
-	<div class="timer"><div class="timertitle">Time Left for Debater 2: &nbsp;</div><div id="timer2-<%= debate.id %>"></div></div>
-	<div class="debateid">Debate: <%= debate.id %></div>
+	
+	<div class="containerpanel">
+		<%= render :partial => "/debates/timers", :locals => {:debate_id =>  debate.id} %>
+		<%= render :partial => "/debates/viewing", :locals => {:debate_id => debate.id} %>
+	</div>
 	<%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
 	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater} %>
 	<script>$.getScript("/debates/<%= debate.id %>.js"); // Initialize the timers for every debate</script>
+	
   </div>
 <% end %>
 </div>
-
 <script>
 // This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
@@ -24,3 +26,4 @@
 		setTimeout("javascript_countdown.startTimers()", 6000); 
 	});
 </script>
+

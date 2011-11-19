@@ -1,0 +1,1 @@
+<div class="viewing_count" data-id="<%= debate_id %>"><%= Viewing.where("debate_id = ? and currently_viewing = ?", debate_id, true).count %></div>
