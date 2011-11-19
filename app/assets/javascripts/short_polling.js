@@ -25,14 +25,6 @@ function updateArguments() {
   setTimeout(updateArguments, 5000);
 }
 
-function incrementVotesFor(argument_id) {
-  $(".votes_for_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_for_count[data-argument_id="+argument_id+"]").text())+1);
-}
-
-function incrementVotesAgainst(argument_id) {
-  $(".votes_against_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against_count[data-argument_id="+argument_id+"]").text())+1);
-}
-
 function startTracking() {
 	var debater_id = $("#tracking").attr("data-debater_id");
 	var debate_id = $(".debate").attr("data-id");
