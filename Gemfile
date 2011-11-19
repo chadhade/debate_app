@@ -6,7 +6,7 @@ gem 'rails', '3.1.1'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-gem 'pg'
+# gem 'pg'
 
 gem 'thumbs_up'
 
@@ -15,7 +15,7 @@ gem 'devise'
 # need to include 'therubyracer' gem to get heroku working
 # for some reason it won't install on my machine 
 # but apparently isn't necessary to run the app on my local server
-# gem 'therubyracer'
+gem 'therubyracer'
 
 # Gems used only for assets and not required
 # in production environments by default.
