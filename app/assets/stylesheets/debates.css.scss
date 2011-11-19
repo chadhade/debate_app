@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #debatebody {
-	width: 820px;
+	width: 720px;
 	margin: 1em auto;
 	text-align: center;
 }
@@ -55,6 +55,7 @@
 }
 .viewing_count {
 	text-align: center;
+	padding-right: 15px;
 	background-image: url(whos_online.gif);
 	background-repeat: no-repeat;
 	background-position: right top;

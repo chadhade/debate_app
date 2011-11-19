@@ -1,9 +1,9 @@
 <%= form_for Argument.new, :remote => true do |f| %>
 	<div class = "field">
-		<%= f.text_field :content %>
+		<%= f.text_area :content, :size => "36x5" %>
 	</div>
 	<%= f.hidden_field :debate_id, :value => debate.id %>
 	<div class = "action">
-		<%= f.submit "argument" %>
+		<%= f.submit "deBunk!" %>
 	</div>	
 <% end %>

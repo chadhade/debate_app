@@ -3,6 +3,7 @@
 <%= javascript_include_tag "exit_tracking" %>
 <%= javascript_include_tag "timer_countdown" %>
 
+<div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
 <div id = "debatebody">
 
   <div class="debatecontainer">
@@ -12,10 +13,9 @@
 		<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 	</div>
 	<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>
-	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
-		
+			
   </div>
-
+	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
 </div>
 
 <%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.email %>
