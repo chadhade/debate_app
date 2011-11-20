@@ -40,6 +40,13 @@ class ArgumentsController < ApplicationController
 	@debates = Array.new
 	@arguments_params.each {|debate_entry| @debates << debate_entry[:id]}
 	@currently_viewing_counts = updated_currently_viewing_counts(@debates)
+  
+	# Add footnotes if they exist
+	@arguments.each do |debates|
+		debates[:new_arguments].each do |argument|
+			argument.any_footnotes ? argument.content = argument.show_footnote : nil
+		end
+	end
   end
   
   # create a hash of updated currently viewing counts:: :id => debate id, :currently_viewing_count => count
