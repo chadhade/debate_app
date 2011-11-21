@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111120045003) do
+ActiveRecord::Schema.define(:version => 20111121050012) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20111120045003) do
     t.string  "content"
     t.integer "argument_id"
     t.integer "position"
+    t.integer "foot_count"
   end
 
   add_index "footnotes", ["argument_id"], :name => "index_footnotes_on_argument_id"

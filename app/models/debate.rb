@@ -13,6 +13,9 @@ class Debate < ActiveRecord::Base
   # associations for arguments
   has_many :arguments
   
+  # associations for footnotes
+  has_many :footnotes, :through => :arguments
+  
   def creator
     @creator = Debater.find_by_id(self.arguments.first.debater_id)
   end  
