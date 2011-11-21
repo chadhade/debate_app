@@ -46,7 +46,7 @@ class Argument < ActiveRecord::Base
 	placeholder = 0
 	
 	self.footnotes.each do |footnote|
-		footnote_as_link = "<a href=\"#\" title=#{footnote.content} class=\"footnote\"> <span>#{footnote.id}</span> </a>"
+		footnote_as_link = "<a href=\"#\" title=\"#{footnote.content}\" class=\"footnote\"> <span>#{footnote.id}</span> </a>"
 		@content.insert(footnote.position + placeholder, footnote_as_link)
 		placeholder = (placeholder + footnote_as_link.length) - footnote.content.length - 4
 	end
