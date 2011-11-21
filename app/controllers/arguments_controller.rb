@@ -19,11 +19,11 @@ class ArgumentsController < ApplicationController
 								:debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
 		end
         
+		# Check if there are footnotes attached
+		@current_argument.has_footnote? ? @current_argument.save_footnote : nil
 	end
   
-	# Check if there are footnotes attached
-	@current_argument.has_footnote? ? @current_argument.save_footnote : nil
-
+	
   end
   
   def index
