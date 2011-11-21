@@ -44,11 +44,11 @@ class Argument < ActiveRecord::Base
   def show_footnote
 	@content = self.content
 	placeholder = 0
+	
 	self.footnotes.each do |footnote|
-		@footnote_as_link = "<a href=\"#\" title=#{footnote.content} class=\"footnote\"> <span>#{footnote.id}</span> </a>"
-		@content.insert(footnote.position + placeholder, @footnote_as_link)
-		placeholder = (placeholder + @footnote_as_link.length) - footnote.content.length - 4
-		#return placeholder
+		footnote_as_link = "<a href=\"#\" title=#{footnote.content} class=\"footnote\"> <span>#{footnote.id}</span> </a>"
+		@content.insert(footnote.position + placeholder, footnote_as_link)
+		placeholder = (placeholder + footnote_as_link.length) - footnote.content.length - 4
 	end
 	@content.html_safe
   end

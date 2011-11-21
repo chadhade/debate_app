@@ -18,6 +18,9 @@ class DebatesController < ApplicationController
 	@Seconds_Left_1 = (params[:argument][:time_left]).to_i * 60
 		
 	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
+	
+	# Check if there are footnotes attached
+	@argument.has_footnote? ? @argument.save_footnote : nil
 	redirect_to @debate
   end
   
@@ -31,6 +34,9 @@ class DebatesController < ApplicationController
 	# create a new argument object
 	@content_of_post = params[:argument][:content]
 	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
+	
+	# Check if there are footnotes attached
+	@argument.has_footnote? ? @argument.save_footnote : nil
 	
 	redirect_to Debate.find(params[:id])
   end 

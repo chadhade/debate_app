@@ -44,7 +44,7 @@ class ArgumentsController < ApplicationController
 	# Add footnotes if they exist
 	@arguments.each do |debates|
 		debates[:new_arguments].each do |argument|
-			#argument.any_footnotes ? argument.content = argument.show_footnote : nil
+			argument.any_footnotes ? argument.content = argument.show_footnote : nil
 		end
 	end
   end
