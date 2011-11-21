@@ -24,6 +24,39 @@
     box-shadow:0 10px 20px #abc;
 }
 
+.debate {
+	padding: 10px;
+	clear:both;
+	font-family: Ariel;
+	font-size: 15px;
+	background-color: #fff;
+	height: 400px;
+	overflow: auto;
+}
+
+.debate-background {
+	padding: 5px;
+	background-color: #fff;
+}
+
+.argument {
+	text-align: left;
+}
+
+.argument a {
+	text-decoration: none;
+}
+
+.footnote {
+	font-size: 13px;
+	line-height: 1em;
+	vertical-align: super;
+}
+
+.footnote a {
+	text-decoration: none;
+}
+
 .timer {
 	font-size: 16px;
 	padding: 3px;
@@ -39,20 +72,7 @@
 	
 }
 
-.debate {
-	padding: 10px;
-	clear:both;
-	font-family: Ariel;
-	font-size: 15px;
-	background-color: #fff;
-	height: 400px;
-	overflow: auto;
-}
 
-.debate-background {
-	padding: 5px;
-	background-color: #fff;
-}
 .viewing_count {
 	text-align: center;
 	padding-right: 15px;
