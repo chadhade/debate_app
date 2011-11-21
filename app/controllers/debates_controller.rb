@@ -78,7 +78,11 @@ class DebatesController < ApplicationController
 	@movingclock = @timeleft 
 	@staticclock = @previoustimeleft
 	@debate.current_turn == @debate.creator ? @movingposition = 1 : @movingposition = 2
-		
+	
+	# Add footnotes if they exist
+	@arguments.each do |argument|
+		argument.any_footnotes ? argument.content = argument.show_footnote : nil
+	end
   end
 
 ##############################################################################  
