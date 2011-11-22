@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111121050012) do
+ActiveRecord::Schema.define(:version => 20111122070149) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20111121050012) do
     t.integer  "time_left"
     t.boolean  "Repeat_Turn"
     t.boolean  "any_footnotes"
+    t.string   "content_foot"
   end
 
   create_table "debaters", :force => true do |t|

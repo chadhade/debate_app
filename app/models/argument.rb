@@ -20,37 +20,33 @@ class Argument < ActiveRecord::Base
 
   def save_footnote(thedebate)
 	content = self.content
+	endposition = -2
+	content_stripped = ""
+	content_html = content
 	
 	#Find the position of the first footnote
 	startposition = content.index(/\(\((.+)\)\)/)
-	endposition = -2
-	content_stripped = ""
-		
+	
 	#Save the footnote and its position. Then find the position of the next footnote.
 	until startposition.nil? do
-		#Produce a version without footnotes
-		content_stripped = content_stripped + content[endposition + 2..startposition - 1]
+		content_stripped = content_stripped + content[endposition + 2..startposition - 1] #Produce a version without footnotes
+		
 		endposition = content.index(/\)\)/, startposition - 1)
 		@footnote = content[startposition + 2..endposition - 1]
 		footcount = thedebate.footnotes.count + 1
 		footnotes.create!(:content => @footnote, :position => startposition, :foot_count => footcount)
 		startposition = content.index(/\(\((.+)\)\)/, endposition)
+	
+		#Produce a version with footnotes turned into html
+		content_html = content_html.sub(/\(\(#{@footnote}\)\)/,"<a href=\"#\" title=\"#{@footnote}\" class=\"footnote\"> <span>#{footcount}</span> </a>")
 	end
 	
-	self.update_attributes(:content => content_stripped, :any_footnotes => true)
+	self.update_attributes(:content => content_stripped, :any_footnotes => true, :content_foot => content_html)
 	
   end
   
   def show_footnote
-	@content = self.content
-	placeholder = 0
-	
-	self.footnotes.each do |footnote|
-		footnote_as_link = "<a href=\"#\" title=\"#{footnote.content}\" class=\"footnote\"> <span>#{footnote.foot_count}</span> </a>"
-		@content = @content.insert(footnote.position + placeholder, footnote_as_link)
-		placeholder = (placeholder + footnote_as_link.length) - footnote.content.length - 4
-	end
-	@content.html_safe
+	self.content_foot.html_safe
   end
   
   end
