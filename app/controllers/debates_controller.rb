@@ -20,12 +20,13 @@ class DebatesController < ApplicationController
 	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
 	
 	# Check if there are footnotes attached
-	@argument.has_footnote? ? @argument.save_footnote : nil
+	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
 	redirect_to @debate
   end
   
   def join
-    # link debater to debate
+    @debate = Debate.find(params[:id])
+	# link debater to debate
 	current_debater.debations.create(:debate_id => params[:id])
 	
 	#The amount of time Debater 2 has left.  
@@ -36,9 +37,10 @@ class DebatesController < ApplicationController
 	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
 	
 	# Check if there are footnotes attached
-	@argument.has_footnote? ? @argument.save_footnote : nil
 	
-	redirect_to Debate.find(params[:id])
+	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
+	
+	redirect_to @debate
   end 
   
   def show
@@ -52,6 +54,11 @@ class DebatesController < ApplicationController
 	
 	# for viewings
 	update_viewings(@currentdebater, @debate)
+	
+	# Add footnotes if they exist
+	@arguments.each do |argument|
+		argument.any_footnotes ? argument.content = argument.show_footnote : nil
+	end
 	
 	# Calculate the amount of time left for use in javascript timers
 	# If there is only 1 debater, debater 2 has 0 seconds left
@@ -79,10 +86,7 @@ class DebatesController < ApplicationController
 	@staticclock = @previoustimeleft
 	@debate.current_turn == @debate.creator ? @movingposition = 1 : @movingposition = 2
 	
-	# Add footnotes if they exist
-	@arguments.each do |argument|
-		argument.any_footnotes ? argument.content = argument.show_footnote : nil
-	end
+	
   end
 
 ##############################################################################  

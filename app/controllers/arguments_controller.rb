@@ -20,7 +20,7 @@ class ArgumentsController < ApplicationController
 		end
         
 		# Check if there are footnotes attached
-		@current_argument.has_footnote? ? @current_argument.save_footnote : nil
+		@current_argument.has_footnote? ? @current_argument.save_footnote(@debate) : nil
 	end
   
 	
