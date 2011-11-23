@@ -2,14 +2,14 @@ class ArgumentsController < ApplicationController
 
   def create    	
   	@debate_id = params[:argument][:debate_id]
-      @debate = Debate.find_by_id(@debate_id)
+    @debate = Debate.find_by_id(@debate_id)
   	@lastargument = @debate.arguments.last	
   	@timeleft = time_left(@debate)
 	
   	# Check if argument is made on time
   	if (@timeleft > 0) && (@debate.current_turn?(current_debater))
   		# create a new argument and redirect to debate page 
-  		  # -- Make the repeat_turn column true if it was true before
+  		# -- Make the repeat_turn column true if it was true before
   		if @lastargument.Repeat_Turn == true 
   			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], 
   										     :time_left => @timeleft, :Repeat_Turn => true)
