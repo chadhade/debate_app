@@ -3,6 +3,8 @@
 <%= javascript_include_tag "exit_tracking" %>
 <%= javascript_include_tag "timer_countdown" %>
 
+<%= render :partial => "debates/juggernaut_js"%>
+
 <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
 
 <div id = "debatebody">
