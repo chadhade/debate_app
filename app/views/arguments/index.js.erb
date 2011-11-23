@@ -9,7 +9,6 @@
 	$(".post_to_debate[data-id="+<%= arguments[:id] %>+"]").html("<%=raw escape_javascript(render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater}) %>")
     $.getScript("/debates/<%= arguments[:id] %>.js"); // Initialize the timers for every debate
   <% end %>
-	
 <% end %>
 
 <% @votes.each do |votes| %>
