@@ -1,0 +1,44 @@
+var i=-165;
+var c=0;
+var intHide;
+var speed=5;
+
+function show_hide_menu(divSlide, divHide)
+
+{
+divslide = divSlide;
+divhide = divHide;
+
+if (c==0)
+	{
+	c=1;
+	clearInterval(intHide);
+	intShow=setInterval("show(divslide)",10);
+	document.getElementById(divhide).style.visibility="visible";
+	}
+else
+	{
+	c=0;
+	clearInterval(intShow);
+	intHide=setInterval("hide(divslide)",10);
+	document.getElementById(divhide).style.visibility="hidden";
+	}
+}
+function show(divshow)
+{
+divshow = divshow;
+if (i<-12)
+	{
+	i=i+speed;
+	document.getElementById(divshow).style.left=i + "px";
+	}
+}
+function hide(divshow)
+{
+divshow = divshow;
+if (i>-165)
+	{
+	i=i-speed;
+	document.getElementById(divshow).style.left=i + "px";
+	}
+}

@@ -1,0 +1,15 @@
+<%= javascript_include_tag "css_effects" %>
+
+<div id = "slide_menu_1">		
+	<div class="slide_menu_title" onclick="show_hide_menu('slide_menu_1', 'footnotes')">
+	F<br />O<br />O<br />T<br />N<br />O<br />T<br />E<br />S
+	</div>
+
+	<div id="footnotes">
+		<%= render debate.footnotes %>
+	</div>
+</div>
+
+<script>
+document.getElementById('footnotes').style.visibility="hidden";
+</script>
