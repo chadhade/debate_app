@@ -1,0 +1,17 @@
+<script type="text/javascript" charset="utf-8"> var jug = new Juggernaut; </script>
+
+<% if debates.kind_of?(Array) %>
+  <% debates.each do |debate| %>
+    <script type="text/javascript" charset="utf-8">
+      jug.subscribe("debate_" + <%= debate.id %>, function(data){
+  	    alert(data);
+      });
+	</script>
+  <% end %>
+<% else %> 
+  <script type="text/javascript" charset="utf-8">
+    jug.subscribe("debate_" + <%= debates.id %>, function(data){
+      alert(data);
+    });
+  </script>
+<% end %>
