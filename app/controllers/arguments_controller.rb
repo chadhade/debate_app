@@ -21,6 +21,9 @@ class ArgumentsController < ApplicationController
         
   		# Check if there are footnotes attached
   		@current_argument.has_footnote? ? @current_argument.save_footnote(@debate) : nil
+  		
+  		# publish new argument
+  		Juggernaut.publish("debate_" + @debate_id, render(@current_argument, :layout => false)) 
   	end
   end
   
