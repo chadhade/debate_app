@@ -3,7 +3,7 @@ DebateApp::Application.routes.draw do
   match 'debates/:debate_id/leaving' => 'viewings#leaving_page'
   match 'debaters/:debater_id/trackings/leaving' => 'viewings#leaving_page'
 
-  devise_for :debaters
+  devise_for :debaters, :controllers => {:omniauth_callbacks => "debaters/omniauth_callbacks"}
   
   namespace :debater do
 	root :to => "debates#index"

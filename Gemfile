@@ -6,11 +6,13 @@ gem 'rails', '3.1.1'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-gem 'pg'
+#gem 'pg'
 
 gem 'thumbs_up'
 
 gem 'devise'
+	gem 'omniauth-facebook'
+	gem 'omniauth-twitter'
 
 # need to include 'therubyracer' gem to get heroku working
 # for some reason it won't install on my machine 
