@@ -1,4 +1,7 @@
 class DebatesController < ApplicationController
+  $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/redis-2.2.2/lib'
+  $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/juggernaut-2.1.0/lib/'
+  require 'juggernaut'  
     
   def new
     # creating a new debate is the same as creating the first argument
@@ -37,10 +40,9 @@ class DebatesController < ApplicationController
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
 	
   	# Check if there are footnotes attached
-	
   	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
-	
-  	redirect_to @debate
+	  
+	  Juggernaut.publish("debate_" + params[:id], render(@argument, :layout => false)) 
   end 
   
   def show

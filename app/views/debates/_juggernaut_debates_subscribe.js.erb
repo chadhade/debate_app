@@ -1,19 +1,19 @@
-<%= javascript_include_tag "append_arguments" %>
+<%= javascript_include_tag "append_argument" %>
 
 <script type="text/javascript" charset="utf-8"> var jug = new Juggernaut; </script>
 
 <% if debates.kind_of?(Array) %>
   <% debates.each do |debate| %>
     <script type="text/javascript" charset="utf-8">
-      jug.subscribe("debate_" + <%= debate.id %>, function(data){
-  	    appendArguments(data);
+      jug.subscribe("debate_" + <%= debate.id %>, function(argument){
+  	    $(".debate[data-id="+ <%= debate.id %> +"]").append(argument);
       });
 	</script>
   <% end %>
 <% else %> 
   <script type="text/javascript" charset="utf-8">
-    jug.subscribe("debate_" + <%= debates.id %>, function(data){
-      appendArguments(data);
+    jug.subscribe("debate_" + <%= debates.id %>, function(argument){
+      $(".debate[data-id="+ <%= debates.id %> +"]").append(argument);
     });
   </script>
 <% end %>
