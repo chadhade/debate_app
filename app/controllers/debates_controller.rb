@@ -50,13 +50,9 @@ class DebatesController < ApplicationController
 	@argument_last = @arguments.last
 	@previoustimeleft = @argument_last.time_left
 	@currentdebater = current_debater
+	@debaters = @debate.debaters
 	
 	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
-	
-	# Debater names
-	@debaters = @debate.debaters
-	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
-	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email
 	
 	# for viewings
 	update_viewings(@currentdebater, @debate)
@@ -72,8 +68,15 @@ class DebatesController < ApplicationController
 		@movingclock = 0
 		@staticclock = @previoustimeleft
 		@movingposition = 2
+	  @currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
+		@debater2 = "No one has joined"
 		return
+    
 	end
+	
+	# Debater names
+	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
+	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email
 	
 	@timeleft = time_left(@debate)
 	#If a debater has run out of time, the other debater can continuously post
