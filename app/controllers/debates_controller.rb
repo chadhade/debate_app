@@ -50,7 +50,13 @@ class DebatesController < ApplicationController
 	@argument_last = @arguments.last
 	@previoustimeleft = @argument_last.time_left
 	@currentdebater = current_debater
+	
 	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
+	
+	# Debater names
+	@debaters = @debate.debaters
+	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
+	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email
 	
 	# for viewings
 	update_viewings(@currentdebater, @debate)

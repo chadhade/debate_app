@@ -38,7 +38,7 @@ class Argument < ActiveRecord::Base
 		startposition = content.index(/\(\((.+)\)\)/, endposition)
 	
 		#Produce a version with footnotes turned into html
-		content_html = content_html.sub(/\(\(#{@footnote}\)\)/,"<a href=\"#footnote#{footcount}\" title=\"#{@footnote}\" class=\"footnote\"> 
+		content_html = content_html.sub(/\(\(#{@footnote}\)\)/,"<a href=\"#\" title=\"#{@footnote}\" class=\"footnote\"> 
 		               <span>#{footcount}</span> </a>")
 	end
 	
