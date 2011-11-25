@@ -1,20 +1,27 @@
-<%= javascript_include_tag "short_polling" %>
+<!-- <%= javascript_include_tag "short_polling" %> -->
 <%= javascript_include_tag "voting" %>
 <%= javascript_include_tag "exit_tracking" %>
 <%= javascript_include_tag "timer_countdown" %>
+<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- juggernaut subscribe to debates -->
+<%= render :partial => "/debates/juggernaut_debates_subscribe.js", :locals => {:debates => @debate} %>
 
 <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
-<div id = "debatebody">
 
-<div class="debatecontainer">
-	
+
+<div id = "debatebody">
+  <div class="debatecontainer">
+
 	<div class="containerpanel">
 		<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1 => @debater1, :debater2 => @debater2} %>
 		<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 	</div>
+
 	<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>			  
 	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
 </div>	
+
 
 <%= render :partial => "/debates/sliding_menus", :locals => {:debate => @debate} %> <br /> <div class="divclear"></div>
 <%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.email %>
