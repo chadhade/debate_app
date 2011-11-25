@@ -10,7 +10,8 @@ gem 'sqlite3'
 
 gem 'thumbs_up'
 
-gem 'devise'
+gem 'devise', :git => "https://github.com/plataformatec/devise.git"
+	
 	gem 'omniauth-facebook'
 	gem 'omniauth-twitter'
 

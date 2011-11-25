@@ -29,4 +29,22 @@ class Debater < ActiveRecord::Base
   def current_turn?(debate)
     debate.current_turn == self
   end
+
+  def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
+    data = access_token.extra.raw_info
+    if debater = Debater.find_by_email(data.email)
+      debater
+    else # Create a debater with a stub password. 
+      Debater.create!(:email => data.email, :password => Devise.friendly_token[0,20], :validate => false) 
+    end
+  end
+  
+  def self.find_for_twitter_oauth(access_token, signed_in_resource=nil)
+    data = access_token.extra.raw_info
+    if debater = Debater.find_by_email(data.email)
+      debater
+    else # Create a debater with a stub password. 
+      Debater.create!(:email => "#{data.screen_name}@twitter.com", :password => Devise.friendly_token[0,20], :validate => false) 
+    end
+  end
 end
