@@ -50,8 +50,7 @@ class DebatesController < ApplicationController
 	  reset_invocation_response # allow double rendering
 	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
-	  
-	  Juggernaut.url = "REDISTOGO_URL"	  
+	  	  
 	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
 	  reset_invocation_response # allow double rendering
