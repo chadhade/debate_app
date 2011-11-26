@@ -7,6 +7,7 @@ gem 'rails', '3.1.1'
 
 gem 'sqlite3'
 gem 'redis'
+gem 'juggernaut'
 
 group :production do
   gem 'therubyracer-heroku', '0.8.1.pre3' # you will need this too
