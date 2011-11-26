@@ -33,6 +33,10 @@ class ArgumentsController < ApplicationController
   	  reset_invocation_response # allow double rendering
   	end
   	
+  	respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
   end
   
 ############ allow double rendering ###################
