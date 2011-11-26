@@ -8,6 +8,7 @@ gem 'rails', '3.1.1'
 gem 'sqlite3'
 
 # gem 'pg'
+gem 'activerecord-postgresql-adapter`
 
 gem 'thumbs_up'
 
