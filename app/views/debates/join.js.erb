@@ -1,1 +1,5 @@
-alert("joined debate");
+// alert("joined debate");
+
+jug.subscribe("debate_" + <%= @debate.id %> + "_joiner", function(argument){
+   $(".post_to_debate[data-id="+ <%= @debate.id %> +"]").html("");
+});
