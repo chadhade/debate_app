@@ -2,7 +2,7 @@
 <%= javascript_include_tag "voting" %>
 <%= javascript_include_tag "exit_tracking" %>
 <%= javascript_include_tag "timer_countdown" %>
-<%= javascript_include_tag "tracking"%>
+<%= javascript_include_tag "tracking" %>
 <script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
 
 <!-- juggernaut subscribe to debates -->
@@ -39,7 +39,7 @@ javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingp
 // This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
 		
-		setTimeout("javascript_countdown.startTimers()", 6000); 
+		setTimeout("javascript_countdown.startTimers()", 1000); 
 	});
 </script>
 
