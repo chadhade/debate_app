@@ -23,7 +23,7 @@ class ArgumentsController < ApplicationController
   		@current_argument.has_footnote? ? @current_argument.save_footnote(@debate) : nil
   		
   		# publish new argument
-  		Juggernaut.publish("debate_" + @debate_id, render(@current_argument, :layout => false)) 
+  		Juggernaut.publish("debate_" + @debate_id, test = {:timers => showtimers(@debate), :argument => render(@current_argument, :layout => false)}) 
   	end
   end
   
@@ -101,6 +101,53 @@ class ArgumentsController < ApplicationController
   	  votes << {:id => arg_entry[:id], :updated_counts => {:for => new_for_count, :against => new_against_count}}
   	end
   	votes
+  end
+  
+  def showtimers(debate)
+    @arguments = debate.arguments
+  	@argument_last = @arguments.last
+  	@previoustimeleft = @argument_last.time_left
+  	@currentdebater = current_debater
+  	@debaters = debate.debaters
+    
+    # Calculate the amount of time left for use in javascript timers
+  	# If there is only 1 debater, debater 2 has 0 seconds left
+  	if @debaters.size == 1
+  		@movingclock = 0
+  		@staticclock = @previoustimeleft
+  		@movingposition = 2
+  	  
+  		
+  		return
+
+  	end
+
+  	@timeleft = time_left(debate)
+  	#If a debater has run out of time, the other debater can continuously post
+  	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
+  		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true)
+  		@movingclock = @argument_last.time_left - (Time.now - @argument_last.created_at).seconds.to_i
+  		@staticclock = 0
+  		@movingposition = (@argument_last.debater_id != @debate.creator.id) ? 2 : 1
+  		@debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
+  		return
+  	end
+
+
+    	# Calculate the amount of time left for use in javascript timers
+    	# If there is only 1 debater, debater 2 has 0 seconds left
+    	if debate.debaters.size == 1
+    		@movingclock = 0
+    		@staticclock = @previoustimeleft
+    		@movingposition = 2
+    		return
+    	end
+
+    	#Otherwise, determine the order of debaters
+    	@argument_last.Repeat_Turn == true ? @previoustimeleft = 0 : nil
+    	@movingclock = @timeleft 
+    	@staticclock = @previoustimeleft
+    	debate.current_turn == debate.creator ? @movingposition = 1 : @movingposition = 2
   end
   
 end
