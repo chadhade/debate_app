@@ -56,6 +56,7 @@ end
   
   def show
     # pull all arguments from that debate and pass debate object
+
 	@debate = Debate.find(params[:id])
 	@arguments = @debate.arguments
 	@argument_last = @arguments.last

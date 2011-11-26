@@ -19,8 +19,13 @@
   <div class="trackingdebatecontainer">
 	
 	<div class="containerpanel">
-		<%= render :partial => "/debates/timers", :locals => {:debate_id =>  debate.id} %>
-		<%= render :partial => "/debates/viewing", :locals => {:debate_id => debate.id} %>
+		<% # Debater names %>
+		<% @debaters = debate.debaters %>
+		<% @currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email %>
+		<% @currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email unless @debaters.size == 1 %>
+		<% @debaters2.nil? ? @debater2 = "None" : nil %>
+		<%= render :partial => "/debates/timers", :locals => {:debate_id =>  debate.id, :debater1 => @debater1, :debater2 => @debater2} %>
+		<%= render :partial => "/debates/viewing", :locals => {:debate_id =>  debate.id, :debater1 => @debater1, :debater2 => @debater2} %>
 	</div>
 	<%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
 	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater} %>
