@@ -7,7 +7,7 @@ gem 'rails', '3.1.1'
 
 gem 'sqlite3'
 
-gem 'pg'
+gem 'pg', :group => :production
 
 gem 'thumbs_up'
 
