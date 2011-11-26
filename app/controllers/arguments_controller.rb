@@ -23,7 +23,8 @@ class ArgumentsController < ApplicationController
   		@current_argument.has_footnote? ? @current_argument.save_footnote(@debate) : nil
   		
   		# publish new argument
-  		Juggernaut.publish("debate_" + @debate_id, test = {:timers => showtimers(@debate), :argument => render(@current_argument, :layout => false)}) 
+  		  @debate = Debate.find_by_id(@debate.id) # Reset the debate variable now that new argument has been created
+  		Juggernaut.publish("debate_" + @debate_id, data = {:timers => showtimers(@debate), :argument => render(@current_argument, :layout => false)}) 
   	end
   end
   
@@ -115,10 +116,8 @@ class ArgumentsController < ApplicationController
   	if @debaters.size == 1
   		@movingclock = 0
   		@staticclock = @previoustimeleft
-  		@movingposition = 2
-  	  
-  		
-  		return
+  		@movingposition = 2  	    		
+  		return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
 
   	end
 
@@ -129,8 +128,8 @@ class ArgumentsController < ApplicationController
   		@movingclock = @argument_last.time_left - (Time.now - @argument_last.created_at).seconds.to_i
   		@staticclock = 0
   		@movingposition = (@argument_last.debater_id != @debate.creator.id) ? 2 : 1
-  		@debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
-  		return
+  		debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
+  		return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
   	end
 
 
@@ -140,7 +139,7 @@ class ArgumentsController < ApplicationController
     		@movingclock = 0
     		@staticclock = @previoustimeleft
     		@movingposition = 2
-    		return
+    		return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
     	end
 
     	#Otherwise, determine the order of debaters
@@ -148,6 +147,7 @@ class ArgumentsController < ApplicationController
     	@movingclock = @timeleft 
     	@staticclock = @previoustimeleft
     	debate.current_turn == debate.creator ? @movingposition = 1 : @movingposition = 2
+      return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
   end
   
 end

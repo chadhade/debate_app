@@ -1,5 +1,7 @@
 <script type="text/javascript" charset="utf-8"> 
-  jug.subscribe("debate_" + <%= debate.id %>, function(argument){
-    $(".debate[data-id="+ <%= debate.id %> +"]").append(argument);
-  });
+  jug.subscribe("debate_" + <%= debate.id %>, function(data){
+    $(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
+ 	abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
+	javascript_countdown.init(data.timers.movingclock, data.timers.staticclock, data.timers.movingposition, data.timers.debateid);
+ });
 </script>
