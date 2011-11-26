@@ -24,7 +24,8 @@ class ArgumentsController < ApplicationController
   		
   		# publish new argument
   		  @debate = Debate.find_by_id(@debate.id) # Reset the debate variable now that new argument has been created
-  		Juggernaut.publish("debate_" + @debate_id, data = {:timers => showtimers(@debate), :argument => render(@current_argument, :layout => false)}) 
+  		Juggernaut.publish("debate_" + @debate_id, data = {:timers => showtimers(@debate, @current_argument, @lastargument), 
+  		                                                  :argument => render(@current_argument, :layout => false)}) 
   	end
   end
   
@@ -104,10 +105,8 @@ class ArgumentsController < ApplicationController
   	votes
   end
   
-  def showtimers(debate)
-    @arguments = debate.arguments
-  	@argument_last = @arguments.last
-  	@previoustimeleft = @argument_last.time_left
+  def showtimers(debate, argument_last, argument_second_last)
+  	@previoustimeleft = argument_last.time_left
   	@currentdebater = current_debater
   	@debaters = debate.debaters
     
@@ -123,11 +122,11 @@ class ArgumentsController < ApplicationController
 
   	@timeleft = time_left(debate)
   	#If a debater has run out of time, the other debater can continuously post
-  	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
-  		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true)
-  		@movingclock = @argument_last.time_left - (Time.now - @argument_last.created_at).seconds.to_i
+  	if (@timeleft <=0) && (argument_last.Repeat_Turn != true)
+  		argument_last.update_attributes(:time_left => argument_last.time_left + argument_second_last.time_left, :Repeat_Turn => true)
+  		@movingclock = argument_last.time_left - (Time.now - argument_last.created_at).seconds.to_i
   		@staticclock = 0
-  		@movingposition = (@argument_last.debater_id != @debate.creator.id) ? 2 : 1
+  		@movingposition = (argument_last.debater_id != debate.creator.id) ? 2 : 1
   		debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
   		return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
   	end
@@ -143,7 +142,7 @@ class ArgumentsController < ApplicationController
     	end
 
     	#Otherwise, determine the order of debaters
-    	@argument_last.Repeat_Turn == true ? @previoustimeleft = 0 : nil
+    	argument_last.Repeat_Turn == true ? @previoustimeleft = 0 : nil
     	@movingclock = @timeleft 
     	@staticclock = @previoustimeleft
     	debate.current_turn == debate.creator ? @movingposition = 1 : @movingposition = 2
