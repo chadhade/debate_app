@@ -1,9 +1,5 @@
 <script type="text/javascript" charset="utf-8"> 
   var jug = new Juggernaut; 
-
-  jQuery.beforeSend(function(xhr){
-	xhr.setRequestHeader("X-Session-ID", jug.sessionID);
-  });
 </script>
 
 <% if debates.kind_of?(Array) %>

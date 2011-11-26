@@ -20,6 +20,9 @@
 	</div>
 	<%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
 	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater} %>
+	
+	@currentdebater
+	
 	<script>$.getScript("/debates/<%= debate.id %>.js"); // Initialize the timers for every debate</script>
 	
   </div>

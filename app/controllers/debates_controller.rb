@@ -43,7 +43,16 @@ class DebatesController < ApplicationController
   	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
 	  
 	  Juggernaut.publish("debate_" + params[:id], render(@argument, :layout => false)) 
+	  
+	  # allow double rendering
+	  reset_invocation_response
   end 
+  
+############ allow double rendering ###################
+def reset_invocation_response
+  self.instance_variable_set(:@_response_body, nil)
+end
+#######################################################
   
   def show
     # pull all arguments from that debate and pass debate object
