@@ -5,13 +5,17 @@
 <%= javascript_include_tag "tracking"%>
 <script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
 
-<!-- juggernaut subscribe to debates -->
-<%= render :partial => "/debates/juggernaut_debates_subscribe.js", :locals => {:debates => @tracking_debates} %>
+<script type="text/javascript" charset="utf-8"> 
+  var jug = new Juggernaut;
+</script>
 
 <h1>Tracking</h1>
 
 <div id = "debatebody">
 <% @tracking_debates.each do |debate| %>
+  <!-- juggernaut subscribe to debates -->
+  <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => debate} %>
+
   <div class="trackingdebatecontainer">
 	
 	<div class="containerpanel">
@@ -20,8 +24,6 @@
 	</div>
 	<%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
 	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater} %>
-	
-	@currentdebater
 	
 	<script>$.getScript("/debates/<%= debate.id %>.js"); // Initialize the timers for every debate</script>
 	
