@@ -4,13 +4,13 @@ class DebatesController < ApplicationController
   require 'juggernaut'  
     
   def new
-  	@argument = Argument.new
     # creating a new debate is the same as creating the first argument
+  	@argument = Argument.new
   end
   
   def create
-  	@debate = Debate.new
   	# create a new debate linked to debater
+  	@debate = Debate.new
   	@debate.save
   	current_debater.debations.create(:debate_id => @debate.id)
 	
