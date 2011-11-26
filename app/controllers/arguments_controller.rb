@@ -23,21 +23,23 @@ class ArgumentsController < ApplicationController
   		@current_argument.has_footnote? ? @current_argument.save_footnote(@debate) : nil
   		
   		# publish new argument
-  		Juggernaut.publish("debate_" + @debate_id, render(@current_argument, :layout => false))
+  		argument_render = render(@current_argument, :layout => false)
   	  reset_invocation_response # allow double rendering
-  	  
-  	  if @debate.current_turn?(current_debater)
-  	    # don't do anything and render nothing
-  	    respond_to do |format|
-      	  format.html
-      	  format.js { render :nothing => true }
-      	end
-  	  else
-  	    # empty the current submitter's debate box (will run create.js.erb automatically)
-  	    # publish the debate box to either the joiner or creator
-  	   
+  	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
+  	  reset_invocation_response # allow double rendering
+  		
+  		@debate = Debate.find_by_id(@debate_id)
+  		Juggernaut.publish("debate_" + @debate_id, {:argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
+  	  reset_invocation_response # allow double rendering
   	end
+  	
   end
+  
+############ allow double rendering ###################
+  def reset_invocation_response
+    self.instance_variable_set(:@_response_body, nil)
+  end
+#######################################################
   
   def index
   	@arguments_params = parse_arguments_params_string(params[:arguments_params])

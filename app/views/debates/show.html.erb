@@ -9,7 +9,7 @@
 <script type="text/javascript" charset="utf-8"> 
   var jug = new Juggernaut;
 </script>
-<%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate, :current_debater => @currentdebater} %>
+<%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
 
 <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
 

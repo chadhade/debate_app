@@ -1,13 +1,17 @@
 <script type="text/javascript" charset="utf-8"> 
-  jug.subscribe("debate_" + <%= debate.id %>, function(argument){
-    $(".debate[data-id="+ <%= debate.id %> +"]").append(argument);
+  jug.subscribe("debate_" + <%= debate.id %>, function(data){
+    $(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
+    if ("<%= current_debater.email %>" == data.current_turn)
+      {$(".post_to_debate[data-id="+ <%= @debate.id %> +"]").html(data.post_box); alert("you are the currentdebater");}
+    else
+      {$(".post_to_debate[data-id="+ <%= @debate.id %> +"]").html("");}
   });
 </script>
 
-<% if debate.creator?(current_debater) %>
-  <script type="text/javascript" charset="utf-8"> 
-	jug.subscribe("debate_" + <%= debate.id %> + "_creator", function(argument){
-	  $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(argument);
-	});
-  </script>
-<% end %>
+// <% if debate.creator?(current_debater) %>
+//   <script type="text/javascript" charset="utf-8"> 
+// 	jug.subscribe("debate_" + <%= debate.id %> + "_creator", function(argument){
+// 	  $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(argument);
+// 	});
+//   </script>
+// <% end %>

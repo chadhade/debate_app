@@ -14,7 +14,7 @@
 <div id = "debatebody">
 <% @tracking_debates.each do |debate| %>
   <!-- juggernaut subscribe to debates -->
-  <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => debate, :current_debater => @currentdebater} %>
+  <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => debate} %>
 
   <div class="trackingdebatecontainer">
 	

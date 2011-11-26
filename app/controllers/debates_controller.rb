@@ -43,12 +43,13 @@ class DebatesController < ApplicationController
   	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
 	  
 	  # publish to appropriate channels
-	  Juggernaut.publish("debate_" + params[:id], render(@argument, :layout => false))
+	  argument_render = render(@argument, :layout => false)
 	  reset_invocation_response # allow double rendering
-	  Juggernaut.publish("debate_" + params[:id] + "_creator", render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)) 
-	  
-	  # allow double rendering
-	  reset_invocation_response
+	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
+	  reset_invocation_response # allow double rendering
+	  	  
+	  Juggernaut.publish("debate_" + params[:id], {:argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
+	  reset_invocation_response # allow double rendering
   end 
   
 ############ allow double rendering ###################
