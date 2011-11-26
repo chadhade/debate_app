@@ -1,0 +1,5 @@
+<script type="text/javascript" charset="utf-8"> 
+  jug.subscribe("debate_" + <%= debate.id %>, function(argument){
+    $(".debate[data-id="+ <%= debate.id %> +"]").append(argument);
+  });
+</script>
