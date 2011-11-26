@@ -42,7 +42,10 @@ class DebatesController < ApplicationController
   	# Check if there are footnotes attached
   	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
 	  
-	  Juggernaut.publish("debate_" + params[:id], render(@argument, :layout => false)) 
+	  # publish to appropriate channels
+	  Juggernaut.publish("debate_" + params[:id], render(@argument, :layout => false))
+	  reset_invocation_response # allow double rendering
+	  Juggernaut.publish("debate_" + params[:id] + "_creator", render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)) 
 	  
 	  # allow double rendering
 	  reset_invocation_response

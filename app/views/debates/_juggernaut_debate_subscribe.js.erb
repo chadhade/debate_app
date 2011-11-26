@@ -7,7 +7,7 @@
 <% if debate.creator?(current_debater) %>
   <script type="text/javascript" charset="utf-8"> 
 	jug.subscribe("debate_" + <%= debate.id %> + "_creator", function(argument){
-	  $(".debate[data-id="+ <%= debate.id %> +"]").append(argument);
+	  $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(argument);
 	});
   </script>
 <% end %>
