@@ -42,13 +42,17 @@ class DebatesController < ApplicationController
   	# Check if there are footnotes attached
   	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
 	  
+	  #Info for timers
+	  @movingclock = @debate.arguments.first.time_left.to_i * 60
+	  
 	  # publish to appropriate channels
 	  argument_render = render(@argument, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  	  
-	  Juggernaut.publish("debate_" + params[:id], {:argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
+	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
+	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
 	  reset_invocation_response # allow double rendering
   end 
   
