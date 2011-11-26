@@ -28,4 +28,7 @@ DebateApp::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+  
+  # For RedisToGo in Heroku
+  ENV["REDISTOGO_URL"] = 'redis://redistogo:b4fef0260a408c992d9df311b37e83a9@stingfish.redistogo.com:9209/'
 end
