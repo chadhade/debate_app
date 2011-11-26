@@ -4,8 +4,8 @@ class DebatesController < ApplicationController
   require 'juggernaut'  
     
   def new
-    # creating a new debate is the same as creating the first argument
   	@argument = Argument.new
+    # creating a new debate is the same as creating the first argument
   end
   
   def create
