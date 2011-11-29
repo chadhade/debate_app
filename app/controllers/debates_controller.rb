@@ -54,6 +54,11 @@ class DebatesController < ApplicationController
 	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
 	  reset_invocation_response # allow double rendering
+	  
+	  respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
   end 
   
 ############ allow double rendering ###################
