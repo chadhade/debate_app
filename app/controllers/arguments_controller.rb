@@ -143,16 +143,6 @@ class ArgumentsController < ApplicationController
   		return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
   	end
 
-
-    	# Calculate the amount of time left for use in javascript timers
-    	# If there is only 1 debater, debater 2 has 0 seconds left
-    	if debate.debaters.size == 1
-    		@movingclock = 0
-    		@staticclock = @previoustimeleft
-    		@movingposition = 2
-    		return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
-    	end
-
     	#Otherwise, determine the order of debaters
     	argument_last.Repeat_Turn == true ? @previoustimeleft = 0 : nil
     	@movingclock = @timeleft 
