@@ -3,7 +3,12 @@
 <%= javascript_include_tag "exit_tracking" %>
 <%= javascript_include_tag "timer_countdown" %>
 <%= javascript_include_tag "tracking" %>
-<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
+
+<% if Rails.env.development? or Rails.env.test? %>
+	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
+<% else %>
+	<%= javascript_include_tag "juggernaut_application" %>
+<% end %>
 
 <!-- juggernaut subscribe to debates -->
 <script type="text/javascript" charset="utf-8"> 
