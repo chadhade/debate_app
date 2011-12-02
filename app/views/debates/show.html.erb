@@ -7,20 +7,16 @@
 <% if Rails.env.development? or Rails.env.test? %>
 	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
 <% else %>
-	#<%= javascript_include_tag "juggernaut_application" %>
-	<script src="http://glowing-sunrise-2582.heroku.com:80/assets/application.js" type="text/javascript" charset="utf-8"></script>
+	<%= javascript_include_tag "juggernaut_application" %>
+
 <% end %>
 
 <!-- juggernaut subscribe to debates -->
 <script type="text/javascript" charset="utf-8"> 
-  #var jug = new Juggernaut;
-	var jug = new Juggernaut({
-	    host: 'http://glowing-sunrise-2582.heroku.com',
-	    port: 80
-	});
-
+  var jug = new Juggernaut;
 
 </script>
+
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
 
 <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
