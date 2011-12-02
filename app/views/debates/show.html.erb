@@ -12,7 +12,7 @@
 
 <!-- juggernaut subscribe to debates -->
 <script type="text/javascript" charset="utf-8"> 
-  var jug = new Juggernaut;
+  var jug = window.App.Juggernaut;
 </script>
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
 
