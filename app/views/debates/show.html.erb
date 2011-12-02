@@ -12,7 +12,13 @@
 
 <!-- juggernaut subscribe to debates -->
 <script type="text/javascript" charset="utf-8"> 
-  var jug = window.App.Juggernaut;
+  #var jug = new Juggernaut;
+	var jug = new Juggernaut({
+	    host: 'http://glowing-sunrise-2582.heroku.com',
+	    port: 80
+	});
+
+
 </script>
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
 
