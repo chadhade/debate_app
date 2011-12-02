@@ -32,7 +32,7 @@ class ArgumentsController < ApplicationController
   		Juggernaut.publish("debate_" + @debate_id, {:timers => showtimers(@debate, @current_argument, @lastargument), :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
   	  reset_invocation_response # allow double rendering
   	end
-  	
+
   	respond_to do |format|
   	  format.html
   	  format.js {render :nothing => true}
