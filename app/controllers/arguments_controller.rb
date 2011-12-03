@@ -31,8 +31,9 @@ class ArgumentsController < ApplicationController
   		@debate = Debate.find_by_id(@debate_id)
   		
   		if Rails.env.production?
-    	  Juggernaut.url = ENV['REDIS_URL'] 	  
-  	  
+    	  #Juggernaut.url = ENV['REDIS_URL'] 	  
+  	    Juggernaut.host = 'debate-app-jug.herokuapp.com'
+  	    Juggernaut.port = 80
   	  end
   		
   		Juggernaut.publish("debate_" + @debate_id, {:timers => showtimers(@debate, @current_argument, @lastargument), :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
