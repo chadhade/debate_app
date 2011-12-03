@@ -4,7 +4,7 @@ class DebatesController < ApplicationController
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/redis-2.2.2/lib'
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/juggernaut-2.1.0/lib/'
   end
-  
+
   require 'juggernaut'  
     
   def new
@@ -56,9 +56,10 @@ class DebatesController < ApplicationController
 	  reset_invocation_response # allow double rendering
 	  
 	  if Rails.env.production?
-  	  Juggernaut.url = "redis://redistogo:5439f70de5e485ed6ec83e26cc28edde@stingfish.redistogo.com:9222/" 	  
+  	  Juggernaut.url = ENV['REDIS_URL'] 	  
 	  end
 	  
+
 	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
 	  reset_invocation_response # allow double rendering
