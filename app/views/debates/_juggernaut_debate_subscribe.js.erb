@@ -1,30 +1,27 @@
 <script type="text/javascript"> 
-  jug.subscribe("debate_" + <%= debate.id %>, function(data){
-    
-//$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
-   $.each(data.argument, function(idx, val) {   
-$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
-
-});
- if ("<%= current_debater.email %>" == data.current_turn) {
-      	
-	//$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
-    $.each(data.post_box, function(idx, val) {    
-	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-
+  	jug.subscribe("debate_" + <%= debate.id %>, function(data){  
+		//$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
+	   	$.each(data.argument, function(idx, val) {   
+			$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
+		});
+ 
+		if ("<%= current_debater.email %>" == data.current_turn) {      	
+			//$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
+	    	$.each(data.post_box, function(idx, val) {    
+				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+			});
+		}
+		else {
+		     //$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+			$.each(data.post_box, function(idx, val) { 
+				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+			});
+		}
+	
+		abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
+		javascript_countdown.init(data.timers.movingclock, data.timers.staticclock, data.timers.movingposition, data.timers.debateid);
 	});
-}
-else {
-     //$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-	$.each(data.post_box, function(idx, val) { 
-	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-
-	});
-	}
- 	abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
-	javascript_countdown.init(data.timers.movingclock, data.timers.staticclock, data.timers.movingposition, data.timers.debateid);
-  });
-
+	
 	jug.subscribe("debate_" + <%= debate.id %> + "_votes", function(votes){
 		if (votes.type == "true") {
 			incrementVotesFor(votes.id);
