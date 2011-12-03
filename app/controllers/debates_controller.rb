@@ -54,9 +54,9 @@ class DebatesController < ApplicationController
 	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
-	  if Rails.env.production?
-  	  Juggernaut.url = ENV['REDIS_URL'] 	  
-	  end
+    # if Rails.env.production?
+    #       Juggernaut.url = ENV['REDIS_URL']     
+    # end
 
 	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
