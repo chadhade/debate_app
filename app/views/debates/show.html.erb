@@ -10,8 +10,12 @@
 	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript" charset="utf-8"></script>
 <% end %>
 
-<script type="text/javascript" charset="utf-8"> 
-  var jug = new Juggernaut;
+<script type="text/javascript">
+                        jug = new Juggernaut({
+                                     
+                                       host: 'debate-app-jug.herokuapp.com',
+                                       port: 80
+                       });
 </script>
 
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
