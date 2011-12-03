@@ -56,7 +56,7 @@ class DebatesController < ApplicationController
 	  reset_invocation_response # allow double rendering
 	  
 	  if Rails.env.production?
-  	  Juggernaut.url = ENV['REDISTOGO_URL'] 	  
+  	  Juggernaut.url = ENV['REDIS_URL'] 	  
 	  end
 	  
 
