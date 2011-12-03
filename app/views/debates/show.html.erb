@@ -4,11 +4,7 @@
 <%= javascript_include_tag "timer_countdown" %>
 <%= javascript_include_tag "tracking" %>
 
-<% if Rails.env.development? or Rails.env.test? %>
-	<script src="http://localhost:8080/application.js" type="text/javascript"></script>
-<% else %>
-	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
-<% end %>
+<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
 
 <script type="text/javascript">
   var jug = new Juggernaut({     
