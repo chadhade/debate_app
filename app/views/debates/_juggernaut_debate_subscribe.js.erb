@@ -1,4 +1,4 @@
-<script type="text/javascript" charset="utf-8"> 
+<script type="text/javascript"> 
   jug.subscribe("debate_" + <%= debate.id %>, function(data){
     $(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
     if ("<%= current_debater.email %>" == data.current_turn) {
