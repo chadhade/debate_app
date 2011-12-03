@@ -5,7 +5,7 @@ class DebatesController < ApplicationController
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/juggernaut-2.1.0/lib/'
   end
 
-  require 'juggernaut'  
+  #require 'juggernaut'  
     
   def new
     # creating a new debate is the same as creating the first argument
@@ -56,7 +56,7 @@ class DebatesController < ApplicationController
 	  reset_invocation_response # allow double rendering
 	  
 	  if Rails.env.production?
-  	  Juggernaut.url = ENV['REDIS_URL'] 	  
+  	  #Juggernaut.url = ENV['REDIS_URL'] 	  
 	    
 	  end
 
