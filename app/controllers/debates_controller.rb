@@ -57,7 +57,7 @@ class DebatesController < ApplicationController
 	  
 	  if Rails.env.production?
   	  Juggernaut.url = ENV['REDIS_URL'] 	  
-	    Juggernaut.transports: ['xhr-polling',
+	    Juggernaut.transports = ['xhr-polling',
 			'jsonp-polling']
 	  end
 
