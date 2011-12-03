@@ -14,7 +14,11 @@
                         jug = new Juggernaut({
                                      
                                        host: 'debate-app-jug.herokuapp.com',
-                                       port: 80
+                                       port: 80,
+										 secure: false,
+										transports: ['xhr-polling',
+										'jsonp-polling']
+										
                        });
 </script>
 
