@@ -59,5 +59,5 @@ DebateApp::Application.configure do
   config.active_support.deprecation = :notify
 
   # For RedisToGo in Heroku
-  ENV["REDISTOGO_URL"] = 'redis://redistogo:5439f70de5e485ed6ec83e26cc28edde@stingfish.redistogo.com:9222/'
+  ENV["REDIS_URL"] = 'redis://redistogo:5439f70de5e485ed6ec83e26cc28edde@stingfish.redistogo.com:9222/'
 end
