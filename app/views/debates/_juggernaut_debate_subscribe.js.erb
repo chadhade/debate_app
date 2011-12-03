@@ -9,14 +9,14 @@ $(".debate[data-id="+ <%= debate.id %> +"]").append(val);
  if ("<%= current_debater.email %>" == data.current_turn) {
       	
 	//$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
-    $.each(data.argument, function(idx, val) {    
+    $.each(data.post_box, function(idx, val) {    
 	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
 
 	});
 }
 else {
      //$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-	$.each(data.argument, function(idx, val) { 
+	$.each(data.post_box, function(idx, val) { 
 	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
 
 	});
