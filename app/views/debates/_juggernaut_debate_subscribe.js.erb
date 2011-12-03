@@ -1,9 +1,11 @@
 <script type="text/javascript"> 
   jug.subscribe("debate_" + <%= debate.id %>, function(data){
-    alert(data.argument);
+    
 //$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
    $.each(data.argument, function(idx, val) {
-    $(".debate[data-id="+ <%= debate.id %> +"]").append(val);
+alert(val);    
+$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
+
 });
  if ("<%= current_debater.email %>" == data.current_turn) {
       	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
