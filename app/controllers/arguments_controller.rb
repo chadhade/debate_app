@@ -23,9 +23,9 @@ class ArgumentsController < ApplicationController
   		@current_argument.has_footnote? ? @current_argument.save_footnote(@debate) : nil
   		
   		# publish new argument
-  		argument_render = render(@current_argument, :layout => false).to_s
+  		argument_render = render(@current_argument, :layout => false, :content_type => 'text/plain')
   	  reset_invocation_response # allow double rendering
-  	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false).to_s
+  	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false, :content_type => 'text/plain')
   	  reset_invocation_response # allow double rendering
   		
   		@debate = Debate.find_by_id(@debate_id)
