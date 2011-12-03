@@ -57,6 +57,8 @@ class DebatesController < ApplicationController
 	  
 	  if Rails.env.production?
   	  Juggernaut.url = ENV['REDIS_URL'] 	  
+	    Juggernaut.transports: ['xhr-polling',
+			'jsonp-polling']
 	  end
 
 	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
