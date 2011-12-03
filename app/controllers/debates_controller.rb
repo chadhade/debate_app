@@ -49,9 +49,9 @@ class DebatesController < ApplicationController
 	  @movingclock = @debate.arguments.first.time_left.to_i * 60
 	  
 	  # publish to appropriate channels
-	  argument_render = render(@argument, :layout => false)
+	  argument_render = render(@argument, :layout => false).to_s
 	  reset_invocation_response # allow double rendering
-	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
+	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false).to_s
 	  reset_invocation_response # allow double rendering
 
 	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 

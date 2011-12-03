@@ -1,21 +1,21 @@
 <script type="text/javascript"> 
   	jug.subscribe("debate_" + <%= debate.id %>, function(data){  
-		//$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
-	   	$.each(data.argument, function(idx, val) {   
-			$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
-		});
+		$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
+		// $.each(data.argument, function(idx, val) {   
+		// 	$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
+		// });
  
 		if ("<%= current_debater.email %>" == data.current_turn) {      	
-			//$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
-	    	$.each(data.post_box, function(idx, val) {    
-				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-			});
+			$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
+			// $.each(data.post_box, function(idx, val) {    
+			// 	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+			// });
 		}
 		else {
-		     //$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-			$.each(data.post_box, function(idx, val) { 
-				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-			});
+		    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+			// $.each(data.post_box, function(idx, val) { 
+			// 	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+			// });
 		}
 	
 		abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
