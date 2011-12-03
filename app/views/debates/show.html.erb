@@ -7,13 +7,11 @@
 <% if Rails.env.development? or Rails.env.test? %>
 	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
 <% else %>
-	<script src="http://debate-app-jug.herokuapp.com/application.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript" charset="utf-8"></script>
 <% end %>
 
-<!-- juggernaut subscribe to debates -->
 <script type="text/javascript" charset="utf-8"> 
   var jug = new Juggernaut;
-
 </script>
 
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
