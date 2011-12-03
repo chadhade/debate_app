@@ -3,12 +3,13 @@
     
 //$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
    $.each(data.argument, function(idx, val) {
-alert(val);    
+alert(idx);    
 $(".debate[data-id="+ <%= debate.id %> +"]").append(val);
 
 });
  if ("<%= current_debater.email %>" == data.current_turn) {
-      	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
+      	
+	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
     }
 	else {
       	$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
