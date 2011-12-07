@@ -1,13 +1,17 @@
 DebateApp::Application.routes.draw do
   
+  get "pages/landing"
+
   match 'debates/:debate_id/leaving' => 'viewings#leaving_page'
   match 'debaters/:debater_id/trackings/leaving' => 'viewings#leaving_page'
 
   devise_for :debaters, :controllers => {:omniauth_callbacks => "debaters/omniauth_callbacks"}
-  
-  namespace :debater do
-	root :to => "debates#index"
-  end
+
+  # rick--why is this here?
+  # namespace :debater do
+  #   root :to => "pages#landing"
+  # end
+  root :to => "pages#landing"
 
   resources :votes, :only => :create
 
