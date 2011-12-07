@@ -5,7 +5,7 @@ DebateApp::Application.routes.draw do
   # 
   # get "topic_positions/destroy"
   # 
-  # get "topic_positions/matches"
+  get "topic_positions/matches"
   
   resources :topic_positions
 
