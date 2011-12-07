@@ -2,16 +2,16 @@ class ViewingsController < ApplicationController
   def leaving_page
     @currentdebater = current_debater
 
-	if !params[:debate_id].nil?
-	  update_viewings(@currentdebater, Debate.find(params[:debate_id]))
-	else
-	  update_viewings(@currentdebater, @currentdebater.tracking_debates)
-	end
+  	if !params[:debate_id].nil?
+  	  update_viewings(@currentdebater, Debate.find(params[:debate_id]))
+  	else
+  	  update_viewings(@currentdebater, @currentdebater.tracking_debates)
+  	end
     
-	respond_to do |format|
-	  format.html
-	  format.js {render :nothing => true}
-	end
+  	respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
   end
   
 ##############################################################################  
