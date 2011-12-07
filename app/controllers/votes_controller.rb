@@ -13,7 +13,5 @@ class VotesController < ApplicationController
 	    format.html
 	    format.js {render :nothing => true}
 	  end	
-   
   end
-  
 end
