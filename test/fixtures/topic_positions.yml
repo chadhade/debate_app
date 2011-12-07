@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  debater_id: 1
+  debate_id: 1
+  topic: MyString
+  position: false
+
+two:
+  debater_id: 1
+  debate_id: 1
+  topic: MyString
+  position: false

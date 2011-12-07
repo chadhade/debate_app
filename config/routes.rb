@@ -1,5 +1,11 @@
 DebateApp::Application.routes.draw do
   
+  get "topic_positions/create"
+
+  get "topic_positions/destroy"
+
+  get "topic_positions/matches"
+
   get "pages/landing"
 
   match 'debates/:debate_id/leaving' => 'viewings#leaving_page'
