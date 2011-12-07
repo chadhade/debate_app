@@ -73,49 +73,48 @@ end
   def show
     # pull all arguments from that debate and pass debate object
 
-	@debate = Debate.find(params[:id])
-	@arguments = @debate.arguments
-	@argument_last = @arguments.last
-	@previoustimeleft = @argument_last.time_left
-	@currentdebater = current_debater
-	@debaters = @debate.debaters
+  	@debate = Debate.find(params[:id])
+  	@arguments = @debate.arguments
+  	@argument_last = @arguments.last
+  	@previoustimeleft = @argument_last.time_left
+  	@currentdebater = current_debater
+  	@debaters = @debate.debaters
 	
-	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
+  	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
 	
-	# for viewings
-	update_viewings(@currentdebater, @debate)
+  	# for viewings
+  	update_viewings(@currentdebater, @debate)
 	
-	# Add footnotes if they exist
-	@arguments.each do |argument|
-		argument.any_footnotes ? argument.content = argument.show_footnote : nil
-	end
+  	# Add footnotes if they exist
+  	@arguments.each do |argument|
+  		argument.any_footnotes ? argument.content = argument.show_footnote : nil
+  	end
 	
-	# Calculate the amount of time left for use in javascript timers
-	# If there is only 1 debater, debater 2 has 0 seconds left
-	if @debate.debaters.size == 1
-		@movingclock = 0
-		@staticclock = @previoustimeleft
-		@movingposition = 2
-	  @currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
-		@debater2 = "No one has joined"
-		return
-    
-	end
+  	# Calculate the amount of time left for use in javascript timers
+  	# If there is only 1 debater, debater 2 has 0 seconds left
+  	if @debate.debaters.size == 1
+  		@movingclock = 0
+  		@staticclock = @previoustimeleft
+  		@movingposition = 2
+  	  @currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
+  		@debater2 = "No one has joined"
+  		return
+  	end
 	
-	# Debater names
-	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
-	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email
+  	# Debater names
+  	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
+  	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email
 	
-	@timeleft = time_left(@debate)
-	#If a debater has run out of time, the other debater can continuously post
-	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
-		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true)
-		@movingclock = @argument_last.time_left - (Time.now - @argument_last.created_at).seconds.to_i
-		@staticclock = 0
-		@movingposition = (@argument_last.debater_id != @debate.creator.id) ? 2 : 1
-		@debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
-		return
-	end
+  	@timeleft = time_left(@debate)
+  	#If a debater has run out of time, the other debater can continuously post
+  	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
+  		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true)
+  		@movingclock = @argument_last.time_left - (Time.now - @argument_last.created_at).seconds.to_i
+  		@staticclock = 0
+  		@movingposition = (@argument_last.debater_id != @debate.creator.id) ? 2 : 1
+  		@debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
+  		return
+  	end
 	
   	#Otherwise, determine the order of debaters
   	@argument_last.Repeat_Turn == true ? @previoustimeleft = 0 : nil
