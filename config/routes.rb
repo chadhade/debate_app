@@ -1,10 +1,13 @@
 DebateApp::Application.routes.draw do
   
-  get "topic_positions/create"
-
-  get "topic_positions/destroy"
-
-  get "topic_positions/matches"
+  # CAN GET RID OF
+  # get "topic_positions/create"
+  # 
+  # get "topic_positions/destroy"
+  # 
+  # get "topic_positions/matches"
+  
+  resources :topic_positions
 
   get "pages/landing"
 
@@ -13,7 +16,7 @@ DebateApp::Application.routes.draw do
 
   devise_for :debaters, :controllers => {:omniauth_callbacks => "debaters/omniauth_callbacks"}
 
-  # rick--why is this here?
+  # RICK--IS THIS NESTED IN A NAMESPACE FOR SOME REASON?
   # namespace :debater do
   #   root :to => "pages#landing"
   # end

@@ -1,0 +1,11 @@
+<%= form_for(TopicPosition.new) do |f| %>
+	<div class = "field">
+		<%= f.label :topic %> <br />
+		<%= f.text_field :topic %><br />
+		<%= f.label :position %> <br/>
+		<%= f.check_box :position %><br />
+	</div>
+	<div class = "action">
+		<%= f.submit "submit" %>
+	</div>	
+<% end %>

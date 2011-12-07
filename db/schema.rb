@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111122070149) do
+ActiveRecord::Schema.define(:version => 20111207230346) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -66,6 +66,15 @@ ActiveRecord::Schema.define(:version => 20111122070149) do
 
   create_table "ips", :force => true do |t|
     t.string   "IP_address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "topic_positions", :force => true do |t|
+    t.integer  "debater_id"
+    t.integer  "debate_id"
+    t.string   "topic"
+    t.boolean  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
