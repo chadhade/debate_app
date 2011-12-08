@@ -9,7 +9,8 @@
   });
 
   jug.subscribe("matches", function(data){
-	alert(data.debate_id);
+	// alert(data.debate_id);
+	$(".debate_link[data-id="+ data.debate_id +"]").hide();
   });
 </script>
 
