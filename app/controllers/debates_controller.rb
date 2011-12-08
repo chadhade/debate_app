@@ -64,6 +64,9 @@ class DebatesController < ApplicationController
 	  Juggernaut.publish("matches", {:debate_id => @debate.id})
 	  reset_invocation_response # allow double rendering
 	  
+	  Juggernaut.publish("judging_index", {:update => {:debate_id => @debate.id}})
+	  reset_invocation_response # allow double rendering
+	  
 	  respond_to do |format|
   	  format.html
   	  format.js {render :nothing => true}
