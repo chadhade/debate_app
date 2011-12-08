@@ -2,7 +2,7 @@ class TopicPositionsController < ApplicationController
   def create
     @topic_position = TopicPosition.new(:debater_id => current_debater, :topic => params[:topic_position][:topic], :position => params[:topic_position][:position])
   	@topic_position.save
-  	redirect_to :action => 'matches'
+  	redirect_to matches_topic_position_path(@topic_position.id)
   end
 
   def destroy

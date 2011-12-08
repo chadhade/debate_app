@@ -4,10 +4,12 @@ DebateApp::Application.routes.draw do
   # get "topic_positions/create"
   # 
   # get "topic_positions/destroy"
-  # 
-  get "topic_positions/matches"
   
-  resources :topic_positions
+  resources :topic_positions do
+    member do 
+      get 'matches'
+    end
+  end
 
   get "pages/landing"
 
