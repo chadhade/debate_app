@@ -146,7 +146,8 @@ end
   def update_viewings_for_viewer_debate(viewer, debate)
   	existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
   	if existing_viewing.empty?
-  	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true)
+  	  creator = viewer.class.name == 'Debater' ? debate.creator?(viewer) : false
+  	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator)
   	else
   	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => true)} # unless existing_viewing.currently_viewing == true
   	end    
