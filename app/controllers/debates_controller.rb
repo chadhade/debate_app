@@ -24,6 +24,10 @@ class DebatesController < ApplicationController
   	@Seconds_Left_1 = (params[:argument][:time_left]).to_i * 60
 		
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
+  	
+    # Juggernaut.publish("judging_index", {:append => {:debate_id => @debate.id}})
+    Juggernaut.publish("judging_index", {:append => ""})
+	  reset_invocation_response # allow double rendering
 	
   	# Check if there are footnotes attached
   	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
@@ -65,7 +69,7 @@ class DebatesController < ApplicationController
 	  Juggernaut.publish("matches", {:debate_id => @debate.id})
 	  reset_invocation_response # allow double rendering
 	  
-	  Juggernaut.publish("judging_index", {:update => {:debate_id => @debate.id}})
+	  Juggernaut.publish("judging_index", {:update => {:debate_id => @debate.id}}) if !@debate.judge
 	  reset_invocation_response # allow double rendering
 	  
 	  respond_to do |format|
