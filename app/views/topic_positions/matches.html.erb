@@ -1,2 +1,20 @@
-<h1>TopicPositions#matches</h1>
-<p>Find me in app/views/topic_positions/matches.html.erb</p>
+<script type="text/javascript"> 
+  var jug = new Juggernaut({     
+     host: 'debate-app-jug.herokuapp.com',
+     port: 80,
+	 secure: false,
+	 transports: ['xhr-polling', 'jsonp-polling']
+  });
+
+  jug.subscribe("matches", function(data){
+	alert("got data");
+  });
+</script>
+
+<h1> List of Matching Debates </h1>
+
+<% @matching_debates.each do |matching_debate| %>
+	<div class="debate_link" data-id="<%= matching_debate.id %>"> 
+		<li> <%= link_to matching_debate.topic, matching_debate %> </li>
+	</div>
+<% end %>
