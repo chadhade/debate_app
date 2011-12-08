@@ -1,4 +1,8 @@
 class Debater < ActiveRecord::Base
+  # associations for matching and judging
+  has_many :judgings
+  has_many :topic_positions
+  
   # associations for viewings
   has_many :viewings, :as => :viewer
   
