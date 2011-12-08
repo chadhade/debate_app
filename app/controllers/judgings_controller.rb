@@ -7,6 +7,7 @@ class JudgingsController < ApplicationController
     @debate = Debate.find(params[:debate_id])
     @judge = Judging.new(:debater_id => current_debater.id, :debate_id => @debate.id)
     @judge.save
+    @debate.update_attributes(:judge => true)
     
     # remove debate from judging index page
     Juggernaut.publish("judging_index", {:remove => {:debate_id => @debate.id}})

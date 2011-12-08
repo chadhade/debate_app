@@ -13,6 +13,7 @@ class ViewingsController < ApplicationController
   	  end
   	  if @currentdebater.judge?(@debate) and !@debate.joined?
   	    Judging.destroy(@debate.judge.id)
+  	    @debate.update_attributes(:judge => false)
   	    Juggernaut.publish("judging_index", {:add => {:debate_id => @debate.id}})
     	  reset_invocation_response # allow double rendering
   	  end
