@@ -13,7 +13,7 @@ class DebatesController < ApplicationController
   
   def create
   	# create a new debate linked to debater
-  	@debate = Debate.new
+  	@debate = Debate.new(:joined => false)
   	@debate.save
   	current_debater.debations.create(:debate_id => @debate.id)
 	
