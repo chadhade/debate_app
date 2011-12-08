@@ -60,6 +60,7 @@ class Debate < ActiveRecord::Base
   end
   
   def self.matching_debates(topic_position)
-    self.find(:all, :limit => 10)
+    @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
+    self.where(:id => @viewing_by_creator, :joined => false)
   end
 end
