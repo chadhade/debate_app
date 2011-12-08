@@ -21,4 +21,10 @@
 			<%= @debater.teammates.count %> teammates
 		</span>
 	</a>
+		<% if current_debater.teammates?(@debater) %>
+			<br /> <br /> 
+			<span id="Is a Teammate?" class = "stat">
+				Teammate.
+			</span>
+		<% end %>
 </div>

@@ -47,7 +47,7 @@ class DebatersController < ApplicationController
   def teammates
     @title = "Teammates"
     @debater = Debater.find(params[:id])
-    @debaters = @debater.teammates.paginate(:page => params[:page])
+    @debaters = Debater.teammates(@debater).paginate(:page => params[:page])
     render 'show_network'
   end
   

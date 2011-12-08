@@ -32,6 +32,7 @@ class Debater < ActiveRecord::Base
   has_many :reverse_blockings, :foreign_key => "blocked_id", :class_name => "Blocking", :dependent => :destroy
   has_many :blockers, :through => :reverse_blockings, :source => :blocker
   
+  scope :teammates, lambda { |debater| team_debaters(debater)}
     
   def creator?(debate)
     debate.creator == self
@@ -63,16 +64,20 @@ class Debater < ActiveRecord::Base
     relationships.find_by_followed_id(followed)
   end
   
+  def is_blocking?(blocked)
+    blockings.find_by_blocked_id(blocked)
+  end
+  
+  def teammates?(followed)
+    !Relationship.get_teammates_id(self).find_by_followed_id(followed.id).nil?
+  end
+  
   def follow!(followed)
     relationships.create!(:followed_id => followed.id)
   end
   
   def unfollow!(followed)
     relationships.find_by_followed_id(followed).destroy
-  end
-  
-  def is_blocking?(blocked)
-    blockings.find_by_blocked_id(blocked)
   end
   
   def block!(followed)
@@ -84,8 +89,15 @@ class Debater < ActiveRecord::Base
   end
 
   def teammates
-    Relationship.get_teammates(self)
+    ids = Relationship.get_teammates_id(self)
   end
+  
+  private
+  
+    def self.team_debaters(debater)
+      team_ids = Relationship.get_teammates_id(debater).map{|v| v.followed_id}
+      where ("id IN (#{team_ids})", {:debater_id => debater})
+    end
   
   
 end
