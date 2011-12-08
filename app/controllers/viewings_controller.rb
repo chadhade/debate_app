@@ -3,7 +3,12 @@ class ViewingsController < ApplicationController
     @currentdebater = current_debater
 
   	if !params[:debate_id].nil?
-  	  update_viewings(@currentdebater, Debate.find(params[:debate_id]))
+  	  @debate = Debate.find(params[:debate_id])
+  	  update_viewings(@currentdebater, @debate)
+  	  if @currentdebater.creator?(@debate) and !@debate.joined?
+  	    Juggernaut.publish("matches", {:debate_id => @debate.id})
+    	  reset_invocation_response # allow double rendering
+  	  end
   	else
   	  update_viewings(@currentdebater, @currentdebater.tracking_debates)
   	end

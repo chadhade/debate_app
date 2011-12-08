@@ -16,6 +16,10 @@ class Debate < ActiveRecord::Base
   # associations for footnotes
   has_many :footnotes, :through => :arguments
   
+  def joined?
+    self.arguments.size >= 2
+  end
+  
   def creator
     @creator = Debater.find_by_id(self.arguments.first.debater_id)
   end  
@@ -56,6 +60,6 @@ class Debate < ActiveRecord::Base
   end
   
   def self.matching_debates(topic_position)
-    self.find(:all, :limit => 4)
+    self.find(:all, :limit => 10)
   end
 end
