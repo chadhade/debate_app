@@ -17,6 +17,6 @@
 
 <% @judging_priority.each do |debate| %>
 	<div class="debate_link" data-id="<%= debate.id %>"> 
-		<li> <%= link_to debate.topic, "/judges/create/#{debate.id}" %> </li>
+		<li> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
 	</div>
 <% end %>
