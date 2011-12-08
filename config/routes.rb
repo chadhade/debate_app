@@ -1,8 +1,10 @@
 DebateApp::Application.routes.draw do
   
-  get "judgings/index"
-
-  get "judgings/create"
+  get "judges/index"
+  # 
+  # get "judges/create"
+  
+  match 'judges/create/:debate_id/' => 'judges#create'
 
   # CAN GET RID OF
   # get "topic_positions/create"
