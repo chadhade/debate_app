@@ -15,15 +15,9 @@
   	$(".debate_link_joined[data-id="+ data.debate_id +"]").remove();
 	$(".debate_link_unjoined[data-id="+ data.debate_id +"]").remove();
 	
-	// if (data.function == "remove") {
-	// 	$(".debate_link_joined[data-id="+ data.object.debate_id +"]").remove();
-	// 	$(".debate_link_unjoined[data-id="+ data.object.debate_id +"]").remove();
-	// }
-	
 	if (data.function == "append_to_joined") {
 		$("#joined_no_judge").append(data.object);
 	}
-	
 	if (data.function == "append_to_unjoined") {
 		$("#unjoined_no_judge").append(data.object);
 	}
@@ -40,7 +34,6 @@
 			$("#joined_no_judge").append(data.object);
 		}
 	}
-	
 	if (data.function == "add_to_unjoined") {
 		var inserted = false;
 		$(".debate_link_unjoined").each(function(index) {
