@@ -5,6 +5,7 @@ DebateApp::Application.routes.draw do
   # get "judgings/create"
   
   match 'judgings/create/:debate_id/' => 'judgings#create'
+  resources :judgings
 
   # CAN GET RID OF
   # get "topic_positions/create"
