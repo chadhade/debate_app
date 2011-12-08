@@ -56,6 +56,6 @@ class Debate < ActiveRecord::Base
   end
   
   def self.matching_debates(topic_position)
-    'hello'
+    # 'hello'
   end
 end

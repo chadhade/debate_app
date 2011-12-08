@@ -13,7 +13,6 @@ class TopicPositionsController < ApplicationController
     if @matching_debates.nil?
       redirect_to new_debate_path
     end
-    
   end
 
 end
