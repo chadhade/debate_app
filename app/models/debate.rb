@@ -67,4 +67,8 @@ class Debate < ActiveRecord::Base
     @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     self.where(:id => @viewing_by_creator, :joined => false)
   end
+  
+  def self.judging_priority(x)
+    self.find(:all, :limit => x)
+  end
 end
