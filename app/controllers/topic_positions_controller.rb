@@ -9,6 +9,11 @@ class TopicPositionsController < ApplicationController
   end
 
   def matches
+    @matching_debates = Debate.matching_debates(@topic_position)
+    if @matching_debates.nil?
+      redirect_to new_debate_path
+    end
+    
   end
 
 end
