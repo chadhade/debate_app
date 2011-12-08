@@ -5,7 +5,7 @@ class JudgingsController < ApplicationController
 
   def create
     @debate = Debate.find(params[:debate_id])
-    @judge = Judging.new(:debater_id => current_debater, :debate_id => @debate.id)
+    @judge = Judging.new(:debater_id => current_debater.id, :debate_id => @debate.id)
     @judge.save
     
     # remove debate from judging index page
