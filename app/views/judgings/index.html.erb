@@ -15,14 +15,18 @@
 
 <h1>Debates for Judging</h1>
 
-<% @judging_priority[:joined_no_judge].each do |debate| %>
-	<div class="debate_link" data-id="<%= debate.id %>"> 
-		<li> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
-	</div>
-<% end %>
+<div class="joined_no_judge">
+	<% @judging_priority[:joined_no_judge].each do |debate| %>
+		<div class="debate_link" data-id="<%= debate.id %>"> 
+			<li> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
+		</div>
+	<% end %>
+</div>
 
-<% @judging_priority[:unjoined_no_judge].each do |debate| %>
-	<div class="debate_link" data-id="<%= debate.id %>"> 
-		<li> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
-	</div>
-<% end %>
+<div class="unjoined_no_judge">
+	<% @judging_priority[:unjoined_no_judge].each do |debate| %>
+		<div class="debate_link" data-id="<%= debate.id %>"> 
+			<li> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
+		</div>
+	<% end %>
+</div>
