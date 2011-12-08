@@ -1,5 +1,9 @@
 DebateApp::Application.routes.draw do
   
+  get "judgings/index"
+
+  get "judgings/create"
+
   # CAN GET RID OF
   # get "topic_positions/create"
   # 
