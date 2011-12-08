@@ -1,3 +1,5 @@
+<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
+
 <script type="text/javascript"> 
   var jug = new Juggernaut({     
      host: 'debate-app-jug.herokuapp.com',
@@ -7,7 +9,7 @@
   });
 
   jug.subscribe("matches", function(data){
-	alert("got data");
+	alert(data.debate_id);
   });
 </script>
 

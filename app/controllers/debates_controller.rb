@@ -58,7 +58,8 @@ class DebatesController < ApplicationController
 	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
 	  reset_invocation_response # allow double rendering
 	  
-	  
+	  Juggernaut.publish("matches", {:debate_id => @debate.id})
+	  reset_invocation_response # allow double rendering
 	  
 	  respond_to do |format|
   	  format.html
