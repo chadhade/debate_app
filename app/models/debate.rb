@@ -27,6 +27,10 @@ class Debate < ActiveRecord::Base
   def creator
     @creator = Debater.find_by_id(self.arguments.first.debater_id)
   end  
+  
+  def judge
+    self.judgings.first
+  end
 
   def creator?(debater)
     self.creator == debater

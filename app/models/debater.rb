@@ -26,6 +26,10 @@ class Debater < ActiveRecord::Base
   #associations for arguments
   has_many :arguments
   
+  def judge?(debate)
+    debate.judge.debater_id == self.id
+  end
+  
   def creator?(debate)
     debate.creator == self
   end
