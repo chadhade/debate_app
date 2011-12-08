@@ -8,6 +8,13 @@ class ViewingsController < ApplicationController
   	  if @currentdebater.creator?(@debate) and !@debate.joined?
   	    Juggernaut.publish("matches", {:debate_id => @debate.id})
     	  reset_invocation_response # allow double rendering
+    	  Juggernaut.publish("judging_index", {:remove => {:debate_id => @debate.id}})
+    	  reset_invocation_response # allow double rendering
+  	  end
+  	  if @currentdebater.judge?(@debate) and !@debate.joined?
+  	    Judging.destroy(@debate.judge.id)
+  	    Juggernaut.publish("judging_index", {:add => {:debate_id => @debate.id}})
+    	  reset_invocation_response # allow double rendering
   	  end
   	else
   	  update_viewings(@currentdebater, @currentdebater.tracking_debates)
@@ -18,6 +25,12 @@ class ViewingsController < ApplicationController
   	  format.js {render :nothing => true}
   	end
   end
+  
+  ############ allow double rendering ###################
+  def reset_invocation_response
+    self.instance_variable_set(:@_response_body, nil)
+  end
+  #######################################################
   
 ##############################################################################  
   def update_viewings(currentdebater, debates)
