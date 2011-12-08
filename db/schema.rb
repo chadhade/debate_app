@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111207230346) do
+ActiveRecord::Schema.define(:version => 20111208021911) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20111207230346) do
     t.boolean  "currently_viewing"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "creator"
   end
 
   create_table "votes", :force => true do |t|
