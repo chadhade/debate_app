@@ -8,13 +8,13 @@ class ViewingsController < ApplicationController
   	  if @currentdebater.creator?(@debate) and !@debate.joined?
   	    Juggernaut.publish("matches", {:debate_id => @debate.id})
     	  reset_invocation_response # allow double rendering
-    	  Juggernaut.publish("judging_index", {:remove => {:debate_id => @debate.id}})
-    	  reset_invocation_response # allow double rendering
+    	  Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
   	  end
   	  if @currentdebater.judge?(@debate) and !@debate.joined?
   	    Judging.destroy(@debate.judge.id)
   	    @debate.update_attributes(:judge => false)
-  	    Juggernaut.publish("judging_index", {:add => {:debate_id => @debate.id}})
+  	    debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
+  	    Juggernaut.publish("judging_index", {:function => "add_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
     	  reset_invocation_response # allow double rendering
   	  end
   	else

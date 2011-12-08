@@ -10,7 +10,7 @@ class JudgingsController < ApplicationController
     @debate.update_attributes(:judge => true)
     
     # remove debate from judging index page
-    Juggernaut.publish("judging_index", {:function => "remove", :object => {:debate_id => @debate.id}})
+    Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
     
     redirect_to @debate
   end
