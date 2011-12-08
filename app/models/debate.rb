@@ -74,5 +74,8 @@ class Debate < ActiveRecord::Base
   
   def self.judging_priority(x)
     self.find(:all, :limit => x)
+    # return {:joined_no_judge =>, :unjoined_no_judge =>}
+    # joined = query from database
+    # add table for whether 
   end
 end
