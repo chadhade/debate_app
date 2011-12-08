@@ -30,7 +30,9 @@ class Debater < ActiveRecord::Base
   has_many :blockings, :foreign_key => "blocker_id", :dependent => :destroy
   has_many :is_blocking, :through => :blockings, :source => :blocked
   has_many :reverse_blockings, :foreign_key => "blocked_id", :class_name => "Blocking", :dependent => :destroy
+  has_many :blockers, :through => :reverse_blockings, :source => :blocker
   
+    
   def creator?(debate)
     debate.creator == self
   end
@@ -80,4 +82,10 @@ class Debater < ActiveRecord::Base
   def unblock!(followed)
     blockings.find_by_blocked_id(followed).destroy
   end
+
+  def teammates
+    Relationship.get_teammates(self)
+  end
+  
+  
 end

@@ -27,21 +27,28 @@ class DebatersController < ApplicationController
     @title = "Following"
     @debater = Debater.find(params[:id])
     @debaters = @debater.following.paginate(:page => params[:page])
-    render 'show_follow'
+    render 'show_network'
   end
   
   def followers
     @title = "Followers"
     @debater = Debater.find(params[:id])
     @debaters = @debater.followers.paginate(:page => params[:page])
-    render 'show_follow'
+    render 'show_network'
   end
   
   def is_blocking
-    @title= "Blocking"
+    @title = "Blocking"
     @debater = Debater.find(params[:id])
     @debaters = @debater.is_blocking.paginate(:page => params[:page])
-    render 'show_follow'
+    render 'show_network'
+  end
+  
+  def teammates
+    @title = "Teammates"
+    @debater = Debater.find(params[:id])
+    @debaters = @debater.teammates.paginate(:page => params[:page])
+    render 'show_network'
   end
   
 end

@@ -2,8 +2,10 @@
 	<tr>
 		<td class = "main">
 			<h1><%= @debater.email %></h1>
-			<%= render 'follow_form' if signed_in? %>
-			<%= render 'block_form' if signed_in? %>
+			<% if signed_in? %>
+				<%= render 'follow_form' %>
+				<%= render 'block_form' %>
+			<% end %>
 		</td>
 		<td class = "sidebar round">
 			<strong>Email</strong> <%= @debater.email %> <br />

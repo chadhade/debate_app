@@ -15,5 +15,10 @@
 		<span id="Blocking" class ="stat">
 			<%= @debater.is_blocking.count %> blocking
 		<span>
+	</a> <br />
+	<a href="<%= teammates_debater_path(@debater) %>">
+		<span id="Teammates" class = "stat">
+			<%= @debater.teammates.count %> teammates
+		</span>
 	</a>
 </div>
