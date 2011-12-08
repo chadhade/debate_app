@@ -9,7 +9,8 @@
   });
 
   jug.subscribe("judging_index", function(data){
-	alert("got data");
+	// alert("got data");
+	$(".debate_link[data-id="+ data.remove.debate_id +"]").hide();
   });
 </script>
 
