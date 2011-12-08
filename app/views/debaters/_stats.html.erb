@@ -1,0 +1,19 @@
+<% @debater ||= current_debater %>
+<div class="stats">
+	<strong>Arguments</strong> <%= @debater.arguments.count %> <br />
+	<a href="<%= following_debater_path(@debater) %>">
+		<span id="following" class ="stat">
+			<%= @debater.following.count %> following
+		</span>
+	</a> <br />
+	<a href="<%= followers_debater_path(@debater) %>">
+		<span id="followers" class="stat">
+			<%= pluralize(@debater.followers.count, "follower") %>
+		</span>
+	</a> <br />
+	<a href="<%= is_blocking_debater_path(@debater) %>">
+		<span id="Blocking" class ="stat">
+			<%= @debater.is_blocking.count %> blocking
+		<span>
+	</a>
+</div>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  blocker_id: 1
+  blocked_id: 1
+  borrowed?: false
+
+two:
+  blocker_id: 1
+  blocked_id: 1
+  borrowed?: false

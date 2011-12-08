@@ -1,0 +1,3 @@
+<%= form_for current_debater.blockings.find_by_blocked_id(@debater), :html => {:method => :delete}, :remote => true do |f| %>
+	<div class="actions"><%= f.submit "Unblock" %></div>
+<% end %>

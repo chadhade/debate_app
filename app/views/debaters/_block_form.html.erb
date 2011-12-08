@@ -1,0 +1,9 @@
+<% unless current_debater == @debater %>
+	<div id = "block_form">
+		<% if current_debater.is_blocking?(@debater) %>
+			<%= render 'unblock' %>
+		<% else %>
+			<%= render 'block' %>
+		<% end %>
+	</div>
+<% end %>

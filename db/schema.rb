@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111122070149) do
+ActiveRecord::Schema.define(:version => 20111208005833) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(:version => 20111122070149) do
     t.boolean  "any_footnotes"
     t.string   "content_foot"
   end
+
+  create_table "blockings", :force => true do |t|
+    t.integer  "blocker_id"
+    t.integer  "blocked_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "blockings", ["blocked_id"], :name => "index_blockings_on_blocked_id"
+  add_index "blockings", ["blocker_id"], :name => "index_blockings_on_blocker_id"
 
   create_table "debaters", :force => true do |t|
     t.string   "name"
@@ -69,6 +79,16 @@ ActiveRecord::Schema.define(:version => 20111122070149) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "relationships", :force => true do |t|
+    t.integer  "follower_id"
+    t.integer  "followed_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
+  add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
 
   create_table "trackings", :force => true do |t|
     t.integer  "debater_id"

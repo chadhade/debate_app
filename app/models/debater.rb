@@ -22,6 +22,15 @@ class Debater < ActiveRecord::Base
   #associations for arguments
   has_many :arguments
   
+  #associations for relationships and blockings
+  has_many :relationships, :foreign_key => "follower_id", :dependent => :destroy
+  has_many :following, :through => :relationships, :source => :followed
+  has_many :reverse_relationships, :foreign_key => "followed_id", :class_name => "Relationship", :dependent => :destroy
+  has_many :followers, :through => :reverse_relationships, :source => :follower
+  has_many :blockings, :foreign_key => "blocker_id", :dependent => :destroy
+  has_many :is_blocking, :through => :blockings, :source => :blocked
+  has_many :reverse_blockings, :foreign_key => "blocked_id", :class_name => "Blocking", :dependent => :destroy
+  
   def creator?(debate)
     debate.creator == self
   end
@@ -46,5 +55,29 @@ class Debater < ActiveRecord::Base
     else # Create a debater with a stub password. 
       Debater.create!(:email => "#{data.screen_name}@twitter.com", :password => Devise.friendly_token[0,20], :validate => false) 
     end
+  end
+
+  def following?(followed)
+    relationships.find_by_followed_id(followed)
+  end
+  
+  def follow!(followed)
+    relationships.create!(:followed_id => followed.id)
+  end
+  
+  def unfollow!(followed)
+    relationships.find_by_followed_id(followed).destroy
+  end
+  
+  def is_blocking?(blocked)
+    blockings.find_by_blocked_id(blocked)
+  end
+  
+  def block!(followed)
+    blockings.create!(:blocked_id => followed.id)
+  end
+  
+  def unblock!(followed)
+    blockings.find_by_blocked_id(followed).destroy
   end
 end

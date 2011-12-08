@@ -1,0 +1,3 @@
+<%= form_for current_debater.relationships.find_by_followed_id(@debater), :html => {:method => :delete}, :remote => true do |f| %>
+	<div class="actions"><%= f.submit "Unfollow" %></div>
+<% end %>

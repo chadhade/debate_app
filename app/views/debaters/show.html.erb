@@ -1,1 +1,14 @@
-This is my user profile page
+<table class = "profile" summary="Profile information">
+	<tr>
+		<td class = "main">
+			<h1><%= @debater.email %></h1>
+			<%= render 'follow_form' if signed_in? %>
+			<%= render 'block_form' if signed_in? %>
+		</td>
+		<td class = "sidebar round">
+			<strong>Email</strong> <%= @debater.email %> <br />
+			<strong>URL</strong> <%= link_to debater_path(@debater), @debater %> <br />
+			<%= render 'stats' %>
+		</td>
+	</tr>
+</table>

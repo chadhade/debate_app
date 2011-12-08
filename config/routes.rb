@@ -5,14 +5,20 @@ DebateApp::Application.routes.draw do
 
   devise_for :debaters, :controllers => {:omniauth_callbacks => "debaters/omniauth_callbacks"}
   
-  namespace :debater do
-	root :to => "debates#index"
-  end
+  #namespace :debater do
+	#root :to => "debates#index"
+  #end
 
   resources :votes, :only => :create
 
   resources :debaters, :only => [:new, :create, :show] do
     resources :trackings, :only => [:index, :new, :create, :destroy]
+  end
+  
+  resources :debaters do
+    member do
+      get :following, :teammates, :followers, :is_blocking, :blockers
+    end
   end
   
   resources :debates do
@@ -22,6 +28,8 @@ DebateApp::Application.routes.draw do
   end
   
   resources :arguments
+  resources :relationships, :only => [:create, :destroy]
+  resources :blockings, :only => [:create, :destroy]
   
   root :to => 'debates#index'
   
