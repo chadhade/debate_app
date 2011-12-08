@@ -1,6 +1,6 @@
 class JudgingsController < ApplicationController
   def index
-    @judging_priority = Debate.judging_priority(10)
+    @judging_priority = Debate.judging_priority()
   end
 
   def create

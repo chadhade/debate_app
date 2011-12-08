@@ -72,10 +72,9 @@ class Debate < ActiveRecord::Base
     self.where(:id => @viewing_by_creator, :joined => false)
   end
   
-  def self.judging_priority(x)
-    self.find(:all, :limit => x)
-    # return {:joined_no_judge =>, :unjoined_no_judge =>}
-    # joined = query from database
-    # add table for whether 
+  def self.judging_priority()
+    @joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
+    @unjoined_no_judge = self.where(:joined => false, :judge => false).order("created_at ASC")
+    {:joined_no_judge => @joined_no_judge, :unjoined_no_judge => @unjoined_no_judge}
   end
 end

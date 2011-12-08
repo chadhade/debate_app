@@ -34,9 +34,7 @@ class DebatesController < ApplicationController
     @debate = Debate.find(params[:id])
   	# link debater to debate
   	current_debater.debations.create(:debate_id => params[:id])
-  	
-  	# update joined column of debates
-  	@debate.update_attributes(:joined => true)
+
 	
   	#The amount of time Debater 2 has left.  
   	@Seconds_Left_2 = (params[:argument][:time_left]).to_i * 60
@@ -44,6 +42,9 @@ class DebatesController < ApplicationController
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
+	
+  	# update joined columns of debates
+  	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at)	
 	
   	# Check if there are footnotes attached
   	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
