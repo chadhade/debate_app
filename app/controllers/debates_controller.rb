@@ -34,6 +34,9 @@ class DebatesController < ApplicationController
     @debate = Debate.find(params[:id])
   	# link debater to debate
   	current_debater.debations.create(:debate_id => params[:id])
+  	
+  	# update joined column of debates
+  	@debate.update_attributes(:joined => true)
 	
   	#The amount of time Debater 2 has left.  
   	@Seconds_Left_2 = (params[:argument][:time_left]).to_i * 60
