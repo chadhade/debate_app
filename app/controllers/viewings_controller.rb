@@ -57,7 +57,7 @@ class ViewingsController < ApplicationController
   	  creator = viewer.class.name == 'Debater' ? debate.creator?(viewer) : false
   	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator)
   	else
-  	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => true)} # unless existing_viewing.currently_viewing == true
+  	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => false)} # unless existing_viewing.currently_viewing == true
   	end    
   end
 ##############################################################################  

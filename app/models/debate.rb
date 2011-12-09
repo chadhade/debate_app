@@ -28,7 +28,7 @@ class Debate < ActiveRecord::Base
     @creator = Debater.find_by_id(self.arguments.first.debater_id)
   end  
   
-  def judge
+  def judge_entry
     self.judgings.first
   end
 
@@ -79,10 +79,12 @@ class Debate < ActiveRecord::Base
         # set match to true if even one word matches and append debate to array
         match = false
         current_words.each do |current_word|
-          words.each do |word|
-            # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
-            if current_word == word
-              match = true
+          if current_word.length >= 4
+            words.each do |word|
+              # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
+              if current_word == word
+                match = true
+              end
             end
           end
         end

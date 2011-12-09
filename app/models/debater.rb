@@ -27,7 +27,11 @@ class Debater < ActiveRecord::Base
   has_many :arguments
   
   def judge?(debate)
-    debate.judge.debater_id == self.id
+    if debate.judge_entry.nil?
+      false
+    else
+      debate.judge_entry.debater_id == self.id
+    end
   end
   
   def creator?(debate)

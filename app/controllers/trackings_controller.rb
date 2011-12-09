@@ -9,33 +9,34 @@ class TrackingsController < ApplicationController
 	update_viewings(@currentdebater, @tracking_debates)	
   end
   
-##############################################################################  
-  def update_viewings(currentdebater, debates)
-	# set viewer variable
-	if currentdebater.nil?
-	  ip = Ip.new(:IP_address => request.remote_ip)
-      ip = Ip.find_by_IP_address(request.remote_ip) unless ip.save
-      viewer = ip
-	else
-	  viewer = currentdebater
-	end
-	# go through debates and update viewings for viewer and debate
-	if debates.kind_of?(Array)
-	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate)}
-	else
-	  update_viewings_for_viewer_debate(viewer, debates)
-	end	
-  end
-  
-  def update_viewings_for_viewer_debate(viewer, debate)
-	existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
-	if existing_viewing.empty?
-	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true)
-	else
-	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => true)} # unless existing_viewing.currently_viewing == true
-	end    
-  end
-##############################################################################  
+  ##############################################################################  
+    def update_viewings(currentdebater, debates)
+  	# set viewer variable
+  	if currentdebater.nil?
+  	  ip = Ip.new(:IP_address => request.remote_ip)
+        ip = Ip.find_by_IP_address(request.remote_ip) unless ip.save
+        viewer = ip
+  	else
+  	  viewer = currentdebater
+  	end
+  	# go through debates and update viewings for viewer and debate
+  	if debates.kind_of?(Array)
+  	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate)}
+  	else
+  	  update_viewings_for_viewer_debate(viewer, debates)
+  	end	
+    end
+
+    def update_viewings_for_viewer_debate(viewer, debate)
+    	existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
+    	if existing_viewing.empty?
+    	  creator = viewer.class.name == 'Debater' ? debate.creator?(viewer) : false
+    	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator)
+    	else
+    	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => true)} # unless existing_viewing.currently_viewing == true
+    	end    
+    end
+  ##############################################################################
 
   def new
   end
