@@ -1,0 +1,37 @@
+<% @debater ||= current_debater %>
+<div class="stats">
+	<strong>Arguments</strong> <%= @debater.arguments.count %> <br />
+	<a href="<%= following_debater_path(@debater) %>">
+		<span id="following" class ="stat">
+			<%= @debater.following.count %> following
+		</span>
+	</a> <br />
+	<a href="<%= followers_debater_path(@debater) %>">
+		<span id="followers" class="stat">
+			<%= pluralize(@debater.followers.count, "follower") %>
+		</span>
+	</a> <br />
+	
+	<a href="<%= teammates_debater_path(@debater) %>">
+		<span id="Teammates" class = "stat">
+			<%= @debater.teammates.count %> teammates
+		</span>
+	</a>
+		<% if current_debater.teammates?(@debater) %>
+			<div class="teammates">
+				<br /> <br /> 
+				<span id="Is a Teammate?" class = "stat">
+					Teammate.
+				</span> <br />
+				Blocking
+				<a href="<%= is_blocking_debater_path(@debater) %>">
+					<span id="Blocking">
+						<%= @debater.is_blocking.count %>
+					<span>
+				</a><br />
+				<span id="Borrow_Blocks" class = "stat-mini">
+					<%= render 'block_borrow' %>
+				</span>
+			</div>
+		<% end %>
+</div>

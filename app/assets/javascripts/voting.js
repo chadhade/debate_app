@@ -1,6 +1,7 @@
 function upVote(argument_id, vote, debate_id) {
   // incrementVotesFor(argument_id);
-  	$.ajax({
+  	alert("hi");
+$.ajax({
       type: "POST",
       url: "/votes.js?argument_id=" + argument_id + "&vote=" + vote + "&debate_id=" + debate_id
     });

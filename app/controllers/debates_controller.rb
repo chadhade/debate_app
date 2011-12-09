@@ -56,8 +56,12 @@ class DebatesController < ApplicationController
   	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at)	
 	
   	# Check if there are footnotes attached
-  	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
-	  
+	  if @argument.has_footnote?
+		  @argument.save_footnote(@debate)
+		  @argument.content = @argument.show_footnote
+		  @argfoot = true
+		end
+		
 	  #Info for timers
 	  @movingclock = @debate.arguments.first.time_left.to_i * 60
 	  
@@ -66,9 +70,10 @@ class DebatesController < ApplicationController
 	  reset_invocation_response # allow double rendering
 	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
-
+    @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = ""
+	  
 	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
-	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
+	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, :footnotes => footnotes_render})
 	  reset_invocation_response # allow double rendering
 	  
 	  Juggernaut.publish("matches", {:debate_id => @debate.id})

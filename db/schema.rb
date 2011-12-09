@@ -10,7 +10,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20111208190455) do
+=======
+ActiveRecord::Schema.define(:version => 20111208181356) do
+>>>>>>> origin/master
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -23,6 +27,17 @@ ActiveRecord::Schema.define(:version => 20111208190455) do
     t.boolean  "any_footnotes"
     t.string   "content_foot"
   end
+
+  create_table "blockings", :force => true do |t|
+    t.integer  "blocker_id"
+    t.integer  "blocked_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_borrowed"
+  end
+
+  add_index "blockings", ["blocked_id"], :name => "index_blockings_on_blocked_id"
+  add_index "blockings", ["blocker_id"], :name => "index_blockings_on_blocker_id"
 
   create_table "debaters", :force => true do |t|
     t.string   "name"
@@ -73,13 +88,20 @@ ActiveRecord::Schema.define(:version => 20111208190455) do
     t.datetime "updated_at"
   end
 
+<<<<<<< HEAD
   create_table "judgings", :force => true do |t|
     t.integer  "debater_id"
     t.integer  "debate_id"
+=======
+  create_table "relationships", :force => true do |t|
+    t.integer  "follower_id"
+    t.integer  "followed_id"
+>>>>>>> origin/master
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+<<<<<<< HEAD
   create_table "topic_positions", :force => true do |t|
     t.integer  "debater_id"
     t.integer  "debate_id"
@@ -88,6 +110,10 @@ ActiveRecord::Schema.define(:version => 20111208190455) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+=======
+  add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
+  add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
+>>>>>>> origin/master
 
   create_table "trackings", :force => true do |t|
     t.integer  "debater_id"

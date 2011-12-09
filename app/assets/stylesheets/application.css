@@ -7,9 +7,17 @@
 */
 
 body {
+	width: 80%;
 	text-align: center;
 	margin:20px 0px; padding:0px;
 	text-align:center;
-	
+	background-image: url(landscape.jpg);
 	}
+
+.round {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 }
+
+

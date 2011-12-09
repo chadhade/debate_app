@@ -1,0 +1,4 @@
+<%= form_for current_debater.blockings.build, :url => '/blockings/borrow', :remote => true do |b| %>
+	<div><%= b.hidden_field :blocker_id, :value => params[:id] %></div>
+	<div class="actions"><%= b.submit "Borrow Blocks" %></div>
+<% end %>

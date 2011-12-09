@@ -1,0 +1,20 @@
+<table class= "profile" summary="Information about following/followrs">
+	<tr>
+		<td class="main">
+			<h1><%= @title %></h1>
+			<% unless @debaters.empty? %>
+				<ul class="debaters">
+					<%= render @debaters %>
+				</ul>		
+				<%= will_paginate @debaters %>
+			<% end %>
+		</td>
+	
+		<td class="sidebar round">
+			<strong>Email</strong> <%= @debater.email %> <br />
+			<strong>URL</strong> <%= link_to debater_path(@debater), @debater %> <br />
+			<%= render 'stats' %>
+			<br />
+		</td>
+	</tr>
+</table>

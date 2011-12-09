@@ -26,6 +26,18 @@ class Debater < ActiveRecord::Base
   #associations for arguments
   has_many :arguments
   
+  #associations for relationships and blockings
+  has_many :relationships, :foreign_key => "follower_id", :dependent => :destroy
+  has_many :following, :through => :relationships, :source => :followed
+  has_many :reverse_relationships, :foreign_key => "followed_id", :class_name => "Relationship", :dependent => :destroy
+  has_many :followers, :through => :reverse_relationships, :source => :follower
+  has_many :blockings, :foreign_key => "blocker_id", :dependent => :destroy
+  has_many :is_blocking, :through => :blockings, :source => :blocked
+  has_many :reverse_blockings, :foreign_key => "blocked_id", :class_name => "Blocking", :dependent => :destroy
+  has_many :blockers, :through => :reverse_blockings, :source => :blocker
+  
+  scope :teammates, lambda { |debater| team_debaters(debater)}
+  
   def judge?(debate)
     if debate.judge_entry.nil?
       false
@@ -33,7 +45,7 @@ class Debater < ActiveRecord::Base
       debate.judge_entry.debater_id == self.id
     end
   end
-  
+    
   def creator?(debate)
     debate.creator == self
   end
@@ -59,4 +71,45 @@ class Debater < ActiveRecord::Base
       Debater.create!(:email => "#{data.screen_name}@twitter.com", :password => Devise.friendly_token[0,20], :validate => false) 
     end
   end
+
+  def following?(followed)
+    relationships.find_by_followed_id(followed)
+  end
+  
+  def is_blocking?(blocked)
+    blockings.find_by_blocked_id(blocked)
+  end
+  
+  def teammates?(followed)
+    !Relationship.get_teammates_id(self).find_by_followed_id(followed.id).nil?
+  end
+  
+  def follow!(followed)
+    relationships.create!(:followed_id => followed.id)
+  end
+  
+  def unfollow!(followed)
+    relationships.find_by_followed_id(followed).destroy
+  end
+  
+  def block!(followed)
+    blockings.create!(:blocked_id => followed.id)
+  end
+  
+  def unblock!(followed)
+    blockings.find_by_blocked_id(followed).destroy
+  end
+
+  def teammates
+    ids = Relationship.get_teammates_id(self)
+  end
+  
+  private
+  
+    def self.team_debaters(debater)
+      team_ids = Relationship.get_teammates_id(debater).map{|v| v.followed_id}
+      where("id IN (#{team_ids})", {:debater_id => debater})
+    end
+  
+  
 end

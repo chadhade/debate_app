@@ -2,4 +2,33 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+table.profile {
+	width: 100%;
+	margin-bottom: 0;
+}
 
+.main {
+	width: 70%;
+	padding: 1em;
+}
+
+.sidebar {
+	float:right;
+	width: 40%;
+	margin-top: 1em;
+	padding: .5em;
+	vertical-align: top;
+	background: #ffc;
+}
+
+ul.debaters {
+	margin-top: 1em;
+}
+
+.debaters li {
+	list-style: none;
+}
+
+.stat-mini {
+	font-size: 75%;
+}

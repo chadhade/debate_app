@@ -20,7 +20,11 @@ class ArgumentsController < ApplicationController
   		end
         
   		# Check if there are footnotes attached
-  		@current_argument.has_footnote? ? @current_argument.save_footnote(@debate) : nil
+  		if @current_argument.has_footnote?
+  		  @current_argument.save_footnote(@debate)
+  		  @current_argument.content = @current_argument.show_footnote
+  		  @argfoot = true
+  		end
   		
   		# publish new argument
   		argument_render = render(@current_argument, :layout => false)
@@ -29,8 +33,9 @@ class ArgumentsController < ApplicationController
   	  reset_invocation_response # allow double rendering
   		
   		@debate = Debate.find_by_id(@debate_id)
+  		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = ""
   		
-  		Juggernaut.publish("debate_" + @debate_id, {:timers => showtimers(@debate, @current_argument, @lastargument), :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email})
+  		Juggernaut.publish("debate_" + @debate_id, {:timers => showtimers(@debate, @current_argument, @lastargument), :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, :footnotes => footnotes_render})
   	  reset_invocation_response # allow double rendering
   	end
 

@@ -37,6 +37,12 @@ DebateApp::Application.routes.draw do
     resources :trackings, :only => [:index, :new, :create, :destroy]
   end
   
+  resources :debaters do
+    member do
+      get :following, :teammates, :followers, :is_blocking, :blockers
+    end
+  end
+  
   resources :debates do
     member do
 	  post 'join'
@@ -44,6 +50,12 @@ DebateApp::Application.routes.draw do
   end
   
   resources :arguments
+  resources :relationships, :only => [:create, :destroy]
+  resources :blockings, :only => [:create, :destroy] do
+    collection do
+      post 'borrow'
+    end
+  end
   
   root :to => 'debates#index'
   

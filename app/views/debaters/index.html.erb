@@ -1,0 +1,10 @@
+<h1>Debaters</h1>
+
+<ul class="debaters">
+	<% @debaters.each do |debater| %>
+		<li>
+			<%= link_to debater.email, debater %>
+		</li>
+	<% end %>
+</ul>
+<%= will_paginate %>
