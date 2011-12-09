@@ -67,9 +67,30 @@ class Debate < ActiveRecord::Base
     end    
   end
   
-  def self.matching_debates(topic_position)
-    # @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
-    # self.where(:id => @viewing_by_creator, :joined => false)
+  def self.matching_debates(current_tp)
+    @matching_debates = Array.new
+    @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
+    self.where(:id => @viewing_by_creator, :joined => false).each do |debate|
+      topic = debate.topic_positions.first.topic
+      position = debate.topic_positions.first.position
+      words = topic.split(/\s/)
+      current_words = current_tp.topic.split(/\s/)
+      if current_tp.position != position
+        # set match to true if even one word matches and append debate to array
+        match = false
+        current_words.each do |current_word|
+          words.each do |word|
+            # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
+            if current_word == word
+              match = true
+            end
+          end
+        end
+        @matching_debates << debate if match == true
+      end
+    end
+    # return the array
+    @matching_debates
   end
   
   def self.judging_priority()

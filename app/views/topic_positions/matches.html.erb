@@ -1,4 +1,4 @@
-<% if @matching_debates.nil? %>
+<% if @matching_debates.empty? %>
 	<br> <br>
 	No Matches Found, Create a Debate!!
 	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
@@ -35,6 +35,7 @@
 	<% @matching_debates.each do |matching_debate| %>
 		<div class="debate_link" data-id="<%= matching_debate.id %>"> 
 			<li> <%= link_to matching_debate.topic, matching_debate %> </li>
+			<%= "#{matching_debate.topic_positions.first.position}: #{matching_debate.topic_positions.first.topic}"%>
 		</div>
 	<% end %>
 <% end %>
