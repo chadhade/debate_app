@@ -17,10 +17,10 @@ class ApplicationController < ActionController::Base
 	end
   
 	def after_sign_in_path_for(resource)
-		stored_location_for(resource) || debates_path
+		stored_location_for(resource) || "/pages/landing"
 	end
  
 	def after_sign_up_path_for(resource)
-		stored_location_for(resource) || debates_path
+		stored_location_for(resource) || "/pages/landing"
 	end
  end
