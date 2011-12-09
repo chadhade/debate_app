@@ -6,4 +6,5 @@ class Blocking < ActiveRecord::Base
   
   validates :blocker_id, :presence => true
   validates :blocked_id, :presence => true
+
 end

@@ -29,7 +29,11 @@ DebateApp::Application.routes.draw do
   
   resources :arguments
   resources :relationships, :only => [:create, :destroy]
-  resources :blockings, :only => [:create, :destroy]
+  resources :blockings, :only => [:create, :destroy] do
+    collection do
+      post 'borrow'
+    end
+  end
   
   root :to => 'debates#index'
   

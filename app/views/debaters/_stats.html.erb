@@ -11,20 +11,27 @@
 			<%= pluralize(@debater.followers.count, "follower") %>
 		</span>
 	</a> <br />
-	<a href="<%= is_blocking_debater_path(@debater) %>">
-		<span id="Blocking" class ="stat">
-			<%= @debater.is_blocking.count %> blocking
-		<span>
-	</a> <br />
+	
 	<a href="<%= teammates_debater_path(@debater) %>">
 		<span id="Teammates" class = "stat">
 			<%= @debater.teammates.count %> teammates
 		</span>
 	</a>
 		<% if current_debater.teammates?(@debater) %>
-			<br /> <br /> 
-			<span id="Is a Teammate?" class = "stat">
-				Teammate.
-			</span>
+			<div class="teammates">
+				<br /> <br /> 
+				<span id="Is a Teammate?" class = "stat">
+					Teammate.
+				</span> <br />
+				Blocking
+				<a href="<%= is_blocking_debater_path(@debater) %>">
+					<span id="Blocking">
+						<%= @debater.is_blocking.count %>
+					<span>
+				</a><br />
+				<span id="Borrow_Blocks" class = "stat-mini">
+					<%= render 'block_borrow' %>
+				</span>
+			</div>
 		<% end %>
 </div>
