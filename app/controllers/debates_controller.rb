@@ -16,6 +16,10 @@ class DebatesController < ApplicationController
   	@debate = Debate.new(:joined => false, :judge => false)
   	@debate.save
   	current_debater.debations.create(:debate_id => @debate.id)
+  	
+  	# update topic position with the debate id
+  	@topic_position = TopicPosition.find(params[:argument][:topic_position_id])
+  	@topic_position.update_attributes(:debate_id => @debate.id)
 	
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
