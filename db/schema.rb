@@ -90,15 +90,6 @@ ActiveRecord::Schema.define(:version => 20111208190455) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-  
-  create_table "topic_positions", :force => true do |t|
-    t.integer  "debater_id"
-    t.integer  "debate_id"
-    t.string   "topic"
-    t.boolean  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "relationships", :force => true do |t|
     t.integer  "follower_id"
@@ -109,6 +100,15 @@ ActiveRecord::Schema.define(:version => 20111208190455) do
 
   add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
   add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
+
+  create_table "topic_positions", :force => true do |t|
+    t.integer  "debater_id"
+    t.integer  "debate_id"
+    t.string   "topic"
+    t.boolean  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "trackings", :force => true do |t|
     t.integer  "debater_id"
