@@ -1,6 +1,7 @@
 <% if @matching_debates.empty? %>
 	<br> <br>
-	No Matches Found, Create a Debate!!
+	No Matching Debates Found <br> 
+	Write Your First Argument Below and Create a New Debate!! <br><br>
 	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
 		<div class = "field">
 			<%= f.label :content %> <br />
@@ -37,5 +38,20 @@
 			<li> <%= link_to matching_debate.topic, matching_debate %> </li>
 			<%= "#{matching_debate.topic_positions.first.position}: #{matching_debate.topic_positions.first.topic}"%>
 		</div>
+	<% end %>
+	<br> <br>
+	Don't Find a Matching Debate? <br> 
+	Write Your First Argument Below and Create a New Debate!! <br><br>
+	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
+		<div class = "field">
+			<%= f.label :content %> <br />
+			<%= f.text_field :content %> <br />
+			<%= f.label "Allotted Minutes" %> <br/>
+			<%= f.number_field :time_left, :value => 10 %>
+		</div>
+		<%= f.hidden_field :topic_position_id, :value => @topic_position.id %>
+		<div class = "action">
+			<%= f.submit "argument" %>
+		</div>	
 	<% end %>
 <% end %>
