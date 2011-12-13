@@ -17,10 +17,10 @@
 			<%= link_to 'Debaters', debaters_path %> |
 	    <% else %>
 	        <%= link_to 'Register', new_debater_registration_path %> | <%= link_to 'Sign in', new_debater_session_path %> |
-	    	<%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %>
-			<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %>
+	    	<%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
+			<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %> |
 		<% end %>
-		<%= link_to 'List of debates', debates_path %>
+		<%= link_to 'List of debates', debates_path %> |
 		<%= link_to 'Judgings index', judgings_path %> |
 		<%= link_to 'Landing page', '/pages/landing' %>
 	</nav>
