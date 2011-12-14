@@ -30,9 +30,11 @@
 		<% @currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email %>
 		<% @currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email unless @debaters.size == 1 %>
 		<% @debater2.nil? ? @debater2 = "None" : nil %>
-		<%= render :partial => "/debates/timers", :locals => {:debate_id =>  debate.id, :debater1 => @debater1, :debater2 => @debater2} %>
+		<%= render :partial => "/debates/timers", :locals => {:debate_id =>  debate.id, :debater1 => @debater1, :debater2 => @debater2,
+																:judge => debate.judge} %>
 		<%= render :partial => "/debates/viewing", :locals => {:debate_id =>  debate.id, :debater1 => @debater1, :debater2 => @debater2} %>
 	</div>
+	<script>voteable[<%= debate.id %>] = <%= (@debaters.size > 1) && (debate.judge) %>; </script>
 	<%= render :partial => "/debates/debate", :locals => {:debate => debate} %>
 	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => debate, :currentdebater => @currentdebater} %>
 	

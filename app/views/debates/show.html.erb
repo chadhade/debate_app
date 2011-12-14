@@ -18,9 +18,13 @@
 	     port: 80,
 		 secure: false,
 		 transports: ['xhr-polling', 'jsonp-polling']
-	  });
+	  });	
 	</script>
 <% end %>
+
+<script>
+	voteable[<%= @debate.id %>] = <%= @voteable == true %>;
+</script>
 
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
 
@@ -53,7 +57,7 @@
 // This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
 		
-		setTimeout("javascript_countdown.startTimers()", 1000); 
+		setTimeout("javascript_countdown.startTimers()", 500); 
 	});
 </script>
 
