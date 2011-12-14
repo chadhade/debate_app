@@ -19,6 +19,7 @@
 	margin: 5px 20px;
 	border:1px solid #ccc;
 	float: left;
+	background-color: #fff;
 	
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -45,19 +46,20 @@
 }
 
 .containerpanel {
-	height: 23px;
+	height: 20px;
 	background-color: #cceecc;
 	color: #000033;
 	margin-left: 4px;
 	margin-right: 4px;
 	margin-top: -1px;
+	padding-top: 4px;
 	moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	border-radius: 6px;
 }
 
 .container-background {
-	
+
 }
 
 .argument {
@@ -80,9 +82,9 @@
 }
 
 .timer {
-	width: 40%;
+	width: 38%;
 	font-size: 16px;
-	padding: 3px;
+	padding: 0 3px;
 	float:left;
 	padding-right: 10px;
 	border-right:2px solid #FFF;
@@ -95,6 +97,10 @@
 	
 }
 
+.judge {
+	float: left;
+	border-right: 2px solid #FFF;
+}
 
 .viewing_count {
 	text-align: center;
