@@ -49,4 +49,9 @@ javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingp
 	});
 </script>
 
+<!-- for testing -->
+<% @judging = Judging.first %>
+<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
+<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
+
 

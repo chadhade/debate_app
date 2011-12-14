@@ -15,6 +15,15 @@ class JudgingsController < ApplicationController
     redirect_to @debate
   end
   
+  def submission
+    @judging = Judging.find(params[:id])
+    @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments])
+    respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
+  end
+  
   ############ allow double rendering ###################
   def reset_invocation_response
     self.instance_variable_set(:@_response_body, nil)
