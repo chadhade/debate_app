@@ -70,8 +70,10 @@ var javascript_countdown = function () {
 					}
 					else {
 						
-						if (keep_counting[debateclock] == 0) {
+						//if (keep_counting[debateclock] == 0) {
+						if (moving_clock[debateclock] <= 0) {
 							no_time_left(output_element_id[debateclock]);
+							
 						}
 						
 					}
