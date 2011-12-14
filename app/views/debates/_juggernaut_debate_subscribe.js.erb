@@ -45,15 +45,16 @@
 			var img = document.createElement("IMG");
 				img.src = "/assets/gavel.png";
 			var element = document.getElementById("judge-<%= debate.id %>");
-				element.innerHTML = ""
+				element.innerHTML = "";
 				element.appendChild(img);
-			//document.getElementById("judge-<%= debate.id %>").innerHTML="<img src=/images/gavel.png></img"
+				voteable[<%= debate.id %>] = true;
 		}
 		else {
 			if (data.joiner != "")	{
 				$(".timertitle").html(data.joiner);
 				moving_clock[data.timers.debateid] = data.timers.staticclock;
 				document.getElementById("timer2-<%= debate.id %>").innerHTML=format_output(data.timers.staticclock);
+				voteable[<%= debate.id %>] = false;
 			}
 		}
 		
