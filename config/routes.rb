@@ -5,7 +5,11 @@ DebateApp::Application.routes.draw do
   # get "judgings/create"
   
   match 'judgings/create/:debate_id/' => 'judgings#create'
-  resources :judgings
+  resources :judgings do
+    member do
+  	  post 'submission'
+  	end
+	end
 
   # CAN GET RID OF
   # get "topic_positions/create"
@@ -45,8 +49,8 @@ DebateApp::Application.routes.draw do
   
   resources :debates do
     member do
-	  post 'join'
-	end
+  	  post 'join'
+  	end
   end
   
   resources :arguments

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111208190455) do
+ActiveRecord::Schema.define(:version => 20111214230119) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20111208190455) do
     t.boolean  "joined"
     t.boolean  "judge"
     t.datetime "joined_at"
+    t.datetime "end_time"
   end
 
   create_table "debations", :force => true do |t|
@@ -89,6 +90,8 @@ ActiveRecord::Schema.define(:version => 20111208190455) do
     t.integer  "debate_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "winner_id"
+    t.text     "comments"
   end
 
   create_table "relationships", :force => true do |t|
