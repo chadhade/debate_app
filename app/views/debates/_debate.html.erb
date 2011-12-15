@@ -1,5 +1,13 @@
 <div class="debate-background">
 <div class="debate" data-id="<%= debate.id %>">  
-    <%= render debate.arguments %>
+    <% if current_debater.id != debate.judge_id %>
+		<% debate.arguments.each do |argument| %>
+			<%= render :partial => "/arguments/argument", :locals => {:argument => argument, :judgeid => debate.judge_id} %>
+		<% end %>
+	<% else %>
+		<% debate.arguments.each do |argument| %>
+			<%= render :partial => "/arguments/argument_judge", :locals => {:argument => argument, :judgeid => debate.judge_id} %>
+		<% end %>
+	<% end %>
 </div>
 </div>

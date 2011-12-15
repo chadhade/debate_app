@@ -55,8 +55,7 @@ class ArgumentsController < ApplicationController
   	@arguments_params = parse_arguments_params_string(params[:arguments_params])
   	@arguments = new_arguments(@arguments_params)
 	
-  	# @debate = Debate.find_by_id(params[:debate_id])
-  	# @debateid = @debate.id
+  	#@debate = Debate.find_by_id(params[:debate_id])
   	@currentdebater = current_debater
 	
   	@voting_params = parse_voting_params_string(params[:voting_params])
