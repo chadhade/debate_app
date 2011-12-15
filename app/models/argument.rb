@@ -15,11 +15,11 @@ class Argument < ActiveRecord::Base
   end
   
   def votes_for_except(debater_id)
-    Vote.where ("voteable_id = ? AND voteable_type = ? AND vote = ? AND voter_id != ?", self.id, self.class.name, true, debater_id).count
+    Vote.where("voteable_id = ? AND voteable_type = ? AND vote = ? AND voter_id != ?", self.id, self.class.name, true, debater_id).count
   end
   
   def votes_against_except(debater_id)
-    Vote.where ("voteable_id = ? AND voteable_type = ? AND vote = ? AND voter_id != ?", self.id, self.class.name, false, debater_id).count
+    Vote.where("voteable_id = ? AND voteable_type = ? AND vote = ? AND voter_id != ?", self.id, self.class.name, false, debater_id).count
   end
   
   def has_footnote?

@@ -66,7 +66,7 @@ class DebatesController < ApplicationController
 	  @movingclock = @debate.arguments.first.time_left.to_i * 60
 	  
 	  # publish to appropriate channels
-	  argument_render = render(@argument, :layout => false)
+	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
