@@ -64,6 +64,9 @@
 </div>
 <script>
 	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
+	<% if @debaters.count <= 1 %>
+		abort_timer[<%= @debate.id %>] = 1;
+	<% end %>
 </script>
 
 <script>

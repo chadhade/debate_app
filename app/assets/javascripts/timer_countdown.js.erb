@@ -9,19 +9,25 @@ var javascript_countdown = function () {
 	
 	timeout_var = new Array();
 	
-	var no_time_left_message = 'No Time';
+	var no_time_left_message = '00:00:00';
 	
 	function countdown(singleclock_count) {
-		
-			if(moving_clock[singleclock_count] < 2) {
-				keep_counting[singleclock_count] = 0;
-				if (static_clock[singleclock_count] <= 1) {
-					debateEnd();
-				}
+
+		if(moving_clock[singleclock_count] < 1) {
+			keep_counting[singleclock_count] = 0;
+			if(static_clock[singleclock_count] > 0) {
+				position = Math.abs(moving_position[singleclock_count] - 3);
+				javascript_countdown.init(static_clock[singleclock_count], 0, position, singleclock_count);
 			}
-				
-			moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
+		}
 		
+		if((moving_clock[singleclock_count] == 1) && (static_clock[singleclock_count] < 1)) {
+			keep_counting[singleclock_count] = 0;
+			debateEnd();
+		}
+	
+		moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
+
 	}
  
 	function add_leading_zero(n) {
