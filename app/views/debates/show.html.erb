@@ -31,13 +31,15 @@
 <script>
 	function debateEnd() {
 		var debate_id = $(".debate").attr("data-id");
-		$.ajax({
-	      type: "POST",
-	      url: "/debates/" + debate_id + "/end.js",
-	      success: function(){
-	        // alert("debate ended");
-	      }
-	    });
+		<% if @debate.creator == @currentdebater %>
+			$.ajax({
+		      type: "POST",
+		      url: "/debates/" + debate_id + "/end.js",
+		      success: function(){
+		        // alert("debate ended");
+		      }
+			});
+		<% end %>
 	}
 </script>
 
