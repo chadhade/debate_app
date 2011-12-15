@@ -210,4 +210,18 @@ end
   	end
   end
 
+  def end_single
+    @debate = Debate.find(params[:id])
+    post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
+	  reset_invocation_response # allow double rendering
+	  
+	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:post_box => post_box_render, :current_turn => @debate.current_turn.email}})
+    reset_invocation_response # allow double rendering
+    
+    respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
+  end
+  
 end

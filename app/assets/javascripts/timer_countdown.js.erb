@@ -16,8 +16,9 @@ var javascript_countdown = function () {
 		if(moving_clock[singleclock_count] < 1) {
 			keep_counting[singleclock_count] = 0;
 			if(static_clock[singleclock_count] > 0) {
-				position = Math.abs(moving_position[singleclock_count] - 3);
-				javascript_countdown.init(static_clock[singleclock_count], 0, position, singleclock_count);
+				//abort_timer[singleclock_count] = 1;
+				endSingle();
+				return;
 			}
 		}
 		
@@ -25,6 +26,8 @@ var javascript_countdown = function () {
 			keep_counting[singleclock_count] = 0;
 			debateEnd();
 		}
+		
+		
 	
 		moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
 
