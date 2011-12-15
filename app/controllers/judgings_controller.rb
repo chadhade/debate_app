@@ -32,11 +32,12 @@ class JudgingsController < ApplicationController
     @judging = Judging.find(params[:id])
     @debate = @judging.debate
     
-    if Time.now < @debate.end_time + 20
+    if Time.now < @debate.end_time + 20.seconds
       @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments])
-      # judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging})
-      # Juggernaut.publish("debate_" + @debate.id, {:judging_results => judging_results})
-      # reset_invocation_response # allow double rendering
+      judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging})
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:judging_results => judging_results})
+      reset_invocation_response # allow double rendering
+      Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
     end
     
     respond_to do |format|

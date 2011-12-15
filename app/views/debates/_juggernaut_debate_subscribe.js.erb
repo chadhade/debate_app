@@ -39,6 +39,10 @@
 			}
 		}
 		
+		if (data.judging_results != "") {
+			$('body').append(data.judging_results);
+		}
+		
 		if (data.judge == true) {
 			abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
 			javascript_countdown.init(data.timers.movingclock, data.timers.staticclock, data.timers.movingposition, data.timers.debateid);
@@ -71,7 +75,12 @@
 	
 	<% if current_debater == debate.judger %>
 		jug.subscribe("debate_" + <%= debate.id %> + "_judge", function(data){
-			$('body').append(data.judging_form);
+			if (data.judging_form =="clear_form") {
+				$('.judging_form').remove();
+			}
+			else {
+				$('body').append(data.judging_form);
+			}
 		});
 	<% end %>
 	

@@ -35,7 +35,7 @@
 	      type: "POST",
 	      url: "/debates/" + debate_id + "/end.js",
 	      success: function(){
-	        alert("debate ended");
+	        // alert("debate ended");
 	      }
 	    });
 	}
@@ -76,11 +76,11 @@
 
 <% @judging = @debate.judge_entry %>
 <% if !@judging.nil? and @currentdebater == @debate.judger %>
-	<% if !@debate.end_time.nil? and Time.now < @debate.end_time + 20 %>
+	<% if !@debate.end_time.nil? and Time.now < @debate.end_time + 20.seconds %>
 		<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
 	<% end %>
-	<% if !@judging.winner_id.nil? %>
-		<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
-	<% end %>
+<% end %>
+<% if !@judging.nil? and !@judging.winner_id.nil? %>
+	<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
 <% end %>
 
