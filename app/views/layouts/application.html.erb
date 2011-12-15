@@ -16,7 +16,7 @@
 	        <%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %> |
 			<%= link_to 'Debaters', debaters_path %> |
 	    <% else %>
-	        <%= link_to 'Sign in', new_debater_session_path %> | <%= link_to 'Register', new_debater_registration_path %> |
+	        <%= link_to 'Sign in', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %> |
 	    	<!-- <%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
 			<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %> | -->
 		<% end %>

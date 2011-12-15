@@ -5,7 +5,7 @@
 	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
 		<div class = "field">
 			<%= f.label :content %> <br />
-			<%= f.text_field :content %> <br />
+			<%= f.text_area :content, :size => "36x5" %> <br />
 			<%= f.label "Allotted Minutes" %> <br/>
 			<%= f.number_field :time_left, :value => 10 %>
 		</div>
@@ -45,7 +45,7 @@
 	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
 		<div class = "field">
 			<%= f.label :content %> <br />
-			<%= f.text_field :content %> <br />
+			<%= f.text_area :content, :size => "36x5" %> <br />
 			<%= f.label "Allotted Minutes" %> <br/>
 			<%= f.number_field :time_left, :value => 10 %>
 		</div>
