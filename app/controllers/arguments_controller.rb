@@ -27,7 +27,8 @@ class ArgumentsController < ApplicationController
   		end
   		
   		# publish new argument
-  		argument_render = render(@current_argument, :layout => false)
+  		#argument_render = render(@current_argument, :layout => false)
+  	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id}, :layout => false)
   	  reset_invocation_response # allow double rendering
   	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
   	  reset_invocation_response # allow double rendering
@@ -35,7 +36,7 @@ class ArgumentsController < ApplicationController
   		@debate = Debate.find_by_id(@debate_id)
   		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = ""
   		
-  		Juggernaut.publish("debate_" + @debate_id, {:timers => showtimers(@debate, @current_argument, @lastargument), :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, :footnotes => footnotes_render})
+  		Juggernaut.publish("debate_" + @debate_id, {:timers => showtimers(@debate, @current_argument, @lastargument), :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, :footnotes => footnotes_render, :judge => @debate.judge})
   	  reset_invocation_response # allow double rendering
   	end
 
@@ -55,8 +56,7 @@ class ArgumentsController < ApplicationController
   	@arguments_params = parse_arguments_params_string(params[:arguments_params])
   	@arguments = new_arguments(@arguments_params)
 	
-  	# @debate = Debate.find_by_id(params[:debate_id])
-  	# @debateid = @debate.id
+  	#@debate = Debate.find_by_id(params[:debate_id])
   	@currentdebater = current_debater
 	
   	@voting_params = parse_voting_params_string(params[:voting_params])

@@ -1,6 +1,5 @@
 <% unless @arguments.empty? %>
   <% @arguments.each do |arguments| %>
-  
     abort_timer[<%= arguments[:id] %>] = 1;  // Stop the previous timer from running
       
     $(".debate[data-id="+<%= arguments[:id] %>+"]").append("<%=raw escape_javascript(render arguments[:new_arguments]) %>");

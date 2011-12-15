@@ -4,15 +4,26 @@
 <%= javascript_include_tag "timer_countdown" %>
 <%= javascript_include_tag "tracking" %>
 
-<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
+<% if Rails.env.development? or Rails.env.test? %>
+	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+	  var jug = new Juggernaut;
+	</script>
+	
+<% else %>	
+	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	  var jug = new Juggernaut({     
+	     host: 'debate-app-jug.herokuapp.com',
+	     port: 80,
+		 secure: false,
+		 transports: ['xhr-polling', 'jsonp-polling']
+	  });	
+	</script>
+<% end %>
 
-<script type="text/javascript">
-  var jug = new Juggernaut({     
-     host: 'debate-app-jug.herokuapp.com',
-     port: 80,
-	 secure: false,
-	 transports: ['xhr-polling', 'jsonp-polling']
-  });
+<script>
+	voteable[<%= @debate.id %>] = <%= @voteable == true %>;
 </script>
 
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
@@ -37,7 +48,8 @@
   <div class="debatecontainer">
 
 	<div class="containerpanel">
-		<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1 => @debater1, :debater2 => @debater2} %>
+		<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1 => @debater1, :debater2 => @debater2,
+			:judge => @debate.judge} %>
 		<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 	</div>
 
@@ -51,14 +63,14 @@
 
 </div>
 <script>
-javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
+	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
 </script>
 
 <script>
 // This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
 		
-		setTimeout("javascript_countdown.startTimers()", 1000); 
+		setTimeout("javascript_countdown.startTimers()", 500); 
 	});
 </script>
 

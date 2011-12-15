@@ -1,43 +1,63 @@
 <script type="text/javascript"> 
   	jug.subscribe("debate_" + <%= debate.id %>, function(data){  
-		<% if Rails.env.development? or Rails.env.test? %>
-			$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
-		<% else %>
-			$.each(data.argument, function(idx, val) {   
-				$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
-			});
-		<% end %>
- 
-		if ("<%= current_debater.email %>" == data.current_turn) {
-		    <% if Rails.env.development? or Rails.env.test? %>      	
-				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
+		if (data.argument != "") {
+			<% if Rails.env.development? or Rails.env.test? %>
+				$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
 			<% else %>
-				$.each(data.post_box, function(idx, val) {    
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-				});
-			<% end %>	
-		}
-		else {
-		    <% if Rails.env.development? or Rails.env.test? %> 
-			    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-			<% else %>
-				$.each(data.post_box, function(idx, val) { 
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-				});
-			<% end %>	
-		}
-		
-		if (data.footnotes != "") {
-			<% if Rails.env.development? or Rails.env.test? %> 
-				document.getElementById("footnotes").innerHTML=data.footnotes;
-			<% else %>
-				$.each(data.footnotes, function(idx, val) { 
-					document.getElementById("footnotes").innerHTML=val;
+				$.each(data.argument, function(idx, val) {   
+					$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
 				});
 			<% end %>
+ 
+			if ("<%= current_debater.email %>" == data.current_turn) {
+			    <% if Rails.env.development? or Rails.env.test? %>      	
+					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
+				<% else %>
+					$.each(data.post_box, function(idx, val) {    
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+					});
+				<% end %>	
+			}
+			else {
+			    <% if Rails.env.development? or Rails.env.test? %> 
+				    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+				<% else %>
+					$.each(data.post_box, function(idx, val) { 
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+					});
+				<% end %>	
+			}
+		
+			if (data.footnotes != "") {
+				<% if Rails.env.development? or Rails.env.test? %> 
+					document.getElementById("footnotes").innerHTML=data.footnotes;
+				<% else %>
+					$.each(data.footnotes, function(idx, val) { 
+						document.getElementById("footnotes").innerHTML=val;
+					});
+				<% end %>
+			}
 		}
-		abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
-		javascript_countdown.init(data.timers.movingclock, data.timers.staticclock, data.timers.movingposition, data.timers.debateid);
+		
+		if (data.judge == true) {
+			abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
+			javascript_countdown.init(data.timers.movingclock, data.timers.staticclock, data.timers.movingposition, data.timers.debateid);
+			var img = document.createElement("IMG");
+				img.src = "/assets/gavel.png";
+			var element = document.getElementById("judge-<%= debate.id %>");
+				element.innerHTML = "";
+				element.appendChild(img);
+				voteable[<%= debate.id %>] = true;
+		}
+		else {
+			if (data.joiner != "")	{
+				$(".timertitle").html(data.joiner);
+				moving_clock[data.timers.debateid] = data.timers.staticclock;
+				document.getElementById("timer2-<%= debate.id %>").innerHTML=format_output(data.timers.staticclock);
+				voteable[<%= debate.id %>] = false;
+			}
+		}
+		
 	});
 	
 	jug.subscribe("debate_" + <%= debate.id %> + "_votes", function(votes){
@@ -55,4 +75,24 @@
 		});
 	<% end %>
 	
+	function format_output(timetoformat) {
+		var hours, minutes, seconds;
+		seconds = timetoformat % 60;
+		minutes = Math.floor(timetoformat / 60) % 60;
+		hours = Math.floor(timetoformat / 3600);
+ 
+		seconds = add_leading_zero( seconds );
+		minutes = add_leading_zero( minutes );
+		hours = add_leading_zero( hours );
+ 
+		return hours + ':' + minutes + ':' + seconds;
+	}
+	
+	function add_leading_zero(n) {
+		if(n.toString().length < 2) {
+			return '0' + n;
+		} else {
+			return n;
+		}
+	}
 </script>

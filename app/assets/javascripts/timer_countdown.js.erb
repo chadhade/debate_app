@@ -73,8 +73,10 @@ var javascript_countdown = function () {
 					}
 					else {
 						
-						if (keep_counting[debateclock] == 0) {
+						//if (keep_counting[debateclock] == 0) {
+						if (moving_clock[debateclock] <= 0) {
 							no_time_left(output_element_id[debateclock]);
+							
 						}
 						
 					}
@@ -99,14 +101,21 @@ var javascript_countdown = function () {
 			if (moving_position[debateid] == 1) {
 				output_element_id[debateid] = "timer1-" + debateid;
 				static_element_id[debateid] = "timer2-" + debateid;
-			} else {
+			} 
+			if (moving_position[debateid] == 2) {
 				output_element_id[debateid] = "timer2-" + debateid;
 				static_element_id[debateid] = "timer1-" + debateid;
 			}
+			if (moving_position[debateid] == 0) {
+				clock1 = "timer1-" + debateid;
+				clock2 = "timer2-" + debateid;
+				document.getElementById(clock1).innerHTML = format_output(t);
+				document.getElementById(clock2).innerHTML = format_output(t2);
+				return;
+			}
 				
 			document.getElementById(static_element_id[debateid]).innerHTML = format_output(static_clock[debateid]);
-			
-			
+		
 		}
 	};
 }();

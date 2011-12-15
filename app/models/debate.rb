@@ -35,7 +35,11 @@ class Debate < ActiveRecord::Base
   def judge_entry
     self.judgings.first
   end
-
+  
+  def judge_id
+    self.judge? == true ? self.judgings.first.debater_id : nil
+  end
+  
   def creator?(debater)
     self.creator == debater
   end

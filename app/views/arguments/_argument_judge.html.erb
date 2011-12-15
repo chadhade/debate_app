@@ -1,4 +1,2 @@
 <div class="argument" onclick="upVote(<%= argument.id.to_s %>, true, <%= argument.debate_id %>)" data-time="<%= argument.created_at.to_i %>"> <%= argument.content %> </div>
-
-<%= render :partial => "/votes/vote", :locals => {:argument => argument, :judgeid => judgeid} %>
-
+<%= render :partial => "/votes/vote_judge", :locals => {:argument => argument, :judgeid => judgeid} %>

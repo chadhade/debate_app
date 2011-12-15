@@ -29,7 +29,7 @@ class DebatesController < ApplicationController
 		
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
   	
-    # Juggernaut.publish("judging_index", {:append => {:debate_id => @debate.id}})
+    Juggernaut.publish("judging_index", {:append => {:debate_id => @debate.id}})
     debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
     Juggernaut.publish("judging_index", {:function => "append_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
 	  reset_invocation_response # allow double rendering
@@ -66,14 +66,15 @@ class DebatesController < ApplicationController
 	  @movingclock = @debate.arguments.first.time_left.to_i * 60
 	  
 	  # publish to appropriate channels
-	  argument_render = render(@argument, :layout => false)
+	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = ""
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
-	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, :footnotes => footnotes_render})
+	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, 
+	                                              :footnotes => footnotes_render, :judge => @debate.judge, :joiner => current_debater.email})
 	  reset_invocation_response # allow double rendering
 	  
 	  Juggernaut.publish("matches", {:debate_id => @debate.id})
@@ -128,6 +129,16 @@ end
   	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
   	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email
 	
+	  # If no judge has joined, timers do not move
+	  if @debate.judge == false
+	    @movingclock = @arguments.first.time_left
+	    @staticclock = @previoustimeleft
+	    @movingposition = 0
+	    return
+	  end
+	  
+	  @voteable = true #At this point, we know there are 2 debaters and a judge.  Hence, votes are allowed.
+	  
   	@timeleft = time_left(@debate)
   	#If a debater has run out of time, the other debater can continuously post
   	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
