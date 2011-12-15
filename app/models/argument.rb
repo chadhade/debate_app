@@ -6,12 +6,20 @@ class Argument < ActiveRecord::Base
   
   has_many :footnotes, :dependent => :destroy
   
-  def votes_for_by(debater)
-    Vote.where(:voteable_id => self.id, :voteable_type => self.class.name, :vote => true, :voter_type => debater.class.name, :voter_id => debater.id).count
+  def votes_for_by(debater_id)
+    Vote.where(:voteable_id => self.id, :voteable_type => self.class.name, :vote => true, :voter_type => debater.class.name, :voter_id => debater_id).count
   end
   
-  def votes_against_by(debater)
-    Vote.where(:voteable_id => self.id, :voteable_type => self.class.name, :vote => false, :voter_type => debater.class.name, :voter_id => debater.id).count
+  def votes_against_by(debater_id)
+    Vote.where(:voteable_id => self.id, :voteable_type => self.class.name, :vote => false, :voter_type => debater.class.name, :voter_id => debater_id).count
+  end
+  
+  def votes_for_except(debater_id)
+    Vote.where ("voteable_id = ? AND voteable_type = ? AND vote = ? AND voter_id != ?", self.id, self.class.name, true, debater_id).count
+  end
+  
+  def votes_against_except(debater_id)
+    Vote.where ("voteable_id = ? AND voteable_type = ? AND vote = ? AND voter_id != ?", self.id, self.class.name, false, debater_id).count
   end
   
   def has_footnote?

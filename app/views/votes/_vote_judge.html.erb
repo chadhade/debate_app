@@ -6,18 +6,15 @@
   <div class = "votes_for" data-argument_id = "<%= argument.id %>">
     <div class="votes_for_count" onclick="upVote(<%= argument.id.to_s %>, true, <%= argument.debate_id %>)" 
 				data-argument_id="<%= argument.id %>" data-time="<%= last_vote_for.created_at.to_i unless last_vote_for.nil? %>">
-    	
-		<%= argument.votes_for_except(judgeid) %>
-
+      	
+		<%= argument.votes_for_by(judgeid) %>
     </div>
   </div>
  
   <div class = "votes_against" data-argument_id = "<%= argument.id %>"> 
     <div class="votes_against_count" onclick="downVote(<%= argument.id.to_s %>, false, <%= argument.debate_id %>)" 
 				data-argument_id="<%= argument.id %>" data-time="<%= last_vote_against.created_at.to_i unless last_vote_against.nil? %>">
-
-      	<%= argument.votes_against_except(judgeid) %>
-
+      	<%= argument.votes_against_by(judgeid) %>
     </div>
   </div>
   
