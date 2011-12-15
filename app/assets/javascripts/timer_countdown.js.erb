@@ -15,6 +15,9 @@ var javascript_countdown = function () {
 		
 			if(moving_clock[singleclock_count] < 2) {
 				keep_counting[singleclock_count] = 0;
+				if (static_clock[singleclock_count] <= 1) {
+					debateEnd();
+				}
 			}
 				
 			moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;

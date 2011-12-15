@@ -17,7 +17,15 @@ class JudgingsController < ApplicationController
   
   def submission
     @judging = Judging.find(params[:id])
-    @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments])
+    @debate = @judging.debate
+    
+    if Time.now < @debate.end_time + 20
+      @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments])
+      # judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging})
+      # Juggernaut.publish("debate_" + @debate.id, {:judging_results => judging_results})
+      # reset_invocation_response # allow double rendering
+    end
+    
     respond_to do |format|
   	  format.html
   	  format.js {render :nothing => true}

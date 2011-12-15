@@ -184,5 +184,19 @@ end
   	  format.js
   	end
   end
+  
+  def end
+    @debate = Debate.find(params[:id])
+    @debate.update_attributes(:end_time => Time.now)
+    
+    judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judgings.first}, :layout => false)
+    Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => judging_form})
+    reset_invocation_response # allow double rendering
+    
+    respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
+  end
 
 end

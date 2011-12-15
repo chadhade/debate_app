@@ -24,6 +24,10 @@ class Debate < ActiveRecord::Base
     self.arguments.size >= 2
   end
   
+  def judger
+    self.judge_entry.debater if !self.judge_entry.nil?
+  end
+  
   def creator
     @creator = Debater.find_by_id(self.arguments.first.debater_id)
   end  

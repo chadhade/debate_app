@@ -17,6 +17,19 @@
 
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
 
+<script>
+	function debateEnd() {
+		var debate_id = $(".debate").attr("data-id");
+		$.ajax({
+	      type: "POST",
+	      url: "/debates/" + debate_id + "/end.js",
+	      success: function(){
+	        alert("debate ended");
+	      }
+	    });
+	}
+</script>
+
 <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div>
 
 
@@ -49,9 +62,13 @@ javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingp
 	});
 </script>
 
-<!-- for testing -->
-<% @judging = Judging.first %>
-<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
-<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
-
+<% @judging = @debate.judge_entry %>
+<% if !@judging.nil? and @currentdebater == @debate.judger %>
+	<% if !@debate.end_time.nil? and Time.now < @debate.end_time + 20 %>
+		<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
+	<% end %>
+	<% if !@judging.winner_id.nil? %>
+		<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
+	<% end %>
+<% end %>
 

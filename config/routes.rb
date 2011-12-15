@@ -51,6 +51,7 @@ DebateApp::Application.routes.draw do
   resources :debates do
     member do
   	  post 'join'
+  	  post 'end'
   	end
   end
   

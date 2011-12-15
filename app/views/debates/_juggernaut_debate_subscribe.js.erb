@@ -48,4 +48,11 @@
 			incrementVotesAgainst(votes.id);
 		}
 	});
+	
+	<% if current_debater == debate.judger %>
+		jug.subscribe("debate_" + <%= debate.id %> + "_judge", function(data){
+			$('body').append(data.judging_form);
+		});
+	<% end %>
+	
 </script>
