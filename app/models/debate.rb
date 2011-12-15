@@ -32,6 +32,10 @@ class Debate < ActiveRecord::Base
     @creator = Debater.find_by_id(self.arguments.first.debater_id)
   end  
   
+  def joiner
+    @joiner = Debater.find_by_id(self.arguments.second.debater_id)
+  end
+  
   def judge_entry
     self.judgings.first
   end
