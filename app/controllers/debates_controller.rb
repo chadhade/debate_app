@@ -213,6 +213,8 @@ end
     judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judgings.first}, :layout => false)
     Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => judging_form})
     reset_invocation_response # allow double rendering
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "erase_postbox", :obj => {:post_box => "", :current_turn => @debate.current_turn.email}})
+    reset_invocation_response # allow double rendering
     
     respond_to do |format|
   	  format.html
@@ -220,4 +222,20 @@ end
   	end
   end
 
+  def end_single
+    @debate = Debate.find(params[:id])
+    @debate.arguments.last.update_attributes(:Repeat_Turn => true)
+    
+    post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
+	  reset_invocation_response # allow double rendering
+	  
+	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:post_box => post_box_render, :current_turn => @debate.current_turn.email}})
+    reset_invocation_response # allow double rendering
+    
+    respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
+  end
+  
 end

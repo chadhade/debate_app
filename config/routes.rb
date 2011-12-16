@@ -52,6 +52,7 @@ DebateApp::Application.routes.draw do
     member do
   	  post 'join'
   	  post 'end'
+  	  post 'end_single'
   	end
   end
   

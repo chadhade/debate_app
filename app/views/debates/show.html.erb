@@ -41,6 +41,19 @@
 			});
 		<% end %>
 	}
+	
+	function endSingle() {
+		var debate_id = $(".debate").attr("data-id");
+		<% if @debate.creator == @currentdebater %>
+			$.ajax({
+		      type: "POST",
+		      url: "/debates/" + debate_id + "/end_single.js",
+			  success: function(){
+		        // alert("debate ended");
+		      }
+		    });
+		<% end %>
+	}
 </script>
 
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->
