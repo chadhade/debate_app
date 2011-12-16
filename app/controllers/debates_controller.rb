@@ -142,6 +142,7 @@ end
 	  @voteable = true #At this point, we know there are 2 debaters and a judge.  Hence, votes are allowed.
 	  
   	@timeleft = time_left(@debate)
+  	
   	#If a debater has run out of time, the other debater can continuously post
   	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
   		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true, :content => "test")
