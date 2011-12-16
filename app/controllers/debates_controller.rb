@@ -63,7 +63,7 @@ class DebatesController < ApplicationController
 		end
 		
 	  #Info for timers
-	  @movingclock = @debate.arguments.first.time_left.to_i * 60
+	  @movingclock = @debate.arguments.first(:order => "created_at ASC").time_left.to_i * 60
 	  
 	  # publish to appropriate channels
 	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id}, :layout => false)
@@ -99,7 +99,7 @@ end
     # pull all arguments from that debate and pass debate object
   	@debate = Debate.find(params[:id])
   	@arguments = @debate.arguments
-  	@argument_last = @arguments.last
+  	@argument_last = @arguments.last(:order => "created_at ASC")
   	@previoustimeleft = @argument_last.time_left
   	@currentdebater = current_debater
   	@debaters = @debate.debaters
@@ -131,7 +131,7 @@ end
 	
 	  # If no judge has joined, timers do not move
 	  if @debate.judge == false
-	    @movingclock = @arguments.first.time_left
+	    @movingclock = @arguments.first(:order => "created_at ASC").time_left
 	    @staticclock = @previoustimeleft
 	    @movingposition = 0
 	    return
@@ -210,7 +210,7 @@ end
     @debate = Debate.find(params[:id])
     @debate.update_attributes(:end_time => Time.now)
     
-    judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judgings.first}, :layout => false)
+    judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
     Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => judging_form})
     reset_invocation_response # allow double rendering
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "erase_postbox", :obj => {:post_box => "", :current_turn => @debate.current_turn.email}})
@@ -224,7 +224,7 @@ end
 
   def end_single
     @debate = Debate.find(params[:id])
-    @debate.arguments.last.update_attributes(:Repeat_Turn => true)
+    @debate.arguments.last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
     
     post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering

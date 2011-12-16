@@ -36,7 +36,7 @@
 	<% @matching_debates.each do |matching_debate| %>
 		<div class="debate_link" data-id="<%= matching_debate.id %>"> 
 			<li> <%= link_to matching_debate.topic, matching_debate %> </li>
-			<%= "#{matching_debate.topic_positions.first.position}: #{matching_debate.topic_positions.first.topic}"%>
+			<%= "#{matching_debate.topic_positions.first(:order => "created_at ASC").position}: #{matching_debate.topic_positions.first(:order => "created_at ASC").topic}"%>
 		</div>
 	<% end %>
 	<br> <br>

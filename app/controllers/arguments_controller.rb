@@ -3,7 +3,7 @@ class ArgumentsController < ApplicationController
   def create    	
   	@debate_id = params[:argument][:debate_id]
     @debate = Debate.find_by_id(@debate_id)
-  	@lastargument = @debate.arguments.last	
+  	@lastargument = @debate.arguments.last(:order => "created_at ASC")
   	@timeleft = time_left(@debate)
 	
   	# Check if argument is made on time

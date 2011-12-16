@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   
 
 	def time_left(thisdebate)
-		@arglast = thisdebate.arguments.last
+		@arglast = thisdebate.arguments.last(:order => "created_at ASC")
 		
 		if @arglast.Repeat_Turn == true
 			@timeleft = @arglast.time_left - (Time.now - @arglast.created_at).seconds.to_i

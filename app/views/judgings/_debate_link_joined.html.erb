@@ -1,4 +1,4 @@
 <div class="debate_link_joined" data-id="<%= debate.id %>", data-joined-at="<%= debate.joined_at.to_i %>"> 
 	<li> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
-	<%= "#{debate.topic_positions.first.position}: #{debate.topic_positions.first.topic}"%>
+	<%= "#{debate.topic_positions.first(:order => "created_at ASC").position}: #{debate.topic_positions.first(:order => "created_at ASC").topic}"%>
 </div>

@@ -1,5 +1,5 @@
-<% last_vote_for = argument.votes.where("vote = ?", "t").last %>
-<% last_vote_against = argument.votes.where("vote = ?", "f").last %>
+<% last_vote_for = argument.votes.where("vote = ?", "t").last(:order => "created_at ASC") %>
+<% last_vote_against = argument.votes.where("vote = ?", "f").last(:order => "created_at ASC") %>
 
 <div class = "votes" data-argument_id = "<%= argument.id %>">
 

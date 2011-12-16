@@ -12,7 +12,7 @@ class JudgingsController < ApplicationController
     # If judge joined after both debaters joined, add time spent waiting for judge back to debater 1's time bank
     # Then start timers
     if @debate.arguments.count == 2
-      @firstarg = @debate.arguments.first
+      @firstarg = @debate.arguments.first(:order => "created_at ASC")
       @secondarg = @debate.arguments[1]
       @oldtime = @firstarg.time_left
       @timeleft = @oldtime + (@judge.created_at - @secondarg.created_at).seconds.to_i
