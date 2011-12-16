@@ -119,7 +119,11 @@
 				$('.judging_form').remove();
 			}
 			else {
-				$('body').append(data.judging_form);
+				<% if Rails.env.development? or Rails.env.test? %>      	
+					$('body').append(data.judging_form);
+				<% else %>
+					$('body').append(data.judging_form[0]);
+				<% end %>
 			}
 		});
 	<% end %>
