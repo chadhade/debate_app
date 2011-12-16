@@ -41,7 +41,8 @@
 		
 		if (data.func == "end_single") {
 			if ("<%= current_debater.email %>" == data.obj.current_turn) {
-			    <% if Rails.env.development? or Rails.env.test? %>      	
+			 
+				<% if Rails.env.development? or Rails.env.test? %>      	
 					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
 				<% else %>
 					$.each(data.obj.post_box, function(idx, val) {    
@@ -49,10 +50,21 @@
 					});
 				<% end %>			
 			}
+	
 			position = Math.abs(moving_position[<%= debate.id %>] - 3);
-			alert(static_clock[<%=debate.id %>]);
-			alert(position);
 			javascript_countdown.init(static_clock[<%= debate.id %>], 0, position, <%= debate.id %>);
+		}
+		
+		if (data.func == "erase_postbox") {
+			if ("<%= current_debater.email %>" == data.obj.current_turn) {
+				<% if Rails.env.development? or Rails.env.test? %>      	
+					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+				<% else %>
+					$.each(data.obj.post_box, function(idx, val) {    
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+					});
+				<% end %>			
+			}
 		}
 		
 		if (data.judging_results != "") {

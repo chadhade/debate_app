@@ -13,22 +13,20 @@ var javascript_countdown = function () {
 	
 	function countdown(singleclock_count) {
 
-		if(moving_clock[singleclock_count] < 1) {
-			keep_counting[singleclock_count] = 0;
-			if(static_clock[singleclock_count] > 0) {
-				//abort_timer[singleclock_count] = 1;
-				endSingle();
-				return;
-			}
-		}
-		
-		if((moving_clock[singleclock_count] == 1) && (static_clock[singleclock_count] < 1)) {
-			keep_counting[singleclock_count] = 0;
+		if((moving_clock[singleclock_count] == 1) && (static_clock[singleclock_count] <= 1)) {
+			abort_timer[singleclock_count] = 1;
 			debateEnd();
 		}
 		
+		if(moving_clock[singleclock_count] < 1) {
+			keep_counting[singleclock_count] = 0;
+			if(static_clock[singleclock_count] > 0) {
+				abort_timer[singleclock_count] = 1;
+				endSingle();
+				//return;
+			}
+		}
 		
-	
 		moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
 
 	}
