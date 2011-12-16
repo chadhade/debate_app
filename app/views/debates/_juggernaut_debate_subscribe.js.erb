@@ -37,6 +37,10 @@
 					});
 				<% end %>
 			}
+			if (data.obj.judge == true) {
+				abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
+				javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
+			}
 		}
 		
 		if (data.func == "erase_postbox") {
@@ -49,11 +53,14 @@
 					});
 				<% end %>			
 			}
-			alert("hi");
+			else {
+				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+			}
+	
 		}
 		
 		if (data.func == "judge_results") {
-			$('body').append(data.judging_results);
+			$('body').append(data.obj.judging_results);
 		}
 		
 		if (data.func == "judge_arrived") {
@@ -84,6 +91,9 @@
 						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
 					});
 				<% end %>			
+			}
+			else {
+				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
 			}
 			position = Math.abs(moving_position[<%= debate.id %>] - 3);
 			javascript_countdown.init(static_clock[<%= debate.id %>], 0, position, <%= debate.id %>);

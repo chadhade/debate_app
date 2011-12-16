@@ -13,7 +13,7 @@ var javascript_countdown = function () {
 	
 	function countdown(singleclock_count) {
 
-		if((moving_clock[singleclock_count] == 1) && (static_clock[singleclock_count] <= 1)) {
+		if((moving_clock[singleclock_count] == 1) && (static_clock[singleclock_count] < 1)) {
 			abort_timer[singleclock_count] = 1;
 			debateEnd();
 		}

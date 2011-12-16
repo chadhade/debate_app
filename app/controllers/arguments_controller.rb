@@ -7,7 +7,7 @@ class ArgumentsController < ApplicationController
   	@timeleft = time_left(@debate)
 	
   	# Check if argument is made on time
-    # if (@timeleft > 0) && (@debate.current_turn?(current_debater))
+    if (@timeleft > 0) && (@debate.current_turn?(current_debater) && @debate.judge)
   		# create a new argument and redirect to debate page 
   		# -- Make the repeat_turn column true if it was true before
   		if @lastargument.Repeat_Turn == true 
@@ -40,7 +40,7 @@ class ArgumentsController < ApplicationController
   		                  :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, 
   		                  :footnotes => footnotes_render, :judge => @debate.judge}})
   	  reset_invocation_response # allow double rendering
-    # end
+    end
 
   	respond_to do |format|
   	  format.html
