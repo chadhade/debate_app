@@ -36,34 +36,60 @@
 		<% if Rails.env.development? or Rails.env.test? %>      	
 			$("#unjoined_no_judge").append(data.object);
 		<% else %>
-			$("#joined_no_judge").append(data.object[0]);
+			$("#unjoined_no_judge").append(data.object[0]);
 		<% end %>
 		
 	}
 	
 	if (data.function == "add_to_joined") {
-		var inserted = false;
-		$(".debate_link_joined").each(function(index) {
-			if ($(data.object).attr('data-joined-at') < $(this).attr('data-joined-at') & inserted == false) {
-				$(this).before(data.object);
-				inserted = true;
-			}
-		});
-		if (inserted == false) {
-			$("#joined_no_judge").append(data.object);
-		}
+		<% if Rails.env.development? or Rails.env.test? %>   
+			var inserted = false;
+			$(".debate_link_joined").each(function(index) {
+				if ($(data.object).attr('data-joined-at') < $(this).attr('data-joined-at') & inserted == false) {
+					$(this).before(data.object);
+					inserted = true;
+				}
+			});
+			if (inserted == false) {
+				$("#joined_no_judge").append(data.object);
+			}		   	
+		<% else %>
+			var inserted = false;
+			$(".debate_link_joined").each(function(index) {
+				if ($(data.object[0]).attr('data-joined-at') < $(this).attr('data-joined-at') & inserted == false) {
+					$(this).before(data.object[0]);
+					inserted = true;
+				}
+			});
+			if (inserted == false) {
+				$("#joined_no_judge").append(data.object[0]);
+			}		
+		<% end %>
 	}
 	if (data.function == "add_to_unjoined") {
-		var inserted = false;
-		$(".debate_link_unjoined").each(function(index) {
-			if ($(data.object).attr('data-created-at') < $(this).attr('data-created-at') & inserted == false) {
-				$(this).before(data.object);
-				inserted = true;
-			}
-		});
-		if (inserted == false) {
-			$("#unjoined_no_judge").append(data.object);
-		}
+		<% if Rails.env.development? or Rails.env.test? %>      	
+			var inserted = false;
+			$(".debate_link_unjoined").each(function(index) {
+				if ($(data.object).attr('data-created-at') < $(this).attr('data-created-at') & inserted == false) {
+					$(this).before(data.object);
+					inserted = true;
+				}
+			});
+			if (inserted == false) {
+				$("#unjoined_no_judge").append(data.object);
+			}		
+		<% else %>
+			var inserted = false;
+			$(".debate_link_unjoined").each(function(index) {
+				if ($(data.object[0]).attr('data-created-at') < $(this).attr('data-created-at') & inserted == false) {
+					$(this).before(data.object[0]);
+					inserted = true;
+				}
+			});
+			if (inserted == false) {
+				$("#unjoined_no_judge").append(data.object[0]);
+			}		
+		<% end %>
 	}
   });
 </script>

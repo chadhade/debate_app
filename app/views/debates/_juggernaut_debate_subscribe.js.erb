@@ -60,7 +60,11 @@
 		}
 		
 		if (data.func == "judge_results") {
-			$('body').append(data.obj.judging_results);
+			<% if Rails.env.development? or Rails.env.test? %>      	
+				$('body').append(data.obj.judging_results);			
+			<% else %>
+				$('body').append(data.obj.judging_results[0]);
+			<% end %>
 		}
 		
 		if (data.func == "judge_arrived") {
@@ -115,7 +119,11 @@
 				$('.judging_form').remove();
 			}
 			else {
-				$('body').append(data.judging_form);
+				<% if Rails.env.development? or Rails.env.test? %>      	
+					$('body').append(data.judging_form);
+				<% else %>
+					$('body').append(data.judging_form[0]);
+				<% end %>
 			}
 		});
 	<% end %>
