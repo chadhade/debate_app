@@ -29,19 +29,19 @@ class Debate < ActiveRecord::Base
   end
   
   def creator
-    @creator = Debater.find_by_id(self.arguments.first.debater_id)
+    @creator = Debater.find_by_id(self.arguments.first(:order => "created_at ASC").debater_id)
   end  
   
   def joiner
-    @joiner = Debater.find_by_id(self.arguments.second.debater_id)
+    @joiner = Debater.find_by_id(self.arguments.second(:order => "created_at ASC").debater_id)
   end
   
   def judge_entry
-    self.judgings.first
+    self.judgings.first(:order => "created_at ASC")
   end
   
   def judge_id
-    self.judge? == true ? self.judgings.first.debater_id : nil
+    self.judge? == true ? self.judgings.first(:order => "created_at ASC").debater_id : nil
   end
   
   def creator?(debater)
@@ -49,13 +49,13 @@ class Debate < ActiveRecord::Base
   end
   
   def last_debater
-	Debater.find_by_id(self.arguments.last.debater_id)
+	Debater.find_by_id(self.arguments.last(:order => "created_at ASC").debater_id)
   end
   
   # assumes toggling between two debaters
   # this may need to be rewritten
   def current_turn
-    if self.arguments.last.Repeat_Turn == true 
+    if self.arguments.last(:order => "created_at ASC").Repeat_Turn == true 
 		self.last_debater
 	else
 		self.arguments.size % 2 == 0 ? self.creator : self.debaters[1]
@@ -67,7 +67,7 @@ class Debate < ActiveRecord::Base
   end
   
   def topic
-    @topic = self.arguments.first.content
+    @topic = self.arguments.first(:order => "created_at ASC").content
   end
   
   def self.search(search)
@@ -83,8 +83,8 @@ class Debate < ActiveRecord::Base
     @matching_debates = Array.new
     @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     self.where(:id => @viewing_by_creator, :joined => false).each do |debate|
-      topic = debate.topic_positions.first.topic
-      position = debate.topic_positions.first.position
+      topic = debate.topic_positions.first(:order => "created_at ASC").topic
+      position = debate.topic_positions.first(:order => "created_at ASC").position
       words = topic.split(/\s/)
       current_words = current_tp.topic.split(/\s/)
       if current_tp.position != position

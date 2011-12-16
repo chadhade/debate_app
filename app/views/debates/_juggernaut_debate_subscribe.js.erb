@@ -1,19 +1,19 @@
 <script type="text/javascript"> 
   	jug.subscribe("debate_" + <%= debate.id %>, function(data){  
-		if (data.argument != "") {
+		if (data.func == "argument") {
 			<% if Rails.env.development? or Rails.env.test? %>
-				$(".debate[data-id="+ <%= debate.id %> +"]").append(data.argument);
+				$(".debate[data-id="+ <%= debate.id %> +"]").append(data.obj.argument);
 			<% else %>
-				$.each(data.argument, function(idx, val) {   
+				$.each(data.obj.argument, function(idx, val) {   
 					$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
 				});
 			<% end %>
  
-			if ("<%= current_debater.email %>" == data.current_turn) {
+			if ("<%= current_debater.email %>" == data.obj.current_turn) {
 			    <% if Rails.env.development? or Rails.env.test? %>      	
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.post_box);
+					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
 				<% else %>
-					$.each(data.post_box, function(idx, val) {    
+					$.each(data.obj.post_box, function(idx, val) {    
 						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
 					});
 				<% end %>	
@@ -22,37 +22,21 @@
 			    <% if Rails.env.development? or Rails.env.test? %> 
 				    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
 				<% else %>
-					$.each(data.post_box, function(idx, val) { 
+					$.each(data.obj.post_box, function(idx, val) { 
 						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
 					});
 				<% end %>	
 			}
 		
-			if (data.footnotes != "") {
+			if (data.obj.footnotes != false) {
 				<% if Rails.env.development? or Rails.env.test? %> 
-					document.getElementById("footnotes").innerHTML=data.footnotes;
+					document.getElementById("footnotes").innerHTML=data.obj.footnotes;
 				<% else %>
-					$.each(data.footnotes, function(idx, val) { 
+					$.each(data.obj.footnotes, function(idx, val) { 
 						document.getElementById("footnotes").innerHTML=val;
 					});
 				<% end %>
 			}
-		}
-		
-		if (data.func == "end_single") {
-			if ("<%= current_debater.email %>" == data.obj.current_turn) {
-			 
-				<% if Rails.env.development? or Rails.env.test? %>      	
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
-				<% else %>
-					$.each(data.obj.post_box, function(idx, val) {    
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-					});
-				<% end %>			
-			}
-	
-			position = Math.abs(moving_position[<%= debate.id %>] - 3);
-			javascript_countdown.init(static_clock[<%= debate.id %>], 0, position, <%= debate.id %>);
 		}
 		
 		if (data.func == "erase_postbox") {
@@ -65,15 +49,16 @@
 					});
 				<% end %>			
 			}
+			alert("hi");
 		}
 		
-		if (data.judging_results != "") {
+		if (data.func == "judge_results") {
 			$('body').append(data.judging_results);
 		}
 		
-		if (data.judge == true) {
+		if (data.func == "judge_arrived") {
 			abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
-			javascript_countdown.init(data.timers.movingclock, data.timers.staticclock, data.timers.movingposition, data.timers.debateid);
+			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
 			var img = document.createElement("IMG");
 				img.src = "/assets/gavel.png";
 			var element = document.getElementById("judge-<%= debate.id %>");
@@ -81,15 +66,28 @@
 				element.appendChild(img);
 				voteable[<%= debate.id %>] = true;
 		}
-		else {
-			if (data.joiner != "")	{
-				$(".timertitle").html(data.joiner);
-				moving_clock[data.timers.debateid] = data.timers.staticclock;
-				document.getElementById("timer2-<%= debate.id %>").innerHTML=format_output(data.timers.staticclock);
-				voteable[<%= debate.id %>] = false;
-			}
+
+		if (data.func == "joiner")	{
+			$(".timertitle").html(data.obj.joiner);
+			moving_clock[data.obj.timers.debateid] = data.obj.timers.staticclock;
+			document.getElementById("timer2-<%= debate.id %>").innerHTML=format_output(data.obj.timers.staticclock);
+			voteable[<%= debate.id %>] = false;
 		}
-		
+
+		if (data.func == "end_single") {
+			if ("<%= current_debater.email %>" == data.obj.current_turn) {
+			 
+				<% if Rails.env.development? or Rails.env.test? %>      	
+					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+				<% else %>
+					$.each(data.obj.post_box, function(idx, val) {    
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+					});
+				<% end %>			
+			}
+			position = Math.abs(moving_position[<%= debate.id %>] - 3);
+			javascript_countdown.init(static_clock[<%= debate.id %>], 0, position, <%= debate.id %>);
+		}
 	});
 	
 	jug.subscribe("debate_" + <%= debate.id %> + "_votes", function(votes){

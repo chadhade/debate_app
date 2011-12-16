@@ -18,8 +18,8 @@ class JudgingsController < ApplicationController
       @timeleft = @oldtime + (@judge.created_at - @secondarg.created_at).seconds.to_i
       @firstarg.update_attributes(:time_left => @timeleft)
       
-      Juggernaut.publish("debate_" + params[:debate_id], {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
-                        :debateid => params[:debate_id]}, :argument => "", :judge => true})
+      Juggernaut.publish("debate_" + params[:debate_id], {:func => "judge_arrived", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
+                        :debateid => params[:debate_id]}, :argument => "", :judge => true}})
     end
     
     # remove debate from judging index page
@@ -35,7 +35,7 @@ class JudgingsController < ApplicationController
     if Time.now < @debate.end_time + 20.seconds
       @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments])
       judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging})
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:judging_results => judging_results})
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results}})
       reset_invocation_response # allow double rendering
       Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
     end

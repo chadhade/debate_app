@@ -34,9 +34,11 @@ class ArgumentsController < ApplicationController
   	  reset_invocation_response # allow double rendering
   		
   		@debate = Debate.find_by_id(@debate_id)
-  		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = ""
+  		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
   		
-  		Juggernaut.publish("debate_" + @debate_id, {:timers => showtimers(@debate, @current_argument, @lastargument), :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, :footnotes => footnotes_render, :judge => @debate.judge})
+  		Juggernaut.publish("debate_" + @debate_id, {:func => "argument", :obj => {:timers => showtimers(@debate, @current_argument, @lastargument), 
+  		                  :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, 
+  		                  :footnotes => footnotes_render, :judge => @debate.judge}})
   	  reset_invocation_response # allow double rendering
   	end
 
