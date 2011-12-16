@@ -144,7 +144,7 @@ end
   	@timeleft = time_left(@debate)
   	#If a debater has run out of time, the other debater can continuously post
   	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
-  		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true)
+  		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true, :content => "test")
   		@movingclock = @argument_last.time_left - (Time.now - @argument_last.created_at).seconds.to_i
   		@staticclock = 0
   		@movingposition = (@argument_last.debater_id != @debate.creator.id) ? 2 : 1
