@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
 	def time_left(thisdebate)
 		arguments = thisdebate.arguments(:order => "created_at ASC")
-		arglast = @arguments.last
+		arglast = arguments.last
 		
 		# If there are only 2 arguments, you know the timers first started as soon as the judge joined
 		if arguments.count == 2
