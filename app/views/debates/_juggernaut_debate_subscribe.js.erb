@@ -79,7 +79,7 @@
 		}
 
 		if (data.func == "joiner")	{
-			$(".timertitle").html(data.obj.joiner);
+			$(".timertitle-2").html(data.obj.joiner);
 			moving_clock[data.obj.timers.debateid] = data.obj.timers.staticclock;
 			document.getElementById("timer2-<%= debate.id %>").innerHTML=format_output(data.obj.timers.staticclock);
 			voteable[<%= debate.id %>] = false;
