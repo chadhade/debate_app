@@ -74,7 +74,7 @@ class DebatesController < ApplicationController
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, 
-	                                              :footnotes => footnotes_render, :judge => @debate.judge, :joiner => current_debater.email}})
+	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
 	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.email, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  
 	  reset_invocation_response # allow double rendering
