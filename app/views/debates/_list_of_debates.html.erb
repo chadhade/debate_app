@@ -1,13 +1,14 @@
 Ongoing Debates
-<% @debates.each do |debate| %>
-  	<% if debate.end_time.nil? %>
-		<li> <%= link_to debate.topic, debate %> </li>
-	<% end %>
+<% @debates_ongoing.each do |debate| %>
+	<li> <%= link_to debate.topic, debate %> </li>
+<% end %>
+
+<br><br>Debates Waiting for Judge or Joiner
+<% @debates_in_limbo.each do |debate| %>
+	<li> <%= link_to debate.topic, debate %> </li>
 <% end %>
 
 <br><br>Completed Debates
-<% @debates.each do |debate| %>
-	<% if !debate.end_time.nil? %>
-		<li> <%= link_to debate.topic, debate %> </li>
-	<% end %>
+<% @debates_completed.each do |debate| %>
+	<li> <%= link_to debate.topic, debate %> </li>
 <% end %>

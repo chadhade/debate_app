@@ -189,6 +189,16 @@ end
   def index
     # returns debates that match search criterion or all debates if empty string submitted
   	@debates = Debate.search(params[:search])
+  	
+  	@debates_ongoing = Array.new
+    @debates_in_limbo = Array.new
+    @debates_completed = Array.new
+
+    @debates.each do |debate|
+    	@debates_ongoing << debate if debate.end_time.nil? and debate.judge and debate.joined
+      @debates_completed << debate if !debate.end_time.nil? and debate.judge and debate.joined
+      @debates_in_limbo << debate if debate.end_time.nil? and (!debate.judge or !debate.joined)
+    end
 	
   	respond_to do |format|
   	  format.html
