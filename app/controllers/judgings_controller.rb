@@ -13,7 +13,7 @@ class JudgingsController < ApplicationController
     # Then start timers
     if @debate.arguments.count == 2
       @firstarg = @debate.arguments.first(:order => "created_at ASC")
-      @secondarg = @debate.arguments.All(:order => "created_at ASC").second
+      @secondarg = @debate.arguments.all(:order => "created_at ASC").second
       @oldtime = @firstarg.time_left
       @timeleft = @oldtime + (@judge.created_at - @secondarg.created_at).seconds.to_i
       @firstarg.update_attributes(:time_left => @timeleft)
