@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 		
 		# If there are only 2 arguments, you know the timers first started as soon as the judge joined
 		if arguments.count == 2
-		  return arguments.first.time_left - (Time.now - thisdebate.judge_entry.created_at)
+		  return arguments.first.time_left - (Time.now - thisdebate.judge_entry.created_at).seconds.to_i
 		end
 		
 		# Otherwise, the timers started when the last argument was made
