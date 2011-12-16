@@ -25,10 +25,20 @@
 	$(".debate_link_unjoined[data-id="+ data.debate_id +"]").remove();
 	
 	if (data.function == "append_to_joined") {
-		$("#joined_no_judge").append(data.object);
+		<% if Rails.env.development? or Rails.env.test? %>      	
+			$("#joined_no_judge").append(data.object);
+		<% else %>
+			$("#joined_no_judge").append(data.object[0]);
+		<% end %>
+		
 	}
 	if (data.function == "append_to_unjoined") {
-		$("#unjoined_no_judge").append(data.object);
+		<% if Rails.env.development? or Rails.env.test? %>      	
+			$("#unjoined_no_judge").append(data.object);
+		<% else %>
+			$("#joined_no_judge").append(data.object[0]);
+		<% end %>
+		
 	}
 	
 	if (data.function == "add_to_joined") {
