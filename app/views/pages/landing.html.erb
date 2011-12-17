@@ -1,9 +1,17 @@
 <br>
 <h1>DeBunky</h1>
 <br>
-Get Your Debate On!! We'll Match You Up!!
-<br><br>
-<%= render '/topic_positions/form_topic_position' %>
 
-<br><br>
-<%= link_to "Or, Be a Judge", judgings_path %>
+<div id="debateorjudge-container">
+	<span class="debate-topic-position">
+		Get Your Debate On!! We'll Match You Up!!
+		<br><br>
+		<%= render '/topic_positions/form_topic_position' %>
+	</span>
+	<span class="or">
+		OR
+	</span>
+	<span class="judge-link">
+		<%= link_to "Be a Judge", judgings_path %>
+	</span>
+</div>

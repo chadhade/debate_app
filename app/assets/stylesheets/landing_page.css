@@ -1,0 +1,64 @@
+/*this mimcs .debatecontainer*/
+#debateorjudge-container {
+	text-align: center;
+}
+
+.debate-topic-position {
+	float: left;
+}
+
+/*div class for the topic position form*/
+.new_topic_position {
+	
+}
+
+/*div class for topic position field*/
+.field-topicposition{
+	float: left;
+}
+
+/*div class for topic field*/
+.field-topic {
+	float: left;
+}
+
+/*label tag for topic*/
+label[for=topic_position_topic] {
+
+}
+
+/*input tag for topic*/
+#topic_position_topic {
+
+}
+
+/*div class for position field*/
+.field-position {
+	float: right;
+}
+
+/*label tag for position*/
+label[for=topic_position_position] {
+
+}
+
+/*select tag for position*/
+#topic_position_position {
+
+}
+
+/*div class for topic position action*/
+.action-topicposition{
+
+}
+
+.or {
+	float: left;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 30px;
+}
+
+.judge-link {
+	float: left;
+}

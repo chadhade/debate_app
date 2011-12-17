@@ -1,10 +1,16 @@
+<!-- form class attribute is set to new_topic_position -->
 <%= form_for(TopicPosition.new) do |f| %>
-	<div class = "field">
-		<%= f.label :topic %> <br />
-		<%= f.text_field :topic %><br />
-		<%= f.select(:position, [["Pro", true], ["Con", false]]) %><br />
+	<div class="field-topicposition">
+		<span class="field-topic">
+			<%= f.label :topic %> <br>
+			<%= f.text_field :topic %>
+		</span>
+		<span class="field-position">		
+			<%= f.label :position %> <br>	
+			<%= f.select(:position, [["Pro", true], ["Con", false]]) %>
+		</span>
 	</div>
-	<div class = "action">
+	<div class="action-topicposition">
 		<%= f.submit "submit" %>
 	</div>	
 <% end %>
