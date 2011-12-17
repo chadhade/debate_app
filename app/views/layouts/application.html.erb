@@ -27,7 +27,9 @@
 	</div>
 	<div class= "sitewidth">
 		<% flash.each do |key, value| %>
-			<div class="flash <%= key %>"><%= value %></div>
+			<% if key == :alert %> 
+				<div class="flash <%= key %>"><%= value %></div>
+			<% end %>
 		<% end %>
 		
 		<%= yield %>
