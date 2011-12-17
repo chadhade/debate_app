@@ -73,9 +73,9 @@ class DebatesController < ApplicationController
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
-	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, 
+	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.name, 
 	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
-	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.email, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
+	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  
 	  reset_invocation_response # allow double rendering
 	  
@@ -122,14 +122,14 @@ end
   		@movingclock = 0
   		@staticclock = @previoustimeleft
   		@movingposition = 2
-  	  @currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
+  	  @currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].name
   		@debater2 = "No one has joined"
   		return
   	end
 	
   	# Debater names
-  	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].email
-  	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].email
+  	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].name
+  	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].name
 	
 	  # If no judge has joined, timers do not move
 	  if @debate.judge == false
@@ -216,7 +216,7 @@ end
     judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
     Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})
     reset_invocation_response # allow double rendering
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "erase_postbox", :obj => {:post_box => "", :current_turn => @debate.current_turn.email}})
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "erase_postbox", :obj => {:post_box => "", :current_turn => @debate.current_turn.name}})
     reset_invocation_response # allow double rendering
     
     respond_to do |format|
@@ -232,7 +232,7 @@ end
     post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
-	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:post_box => post_box_render, :current_turn => @debate.current_turn.email}})
+	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:post_box => post_box_render, :current_turn => @debate.current_turn.name}})
     
     reset_invocation_response # allow double rendering
     

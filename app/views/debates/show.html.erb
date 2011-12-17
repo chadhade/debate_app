@@ -69,7 +69,7 @@
 		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
 	</div>	
 <!-- <%= render :partial => "/debates/sliding_menus", :locals => {:debate => @debate} %> <br /> <div class="divclear"></div> -->
-<!-- <%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.email %> -->
+<!-- <%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.name %> -->
 	<div id="statuspanel">
 		<%= render :partial => "/debates/status" %>
 		<% @judging = @debate.judge_entry %>

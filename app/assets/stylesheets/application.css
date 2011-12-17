@@ -9,13 +9,18 @@
 body {
 	width: 100%;
 	text-align: center;
-	margin:0px 0px; padding:0px;
-	text-align:center;
+	margin:0 auto; 
 	background-image: url(landscape_debunky.jpg);
 	background-repeat: repeat-x;
 	background-position: bottom;
 	background-color: #5bb9df;
 	background-attachment: fixed;
+}
+
+.sitewidth {
+	width: 800px;
+	text-align: center;
+	margin: 0 auto;
 }
 
 .round {

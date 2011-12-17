@@ -1,6 +1,6 @@
 <% @debater ||= current_debater %>
 <div class="stats">
-	<strong>Arguments</strong> <%= @debater.arguments.count %> <br />
+	<strong>Arguments: <%= @debater.arguments.count %> </strong><br />
 	<a href="<%= following_debater_path(@debater) %>">
 		<span id="following" class ="stat">
 			<%= @debater.following.count %> following
