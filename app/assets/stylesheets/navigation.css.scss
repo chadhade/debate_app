@@ -9,15 +9,21 @@ nav {
 	
 	color: white;
     font-family: Arial;
-    font-size: 13.5px;
+    font-size: 13.1px;
 	font-weight: 600;
     text-align: center;
 }
 
 nav a {
 	color: #4cafd6;
+	text-decoration: none;
+	padding: 4px 7px;
 }
 
+nav a:hover {
+
+	background-color: #222;
+}
 
 
 
