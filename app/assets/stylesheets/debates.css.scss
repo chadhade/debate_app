@@ -1,0 +1,183 @@
+// Place all the styles related to the Debates controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#debatebody {
+	margin: 1em auto;
+}
+
+#statuspanel {
+	height: 250px;
+	width: 245px;
+	margin: 5px;	
+	border:1px solid #ccc;
+	float: right;	
+	background-color: #fafafa;
+
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	/* Shadow */
+	-webkit-box-shadow:0 0 40px #000;
+    -moz-box-shadow: 0 0 40px #000;
+    box-shadow:0 10px 20px #000;
+}
+
+.divclear {
+	clear:both;
+}
+
+.debatecontainer {
+	padding-top: 8px;
+	height: 500px;
+	width: 500px;
+	margin: 5px 20px;
+	border:1px solid #ccc;
+	float: left;
+	background-color: #fafafa;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	/* Shadow */
+	-webkit-box-shadow:0 0 40px #000;
+    -moz-box-shadow: 0 0 40px #000;
+    box-shadow:0 10px 20px #000;
+}
+
+.debate {
+	padding: 10px;
+	clear:both;
+	font-family: Ariel;
+	font-size: 15px;
+	background-color: #fafafa;
+	height: 400px;
+	overflow: auto;
+}
+
+.debate-background {
+	padding: 5px;
+	background-color: #fafafa;
+}
+
+.containerpanel {
+	height: 20px;
+	background-color: #ddd;
+	color: #000033;
+	margin-left: 6.5px;
+	margin-right: 6.5px;
+	margin-top: -1px;
+	padding-top: 4px;
+	font-family: Arial;
+}
+
+.container-background {
+
+}
+
+.argument {
+	text-align: left;
+}
+
+.argument a {
+	text-decoration: none;
+}
+
+.footnote {
+	font-size: 13px;
+	line-height: 1em;
+	vertical-align: super;
+}
+
+.footnote a {
+	text-decoration: none;
+	overflow: auto;
+}
+
+.timer {
+	width: 38%;
+	font-size: 13.1px;
+	font-family: Arial;
+	padding: 0 3px;
+	float:left;
+	padding-right: 10px;
+	border-right:2px solid #FFF;
+	
+	margin: 0 5px;
+}
+
+.timertitle {
+	float: left;
+}
+
+.judge {
+	float: left;
+	border-right: 2px solid #FFF;
+}
+
+.viewing_count {
+	text-align: center;
+	padding-right: 15px;
+	background-image: url(whos_online.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+.post_to_debate {
+	margin: 10px 0;
+}
+
+#slide_menu_1 {
+	width: 150px;
+	height: 90px;
+	position:relative;
+	font: bold 60% arial;
+	top:150px;
+	left:-165px;
+	margin-left:3px;
+	float:right;
+	
+}
+
+#footnotes {
+	
+	float:left;
+	text-align: left;
+	width: 120px;
+	height: 90px;
+	padding: 7px;
+	overflow:auto;
+	
+	border-top:1px solid #ccc;
+	border-bottom:1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	
+}
+
+.footnote {
+	font-family: Ariel;
+	font-size: 10px;
+}
+
+.slide_menu_title {
+	width: 10px;
+	height: 90px;
+	float:right;
+	padding: 2px;
+	line-height: 10px;
+	background-color: #ccc;
+	color: #fff;
+	border-right:1px solid #ccc;
+	border-top:1px solid #ccc;
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	/* Shadow */
+	-webkit-box-shadow:0 0 40px #bcd;
+    -moz-box-shadow: 0 0 40px #ccc;
+    box-shadow:0 10px 20px #abc;
+}
+
