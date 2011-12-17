@@ -29,4 +29,28 @@ body {
 	border-radius: 10px;
 }
 
+#debater_nav {
+	width: 100%;
+	text-align: left;
+}
+
+nav {
+	background-color: #222;
+	border-bottom: 1px solid black;
+	height: 27px;
+		
+	color: white;
+	font: 13px/27px Arial,sans-serif;
+    text-align: left;
+}
+
+nav a {
+	color: #5bb9df;
+	text-decoration: none;
+	padding: 4px 7px;
+}
+
+nav a:hover {																																		
+	background-color: #2D2D2D;
+}
 
