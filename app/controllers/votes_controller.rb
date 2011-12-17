@@ -9,9 +9,9 @@ class VotesController < ApplicationController
 	  current_debater.vote(@argument, :direction => :down) if @vote == "false"
 	  
 	  if current_debater.id != @debate.judge_entry.debater_id
-	    Juggernaut.publish("debate_" + @debate_id + "_votes", {:id => params[:argument_id], :type => @vote})
+	    Juggernaut.publish("debate_" + @debate_id + "_votes", {:func => "viewer_votes", :obj => {:id => params[:argument_id], :type => @vote}})
 	  else
-	    Juggernaut.publish("debate_" + @debate_id + "_judge", {:votes => {:id => params[:argument_id], :type => @vote}})
+	    Juggernaut.publish("debate_" + @debate_id + "_judge", {:func => "judge_votes", :obj => {:votes => {:id => params[:argument_id], :type => @vote}}})
 	  end
 	  
 	  respond_to do |format|

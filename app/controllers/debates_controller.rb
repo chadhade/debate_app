@@ -214,7 +214,7 @@ end
     @debate.update_attributes(:end_time => Time.now)
     
     judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
-    Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => judging_form})
+    Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})
     reset_invocation_response # allow double rendering
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "erase_postbox", :obj => {:post_box => "", :current_turn => @debate.current_turn.email}})
     reset_invocation_response # allow double rendering
