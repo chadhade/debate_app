@@ -1,5 +1,7 @@
 class DebatesController < ApplicationController
   # set load paths for redis and juggernaut
+  before_filter :authenticate_debater!
+  
   if Rails.env.development?
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/redis-2.2.2/lib'
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/juggernaut-2.1.0/lib/'
