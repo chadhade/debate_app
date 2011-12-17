@@ -3,15 +3,18 @@
 }
 
 nav {
-	background-color: black;
-	padding: 4.5px 0.7em;
-	white-space: nowrap;
+	background-color: #222;
+	border-bottom: 1px solid black;
+	# padding: 4.5px 0.7em;
+	# white-space: nowrap;
+	height: 27px;
 	
 	color: white;
-    font-family: Arial;
-    font-size: 13.1px;
-	font-weight: 600;
-    text-align: center;
+	# font-family: Arial;
+	# font-size: 13.1px;
+	# font-weight: 600;
+	font: 13px/27px Arial,sans-serif;
+    text-align: left;
 }
 
 nav a {
@@ -20,9 +23,8 @@ nav a {
 	padding: 4px 7px;
 }
 
-nav a:hover {
-
-	background-color: #222;
+nav a:hover {																																		
+	background-color: #2D2D2D;
 }
 
 
