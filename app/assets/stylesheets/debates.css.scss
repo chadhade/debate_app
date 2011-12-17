@@ -9,7 +9,20 @@
 }
 
 #statuspanel {
-	float: left;
+	height: 250px;
+	width: 245px;
+	margin: 5px;	
+	border:1px solid #ccc;
+	float: right;	
+	background-color: #fafafa;
+
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	/* Shadow */
+	-webkit-box-shadow:0 0 40px #bcd;
+    -moz-box-shadow: 0 0 40px #ccc;
+    box-shadow:0 10px 20px #abc;
 }
 
 .divclear {
@@ -18,12 +31,12 @@
 
 .debatecontainer {
 	padding-top: 5px;
-	height: 650px;
+	height: 500px;
 	width: 500px;
 	margin: 5px 20px;
 	border:1px solid #ccc;
 	float: left;
-	background-color: #fff;
+	background-color: #fafafa;
 	
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -39,19 +52,19 @@
 	clear:both;
 	font-family: Ariel;
 	font-size: 15px;
-	background-color: #fff;
+	background-color: #fafafa;
 	height: 400px;
 	overflow: auto;
 }
 
 .debate-background {
 	padding: 5px;
-	background-color: #fff;
+	background-color: #fafafa;
 }
 
 .containerpanel {
 	height: 20px;
-	background-color: #cceecc;
+	background-color: #c0e1ea;
 	color: #000033;
 	margin-left: 4px;
 	margin-right: 4px;
