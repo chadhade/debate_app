@@ -13,9 +13,11 @@ class JudgingsController < ApplicationController
     # Then start timers
     if @debate.arguments.count == 2
       @firstarg = @debate.arguments.first(:order => "created_at ASC")
-      @secondarg = @debate.arguments[1]
+      @secondarg = @debate.arguments.all(:order => "created_at ASC").second
       @oldtime = @firstarg.time_left
-      @timeleft = @oldtime + (@judge.created_at - @secondarg.created_at).seconds.to_i
+
+      @timeleft = @oldtime + (Time.now - @judge.created_at).seconds.to_i
+      
       @firstarg.update_attributes(:time_left => @timeleft)
       
       Juggernaut.publish("debate_" + params[:debate_id], {:func => "judge_arrived", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 

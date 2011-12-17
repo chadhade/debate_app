@@ -1,6 +1,6 @@
 <h1>List of Debates</h1>
 
-<%= form_tag debates_path, :method => 'get', :remote => true, :class => 'search_debates' do %>
+<div><%= form_tag debates_path, :method => 'get', :remote => true, :class => 'search_debates' do %>
   <p>
     <%= text_field_tag :search, params[:search] %>
     <%= submit_tag "Search", :name => nil %>

@@ -79,7 +79,7 @@
 		}
 
 		if (data.func == "joiner")	{
-			$(".timertitle").html(data.obj.joiner);
+			$(".timertitle-2").html(data.obj.joiner);
 			moving_clock[data.obj.timers.debateid] = data.obj.timers.staticclock;
 			document.getElementById("timer2-<%= debate.id %>").innerHTML=format_output(data.obj.timers.staticclock);
 			voteable[<%= debate.id %>] = false;
@@ -104,26 +104,37 @@
 		}
 	});
 	
-	jug.subscribe("debate_" + <%= debate.id %> + "_votes", function(votes){
-		if (votes.type == "true") {
-			incrementVotesFor(votes.id);
-		}
-		else {
-			incrementVotesAgainst(votes.id);
-		}
-	});
+	<% if current_debater != debate.judger %>
+		jug.subscribe("debate_" + <%= debate.id %> + "_votes", function(votes){
+		
+			if (votes.obj.type == "true") {
+				incrementVotesFor(votes.obj.id);
+			}
+			else {
+				incrementVotesAgainst(votes.obj.id);
+			}
+		});
+	<% end %>
 	
 	<% if current_debater == debate.judger %>
 		jug.subscribe("debate_" + <%= debate.id %> + "_judge", function(data){
 			if (data.judging_form =="clear_form") {
 				$('.judging_form').remove();
 			}
-			else {
+			if (data.func == "judging_form") {
 				<% if Rails.env.development? or Rails.env.test? %>      	
-					$('#statuspanel').append(data.judging_form);
+					$('#statuspanel').append(data.obj.judging_form);
 				<% else %>
-					$('#statuspanel').append(data.judging_form[0]);
+					$('#statuspanel').append(data.obj.judging_form[0]);
 				<% end %>
+			}
+			if (data.func == "judge_votes") {
+				if (data.obj.votes.type == "true") {
+					incrementVotesFor(data.obj.votes.id);
+				}
+				else {
+					incrementVotesAgainst(data.obj.votes.id);
+				}
 			}
 		});
 	<% end %>

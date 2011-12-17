@@ -11,8 +11,12 @@ body {
 	text-align: center;
 	margin:20px 0px; padding:0px;
 	text-align:center;
-	background-image: url(landscape.jpg);
-	}
+	background-image: url(landscape_debunky.jpg);
+	background-repeat: repeat-x;
+	background-position: bottom;
+	background-color: #5bb9df;
+	background-attachment: fixed;
+}
 
 .round {
 	-moz-border-radius: 10px;
