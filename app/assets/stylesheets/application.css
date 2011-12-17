@@ -54,6 +54,7 @@ nav a:hover {
 	background-color: #2D2D2D;
 }
 
+
 .error, .alert, .notice, .success, .info {margin-bottom:1em;margin-top: 10px; border:2px solid #ddd; width: 50%; margin: auto;}
 #.error, .alert {background:#fbe3e4;color:#8a1f11;border-color:#fbc2c4;}
 .error, .alert {background:#fff;color:#8a1f11;border-color:#8a1f11; font: 13px/27px Arial,sans-serif;margin-top: 10px;}
