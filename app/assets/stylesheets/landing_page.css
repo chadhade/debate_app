@@ -1,6 +1,6 @@
-/*this mimcs .debatecontainer*/
 #debateorjudge-container {
 	text-align: center;
+	margin: 1em auto;
 }
 
 .debate-topic-position {
@@ -14,7 +14,7 @@
 
 /*div class for topic position field*/
 .field-topicposition{
-	float: left;
+
 }
 
 /*div class for topic field*/
@@ -34,7 +34,7 @@ label[for=topic_position_topic] {
 
 /*div class for position field*/
 .field-position {
-	float: right;
+	float: left;
 }
 
 /*label tag for position*/
@@ -49,7 +49,7 @@ label[for=topic_position_position] {
 
 /*div class for topic position action*/
 .action-topicposition{
-
+	clear: both;
 }
 
 .or {
@@ -62,3 +62,4 @@ label[for=topic_position_position] {
 .judge-link {
 	float: left;
 }
+
