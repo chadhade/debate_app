@@ -8,6 +8,10 @@
 	text-align: center;
 }
 
+#statuspanel {
+	float: left;
+}
+
 .divclear {
 	clear:both;
 }
@@ -15,7 +19,7 @@
 .debatecontainer {
 	padding-top: 5px;
 	height: 650px;
-	width: 600px;
+	width: 500px;
 	margin: 5px 20px;
 	border:1px solid #ccc;
 	float: left;

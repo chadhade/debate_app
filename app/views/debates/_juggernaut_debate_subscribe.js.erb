@@ -61,9 +61,9 @@
 		
 		if (data.func == "judge_results") {
 			<% if Rails.env.development? or Rails.env.test? %>      	
-				$('body').append(data.obj.judging_results);			
+				$('#statuspanel').append(data.obj.judging_results);			
 			<% else %>
-				$('body').append(data.obj.judging_results[0]);
+				$('#statuspanel').append(data.obj.judging_results[0]);
 			<% end %>
 		}
 		
@@ -120,9 +120,9 @@
 			}
 			else {
 				<% if Rails.env.development? or Rails.env.test? %>      	
-					$('body').append(data.judging_form);
+					$('#statuspanel').append(data.judging_form);
 				<% else %>
-					$('body').append(data.judging_form[0]);
+					$('#statuspanel').append(data.judging_form[0]);
 				<% end %>
 			}
 		});

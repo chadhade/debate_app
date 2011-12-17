@@ -60,23 +60,30 @@
 
 
 <div id = "debatebody">
-  <div class="debatecontainer">
-
-	<div class="containerpanel">
-		<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1 => @debater1, :debater2 => @debater2,
-			:judge => @debate.judge} %>
-		<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
-	</div>
-
-	<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>			  
-	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
-</div>	
-
-
-<%= render :partial => "/debates/sliding_menus", :locals => {:debate => @debate} %> <br /> <div class="divclear"></div>
+	<div class="debatecontainer">
+		<div class="containerpanel">
+			<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1 => @debater1, :debater2 => @debater2, :judge => @debate.judge} %>
+			<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
+		</div>
+		<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>			  
+		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
+	</div>	
+<!-- <%= render :partial => "/debates/sliding_menus", :locals => {:debate => @debate} %> <br /> <div class="divclear"></div> -->
 <!-- <%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.email %> -->
-
+	<div id="statuspanel">
+		<%= render :partial => "/debates/status" %>
+		<% @judging = @debate.judge_entry %>
+		<% if !@judging.nil? and @currentdebater == @debate.judger %>
+			<% if !@debate.end_time.nil? and Time.now < @debate.end_time + 20.seconds %>
+				<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
+			<% end %>
+		<% end %>
+		<% if !@judging.nil? and !@judging.winner_id.nil? %>
+			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
+		<% end %>
+	</div>
 </div>
+
 <script>
 	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
 	<% if @debaters.count <= 1 %>
@@ -91,14 +98,4 @@
 		setTimeout("javascript_countdown.startTimers()", 500); 
 	});
 </script>
-
-<% @judging = @debate.judge_entry %>
-<% if !@judging.nil? and @currentdebater == @debate.judger %>
-	<% if !@debate.end_time.nil? and Time.now < @debate.end_time + 20.seconds %>
-		<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
-	<% end %>
-<% end %>
-<% if !@judging.nil? and !@judging.winner_id.nil? %>
-	<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
-<% end %>
 
