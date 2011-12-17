@@ -9,20 +9,22 @@
 <body>
 	<div id = "debater_nav">
 	    <nav>
-			<% if debater_signed_in? %>
-		        <%= current_debater.name %> -->
-				<%= link_to 'Profile', current_debater %>
-				<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %><%= link_to 'Debaters', debaters_path %>
-				<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
-		        
-		    <% else %>
-		        <%= link_to 'Sign in', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
-		    	<!-- <%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
-				<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %> | -->
-			<% end %>
-			<%= link_to 'Landing page', '/pages/landing' %>
-			<%= link_to 'Judgings index', judgings_path %>
-			<%= link_to 'View a debate', debates_path %>
+			<div id="general-links">
+				<%= link_to 'Landing page', '/pages/landing' %>
+				<%= link_to 'Judgings index', judgings_path %>
+				<%= link_to 'View a debate', debates_path %>
+			</div>
+			<div id="user-info">
+				<% if debater_signed_in? %>
+					<span class="username"> <%= link_to current_debater.name, current_debater %> </span>
+					<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %><%= link_to 'Debaters', debaters_path %>
+					<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
+			    <% else %>
+			        <%= link_to 'Sign in', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
+			    	<!-- <%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
+					<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %> | -->
+				<% end %>
+			</div>
 		</nav>
 	</div>
 	<div class= "sitewidth">
