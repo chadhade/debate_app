@@ -64,15 +64,16 @@
 
 .containerpanel {
 	height: 20px;
-	background-color: #c0e1ea;
+	background-color: #ddd;
 	color: #000033;
 	margin-left: 4px;
 	margin-right: 4px;
 	margin-top: -1px;
 	padding-top: 4px;
-	moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
+	
+	# moz-border-radius: 6px;
+	# -webkit-border-radius: 6px;
+	# border-radius: 6px;
 }
 
 .container-background {
