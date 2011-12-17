@@ -1,5 +1,5 @@
 <div class="argument" onclick="upVote(<%= argument.id.to_s %>, true, <%= argument.debate_id %>)" data-time="<%= argument.created_at.to_i %>"> 
-	<span class="<%= argument.debater.creator?(argument.debate) ? "name-creator" : "name-joiner" %>"> <%= argument.debater.email %>: </span>
+	<span class="<%= argument.debater.creator?(argument.debate) ? "name-creator" : "name-joiner" %>"> <%= argument.debater.name %>: </span>
 	<span> <%= argument.content %> </span>
 </div>
 

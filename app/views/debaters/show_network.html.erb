@@ -11,8 +11,7 @@
 		</td>
 	
 		<td class="sidebar round">
-			<strong>Email</strong> <%= @debater.email %> <br />
-			<strong>URL</strong> <%= link_to debater_path(@debater), @debater %> <br />
+			<strong>Username:</strong> <%= link_to @debater.name , @debater %> <br /><br />
 			<%= render 'stats' %>
 			<br />
 		</td>

@@ -3,3 +3,7 @@
 
 en:
   hello: "Hello world"
+  activemodel:
+      attributes:
+          user:
+              login: "Username or email"

@@ -19,6 +19,11 @@ table.profile {
 	padding: .5em;
 	vertical-align: top;
 	background: #ffc;
+	text-align: left;
+}
+
+.sidebar a {
+	text-decoration: none;
 }
 
 ul.debaters {
@@ -27,6 +32,12 @@ ul.debaters {
 
 .debaters li {
 	list-style: none;
+	text-align: left;
+}
+
+.stats {
+	font-size: 75%;
+	text-align: left;
 }
 
 .stat-mini {
