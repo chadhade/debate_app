@@ -1,8 +1,12 @@
-<div id="ongoing-debates">
+<div class="judge_container">
+	<div class="containertitle">
 	Ongoing Debates
-	<% @debates_ongoing.each do |debate| %>
-		<li> <%= link_to debate.topic, debate %> </li>
-	<% end %>
+	</div>
+	<div id="ongoing-debates">
+		<% @debates_ongoing.each do |debate| %>
+			<li> <%= link_to debate.topic, debate %> </li>
+		<% end %>
+	</div>
 </div>
 
 <!-- <br><br>Debates Waiting for Judge or Joiner
@@ -10,9 +14,13 @@
 	<li> <%= link_to debate.topic, debate %> </li>
 <% end %> -->
 
-<div id="completed-debates">
+<div class="judge_container">
+	<div class="containertitle">
 	Completed Debates
-	<% @debates_completed.each do |debate| %>
-		<li> <%= link_to debate.topic, debate %> </li>
-	<% end %>
+	</div>
+	<div id="completed-debates">
+		<% @debates_completed.each do |debate| %>
+			<li> <%= link_to debate.topic, debate %> </li>
+		<% end %>
+	</div>
 </div>
