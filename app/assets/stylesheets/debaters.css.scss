@@ -12,6 +12,15 @@ table.profile {
 	padding: 1em;
 }
 
+ul.debaters {
+	margin-top: 1em;
+}
+
+.debaters li {
+	list-style: none;
+	text-align: left;
+}
+
 .sidebar {
 	float:right;
 	width: 40%;
@@ -26,20 +35,9 @@ table.profile {
 	text-decoration: none;
 }
 
-ul.debaters {
-	margin-top: 1em;
-}
-
-.debaters li {
-	list-style: none;
-	text-align: left;
-}
-
 .stats {
 	font-size: 75%;
 	text-align: left;
 }
 
-.stat-mini {
-	font-size: 75%;
-}
+

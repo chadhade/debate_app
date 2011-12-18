@@ -96,16 +96,18 @@
 
 <h1>Debates for Judging</h1>
 
-Joined Debates Waiting for a Judge
-<div id="joined_no_judge">
+
+<div id="joined_no_judge" class="judge_container">
+	<div class = "containertitle">Joined Debates Waiting for a Judge</div>
 	<% @judging_priority[:joined_no_judge].each do |debate| %>
 		<%= render :partial => "debate_link_joined", :locals => {:debate => debate} %>
 	<% end %>
 </div>
 
 <br>
-Unjoined Debates Waiting for a Judge
-<div id="unjoined_no_judge">
+
+<div id="unjoined_no_judge" class="judge_container">
+	<div class = "containertitle">Unjoined Debates Waiting for a Judge</div>
 	<% @judging_priority[:unjoined_no_judge].each do |debate| %>
 		<%= render :partial => "debate_link_unjoined", :locals => {:debate => debate} %>
 	<% end %>
