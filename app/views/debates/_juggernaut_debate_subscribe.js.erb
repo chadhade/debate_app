@@ -68,7 +68,7 @@
 		}
 		
 		if (data.func == "judge_arrived") {
-			abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
+			//abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
 			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
 			var img = document.createElement("IMG");
 				img.src = "/assets/gavel.png";
@@ -76,6 +76,15 @@
 				element.innerHTML = "";
 				element.appendChild(img);
 				voteable[<%= debate.id %>] = true;
+			if ("<%= current_debater.email %>" == data.obj.current_turn) {
+			    <% if Rails.env.development? or Rails.env.test? %>      	
+					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+				<% else %>
+					$.each(data.obj.post_box, function(idx, val) {    
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+					});
+				<% end %>
+			}
 		}
 
 		if (data.func == "joiner")	{

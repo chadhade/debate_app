@@ -20,8 +20,13 @@ class JudgingsController < ApplicationController
       
       @firstarg.update_attributes(:time_left => @timeleft)
       
+      @currentturn = @debate.current_turn.email
+      
+      post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
+  	  reset_invocation_response # allow double rendering
+  	  
       Juggernaut.publish("debate_" + params[:debate_id], {:func => "judge_arrived", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
-                        :debateid => params[:debate_id]}, :argument => "", :judge => true}})
+                        :debateid => params[:debate_id]}, :argument => "", :judge => true, :post_box => post_box_render, :current_turn => @currentturn}})
     end
     
     # remove debate from judging index page
