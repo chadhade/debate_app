@@ -54,13 +54,24 @@ nav a:hover {
 	background-color: #2D2D2D;
 }
 
+#general-links {
+	float: left;
+}
+
+#user-info {
+	float: right;
+}
+
+.username a {
+	color: white;
+}
 
 .error, .alert, .notice, .success, .info {margin-bottom:1em;margin-top: 10px; border:2px solid #ddd; width: 50%; margin: auto;}
-#.error, .alert {background:#fbe3e4;color:#8a1f11;border-color:#fbc2c4;}
+/*.error, .alert {background:#fbe3e4;color:#8a1f11;border-color:#fbc2c4;}*/
 .error, .alert {background:#fff;color:#8a1f11;border-color:#8a1f11; font: 13px/27px Arial,sans-serif;margin-top: 10px;}
 .notice {background:#fff6bf;color:#514721;border-color:#ffd324;}
 .success {background:#e6efc2;color:#264409;border-color:#c6d880;}
-#.success {background:#fff;color:#264409;border-color:#264409;}
+/*.success {background:#fff;color:#264409;border-color:#264409;}*/
 .info {background:#d5edf8;color:#205791;border-color:#92cae4;}
 .error a, .alert a {color:#8a1f11;}
 .notice a {color:#514721;}
