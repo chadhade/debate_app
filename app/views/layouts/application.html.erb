@@ -10,9 +10,9 @@
 	<div id = "debater_nav">
 	    <nav>
 			<div id="general-links">
-				<%= link_to 'Landing page', '/pages/landing' %>
-				<%= link_to 'Judgings index', judgings_path %>
-				<%= link_to 'View a debate', debates_path %>
+				<%= link_to 'Debate', '/pages/landing' %>
+				<%= link_to 'Judge', judgings_path %>
+				<%= link_to 'View', debates_path %>
 			</div>
 			<div id="user-info">
 				<% if debater_signed_in? %>
@@ -20,7 +20,7 @@
 					<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %><%= link_to 'Debaters', debaters_path %>
 					<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
 			    <% else %>
-			        <%= link_to 'Sign in', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
+			        <%= link_to 'Login', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
 			    	<!-- <%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
 					<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %> | -->
 				<% end %>
