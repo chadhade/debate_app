@@ -1,0 +1,18 @@
+<div id="ongoing-debates">
+	Ongoing Debates
+	<% @debates_ongoing.each do |debate| %>
+		<li> <%= link_to debate.topic, debate %> </li>
+	<% end %>
+</div>
+
+<!-- <br><br>Debates Waiting for Judge or Joiner
+<% @debates_in_limbo.each do |debate| %>
+	<li> <%= link_to debate.topic, debate %> </li>
+<% end %> -->
+
+<div id="completed-debates">
+	Completed Debates
+	<% @debates_completed.each do |debate| %>
+		<li> <%= link_to debate.topic, debate %> </li>
+	<% end %>
+</div>
