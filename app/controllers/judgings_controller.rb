@@ -50,6 +50,9 @@ class JudgingsController < ApplicationController
       Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
     end
     
+    # update status bar on show page
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+    
     respond_to do |format|
   	  format.html
   	  format.js {render :nothing => true}
