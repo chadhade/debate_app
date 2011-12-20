@@ -56,10 +56,10 @@ class Debate < ActiveRecord::Base
   # this may need to be rewritten
   def current_turn
     if self.arguments.last(:order => "created_at ASC").Repeat_Turn == true 
-		self.last_debater
-	else
-		self.arguments.size % 2 == 0 ? self.creator : self.debaters[1]
-	end
+		  self.last_debater
+	  else
+		  self.arguments.size % 2 == 0 ? self.creator : self.debaters[1]
+	  end
   end
   
   def current_turn?(debater)

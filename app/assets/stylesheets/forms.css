@@ -34,8 +34,8 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-	box-shadow: 4px 4px 4px rgb(68, 150, 231), inset 4px 4px 4px rgb(255, 255, 255);
-	
+	box-shadow: 2px 2px 2px rgb(150, 150, 150), inset 0px 0px 2px rgb(150, 150, 150);
+	background-color: rgb(223, 223, 223);
 }
 
 buttond {
@@ -83,7 +83,8 @@ buttond a:visited {
 	color: rgb(85, 85, 85);
 }
 buttond :hover {
-	box-shadow: 4px 4px 4px rgb(68, 150, 231), inset 4px 4px 4px rgb(255, 255, 255);
+	box-shadow: 2px 2px 2px rgb(150, 150, 150), inset 0px 0px 2px rgb(150, 150, 150);
 	border-radius: 3px;
+	background-color: rgb(223, 223, 223);
 	
 }

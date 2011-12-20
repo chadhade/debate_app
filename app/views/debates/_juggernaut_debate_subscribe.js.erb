@@ -30,10 +30,10 @@
 		
 			if (data.obj.footnotes != false) {
 				<% if Rails.env.development? or Rails.env.test? %> 
-					document.getElementById("footnotes").innerHTML=data.obj.footnotes;
+					$("#footnotes").html(data.obj.footnotes);
 				<% else %>
 					$.each(data.obj.footnotes, function(idx, val) { 
-						document.getElementById("footnotes").innerHTML=val;
+						$("#footnotes").html(val);
 					});
 				<% end %>
 			}
@@ -88,9 +88,9 @@
 		}
 
 		if (data.func == "joiner")	{
-			$(".timertitle-2").html(data.obj.joiner);
+			$(".timertitle-2").html("<a href='" + data.obj.joinerpath + "'>" + data.obj.joiner + "</a>");
 			moving_clock[data.obj.timers.debateid] = data.obj.timers.staticclock;
-			document.getElementById("timer2-<%= debate.id %>").innerHTML=format_output(data.obj.timers.staticclock);
+			$("#timer2-<%= debate.id %>").html(format_output(data.obj.timers.staticclock));
 			voteable[<%= debate.id %>] = false;
 		}
 

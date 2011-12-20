@@ -62,7 +62,7 @@
 <div id="debatebody">
 	<div class="debatecontainer">
 		<div class="containerpanel">
-			<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1 => @debater1, :debater2 => @debater2, :judge => @debate.judge} %>
+			<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1name => @debater1name, :debater2name => @debater2name, :debaters => @debaters, :judge => @debate.judge} %>
 			<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 		</div>
 		<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>			  

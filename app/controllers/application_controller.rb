@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 		
 		# Otherwise, the timers started when the last argument was made
 		if arglast.Repeat_Turn == true
-			timeleft = arglast.time_left - (Time.now - arglast.created_at).seconds.to_i
+			timeleft = arglast.time_left - (Time.now - arglast.updated_at).seconds.to_i
 		else
 			timeleft = thisdebate.arguments[-2].time_left - (Time.now - arglast.created_at).seconds.to_i
 		end

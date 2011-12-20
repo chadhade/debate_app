@@ -1,8 +1,22 @@
-<div class="timer"><div class="timertitle-1"><%= debater1 %>: &nbsp;</div><span id="timer1-<%= debate_id %>"></span></div>
+<div class="timer">
+	<span class="timertitle-1"><%= link_to debater1name, debaters[0] %>: &nbsp;</span>
+	<span id="timer1-<%= debate_id %>"></span>
+</div>
+
 <span id="judge-<%= debate_id %>" class="judge">
 	<% if judge %>
 		<img src = "/assets/gavel.png"></img>
 	<% end %>
 </span>
-<div class="timer"><div class="timertitle-2"><%= debater2 %>: &nbsp;</div><span id="timer2-<%= debate_id %>"></span></div>
+
+<div class="timer">
+	<span class="timertitle-2">
+		<% if debaters[1].nil? %>
+			<%= debater2name %>
+		<% else %>
+			<%= link_to debater2name, debaters[1] %>
+		<% end %>
+			: &nbsp;</span>
+	<span id="timer2-<%= debate_id %>"></span>
+</div>
 
