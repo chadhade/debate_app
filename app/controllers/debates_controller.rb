@@ -107,6 +107,11 @@ end
   	@previoustimeleft = @argument_last.time_left
   	@currentdebater = current_debater
   	@debaters = @debate.debaters
+  	
+  	# set status
+  	@status = "Two Debaters on Board! Waiting for Judge" if @debate.joined and !@debate.judge
+  	@status = "We've got a Debater and a Judge! Waiting for Second Debater" if !@debate.joined and @debate.judge
+  	@status = "Waiting for Debater and Judge" if !@debate.joined and !@debate.judge
 	
   	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
 	
