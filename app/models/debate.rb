@@ -20,6 +20,16 @@ class Debate < ActiveRecord::Base
   # associations for footnotes
   has_many :footnotes, :through => :arguments
   
+  def status
+    @status = {:status_code => 0, :status_value => "Waiting for Debater and Judge"} if !self.joined and !self.judge
+    @status = {:status_code => 1, :status_value => "Two Debaters on Board! Waiting for Judge"} if self.joined and !self.judge
+    @status = {:status_code => 2, :status_value => "We've got a Debater and a Judge! Waiting for Second Debater"} if !self.joined and self.judge
+    @status = {:status_code => 3, :status_value => "Ongoing Debate!"} if self.joined and self.judge and self.end_time.nil?
+    @status = {:status_code => 4, :status_value => "Completed Debate"} if self.joined and self.judge and !self.end_time.nil?
+    # @status = {:status_code => 5, :status_value => "Dead Debate"}
+    @status
+  end
+  
   def joined?
     self.arguments.size >= 2
   end

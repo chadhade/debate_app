@@ -32,6 +32,9 @@ class JudgingsController < ApplicationController
     # remove debate from judging index page
     Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
     
+    # update status bar on show page
+    Juggernaut.publish("debate_" + params[:debate_id], {:func => "update_status", :obj => @debate.status})
+    
     redirect_to @debate
   end
   

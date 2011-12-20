@@ -87,6 +87,9 @@ class DebatesController < ApplicationController
 	  Juggernaut.publish("judging_index", {:function => "append_to_joined", :debate_id => @debate.id, :object => debate_link_joined}) if !@debate.judge
 	  reset_invocation_response # allow double rendering
 	  
+	  # update status bar on show page
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+	  
 	  respond_to do |format|
   	  format.html
   	  format.js {render :nothing => true}
@@ -109,9 +112,7 @@ end
   	@debaters = @debate.debaters
   	
   	# set status
-  	@status = "Two Debaters on Board! Waiting for Judge" if @debate.joined and !@debate.judge
-  	@status = "We've got a Debater and a Judge! Waiting for Second Debater" if !@debate.joined and @debate.judge
-  	@status = "Waiting for Debater and Judge" if !@debate.joined and !@debate.judge
+  	@status = @debate.status
 	
   	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
 	
@@ -225,6 +226,9 @@ end
     reset_invocation_response # allow double rendering
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "erase_postbox", :obj => {:post_box => "", :current_turn => @debate.current_turn.email}})
     reset_invocation_response # allow double rendering
+    
+    # update status bar on show page
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
     
     respond_to do |format|
   	  format.html
