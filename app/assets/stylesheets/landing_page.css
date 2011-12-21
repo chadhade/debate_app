@@ -3,31 +3,67 @@
 	padding: 4px 2px;
 	height: 300px;
 	width: 325px;
-	margin: 5px 20px;
-	border:1px solid #ccc;
+	border: 1px inset silver;
 	background-color: #fafafa;
-	margin: 0 10px;
+	margin: 0 34px;
 	position: relative;
 	overflow: auto;
 	float:left;
-	vertical-align: middle;
+	text-align: center;
 	
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	/* Shadow */
-	-webkit-box-shadow:0 0 40px #000;
-    -moz-box-shadow: 0 0 40px #000;
-    box-shadow:0 10px 20px #000;
+	-webkit-box-shadow:0 0 20px #000;
+    -moz-box-shadow: 0 0 20px #000;
+    box-shadow:0 5px 10px #000;
 }
 
 .middlelanding {
 	position: absolute;
-	top: 40%;
-	left: 13%;
+	top: 30%;
+	left: 10%;
 	height: 50px;
 	text-align: center;
 }
+
+.buttond2 {
+	-o-transform-origin: 26px 16px;
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: rgb(243, 243, 243);
+	background-origin: padding-box;
+	
+	border-color: rgb(153, 153, 153);
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
+
+	box-shadow: rgb(68, 150, 231) 0px 0px 5px 0px, rgb(255, 255, 255) 0px 0px 10px 0px inset;
+	box-sizing: border-box;
+	color: rgb(85, 85, 85);
+	column-gap: 11px;
+	display: inline-block;
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: 700;
+	
+	outline-color: invert;
+	outline-style: none;
+	outline-width: 3px;
+	padding: 5px 10px;
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	word-wrap: break-word;
+	
+	width: auto;
+	height: 110px;
+	margin: 0 auto;
+}
+
+
 
 .debate-topic-position {
 	float: left;
@@ -46,6 +82,7 @@
 /*div class for topic field*/
 .field-topic {
 	float: left;
+	text-align: left;
 }
 
 /*label tag for topic*/
@@ -76,6 +113,7 @@ label[for=topic_position_position] {
 /*div class for topic position action*/
 .action-topicposition{
 	clear: both;
+	text-align: center;
 }
 
 .or {

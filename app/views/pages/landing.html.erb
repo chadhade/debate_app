@@ -3,19 +3,24 @@
 <br>
 
 <div class="landing_container">
-	<span class="debate-topic-position">
-		Get Your Debate On!! We'll Match You Up!!
-		<br><br>
-		<%= render '/topic_positions/form_topic_position' %>
-	</span>
-</div>
-<div class="landing_container">
-	<center>
-		OR
-	</center>
+	<h2> Debate </h2>
 	<div class="middlelanding">
-		<buttond class = "largebutton">
-				<%= link_to "Be a Judge", judgings_path %>
-		</buttond>
+		<div class="buttond2">
+			<span class="debate-topic-position">
+				<%= render '/topic_positions/form_topic_position' %>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div class="landing_container">
+	<h2>Judge </h2>
+	<div class="middlelanding">
+		<div class="buttond2">
+			<h3>Choose a Debate to Judge</h3>
+			<buttond>
+					<%= link_to "Debates", judgings_path %>
+			</buttond>
+		</div>
 	</div>
 </div>
