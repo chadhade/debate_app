@@ -118,11 +118,10 @@ class Debate < ActiveRecord::Base
     end
     
     @viewing_by_creator_minus_matching = @viewing_by_creator - @matching_debates.map{|v| v.id}
-    
-    @suggested_debates = self.where(:id => @viewing_by_creator_minus_matching, :joined => false).order("judge", "created_at ASC")
+    @suggested_debates = self.where(:id => @viewing_by_creator_minus_matching, :joined => false).order("judge DESC", "created_at ASC")
     
     # return the array
-    @matching = {:matching_debates => @matching_debates, :sugested_debates => @suggested_debates}
+    @matching = {:matching_debates => @matching_debates, :suggested_debates => @suggested_debates}
   end
   
   def self.judging_priority()

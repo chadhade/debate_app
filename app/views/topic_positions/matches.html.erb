@@ -1,19 +1,15 @@
 <% if @matching[:matching_debates].empty? %>
 	<br> <br>
-	No Matching Debates Found <br> 
-	Write Your First Argument Below and Create a New Debate!! <br><br>
-	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
-		<div class = "field">
-			<%= f.label :content %> <br />
-			<%= f.text_area :content, :size => "36x5" %> <br />
-			<%= f.label "Allotted Minutes" %> <br/>
-			<%= f.number_field :time_left, :value => 10 %>
-		</div>
-		<%= f.hidden_field :topic_position_id, :value => @topic_position.id %>
-		<div class = "action">
-			<%= f.submit "argument" %>
-		</div>	
+	No matching debates found, but here are some suggested debates waiting for a debater! <br> 
+	<% if  !@matching[:suggested_debates].empty? %>
+		<% @matching[:suggested_debates].each do |suggested_debate| %>
+			<div class="debate_link" data-id="<%= suggested_debate.id %>"> 
+				<li> <%= "#{suggested_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{suggested_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to suggested_debate.topic, suggested_debate %> </li>
+			</div>
+		<% end %>
 	<% end %>
+	<br><br><br> ORRRRRRRRRR
+	<%= render :partial => "/topic_positions/form_new_debate" %> 
 <% else %>
 	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
 
@@ -34,24 +30,11 @@
 	<h1> List of Matching Debates </h1>
 
 	<% @matching[:matching_debates].each do |matching_debate| %>
-		
 		<div class="debate_link" data-id="<%= matching_debate.id %>"> 
 			<li> <%= "#{matching_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{matching_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to matching_debate.topic, matching_debate %> </li>
 		</div>
 	<% end %>
 	<br> <br>
 	Don't Find a Matching Debate? <br> 
-	Write Your First Argument Below and Create a New Debate!! <br><br>
-	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
-		<div class = "field">
-			<%= f.label :content %> <br />
-			<%= f.text_area :content, :size => "36x5" %> <br />
-			<%= f.label "Allotted Minutes" %> <br/>
-			<%= f.number_field :time_left, :value => 10 %>
-		</div>
-		<%= f.hidden_field :topic_position_id, :value => @topic_position.id %>
-		<div class = "action">
-			<%= f.submit "argument" %>
-		</div>	
-	<% end %>
+	<%= render :partial => "/topic_positions/form_new_debate" %>
 <% end %>
