@@ -19,7 +19,19 @@
 <script type="text/javascript">
   jug.subscribe("matches", function(data){
 	// alert(data.debate_id);
-	$(".debate_link[data-id="+ data.debate_id +"]").hide();
+	// $(".debate_link[data-id="+ data.debate_id +"]").hide();
+	if (data.func == "hide") {
+		$(".debate_link[data-id="+ data.obj +"]").hide();
+	}
+	if (data.func == "unhide") {
+		$(".debate_link[data-id="+ data.obj +"]").show();
+	}
+	if (data.func == "append_to_matching") {
+		$("#matching_debates").append(data.obj);
+	}
+	if (data.func == "append_to_suggested") {
+		$("#suggested_debates").append(data.obj);
+	}
   });
 </script>
 

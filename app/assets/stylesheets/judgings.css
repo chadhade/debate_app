@@ -1,4 +1,3 @@
-
 .judge_container {
 	padding: 4px 2px;
 	height: 300px;
@@ -29,4 +28,12 @@
 	margin-bottom: 10px;
 
 	font-size: 15px;
+}
+
+.debate_link_joined a {
+	font-style:italic;
+}
+
+.debate_link_unjoined a {
+	font-style:italic;
 }
