@@ -1,10 +1,10 @@
 <div id="suggested_debates" class="list_matches_container">
-	<h2> Other Suggested Debates </h2>
+	<div class="containertitle">Other Suggested Debates</div>
 	<div class="containercontent">
 		<% if !@matching[:suggested_debates].empty? %>
 			<% @matching[:suggested_debates].each do |suggested_debate| %>
 				<div class="debate_link" data-id="<%= suggested_debate.id %>"> 
-					<li> <%= "#{suggested_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{suggested_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to suggested_debate.topic, suggested_debate %> </li>
+					<li> <%= "#{suggested_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{suggested_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to "\"#{suggested_debate.topic}\"", suggested_debate %> </li>
 				</div>
 			<% end %>
 		<% else %>

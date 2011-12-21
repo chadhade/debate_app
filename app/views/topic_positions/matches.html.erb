@@ -37,7 +37,17 @@
 
 <h1> List of Debates to Join </h1>
 
-<%= render :partial => "/topic_positions/list_matching_debates" %> 
-<%= render :partial => "/topic_positions/list_suggested_debates" %>
-<%= render :partial => "/topic_positions/form_new_debate" %> 
+<div class="join_container">
+	<div class="topic_position_container">
+		<%= "#{@topic_position.position == true ? "PRO" : "CON"}: #{@topic_position.topic}" %>
+	</div>
+	<%= render :partial => "/topic_positions/list_matching_debates" %> 
+	<%= render :partial => "/topic_positions/list_suggested_debates" %>
+</div>
+<div class="create_container">
+	<div class="topic_position_container">
+		Start Your Own Debate
+	</div>
+	<%= render :partial => "/topic_positions/form_new_debate" %> 	
+</div>
 
