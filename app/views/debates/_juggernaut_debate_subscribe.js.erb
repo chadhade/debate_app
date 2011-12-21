@@ -43,7 +43,10 @@
 			}
 		}
 		
-		if (data.func == "erase_postbox") {
+		if (data.func == "judge_timer") {
+			$(".debate-results").html("Waiting for Judge's Decision...");
+			javascript_countdown.init(data.obj.judgetime, 0, 3, <%= debate.id %> );
+			
 			if ("<%= current_debater.email %>" == data.obj.current_turn) {
 				<% if Rails.env.development? or Rails.env.test? %>      	
 					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);

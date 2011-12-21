@@ -67,13 +67,33 @@ nav a:hover {
 }
 
 .error, .alert, .notice, .success, .info {margin-bottom:1em;margin-top: 10px; border:2px solid #ddd; width: 50%; margin: auto;}
-/*.error, .alert {background:#fbe3e4;color:#8a1f11;border-color:#fbc2c4;}*/
 .error, .alert {background:#fff;color:#8a1f11;border-color:#8a1f11; font: 13px/27px Arial,sans-serif;margin-top: 10px;}
 .notice {background:#fff6bf;color:#514721;border-color:#ffd324;}
 .success {background:#e6efc2;color:#264409;border-color:#c6d880;}
-/*.success {background:#fff;color:#264409;border-color:#264409;}*/
 .info {background:#d5edf8;color:#205791;border-color:#92cae4;}
 .error a, .alert a {color:#8a1f11;}
 .notice a {color:#514721;}
 .success a {color:#264409;}
 .info a {color:#205791;}
+
+.signup_container {
+	padding: 15px 20px;
+	width: 250px;
+	border:1px solid #ccc;
+	background-color: #fafafa;
+	margin: 100px auto;
+	margin-bottom: 25px;
+	text-align: left;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	/* Shadow */
+	-webkit-box-shadow:0 0 40px #000;
+    -moz-box-shadow: 0 0 40px #000;
+    box-shadow:0 10px 20px #000;
+}
+
+.signup_container h2 {
+	margin-top: 0;
+}

@@ -2,6 +2,8 @@ class DebatesController < ApplicationController
   # set load paths for redis and juggernaut
   before_filter :authenticate_debater!
   
+  $judgetime = 10.seconds
+  
   if Rails.env.development?
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/redis-2.2.2/lib'
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/juggernaut-2.1.0/lib/'
@@ -120,6 +122,17 @@ end
   	end
 	
   	# Calculate the amount of time left for use in javascript timers
+  	
+    # If debate has ended, both debaters have 0 seconds left
+    if @debate.end_time
+      @movingclock = 0
+      @staticclock = 0
+      @movingposition = 0
+      @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].name
+    	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].name
+    	return
+    end
+    
   	# If there is only 1 debater, debater 2 has 0 seconds left
   	if @debaters.count == 1
   		@movingclock = 0
@@ -219,7 +232,7 @@ end
     judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
     Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})
     reset_invocation_response # allow double rendering
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "erase_postbox", :obj => {:post_box => "", :current_turn => @debate.current_turn.email}})
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_timer", :obj => {:judgetime => $judgetime, :post_box => "", :current_turn => @debate.current_turn.email}})
     reset_invocation_response # allow double rendering
     
     respond_to do |format|

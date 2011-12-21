@@ -12,22 +12,28 @@ var javascript_countdown = function () {
 	var no_time_left_message = '00:00:00';
 	
 	function countdown(singleclock_count) {
-
-		if((moving_clock[singleclock_count] == 1) && (static_clock[singleclock_count] < 1)) {
+		
+		moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
+			
+		if((moving_clock[singleclock_count] == 0) && (moving_position[singleclock_count] == 3)) {
+			abort_timer[singleclock_count] = 1;
+			return;
+			
+		}
+		
+		if((moving_clock[singleclock_count] == 0) && (static_clock[singleclock_count] < 1)) {
 			abort_timer[singleclock_count] = 1;
 			debateEnd();
 		}
 		
 		if(moving_clock[singleclock_count] < 1) {
-			keep_counting[singleclock_count] = 0;
+			abort_timer[singleclock_count] = 0;
 			if(static_clock[singleclock_count] > 0) {
 				abort_timer[singleclock_count] = 1;
 				endSingle();
 				//return;
 			}
 		}
-		
-		moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
 
 	}
  
@@ -105,10 +111,12 @@ var javascript_countdown = function () {
 			if (moving_position[debateid] == 1) {
 				output_element_id[debateid] = "timer1-" + debateid;
 				static_element_id[debateid] = "timer2-" + debateid;
+				document.getElementById(static_element_id[debateid]).innerHTML = format_output(static_clock[debateid]);
 			} 
 			if (moving_position[debateid] == 2) {
 				output_element_id[debateid] = "timer2-" + debateid;
 				static_element_id[debateid] = "timer1-" + debateid;
+				document.getElementById(static_element_id[debateid]).innerHTML = format_output(static_clock[debateid]);
 			}
 			if (moving_position[debateid] == 0) {
 				clock1 = "timer1-" + debateid;
@@ -117,8 +125,10 @@ var javascript_countdown = function () {
 				document.getElementById(clock2).innerHTML = format_output(t2);
 				return;
 			}
-				
-			document.getElementById(static_element_id[debateid]).innerHTML = format_output(static_clock[debateid]);
+			if (moving_position[debateid] == 3) {
+				output_element_id[debateid] = "judge-timer";
+			}	
+			
 		
 		}
 	};

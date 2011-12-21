@@ -84,6 +84,16 @@
 	text-decoration: none;
 }
 
+.name-creator {
+	color: #015353;
+	font-style: italic;
+}
+
+.name-joiner {
+	color: #cc0033;
+	font-style: italic;
+	
+}
 .footnote {
 	font-size: 13px;
 	line-height: 1em;
