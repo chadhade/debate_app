@@ -6,6 +6,9 @@ class TopicPositionsController < ApplicationController
   	@topic_position.save
   	redirect_to matches_topic_position_path(@topic_position)
   end
+  
+  def new
+  end
 
   def destroy
   end

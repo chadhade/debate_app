@@ -1,13 +1,14 @@
-<div id="matching_debates">
+<div id="matching_debates" class="list_matches_container">
 	<h2> Matching Debates </h2>
-
-	<% if !@matching[:matching_debates].empty? %>
-		<% @matching[:matching_debates].each do |matching_debate| %>
-			<div class="debate_link" data-id="<%= matching_debate.id %>"> 
-				<li> <%= "#{matching_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{matching_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to matching_debate.topic, matching_debate %> </li>
-			</div>
+	<div class="containercontent">
+		<% if !@matching[:matching_debates].empty? %>
+			<% @matching[:matching_debates].each do |matching_debate| %>
+				<div class="debate_link" data-id="<%= matching_debate.id %>"> 
+					<li> <%= "#{matching_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{matching_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to matching_debate.topic, matching_debate %> </li>
+				</div>
+			<% end %>
+		<% else %>
+			No Matching Debates
 		<% end %>
-	<% else %>
-		No Matching Debates
-	<% end %>
+	</div>	
 </div>
