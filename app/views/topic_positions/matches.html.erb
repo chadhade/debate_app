@@ -1,4 +1,4 @@
-<% if @matching_debates.empty? %>
+<% if @matching[:matching_debates].empty? %>
 	<br> <br>
 	No Matching Debates Found <br> 
 	Write Your First Argument Below and Create a New Debate!! <br><br>
@@ -33,7 +33,7 @@
 
 	<h1> List of Matching Debates </h1>
 
-	<% @matching_debates.each do |matching_debate| %>
+	<% @matching[:matching_debates].each do |matching_debate| %>
 		
 		<div class="debate_link" data-id="<%= matching_debate.id %>"> 
 			<li> <%= "#{matching_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{matching_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to matching_debate.topic, matching_debate %> </li>

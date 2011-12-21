@@ -12,7 +12,7 @@ class TopicPositionsController < ApplicationController
 
   def matches
     @topic_position = TopicPosition.find(params[:id])
-    @matching_debates = Debate.matching_debates(@topic_position)
+    @matching = Debate.matching_debates(@topic_position)
   end
 
 end
