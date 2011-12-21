@@ -1,4 +1,4 @@
 <div class="debate_link_unjoined" data-id="<%= debate.id %>", data-created-at="<%= debate.created_at.to_i %>"> 
-	<li> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
-	<%= "#{debate.topic_positions.first(:order => "created_at ASC").position}: #{debate.topic_positions.first(:order => "created_at ASC").topic}"%>
+	<li> <%= "#{debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
+	
 </div>
