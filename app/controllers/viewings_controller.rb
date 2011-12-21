@@ -6,7 +6,7 @@ class ViewingsController < ApplicationController
   	  @debate = Debate.find(params[:debate_id])
   	  update_viewings(@currentdebater, @debate)
   	  if @currentdebater.creator?(@debate) and !@debate.joined?
-  	    Juggernaut.publish("matches", {:debate_id => @debate.id})
+  	    Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
     	  reset_invocation_response # allow double rendering
     	  Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
   	  end

@@ -84,7 +84,7 @@ class DebatesController < ApplicationController
 	  
 	  reset_invocation_response # allow double rendering
 	  
-	  Juggernaut.publish("matches", {:debate_id => @debate.id})
+	  Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
 	  
     debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate}, :layout => false)	  
 	  Juggernaut.publish("judging_index", {:function => "append_to_joined", :debate_id => @debate.id, :object => debate_link_joined}) if !@debate.judge
@@ -121,6 +121,9 @@ end
 	
   	# for viewings
   	update_viewings(@currentdebater, @debate)
+  	if @currentdebater.creator?(@debate) and !@debate.joined?
+  	  Juggernaut.publish("matches", {:func => "unhide", :obj => @debate.id})
+	  end
 	
   	# Add footnotes if they exist
   	@arguments.each do |argument|
