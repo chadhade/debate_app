@@ -1,40 +1,31 @@
-<% if @matching[:matching_debates].empty? %>
-	<br> <br>
-	No matching debates found, but here are some suggested debates waiting for a debater! <br> 
-	<% if  !@matching[:suggested_debates].empty? %>
-		<% @matching[:suggested_debates].each do |suggested_debate| %>
-			<div class="debate_link" data-id="<%= suggested_debate.id %>"> 
-				<li> <%= "#{suggested_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{suggested_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to suggested_debate.topic, suggested_debate %> </li>
-			</div>
-		<% end %>
-	<% end %>
-	<br><br><br> ORRRRRRRRRR
-	<%= render :partial => "/topic_positions/form_new_debate" %> 
-<% else %>
-	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
+<% if Rails.env.development? or Rails.env.test? %>
+	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+	  var jug = new Juggernaut;
+	</script>
 
-	<script type="text/javascript"> 
+<% else %>	
+	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
+	<script type="text/javascript">
 	  var jug = new Juggernaut({     
 	     host: 'debate-app-jug.herokuapp.com',
 	     port: 80,
 		 secure: false,
 		 transports: ['xhr-polling', 'jsonp-polling']
-	  });
-
-	  jug.subscribe("matches", function(data){
-		// alert(data.debate_id);
-		$(".debate_link[data-id="+ data.debate_id +"]").hide();
-	  });
+	  });	
 	</script>
-
-	<h1> List of Matching Debates </h1>
-
-	<% @matching[:matching_debates].each do |matching_debate| %>
-		<div class="debate_link" data-id="<%= matching_debate.id %>"> 
-			<li> <%= "#{matching_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{matching_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to matching_debate.topic, matching_debate %> </li>
-		</div>
-	<% end %>
-	<br> <br>
-	Don't Find a Matching Debate? <br> 
-	<%= render :partial => "/topic_positions/form_new_debate" %>
 <% end %>
+
+<script type="text/javascript">
+  jug.subscribe("matches", function(data){
+	// alert(data.debate_id);
+	$(".debate_link[data-id="+ data.debate_id +"]").hide();
+  });
+</script>
+
+<h1> List of Debates to Join </h1>
+
+<%= render :partial => "/topic_positions/list_matching_debates" %> 
+<%= render :partial => "/topic_positions/list_suggested_debates" %>
+<%= render :partial => "/topic_positions/form_new_debate" %> 
+
