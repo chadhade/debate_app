@@ -30,6 +30,16 @@
 	font-size: 15px;
 }
 
+.containercontent {
+	text-align: left;
+}
+
+#joined_no_judge {
+}
+
+#unjoined_no_judge {
+}
+
 .debate_link_joined a {
 	font-style:italic;
 }
