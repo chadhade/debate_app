@@ -27,6 +27,9 @@
     box-shadow:0 10px 20px #000;
 }
 
+.debateleft {
+	float: left;
+}
 .debatecontainer {
 	padding-top: 8px;
 	height: 500px;
@@ -135,7 +138,7 @@
 }
 
 .post_to_debate {
-	margin: 10px 0;
+	margin: 5px auto;
 }
 
 #slide_menu_1 {
