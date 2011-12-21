@@ -18,9 +18,10 @@
     box-shadow:0 10px 20px #000;
 }
 
-.containertitle {
+.debatelist_container h2 {
 	height: 20px;
 	background-color: #ddd;
+	background-image: url(header_bg.gif);
 	color: #000033;
 	margin-left: 3px;
 	margin-right: 3px;

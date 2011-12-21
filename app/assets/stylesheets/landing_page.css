@@ -20,9 +20,15 @@
     box-shadow:0 5px 10px #000;
 }
 
+.landing_container h2 {
+	background-color: #fffcc;
+	font-size: 30px;
+	margin-bottom: 15px;
+}
+
 .middlelanding {
 	position: absolute;
-	top: 30%;
+	top: 35%;
 	left: 10%;
 	height: 50px;
 	text-align: center;
