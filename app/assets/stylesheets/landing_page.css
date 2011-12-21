@@ -1,6 +1,32 @@
-#debateorjudge-container {
+
+.landing_container {
+	padding: 4px 2px;
+	height: 300px;
+	width: 325px;
+	margin: 5px 20px;
+	border:1px solid #ccc;
+	background-color: #fafafa;
+	margin: 0 10px;
+	position: relative;
+	overflow: auto;
+	float:left;
+	vertical-align: middle;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	/* Shadow */
+	-webkit-box-shadow:0 0 40px #000;
+    -moz-box-shadow: 0 0 40px #000;
+    box-shadow:0 10px 20px #000;
+}
+
+.middlelanding {
+	position: absolute;
+	top: 40%;
+	left: 13%;
+	height: 50px;
 	text-align: center;
-	margin: 1em auto;
 }
 
 .debate-topic-position {

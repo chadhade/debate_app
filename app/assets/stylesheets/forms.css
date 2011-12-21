@@ -69,6 +69,7 @@ buttond {
 	white-space: nowrap;
 	width: auto;
 	word-wrap: break-word;
+	margin: auto;
 }
 
 buttond a {
@@ -79,6 +80,11 @@ buttond a {
 	
 }
 
+.largebutton {
+	font-size: 40px;
+	height: 60px;
+}
+
 buttond a:visited {
 	color: rgb(85, 85, 85);
 }
@@ -87,4 +93,10 @@ buttond :hover {
 	border-radius: 3px;
 	background-color: rgb(223, 223, 223);
 	
+}
+
+.action-topicposition {
+	clear: both;
+	padding-top: 15px;
+	text-align: left;
 }

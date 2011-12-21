@@ -2,18 +2,20 @@
 <h1>DeBunky</h1>
 <br>
 
-<div id="debateorjudge-container">
+<div class="landing_container">
 	<span class="debate-topic-position">
 		Get Your Debate On!! We'll Match You Up!!
 		<br><br>
 		<%= render '/topic_positions/form_topic_position' %>
 	</span>
-	<span class="or">
+</div>
+<div class="landing_container">
+	<center>
 		OR
-	</span>
-	<buttond>
-		
-			<%= link_to "Be a Judge", judgings_path %>
-	
-	</buttond>
+	</center>
+	<div class="middlelanding">
+		<buttond class = "largebutton">
+				<%= link_to "Be a Judge", judgings_path %>
+		</buttond>
+	</div>
 </div>
