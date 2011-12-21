@@ -32,6 +32,9 @@ class JudgingsController < ApplicationController
     # remove debate from judging index page
     Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
     
+    # update status bar on show page
+    Juggernaut.publish("debate_" + params[:debate_id], {:func => "update_status", :obj => @debate.status})
+    
     redirect_to @debate
   end
   
@@ -46,6 +49,9 @@ class JudgingsController < ApplicationController
       reset_invocation_response # allow double rendering
       Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
     end
+    
+    # update status bar on show page
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
     
     respond_to do |format|
   	  format.html

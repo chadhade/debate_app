@@ -71,7 +71,7 @@
 <!-- <%= render :partial => "/debates/sliding_menus", :locals => {:debate => @debate} %> <br /> <div class="divclear"></div> -->
 <!-- <%= @debate.current_turn.nil? ? "no one has joined" : @debate.current_turn.name %> -->
 	<div id="statuspanel">
-		<%= render :partial => "/debates/status" %>
+		<%= render :partial => "/debates/status", :locals => {:status => @status}  %>
 		<% @judging = @debate.judge_entry %>
 		<% if !@judging.nil? and @currentdebater == @debate.judger %>
 			<% if !@debate.end_time.nil? and Time.now < @debate.end_time + 20.seconds %>
