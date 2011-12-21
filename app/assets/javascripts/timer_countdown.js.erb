@@ -53,14 +53,11 @@ var javascript_countdown = function () {
 	}
 	
 	function show_time_left(output, showclock) {
-					
-			document.getElementById(output[showclock]).innerHTML = format_output(moving_clock[showclock]);
-		
-		
+			$("#" + output[showclock]).html(format_output(moving_clock[showclock]));
 	}
  
 	function no_time_left(output) {
-		document.getElementById(output).innerHTML = no_time_left_message;
+		$("#" + output).html(no_time_left_message);
 	}
  
 	return {

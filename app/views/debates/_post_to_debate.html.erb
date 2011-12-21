@@ -2,6 +2,6 @@
   <% if debate.debaters.size == 1 %>
     <%= render :partial => "debates/form_join_debate", :locals => {:debate => debate} if !debate.creator?(currentdebater) %>
   <% else %>
-    <%= render :partial => "arguments/form_argument", :locals => {:debate => debate} if debate.current_turn?(currentdebater) %>
+    <%= render :partial => "arguments/form_argument", :locals => {:debate => debate} if debate.current_turn?(currentdebater) && debate.judge? %>
   <% end %>
 </div>

@@ -77,7 +77,8 @@ class DebatesController < ApplicationController
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.name, 
 	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
-	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
+	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
+	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :joinerpath => "/debaters/" + current_debater.id.to_s, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  
 	  reset_invocation_response # allow double rendering
 	  
@@ -130,14 +131,14 @@ end
   		@movingclock = 0
   		@staticclock = @previoustimeleft
   		@movingposition = 2
-  	  @currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].name
-  		@debater2 = "No one has joined"
+  	  @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].name
+  		@debater2name = "No one has joined"
   		return
   	end
 	
   	# Debater names
-  	@currentdebater == @debaters[0] ? @debater1 = "You" : @debater1 = @debaters[0].name
-  	@currentdebater == @debaters[1] ? @debater2 = "You" : @debater2 = @debaters[1].name
+  	@currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].name
+  	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].name
 	
 	  # If no judge has joined, timers do not move
 	  if @debate.judge == false

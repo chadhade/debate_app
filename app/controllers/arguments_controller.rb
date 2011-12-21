@@ -7,6 +7,7 @@ class ArgumentsController < ApplicationController
   	@timeleft = time_left(@debate)
 	
   	# Check if argument is made on time
+  	
     if (@timeleft > 0) && (@debate.current_turn?(current_debater)) && (@debate.judge)
   		# create a new argument and redirect to debate page 
   		# -- Make the repeat_turn column true if it was true before
