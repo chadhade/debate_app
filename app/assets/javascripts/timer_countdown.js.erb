@@ -2,7 +2,6 @@ var javascript_countdown = function () {
 	abort_timer = new Array();
 	moving_clock = new Array();
 	static_clock = new Array();
-	keep_counting = new Array();
 	moving_position = new Array();
 	output_element_id = new Array();
 	static_element_id = new Array();
@@ -17,17 +16,16 @@ var javascript_countdown = function () {
 	
 		if((moving_clock[singleclock_count] == 0) && (moving_position[singleclock_count] == 3)) {
 			abort_timer[singleclock_count] = 1;
-			return;
-			
+			return;	
 		}
 		
-		if((moving_clock[singleclock_count] == 0) && (static_clock[singleclock_count] < 1)) {
+		if((moving_clock[singleclock_count] <= 0) && (static_clock[singleclock_count] < 1)) {
 			abort_timer[singleclock_count] = 1;
 			debateEnd();
+			return;
 		}
 		
 		if(moving_clock[singleclock_count] < 1) {
-			abort_timer[singleclock_count] = 0;
 			if(static_clock[singleclock_count] > 0) {
 				abort_timer[singleclock_count] = 1;
 				endSingle();
@@ -59,6 +57,7 @@ var javascript_countdown = function () {
 	}
 	
 	function show_time_left(output, showclock) {
+			if(moving_clock[showclock] < 0) {moving_clock[showclock] = 0;}
 			$("#" + output[showclock]).html(format_output(moving_clock[showclock]));
 	}
  
@@ -68,27 +67,16 @@ var javascript_countdown = function () {
  
 	return {
 		
-		count: function (singleclock) {
-			
-			countdown(singleclock);
-			show_time_left(output_element_id, singleclock);
-		},
-		
 		timer: function () {
 			for (debateclock in moving_clock) {
-					if ((keep_counting[debateclock]) && (abort_timer[debateclock] == 0)){
-						
-						javascript_countdown.count(debateclock);
-				
+					if (abort_timer[debateclock] == 0) {
+						countdown(debateclock);
+						show_time_left(output_element_id, debateclock);
 					}
 					else {
-						
-						//if (keep_counting[debateclock] == 0) {
 						if (moving_clock[debateclock] <= 0) {
-							no_time_left(output_element_id[debateclock]);
-							
-						}
-						
+							no_time_left(output_element_id[debateclock]);		
+						}		
 					}
 				}				
 			timeout_var = setTimeout("javascript_countdown.timer()", 1000);
@@ -101,8 +89,6 @@ var javascript_countdown = function () {
 		
 				
 		init: function (t, t2, move_position, debateid) {
-			
-			keep_counting[debateid] = 1;
 			abort_timer[debateid] = 0;			
 			moving_clock[debateid] = t;
 			static_clock[debateid] = t2;
