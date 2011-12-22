@@ -2,7 +2,7 @@
 
 <div><%= form_tag debates_path, :method => 'get', :remote => true, :class => 'search_debates' do %>
   <p>
-    <%= text_field_tag :search, params[:search] %>
+    <%= text_field_tag :search, params[:search] %><br>
     <%= submit_tag "Search", :name => nil %>
   </p>
 <% end %>

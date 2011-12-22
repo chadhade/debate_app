@@ -42,4 +42,9 @@
 	margin-bottom: 2px;
 	padding: 2px 5px ;
 	background-color: #e0eeee;
+
+.search_debates input[type="submit"] {
+	margin-top: 5px;
+	width: 140px;
+	height: auto;
 }
