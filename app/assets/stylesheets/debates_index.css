@@ -36,3 +36,10 @@
 .containercontent {
 	text-align: left;
 }
+
+.containercontent li {
+	list-style: none;
+	margin-bottom: 2px;
+	padding: 2px 5px ;
+	background-color: #e0eeee;
+}

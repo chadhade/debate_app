@@ -5,6 +5,7 @@
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
+	background-color: #e0eeee;
 	margin: 0 39px;
 	position: relative;
 	overflow: auto;
@@ -21,7 +22,13 @@
 }
 
 .landing_container h2 {
-	background-color: #ffffcc;
+	background-color: #0000ff;
+	color: white;
+
+	-webkit-box-shadow:0 0 20px #000;
+	-moz-box-shadow: 0 0 20px #000;
+	box-shadow:0 5px 10px #000;
+	
 	font-size: 30px;
 	margin-top: 0;
 	padding: 5px;
