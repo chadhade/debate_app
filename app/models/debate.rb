@@ -103,16 +103,16 @@ class Debate < ActiveRecord::Base
       position = debate.topic_positions.first(:order => "created_at ASC").position
       words = topic.split(/\s/)
       current_words = current_tp.topic.split(/\s/)
+      pronouns = self.load_pronouns
       if current_tp.position != position
-        # set match to true if even one word matches and append debate to array
         match = false
+        # set match to true if even one word matches and append debate to array
         current_words.each do |current_word|
-          if current_word.length >= 4
+          if current_word.length >= 3 and match == false
             words.each do |word|
               # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
-              if current_word == word
-                match = true
-              end
+              match = true if current_word.length >= 4 and word.length >= 4 and current_word[/..../] == word[/..../] and !pronouns.include?(current_word)
+              match = true if current_word.length >= 3 and word.length >= 3 and current_word == word and !pronouns.include?(current_word)
             end
           end
         end
@@ -132,5 +132,85 @@ class Debate < ActiveRecord::Base
     @joined_no_judge = self.where(:id => @viewing_by_creator, :joined => true, :judge => false).order("joined_at ASC")
     @unjoined_no_judge = self.where(:id => @viewing_by_creator, :joined => false, :judge => false).order("created_at ASC")
     {:joined_no_judge => @joined_no_judge, :unjoined_no_judge => @unjoined_no_judge}
+  end
+  
+  def self.load_pronouns
+    @pronouns = ["all", 
+      "another", 
+      "any", 
+      "anybody", 
+      "anyone", 
+      "anything", 
+      "both", 
+      "each", 
+      "each other", 
+      "either", 
+      "everybody", 
+      "everyone", 
+      "everything", 
+      "few", 
+      "he", 
+      "her", 
+      "hers", 
+      "herself", 
+      "him", 
+      "himself", 
+      "his", 
+      "I", 
+      "it", 
+      "its", 
+      "itself", 
+      "little", 
+      "many", 
+      "me", 
+      "mine", 
+      "more", 
+      "most", 
+      "much", 
+      "my", 
+      "myself", 
+      "neither", 
+      "no one", 
+      "nobody", 
+      "none", 
+      "nothing", 
+      "one", 
+      "one another", 
+      "other", 
+      "others", 
+      "our", 
+      "ours", 
+      "ourselves", 
+      "several", 
+      "she", 
+      "some", 
+      "somebody", 
+      "someone", 
+      "something", 
+      "that", 
+      "their", 
+      "theirs", 
+      "them", 
+      "themselves", 
+      "these", 
+      "they", 
+      "this", 
+      "those", 
+      "us", 
+      "we", 
+      "what ", 
+      "whatever", 
+      "which", 
+      "whichever ", 
+      "who", 
+      "whoever", 
+      "whom", 
+      "whomever", 
+      "whose", 
+      "you", 
+      "your ", 
+      "yours", 
+      "yourself", 
+      "yourselves"]
   end
 end
