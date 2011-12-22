@@ -5,7 +5,7 @@
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
-	margin: 0 34px;
+	margin: 0 39px;
 	position: relative;
 	overflow: auto;
 	float:left;
@@ -30,7 +30,7 @@
 
 .middlelanding {
 	position: absolute;
-	top: 35%;
+	top: 38%;
 	left: 10%;
 	height: 50px;
 	text-align: center;
@@ -66,7 +66,7 @@
 	white-space: nowrap;
 	word-wrap: break-word;
 	
-	width: auto;
+	width: 265px;
 	height: 110px;
 	margin: 0 auto;
 }

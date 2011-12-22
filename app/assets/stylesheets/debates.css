@@ -13,7 +13,7 @@
 #statuspanel {
 	height: 250px;
 	width: 245px;
-	margin: 5px;	
+	margin: 5px 10px;	
 	border:1px solid #ccc;
 	float: right;	
 	background-color: #fafafa;
@@ -41,7 +41,7 @@
 	padding-top: 8px;
 	height: 500px;
 	width: 500px;
-	margin: 5px 20px;
+	margin: 5px 10px;
 	border:1px solid #ccc;
 	float: left;
 	background-color: #fafafa;
