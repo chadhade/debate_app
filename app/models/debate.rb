@@ -26,8 +26,8 @@ class Debate < ActiveRecord::Base
     @status = {:status_code => 2, :status_value => "We've got a Debater and a Judge! Waiting for Second Debater"} if !self.joined and self.judge
     @status = {:status_code => 3, :status_value => "Ongoing Debate!"} if self.joined and self.judge and self.end_time.nil?
     if self.joined and self.judge and !self.end_time.nil?
-      @status = {:status_code => 4, :status_value => "Waiting for Judging Results!"} if Time.now < self.end_time + 30.seconds and self.judge_entry.winner_id.nil?
-      @status = {:status_code => 5, :status_value => "Completed Debate"} if Time.now >= self.end_time + 30.seconds or (Time.now < self.end_time + 30.seconds and !self.judge_entry.winner_id.nil?)
+      @status = {:status_code => 4, :status_value => "Waiting for Judging Results!"} if Time.now < self.end_time + $judgetime and self.judge_entry.winner_id.nil?
+      @status = {:status_code => 5, :status_value => "Completed Debate"} if Time.now >= self.end_time + $judgetime or (Time.now < self.end_time + 30.seconds and !self.judge_entry.winner_id.nil?)
     end
     # @status = {:status_code => 5, :status_value => "Dead Debate"}
     @status

@@ -44,25 +44,23 @@
 		}
 	
 		if (data.func == "update_status") {
-			// alert(data.obj.status_value);
-			$(".status").html(data.obj.status_value);
+			$(".status").html("<h2>" + data.obj.status_value + "</h2>");
 		}
 		
 		if (data.func == "judge_timer") {
-			$(".debate-results").html("Waiting for Judge's Decision...");
 			javascript_countdown.init(data.obj.judgetime, 0, 3, <%= debate.id %> );	
-			if ("<%= current_debater.email %>" == data.obj.current_turn) {
-				<% if Rails.env.development? or Rails.env.test? %>      	
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
-				<% else %>
-					$.each(data.obj.post_box, function(idx, val) {    
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-					});
-				<% end %>			
-			}
-			else {
+			//if ("<%= current_debater.email %>" == data.obj.current_turn) {
+			//	<% if Rails.env.development? or Rails.env.test? %>      	
+			//		$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+			//	<% else %>
+			//		$.each(data.obj.post_box, function(idx, val) {    
+			//			$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+			//		});
+			//	<% end %>			
+			//}
+			//else {
 				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-			}
+		//	}
 	
 		}
 		
@@ -72,16 +70,18 @@
 			<% else %>
 				$('#statuspanel').append(data.obj.judging_results[0]);
 			<% end %>
+			$("#judge-timer").html("Winner");
+			
 		}
 		
 		if (data.func == "judge_arrived") {
 			//abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
 			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
-			var img = document.createElement("IMG");
-				img.src = "/assets/gavel.png";
-			var element = document.getElementById("judge-<%= debate.id %>");
-				element.innerHTML = "";
-				element.appendChild(img);
+			//var img = document.createElement("IMG");
+			//	img.src = "/assets/gavel.png";
+			//var element = document.getElementById("judge-<%= debate.id %>");
+			//	element.innerHTML = "";
+			//	element.appendChild(img);
 				voteable[<%= debate.id %>] = true;
 			if ("<%= current_debater.email %>" == data.obj.current_turn) {
 			    <% if Rails.env.development? or Rails.env.test? %>      	

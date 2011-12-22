@@ -1,6 +1,6 @@
 
 .landing_container {
-	padding: 4px 2px;
+	padding: 0 2px 4px 2px;
 	height: 300px;
 	width: 325px;
 	border: 1px solid silver;
@@ -21,9 +21,11 @@
 }
 
 .landing_container h2 {
-	background-color: #fffcc;
+	background-color: #ffffcc;
 	font-size: 30px;
-	margin-bottom: 15px;
+	margin-top: 0;
+	padding: 5px;
+
 }
 
 .middlelanding {
