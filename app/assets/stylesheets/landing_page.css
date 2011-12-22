@@ -21,11 +21,17 @@
 }
 
 .landing_container h2 {
-	background-color: #ffffcc;
-	font-size: 30px;
-	margin-top: 0;
-	padding: 5px;
+	height: 20px;
+	background-color: #ddd;
+	background-image: url(header_bg.gif);
+	color: #000033;
+	margin-left: 3px;
+	margin-right: 3px;
+	margin-top: 3px;
+	padding-top: 4px;
+	margin-bottom: 10px;
 
+	font-size: 15px;
 }
 
 .middlelanding {
