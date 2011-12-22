@@ -36,3 +36,9 @@
 .containercontent {
 	text-align: left;
 }
+
+.search_debates input[type="submit"] {
+	margin-top: 5px;
+	width: 140px;
+	height: auto;
+}

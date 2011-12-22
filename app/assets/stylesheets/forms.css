@@ -70,7 +70,7 @@ buttond {
 	text-align: center;
 	vertical-align: middle;
 	white-space: nowrap;
-	width: auto;
+	width: 240px;
 	word-wrap: break-word;
 	margin: auto;
 }
