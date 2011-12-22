@@ -241,7 +241,7 @@ end
     judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
     Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})
     reset_invocation_response # allow double rendering
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_timer", :obj => {:judgetime => $judgetime, :post_box => "", :current_turn => @debate.current_turn.email}})
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_timer", :obj => {:judgetime => $judgetime}})
     reset_invocation_response # allow double rendering
     
     # update status bar on show page

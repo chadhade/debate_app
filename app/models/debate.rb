@@ -68,6 +68,9 @@ class Debate < ActiveRecord::Base
   # assumes toggling between two debaters
   # this may need to be rewritten
   def current_turn
+    if self.end_time # Check if Debate has ended
+      return nil 
+    end
     if self.arguments.last(:order => "created_at ASC").Repeat_Turn == true 
 		  self.last_debater
 	  else

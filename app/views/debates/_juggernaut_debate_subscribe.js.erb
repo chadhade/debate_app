@@ -49,19 +49,7 @@
 		
 		if (data.func == "judge_timer") {
 			javascript_countdown.init(data.obj.judgetime, 0, 3, <%= debate.id %> );	
-			//if ("<%= current_debater.email %>" == data.obj.current_turn) {
-			//	<% if Rails.env.development? or Rails.env.test? %>      	
-			//		$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
-			//	<% else %>
-			//		$.each(data.obj.post_box, function(idx, val) {    
-			//			$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-			//		});
-			//	<% end %>			
-			//}
-			//else {
 				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-		//	}
-	
 		}
 		
 		if (data.func == "judge_results") {
