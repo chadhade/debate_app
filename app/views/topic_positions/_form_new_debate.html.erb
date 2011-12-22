@@ -1,5 +1,5 @@
 <div class="create_form_container">
-	<div class="containertitle"> Create Your Own Debate </div>
+	<h2> Create Your Own Debate </h2>
 	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
 		<div class = "field">
 			<%= f.label :content %> <br />
