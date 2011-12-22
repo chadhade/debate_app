@@ -4,12 +4,31 @@
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
-	margin: 0 34px;
+	margin: 0px 10px;
 	margin-top: 20px;
+	margin-left: 30px;
 	position: relative;
 	overflow: auto;
 	float:left;
-	text-align: center;
+/*	text-align: center;*/
+}
+
+.or_container {
+	padding: 0px 0px;
+	padding-top: 10px;
+	height: 35px;
+	width: 50px;
+	border: 1px solid silver;
+	background-color: #fafafa;
+	margin: 0px 0px;
+	margin-top: 160px;
+	float:left;
+/*	clear:both;*/
+/*	margin-top: 20px;*/
+/*	position: relative;*/
+/*	overflow: hidden;*/
+/*	float:left;
+	text-align: center;*/
 }
 
 .create_container {
@@ -18,12 +37,13 @@
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
-	margin: 0 34px;
+	margin: 0px 10px;
 	margin-top: 20px;
+	margin-right: 30px;
 	position: relative;
 	overflow: auto;
-	float:left;
-	text-align: center;
+	float:right;
+/*	text-align: center;*/
 }
 
 .topic_position_container {
