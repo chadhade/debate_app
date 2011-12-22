@@ -72,7 +72,8 @@
 	margin-top: -1px;
 	padding-top: 4px;
 	font-family: Arial;
-	background-image: url(header_bgs.gif);
+	background-image: url(header_bg.gif);
+	border: 1px inset #fff;
 }
 
 .container-background {
