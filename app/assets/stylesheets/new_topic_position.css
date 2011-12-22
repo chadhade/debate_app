@@ -18,3 +18,17 @@
     -moz-box-shadow: 0 0 20px #000;
     box-shadow:0 5px 10px #000;*/
 }
+
+.new_tp_container h2 {
+	height: 20px;
+	background-color: #ddd;
+	background-image: url(header_bg.gif);
+	color: #000033;
+	margin-left: 3px;
+	margin-right: 3px;
+	margin-top: 3px;
+	padding-top: 4px;
+	margin-bottom: 10px;
+
+	font-size: 15px;	
+}
