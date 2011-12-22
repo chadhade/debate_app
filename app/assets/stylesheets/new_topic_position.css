@@ -1,24 +1,25 @@
-.debatelist_container {
+.new_tp_container {
 	padding: 4px 2px;
 	height: 300px;
 	width: 325px;
-	border:1px solid #ccc;
+	border: 1px solid silver;
 	background-color: #fafafa;
-	margin: 10px 10px;
-	margin-left: 43px;
+	margin: 0 auto;
+	margin-top: 30px;
+	position: relative;
 	overflow: auto;
-	float:left;
-	
+	text-align: center;
+
 /*	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;*/
 
-/*	-webkit-box-shadow:0 0 40px #000;
-    -moz-box-shadow: 0 0 40px #000;
-    box-shadow:0 10px 20px #000;*/
+/*	-webkit-box-shadow:0 0 20px #000;
+    -moz-box-shadow: 0 0 20px #000;
+    box-shadow:0 5px 10px #000;*/
 }
 
-.debatelist_container h2 {
+.new_tp_container h2 {
 	height: 20px;
 	background-color: #ddd;
 	background-image: url(header_bg.gif);
@@ -29,10 +30,5 @@
 	padding-top: 4px;
 	margin-bottom: 10px;
 
-	font-size: 15px;
-}
-
-/*also in judgings css sheet*/
-.containercontent {
-	text-align: left;
+	font-size: 15px;	
 }

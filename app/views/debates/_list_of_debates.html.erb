@@ -1,7 +1,7 @@
 <div class="debatelist_container">
 	<h2>Ongoing Debates</h2>
 
-	<div id="ongoing-debates">
+	<div id="ongoing-debates" class="containercontent">
 		<% @debates_ongoing.each do |debate| %>
 			<li> <%= link_to debate.topic, debate %> </li>
 		<% end %>
@@ -16,7 +16,7 @@
 <div class="debatelist_container">
 	<h2>Completed Debates</h2>
 	
-	<div id="completed-debates">
+	<div id="completed-debates" class="containercontent">
 		<% @debates_completed.each do |debate| %>
 			<li> <%= link_to debate.topic, debate %> </li>
 		<% end %>

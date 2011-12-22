@@ -1,14 +1,15 @@
-<h2> Create Your Own Debate </h2>
-Write Your First Argument Below and Create a New Debate!! <br><br>
-<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
-	<div class = "field">
-		<%= f.label :content %> <br />
-		<%= f.text_area :content, :size => "36x5" %> <br />
-		<%= f.label "Allotted Minutes" %> <br/>
-		<%= f.number_field :time_left, :value => 10 %>
-	</div>
-	<%= f.hidden_field :topic_position_id, :value => @topic_position.id %>
-	<div class = "action">
-		<%= f.submit "argument" %>
-	</div>	
-<% end %>
+<div class="create_form_container">
+	<h2> Create Your Own Debate </h2>
+	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
+		<div class = "field">
+			<%= f.label :content %> <br />
+			<%= f.text_area :content, :size => "36x5" %> <br />
+			<%= f.label "Allotted Minutes" %> <br/>
+			<%= f.number_field :time_left, :value => 10 %>
+		</div>
+		<%= f.hidden_field :topic_position_id, :value => @topic_position.id %>
+		<div class = "action">
+			<%= f.submit "argument" %>
+		</div>	
+	<% end %>
+</div>

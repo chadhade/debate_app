@@ -4,7 +4,7 @@
 		<% if !@matching[:matching_debates].empty? %>
 			<% @matching[:matching_debates].each do |matching_debate| %>
 				<div class="debate_link" data-id="<%= matching_debate.id %>"> 
-					<li> <%= "#{matching_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{matching_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to matching_debate.topic, matching_debate %> </li>
+					<li> <%= "#{matching_debate.topic_positions.first(:order => "created_at ASC").position == true ? "PRO" : "CON"}: #{matching_debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to "\"#{matching_debate.topic}\"", matching_debate %> </li>
 				</div>
 			<% end %>
 		<% else %>
