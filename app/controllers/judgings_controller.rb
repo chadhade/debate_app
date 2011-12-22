@@ -20,7 +20,7 @@ class JudgingsController < ApplicationController
       
       @firstarg.update_attributes(:time_left => @timeleft)
       
-      @currentturn = @debate.current_turn.email
+      @currentturn = @debate.debaters.first(:order => "created_at ASC").email
       
       post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
   	  reset_invocation_response # allow double rendering
