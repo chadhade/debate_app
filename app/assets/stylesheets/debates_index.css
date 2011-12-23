@@ -38,6 +38,10 @@
 	position: relative;
 	overflow: auto;
 	margin: 0 auto;
+	
+/*	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;*/
 
 	-webkit-box-shadow:0 0 20px #000;
 	-moz-box-shadow: 0 0 20px #000;
