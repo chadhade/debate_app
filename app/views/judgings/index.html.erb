@@ -26,17 +26,17 @@
 	
 	if (data.function == "append_to_joined") {
 		<% if Rails.env.development? or Rails.env.test? %>      	
-			$("#joined_no_judge").append(data.object);
+			$("#joined_no_judge").children(".containercontent").append(data.object);
 		<% else %>
-			$("#joined_no_judge").append(data.object[0]);
+			$("#joined_no_judge").children(".containercontent").append(data.object[0]);
 		<% end %>
 		
 	}
 	if (data.function == "append_to_unjoined") {
 		<% if Rails.env.development? or Rails.env.test? %>      	
-			$("#unjoined_no_judge").append(data.object);
+			$("#unjoined_no_judge").children(".containercontent").append(data.object);
 		<% else %>
-			$("#unjoined_no_judge").append(data.object[0]);
+			$("#unjoined_no_judge").children(".containercontent").append(data.object[0]);
 		<% end %>
 		
 	}
