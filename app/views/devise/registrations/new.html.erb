@@ -20,7 +20,6 @@
 	<% end %>
 	<br />
 	Already have an account?
-	
 	<%- if devise_mapping.registerable? && controller_name != 'sessions' %>
   		<%= link_to "Click here.", new_session_path(resource_name) %><br />
 	<% end -%>
