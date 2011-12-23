@@ -1,21 +1,25 @@
 class DebatesController < ApplicationController
-  # set load paths for redis and juggernaut
-  before_filter :authenticate_debater!
-  
-  $judgetime = 1000.seconds
-  
-  if Rails.env.development?
-    $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/redis-2.2.2/lib'
-    $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/juggernaut-2.1.0/lib/'
-    require 'juggernaut'  
-  end
+    # set load paths for redis and juggernaut
+    if Rails.env.development?
+      $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/redis-2.2.2/lib'
+      $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/juggernaut-2.1.0/lib/'
+      require 'juggernaut'  
+    end
+    
+    #Global Variables
+    $judgetime = 1000.seconds
+    
+    before_filter :authenticate_debater!
+    skip_before_filter :authenticate_debater!, :only => [:show, :index]
     
   def new
+    
     # creating a new debate is the same as creating the first argument
   	@argument = Argument.new
   end
   
   def create
+  	
   	# create a new debate linked to debater
   	@debate = Debate.new(:joined => false, :judge => false)
   	@debate.save
@@ -44,6 +48,7 @@ class DebatesController < ApplicationController
   end
   
   def join
+    
     @debate = Debate.find(params[:id])
   	# link debater to debate
   	current_debater.debations.create(:debate_id => params[:id])
@@ -121,10 +126,12 @@ end
 	
   	# for viewings
   	update_viewings(@currentdebater, @debate)
-  	if @currentdebater.creator?(@debate) and !@debate.joined?
-  	  Juggernaut.publish("matches", {:func => "unhide", :obj => @debate.id})
+  	if !@currentdebater.nil?
+    	if @currentdebater.creator?(@debate) and !@debate.joined?
+    	  Juggernaut.publish("matches", {:func => "unhide", :obj => @debate.id})
+  	  end
 	  end
-	
+	  
   	# Add footnotes if they exist
   	@arguments.each do |argument|
   		argument.any_footnotes ? argument.content = argument.show_footnote : nil

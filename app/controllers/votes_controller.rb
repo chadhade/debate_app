@@ -1,4 +1,6 @@
 class VotesController < ApplicationController
+  before_filter :authenticate_debater!
+  
   def create
 	  @argument = Argument.find_by_id(params[:argument_id])
 	  @vote = params[:vote]

@@ -1,4 +1,6 @@
 class JudgingsController < ApplicationController
+  before_filter :authenticate_debater!
+  
   def index
     @judging_priority = Debate.judging_priority()
   end
