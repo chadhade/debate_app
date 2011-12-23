@@ -16,6 +16,11 @@ class DebatersController < ApplicationController
   
   def show
     @debater = Debater.find(params[:id])
+    @debates = @debater.debates
+    
+    @recentdebates = @debates.all(:order => "created_at DESC").first 5
+    
+    @debateswon = Judging.where("winner_id = ?", @debater.id).count
   end
   
   def index

@@ -1,0 +1,124 @@
+table.profile {
+	width: 100%;
+	margin-bottom: 0;
+	text-align: center;
+}
+
+.main {
+	width: 70%;
+	padding: 1em 0em 1em 3em;
+}
+
+ul.debaters {
+	margin-top: 1em;
+}
+
+.debaters li {
+	list-style: none;
+	text-align: left;
+}
+
+.profile_container {
+	padding: 5px 10px;
+	min-height: 425px;
+	width: 600px;
+	border: 1px solid silver;
+	background-color: #fafafa;
+	margin: 0px 10px;
+	margin-top: 20px;
+	position: relative;
+	overflow: auto;
+
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+
+	-webkit-box-shadow:0 0 20px #000;
+    -moz-box-shadow: 0 0 20px #000;
+    box-shadow:0 5px 10px #000;
+}
+
+.profile_box {
+	padding: 5px 10px;
+	height: auto;
+	width: 80%;
+	border: 1px solid silver;
+	background-color: #fafafa;
+	margin: 10px;
+	margin-top: 10px;
+	position: relative;
+	overflow: auto;
+	text-align: left;
+	
+	
+
+	-webkit-box-shadow:0 0 10px #000;
+    -moz-box-shadow: 0 0 10px #000;
+    box-shadow:0 3px 5px #000;
+}
+
+.profile_box h2 {
+	padding: 0;
+	margin: 0;
+}
+.sidebar {
+	float:right;
+	width: 60%;
+	margin-top: 1em;
+	padding: .5em;
+	vertical-align: top;
+	background: #ffc;
+	text-align: center;
+}
+
+.sidebar a {
+	text-decoration: none;
+}
+
+.stats {
+	font-size: 75%;
+	text-align: center;
+}
+
+.profile_small {
+	font-size: 13px;
+}
+
+#follow_form {
+	text-align: center;
+}
+
+#block_form {
+	text-align: center;
+}
+
+.new_relationship input[type="submit"] {
+	float: left;
+	padding: 3px 4px;;
+	height: 25px;
+	margin: 2px auto;
+}
+
+.new_blocking input[type="submit"] {
+	float: right;
+	padding: 3px 4px;;
+	height: 25px;
+	margin: 2px auto;
+}
+
+.edit_relationship input[type="submit"] {
+	float: left;
+	padding: 3px 4px;;
+	height: 25px;
+	margin: 2px auto;
+}
+
+.edit_blocking input[type="submit"] {
+	float: right;
+	padding: 3px 4px;;
+	height: 25px;
+	margin: 2px auto;
+}
+
+
+
