@@ -21,6 +21,15 @@ class DebatersController < ApplicationController
     @recentdebates = @debates.all(:order => "created_at DESC").first 5
     
     @debateswon = Judging.where("winner_id = ?", @debater.id).count
+    @debateslost = Judging.where("loser_id = ?", @debater.id).count
+    
+    @positivevotes = 0
+    @negativevotes = 0
+    
+    @debater.arguments.each do |v|
+      @positivevotes = @positivevotes + v.votes_for
+      @negativevotes = @negativevotes + v.votes_against
+    end
   end
   
   def index
