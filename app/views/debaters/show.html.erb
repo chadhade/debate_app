@@ -1,24 +1,19 @@
+<span class="page-title"><h1><%= @debater.name %></h1></span>
+
 <div class = "profile">
-		<div class = "sidebar round">
-			<strong>Name:</strong> <span class="profile_small"> <%= @debater.name %> </span> 
-			<br />
-			<%= render 'stats' %>
-	
-			<% if signed_in? %>
-				<%= render 'follow_form' %>
-				<%= render 'block_form' %>
-			<% end %>
-		</div>
+	<div class = "sidebar round">
+		<%= render 'stats' %>
+		<% if signed_in? %>
+			<%= render 'follow_form' %>
+			<%= render 'block_form' %>
+		<% end %>
+	</div>
 </div>
 
-<h1><%= @debater.name %></h1>
-
 <div class="profile_container">
-	<div class="profile_box round colored">
-		<h2>Total Debates: <%= @debates.count + @debater.judgings.count %></h2>
-	</div>
+	<h2>Total Debates: <%= @debates.count + @debater.judgings.count %></h2>
 	<div class="profile_box">
-		<strong>Debates Participated In: <%= @debates.count %></strong>
+		<h3>Debates Participated In: <%= @debates.count %></h3>
 		<ul>
 			<li> Won: <%= @debateswon %></li>
 			<li> Lost: <%= @debateslost %></li>
@@ -28,13 +23,13 @@
 		</ul>
 	</div>
 	<div class="profile_box">
-		<strong>Debates Judged: <%= @debater.judgings.count %> </strong>
+		<h3>Debates Judged: <%= @debater.judgings.count %> </h3>
 		<ul>	
 			<li>Judge Points: N/A (Beta) </li>
 		</ul>
 	</div>
 	<div class="profile_box">
-		<strong>Recent Debates</strong>
+		<h3>Recent Debates</h3>
 		<ul>
 			<% if @recentdebates.empty? %>
 				You Have Not Participated in Any Debates!
