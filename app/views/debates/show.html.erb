@@ -1,4 +1,5 @@
 <span class="page-title"><h1>Debate!</h1></span>
+<br />
 
 <!-- <%= javascript_include_tag "short_polling" %> -->
 <%= javascript_include_tag "voting" %>
@@ -60,6 +61,9 @@
 
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->
 
+<div class="topic_position_container">
+	<%= "#{@debate.tp.position == true ? "PRO" : "CON"}: #{@debate.tp.topic}" %>
+</div>
 
 <div id="debatebody">
 	<div class="debateleft">

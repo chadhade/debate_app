@@ -86,6 +86,10 @@ class Debate < ActiveRecord::Base
     @topic = self.arguments.first(:order => "created_at ASC").content
   end
   
+  def tp
+    self.topic_positions.first(:order => "created_at ASC")
+  end
+  
   def self.search(search)
 	if search
       @debates = Array.new; all.each {|debate| @debates << debate if debate.topic.match(/#{search}/)}
