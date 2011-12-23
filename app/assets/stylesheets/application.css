@@ -37,8 +37,10 @@ body {
 	margin-top: 15px;
 	margin-bottom: 15px;
 	padding: 10px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 	overflow: hidden;
-	min-height: 375px;
+	min-height: 365px;
 	
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
