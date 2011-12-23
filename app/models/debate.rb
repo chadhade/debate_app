@@ -198,7 +198,7 @@ class Debate < ActiveRecord::Base
       "those", 
       "us", 
       "we", 
-      "what ", 
+      "what", 
       "whatever", 
       "which", 
       "whichever ", 
