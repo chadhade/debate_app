@@ -1,11 +1,13 @@
-<h1>List of Debates</h1>
+<span class="page-title"><h1>List of Debates</h1></span>
+<br>
 
-<div><%= form_tag debates_path, :method => 'get', :remote => true, :class => 'search_debates' do %>
-  <p>
-    <%= text_field_tag :search, params[:search] %><br>
-    <%= submit_tag "Search", :name => nil %>
-  </p>
-<% end %>
+<div class="search_container">
+	<%= form_tag debates_path, :method => 'get', :remote => true, :class => 'search_debates' do %>
+	    <%= text_field_tag :search, params[:search] %><br>
+	    <%= submit_tag "Search", :name => nil %>
+	<% end %>
+</div>
+<br>
 
 <div id="list_of_debates"><%= render 'debates/list_of_debates' %></div>
 

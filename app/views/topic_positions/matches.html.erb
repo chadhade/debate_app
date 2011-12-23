@@ -35,22 +35,26 @@
   });
 </script>
 
-<h1> Join a Debate or Create Your Own! </h1>
+<span class="page-title"><h1> Join or Create a Debate! </h1></span>
+<br>
 
 <div class="topic_position_container">
 	<%= "#{@topic_position.position == true ? "PRO" : "CON"}: #{@topic_position.topic}" %>
 </div>
+<br>
 
 <div class="join_container">
 	<h2> Join a Debate</h2>
 	<%= render :partial => "/topic_positions/list_matching_debates" %> 
+	<br>
 	<%= render :partial => "/topic_positions/list_suggested_debates" %>
 </div>
 <div class="create_container">
+	<h2> Create a Debate </h2>
 	<%= render :partial => "/topic_positions/form_new_debate" %> 	
 </div>
 <div class="or_container">
-	or
+	<h2>or</h2>
 <div>
 
 

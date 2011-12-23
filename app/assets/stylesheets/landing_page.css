@@ -1,19 +1,18 @@
 .landing_container_left {
 	padding: 10px 10px;
-	height: 385px;
+	height: 250px;
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
-	margin: 0px 10px;
-	margin-top: 20px;
-	margin-right: 30px;
+
 	position: relative;
 	overflow: auto;
-	float:right;
+	float:left;
+	margin-left:10px;
 
-/*	-moz-border-radius: 10px;
+	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
-	border-radius: 10px;*/
+	border-radius: 10px;
 
 	-webkit-box-shadow:0 0 20px #000;
     -moz-box-shadow: 0 0 20px #000;
@@ -22,16 +21,15 @@
 
 .landing_container_right {
 	padding: 10px 10px;
-	height: 385px;
+	height: 250px;
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
-	margin: 0px 10px;
-	margin-top: 20px;
-	margin-right: 30px;
+
 	position: relative;
 	overflow: auto;
 	float:right;
+	margin-right:10px;
 	
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -42,33 +40,56 @@
     box-shadow:0 5px 10px #000;
 }
 
+.or_container {
+	padding: 10px 10px;
+	height: 36px;
+	width: 46px;
+	border: 1px solid silver;
+	background-color: #fafafa;
+	float:left;
+	font-family: Times;
+	font-weight: bold;
+	
+	margin-top: 110px;
+	margin-left: 19px;
+	margin-right: 19px;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+
+	-webkit-box-shadow:0 0 20px #000;
+    -moz-box-shadow: 0 0 20px #000;
+    box-shadow:0 5px 10px #000;
+}
+
+.or_container h2 {
+	-webkit-box-shadow:0 0 10px #000;  
+	-moz-box-shadow: 0 0 10px #000;
+	box-shadow:0 2px 10px #000;
+
+	font-size: 30px;
+	margin:auto;
+	height: 36px;
+	width: 46px;
+}
 
 .landing_container_left h2 {
-/*	background-color: #0000ff;*/
-/*	color: white;  */
-/*	border: 2px inset white;*/
-
 	-webkit-box-shadow:0 0 10px #000;  
 	-moz-box-shadow: 0 0 10px #000;
 	box-shadow:0 2px 10px #000;
 
 	font-size: 30px;
 	margin-top: 0;
-/*	padding: 5px;*/
 }
 
 .landing_container_right h2 {
-/*	background-color: #0000ff;*/
-/*	color: white;  */
-/*	border: 2px inset white;*/
-
 	-webkit-box-shadow:0 0 10px #000;  
 	-moz-box-shadow: 0 0 10px #000;
 	box-shadow:0 2px 10px #000;
 
 	font-size: 30px;
 	margin-top: 0;
-/*	padding: 5px;*/
 }
 
 .middlelanding {

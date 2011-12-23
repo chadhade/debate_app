@@ -1,4 +1,4 @@
-<h1>Debate!</h1>
+<span class="page-title"><h1>Debate!</h1></span>
 
 <!-- <%= javascript_include_tag "short_polling" %> -->
 <%= javascript_include_tag "voting" %>
@@ -65,8 +65,10 @@
 	<div class="debateleft">
 		<div class="debatecontainer">
 			<div class="containerpanel">
+				<h2>
 				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1name => @debater1name, :debater2name => @debater2name, :debaters => @debaters, :judge => @debate.judge} %>
 				<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
+				</h2>
 			</div>
 			<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>			  
 		
