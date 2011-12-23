@@ -2,15 +2,52 @@
 	<tr>
 		<td class = "main">
 			<h1><%= @debater.name %></h1>
-			<%= @debater.email %>
+		</td>
+		<td class = "sidebar round">
+			<strong>Name:</strong> <span class="profile_small"> <%= @debater.name %> </span> 
+			<br />
+			<%= render 'stats' %>
+	
 			<% if signed_in? %>
 				<%= render 'follow_form' %>
 				<%= render 'block_form' %>
 			<% end %>
-		</td>
-		<td class = "sidebar round">
-			<strong>Username:</strong> <%= link_to @debater.name, @debater %> <br />
-			<%= render 'stats' %>
+			
 		</td>
 	</tr>
 </table>
+
+<div class="profile_container">
+	<div class="profile_box round colored">
+		<h2>Total Debates: <%= @debates.count + @debater.judgings.count %></h2>
+	</div>
+	<div class="profile_box">
+		<strong>Debates Participated In: <%= @debates.count %></strong>
+		<ul>
+			<li> Won: <%= @debateswon %></li>
+			<li> Lost: </li>
+			<li> Total Upvotes: </li>
+			<li> Total Downvotes: </li>
+			<li> Total Arguments: <%= @debater.arguments.count %>
+		</ul>
+	</div>
+	<div class="profile_box">
+		<strong>Debates Judged: <%= @debater.judgings.count %> </strong>
+		<ul>	
+			<li>Judge Points: N/A (Beta) </li>
+		</ul>
+	</div>
+	<div class="profile_box">
+		<strong>Recent Debates</strong>
+		<ul>
+			<% if @recentdebates.empty? %>
+				You Have Not Participated in Any Debates!
+			<% else %>
+				<% @recentdebates.each do |debate| %>
+					<li> <%= link_to debate.topic, debate %> </li>
+				<% end %>
+			<% end %>
+		</ul>
+		
+	</div>
+</div>

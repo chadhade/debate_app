@@ -42,6 +42,24 @@
 	font-style:italic;
 }
 
+.debate_link_joined {
+	margin-bottom: 2px;
+	background-color: #e0eeee;
+}
+
 .debate_link_unjoined a {
 	font-style:italic;
+}
+
+.debate_link_unjoined {
+	margin-bottom: 2px;
+	background-color: #e0eeee;
+}
+
+.pro li {
+	list-style-image: url(pro-bubble-d.gif);
+}
+
+.con li {
+	list-style-image: url(con-bubble-d.gif);
 }

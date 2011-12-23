@@ -48,10 +48,21 @@
 	box-shadow:0 5px 10px #000;
 }
 
+.search_container [type="submit"] {
+	width: 130px;
+	margin-top: 4px;
+}
+
 /*also in judgings css sheet*/
 .containercontent {
 	text-align: left;
 }
+
+.containercontent li {
+	list-style: none;
+	margin-bottom: 2px;
+	padding: 2px 5px ;
+	background-color: #e0eeee;
 
 .search_debates input[type="submit"] {
 	margin-top: 5px;
