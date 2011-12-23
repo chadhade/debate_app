@@ -15,13 +15,14 @@ ul.debaters {
 }
 
 .profile_container {
-	padding: 5px 10px;
+	padding: 10px 10px;
 	min-height: 425px;
 	width: 600px;
 	border: 1px solid silver;
 	background-color: #fafafa;
-	margin: 0px 10px;
+	margin: 0px 0px;
 	margin-top: 20px;
+	margin-left:24px;
 	position: relative;
 	overflow: auto;
 
@@ -34,13 +35,21 @@ ul.debaters {
     box-shadow:0 5px 10px #000;
 }
 
+.profile_container h2 {
+	-webkit-box-shadow:0 0 10px #000;  
+	-moz-box-shadow: 0 0 10px #000;
+	box-shadow:0 2px 10px #000;
+
+	font-size: 30px;
+	margin-top: 0;
+}
+
 .profile_box {
 	padding: 5px 10px;
 	height: auto;
-	width: 80%;
+	width: 560px;
 	border: 1px solid silver;
 	background-color: #fafafa;
-	background-color: #eef0ee;
 	margin: 10px;
 	margin-top: 10px;
 	position: relative;
@@ -50,26 +59,28 @@ ul.debaters {
 	-webkit-box-shadow:0 0 10px #000;
     -moz-box-shadow: 0 0 10px #000;
     box-shadow:0 3px 5px #000;
-
-	
 }
 
-.profile_box h2 {
-	padding: 0;
-	margin: 0;
+.profile_box h3 {
+	margin: 0 auto;	
+	margin-bottom: 5px;
+	text-align: center;
 }
 
-.colored {
-	background-color: #e0eeee;
-}
 .sidebar {
+	border: 1px solid silver;
 	float:right;
 	width: 60%;
 	margin-top: 1em;
+	margin-right:24px;
 	padding: .5em;
 	vertical-align: top;
-	background: #ffc;
+	background: #fafafa;
 	text-align: center;
+	
+	-webkit-box-shadow:0 0 10px #000;
+    -moz-box-shadow: 0 0 10px #000;
+    box-shadow:0 3px 5px #000;
 }
 
 .sidebar a {
@@ -79,10 +90,6 @@ ul.debaters {
 .stats {
 	font-size: 75%;
 	text-align: center;
-}
-
-.profile_small {
-	font-size: 13px;
 }
 
 #follow_form {
