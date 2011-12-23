@@ -1,12 +1,8 @@
-table.profile {
-	width: 100%;
+.profile {
+	float: right;
+	width: 20%;
 	margin-bottom: 0;
 	text-align: center;
-}
-
-.main {
-	width: 70%;
-	padding: 1em 0em 1em 3em;
 }
 
 ul.debaters {

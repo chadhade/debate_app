@@ -1,9 +1,5 @@
-<table class = "profile" summary="Profile information">
-	<tr>
-		<td class = "main">
-			<h1><%= @debater.name %></h1>
-		</td>
-		<td class = "sidebar round">
+<div class = "profile">
+		<div class = "sidebar round">
 			<strong>Name:</strong> <span class="profile_small"> <%= @debater.name %> </span> 
 			<br />
 			<%= render 'stats' %>
@@ -12,10 +8,10 @@
 				<%= render 'follow_form' %>
 				<%= render 'block_form' %>
 			<% end %>
-			
-		</td>
-	</tr>
-</table>
+		</div>
+</div>
+
+<h1><%= @debater.name %></h1>
 
 <div class="profile_container">
 	<div class="profile_box round colored">
