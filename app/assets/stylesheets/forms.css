@@ -32,6 +32,11 @@ input[type="submit"] {
 	word-wrap: break-word;
 }
 
+.search_container input[type="submit"] {
+	width: 180px;
+	margin-top: 4px;
+}
+
 input[type="text"] {
 	width: 175px;
 	margin-left: 2px;

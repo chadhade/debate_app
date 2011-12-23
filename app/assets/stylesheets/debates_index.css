@@ -31,7 +31,7 @@
 .search_container {
 	padding: 10px 10px;
 	height: 65px;
-	width: 150px;
+	width: 185px;
 	border: 1px solid silver;
 	background-color: #fafafa;
 
@@ -46,11 +46,6 @@
 	-webkit-box-shadow:0 0 20px #000;
 	-moz-box-shadow: 0 0 20px #000;
 	box-shadow:0 5px 10px #000;
-}
-
-.search_container [type="submit"] {
-	width: 130px;
-	margin-top: 4px;
 }
 
 /*also in judgings css sheet*/
