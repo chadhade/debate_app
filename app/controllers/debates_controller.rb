@@ -148,7 +148,7 @@ end
   		@staticclock = @previoustimeleft
   		@movingposition = 2
   	  @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].name
-  		@debater2name = "No one has joined"
+  		@debater2name = "Waiting"
   		return
   	end
 	
