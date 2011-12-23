@@ -18,5 +18,12 @@
 
 	  	<div><%= f.submit "Register" %></div>
 	<% end %>
+	<br />
+	Already have an account?
+	
+	<%- if devise_mapping.registerable? && controller_name != 'sessions' %>
+  		<%= link_to "Click here.", new_session_path(resource_name) %><br />
+	<% end -%>
 </div>
-<%= render :partial => "devise/shared/links" %>
+
+<!-- <%= render :partial => "devise/shared/links" %> -->
