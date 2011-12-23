@@ -32,6 +32,16 @@ input[type="submit"] {
 	word-wrap: break-word;
 }
 
+input[type="text"] {
+	width: 175px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+textarea {
+	width: 250px;
+}
+
 input[type="submit"]:hover {
 /*	box-shadow: 2px 2px 2px rgb(150, 150, 150), inset 0px 0px 2px rgb(150, 150, 150);*/
 	background-color: rgb(223, 223, 223);
