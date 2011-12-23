@@ -17,10 +17,12 @@ body {
 	background-attachment: fixed;
 }
 
-h1 {
+.page-title h1 {
 	border: 1px solid silver;
 	background-color: white;
-	width: auto;
+	margin:auto;
+	width:600px;
+	text-align:center;
 	
 	-webkit-box-shadow:0 0 10px #000;  
 	-moz-box-shadow: 0 0 10px #000;
@@ -30,18 +32,18 @@ h1 {
 .sitewidth {
 	width: 820px;
 	text-align: center;
-	margin: 0 auto;
 	background-color: #f4f4f4;
-	margin: 15px auto;
+	margin: auto;
+	margin-top: 15px;
+	margin-bottom: 15px;
 	padding: 10px;
-	padding-bottom: 25px;
 	overflow: hidden;
-	min-height: 600px;
+	min-height: 375px;
 	
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	/* Shadow */
+
 	-webkit-box-shadow:0 0 40px #000;
     -moz-box-shadow: 0 0 40px #000;
     box-shadow:0 10px 20px #000;

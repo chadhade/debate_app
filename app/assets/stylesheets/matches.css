@@ -27,24 +27,6 @@
 	font-size: 15px;
 }
 
-.or_container {
-	padding: 0px 0px;
-	padding-top: 10px;
-	height: 35px;
-	width: 50px;
-	border: 1px solid silver;
-	background-color: #fafafa;
-	margin: 0px 0px;
-	margin-top: 160px;
-	float:left;
-/*	clear:both;*/
-/*	margin-top: 20px;*/
-/*	position: relative;*/
-/*	overflow: hidden;*/
-/*	float:left;
-	text-align: center;*/
-}
-
 .create_container {
 	padding: 4px 2px;
 	height: 385px;
