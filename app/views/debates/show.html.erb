@@ -101,8 +101,8 @@
 		<% end %>
 		
 		<% @judging = @debate.judge_entry %>
-		<% if !@judging.nil? and @currentdebater == @debate.judger %>
-			<% if !@debate.end_time.nil? and Time.now < @debate.end_time + 20.seconds %>
+		<% if !@judging.nil? and @currentdebater == @debate.judger and @judging.winner_id.nil? %>
+			<% if !@debate.end_time.nil? and Time.now < @debate.end_time + $judgetime %>
 				<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
 			<% end %>
 		<% end %>

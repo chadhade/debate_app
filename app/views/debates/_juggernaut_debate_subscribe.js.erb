@@ -48,9 +48,18 @@
 		}
 		
 		if (data.func == "judge_timer") {
+			<% if Rails.env.development? or Rails.env.test? %>      	
+				$('#statuspanel').append(data.obj.judgetime_div);			
+			<% else %>
+				$('#statuspanel').append(data.obj.judgetime_div[0]);
+			<% end %>			
 			javascript_countdown.init(data.obj.judgetime, 0, 3, <%= debate.id %> );	
-				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+			$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
 		}
+		
+		if (data.func == "judge_timer_remove") {
+			$('#judge-timer').remove();
+		}		
 		
 		if (data.func == "judge_results") {
 			<% if Rails.env.development? or Rails.env.test? %>      	

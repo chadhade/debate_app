@@ -2,7 +2,7 @@ class DebatesController < ApplicationController
   # set load paths for redis and juggernaut
   before_filter :authenticate_debater!
   
-  $judgetime = 10000.seconds
+  $judgetime = 10.seconds
   
   if Rails.env.development?
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/redis-2.2.2/lib'
@@ -241,7 +241,9 @@ end
     judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
     Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})
     reset_invocation_response # allow double rendering
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_timer", :obj => {:judgetime => $judgetime}})
+    judgetime_div = render :partial => "/judgings/judging_timer"
+    reset_invocation_response # allow double rendering    
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_timer", :obj => {:judgetime_div => judgetime_div, :judgetime => $judgetime}})
     reset_invocation_response # allow double rendering
     
     # update status bar on show page
