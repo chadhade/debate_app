@@ -17,6 +17,7 @@ class Debater < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation, :remember_me, :login
   
   acts_as_voter
+  attr_accessible :arg_upvotes, :arg_downvotes
   
   # associations for debate participation
   has_many :debations
