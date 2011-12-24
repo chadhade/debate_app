@@ -43,7 +43,7 @@ class JudgingsController < ApplicationController
   def submission
     @judging = Judging.find(params[:id])
     @debate = @judging.debate
-    @debate.creator.id == params[:juding][:winner_id] ? @loser_id = @debate.joiner.id : @loser_id = @debate.creator.id
+    @debate.creator.id == params[:judging][:winner_id] ? @loser_id = @debate.joiner.id : @loser_id = @debate.creator.id
     
 
     if Time.now < @debate.end_time + $judgetime

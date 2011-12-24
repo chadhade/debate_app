@@ -75,9 +75,7 @@
 				</h2>
 			</div>
 			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid} %>			  
-		
 		</div>
-		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
 	</div>
 
 <script>
@@ -113,7 +111,8 @@
 		<h2>Footnotes</h2>
 		<%= render @debate.footnotes %>
 	</div>
-	
+	<br><br>
+	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
 </div>
 
 <script>

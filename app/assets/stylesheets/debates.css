@@ -34,6 +34,20 @@
     box-shadow:0 5px 10px #000;
 }
 
+.post_to_debate {
+	padding: 10px 10px;
+	width: 480px;
+	margin: 5px 10px;	
+	border:1px solid #ccc;
+/*	float: left;	*/
+	background-color: #fafafa;
+	clear:both;
+	
+	-webkit-box-shadow:0 0 20px #000;
+    -moz-box-shadow: 0 0 20px #000;
+    box-shadow:0 5px 10px #000;
+}
+
 #footnotespanel h2 {
 	-webkit-box-shadow:0 0 10px #000;  
 	-moz-box-shadow: 0 0 10px #000;
@@ -188,10 +202,6 @@
 	background-image: url(whos_online.gif);
 	background-repeat: no-repeat;
 	background-position: right top;
-}
-
-.post_to_debate {
-	margin: 5px auto;
 }
 
 #slide_menu_1 {

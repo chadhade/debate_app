@@ -12,19 +12,19 @@
 			<% if !current_debater.nil? %>
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
 				    <% if Rails.env.development? or Rails.env.test? %>      	
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+						$("#debatebody").append(data.obj.post_box);
 					<% else %>
 						$.each(data.obj.post_box, function(idx, val) {    
-							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+							$("#debatebody").append(val);
 						});
 					<% end %>	
 				}
 				else {
 				    <% if Rails.env.development? or Rails.env.test? %> 
-					    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+					    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
 					<% else %>
 						$.each(data.obj.post_box, function(idx, val) { 
-							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
 						});
 					<% end %>	
 				}
@@ -56,7 +56,7 @@
 				$('#statuspanel').append(data.obj.judgetime_div[0]);
 			<% end %>			
 			javascript_countdown.init(data.obj.judgetime, 0, 3, <%= debate.id %> );	
-			$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+			$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
 		}
 		
 		if (data.func == "judge_timer_remove") {
@@ -87,10 +87,10 @@
 			<% if !current_debater.nil? %>
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
 				    <% if Rails.env.development? or Rails.env.test? %>      	
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+						$("#debatebody").append(data.obj.post_box);
 					<% else %>
 						$.each(data.obj.post_box, function(idx, val) {    
-							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+							$("#debatebody").append(val);
 						});
 					<% end %>
 				}
@@ -110,15 +110,15 @@
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
 			 
 					<% if Rails.env.development? or Rails.env.test? %>      	
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+						$("#debatebody").append(data.obj.post_box);
 					<% else %>
 						$.each(data.obj.post_box, function(idx, val) {    
-							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+							$("#debatebody").append(val);
 						});
 					<% end %>			
 				}
 				else {
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
 				}
 			<% end %>
 			
