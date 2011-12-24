@@ -121,7 +121,7 @@ class Debater < ActiveRecord::Base
       if !team_ids.empty?
         where("id IN (#{team_ids})", {:debater_id => debater})
       else
-        nil
+        where("id IN (3.14)", {:debater_id => debater}) #Fix for heroku.  This will always return an empty set
       end
     end
   
