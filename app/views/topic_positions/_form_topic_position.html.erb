@@ -1,9 +1,9 @@
 <!-- form class attribute is set to new_topic_position -->
-<%= form_for(TopicPosition.new) do |f| %>
+<%= form_for :topic_position, :url => {:controller => :topic_positions, :action => "create"}, :html => {:name => 'topicform', :onsubmit => "return checkEmpty('topicform', 'topic_position[topic]');"} do |f| %>
 	<div class="field-topicposition">
 		<span class="field-topic">
 			<%= f.label :topic %> <br>
-			<%= f.text_field :topic %>
+			<%= f.text_field :topic, :onkeyup => "textCounter(this, this.form.current_count, 65);" %>
 		</span>
 		<span class="field-position">		
 			<%= f.label :position %> <br>	

@@ -7,7 +7,7 @@ class DebatesController < ApplicationController
   end
   
   #Global Variables
-  $judgetime = 900.seconds
+  $judgetime = 30.seconds
   
   before_filter :authenticate_debater!
   skip_before_filter :authenticate_debater!, :only => [:show, :index]
