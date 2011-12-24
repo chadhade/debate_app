@@ -37,7 +37,24 @@ input[type="submit"] {
 	margin-top: 4px;
 }
 
+.debater_new input[type="submit"] {
+	width: 185px;
+	margin-top: 4px;
+}
+
 input[type="text"] {
+	width: 175px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+input[type="email"] {
+	width: 175px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+input[type="password"] {
 	width: 175px;
 	margin-left: 2px;
 	margin-right: 2px;

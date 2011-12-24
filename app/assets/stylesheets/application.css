@@ -105,24 +105,3 @@ nav a:hover {
 .success a {color:#264409;}
 .info a {color:#205791;}
 
-.signup_container {
-	padding: 15px 20px;
-	width: 250px;
-	border:1px solid #ccc;
-	background-color: #fafafa;
-	margin: 100px auto;
-	margin-bottom: 25px;
-	text-align: left;
-	
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	/* Shadow */
-	-webkit-box-shadow:0 0 40px #000;
-    -moz-box-shadow: 0 0 40px #000;
-    box-shadow:0 10px 20px #000;
-}
-
-.signup_container h2 {
-	margin-top: 0;
-}
