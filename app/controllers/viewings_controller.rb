@@ -5,18 +5,22 @@ class ViewingsController < ApplicationController
   	if !params[:debate_id].nil?
   	  @debate = Debate.find(params[:debate_id])
   	  update_viewings(@currentdebater, @debate)
-  	  if @currentdebater.creator?(@debate) and !@debate.joined?
-  	    Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
-    	  reset_invocation_response # allow double rendering
-    	  Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
-  	  end
-  	  if @currentdebater.judge?(@debate) and !@debate.joined?
-  	    Judging.destroy(@debate.judge.id)
-  	    @debate.update_attributes(:judge => false)
-  	    debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
-  	    Juggernaut.publish("judging_index", {:function => "add_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
-    	  reset_invocation_response # allow double rendering
-  	  end
+  	  
+  	  if !@currentdebater.nil?
+  	    if @currentdebater.creator?(@debate) and !@debate.joined?
+    	    Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
+      	  reset_invocation_response # allow double rendering
+      	  Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
+    	  end
+    	  if @currentdebater.judge?(@debate) and !@debate.joined?
+    	    Judging.destroy(@debate.judge.id)
+    	    @debate.update_attributes(:judge => false)
+    	    debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
+    	    Juggernaut.publish("judging_index", {:function => "add_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
+      	  reset_invocation_response # allow double rendering
+    	  end
+    	end
+    	
   	else
   	  update_viewings(@currentdebater, @currentdebater.tracking_debates)
   	end

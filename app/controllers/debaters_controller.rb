@@ -1,4 +1,5 @@
 class DebatersController < ApplicationController
+   before_filter :authenticate_debater!
 
   def new
     @debater = Debater.new
@@ -21,6 +22,15 @@ class DebatersController < ApplicationController
     @recentdebates = @debates.all(:order => "created_at DESC").first 5
     
     @debateswon = Judging.where("winner_id = ?", @debater.id).count
+    @debateslost = Judging.where("loser_id = ?", @debater.id).count
+    
+    @positivevotes = 0
+    @negativevotes = 0
+    
+    @debater.arguments.each do |v|
+      @positivevotes = @positivevotes + v.votes_for
+      @negativevotes = @negativevotes + v.votes_against
+    end
   end
   
   def index
@@ -52,7 +62,8 @@ class DebatersController < ApplicationController
   def teammates
     @title = "Teammates"
     @debater = Debater.find(params[:id])
-    @debaters = Debater.teammates(@debater).paginate(:page => params[:page])
+    @debaters = Debater.teammates(@debater)
+    @debaters.paginate(:page => params[:page])
     render 'show_network'
   end
   

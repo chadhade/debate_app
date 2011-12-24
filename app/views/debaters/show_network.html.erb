@@ -1,19 +1,22 @@
-<table class= "profile" summary="Information about following/followrs">
-	<tr>
-		<td class="main">
-			<h1><%= @title %></h1>
-			<% unless @debaters.empty? %>
-				<ul class="debaters">
-					<%= render @debaters %>
-				</ul>		
-				<%= will_paginate @debaters %>
-			<% end %>
-		</td>
-	
-		<td class="sidebar round">
-			<strong>Username:</strong> <%= link_to @debater.name , @debater %> <br /><br />
-			<%= render 'stats' %>
-			<br />
-		</td>
-	</tr>
-</table>
+<span class="page-title"><h1><%= @debater.name %></h1></span>
+
+<div class = "profile">
+	<div class = "sidebar round">
+		<%= render 'stats' %>
+		<% if signed_in? %>
+			<%= render 'follow_form' %>
+			<%= render 'block_form' %>
+		<% end %>
+	</div>
+</div>
+
+<div class = "profile_container">
+	<h2><%= @title %></h2>
+	<% unless @debaters.empty? %>
+		<ul class="debaters">
+			<%= render @debaters %>
+		</ul>		
+		<%= will_paginate @debaters %>
+	<% end %>
+
+</div>

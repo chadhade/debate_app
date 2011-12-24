@@ -1,6 +1,6 @@
 <div id="suggested_debates" class="list_matches_container">
 	<h3> Other Suggested Debates </h3>
-	<div class="containercontent">
+	<div class="containercontent smallcontent">
 		<% if !@matching[:suggested_debates].empty? %>
 			<% @matching[:suggested_debates].each do |suggested_debate| %>
 				<div class="debate_link <%= suggested_debate.tp.position == true ? "pro" : "con" %>" data-id="<%= suggested_debate.id %>"> 

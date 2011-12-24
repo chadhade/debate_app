@@ -1,4 +1,6 @@
 class JudgingsController < ApplicationController
+  before_filter :authenticate_debater!
+  
   def index
     @judging_priority = Debate.judging_priority()
   end
@@ -41,9 +43,11 @@ class JudgingsController < ApplicationController
   def submission
     @judging = Judging.find(params[:id])
     @debate = @judging.debate
+    @debate.creator.id == params[:juding][:winner_id] ? @loser_id = @debate.joiner.id : @loser_id = @debate.creator.id
     
+
     if Time.now < @debate.end_time + $judgetime
-      @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments])
+      @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments], :loser_id => @loser_id)
       judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging})
       Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results}})
       reset_invocation_response # allow double rendering

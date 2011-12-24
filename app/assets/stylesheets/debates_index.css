@@ -6,7 +6,6 @@
 	background-color: #fafafa;
 
 	position: relative;
-	overflow: auto;
 	float:left;
 	margin-left:40px;
 
@@ -46,11 +45,6 @@
 	-webkit-box-shadow:0 0 20px #000;
 	-moz-box-shadow: 0 0 20px #000;
 	box-shadow:0 5px 10px #000;
-}
-
-/*also in judgings css sheet*/
-.containercontent {
-	text-align: left;
 }
 
 .containercontent li {

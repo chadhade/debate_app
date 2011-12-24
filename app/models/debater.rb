@@ -17,6 +17,7 @@ class Debater < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation, :remember_me, :login
   
   acts_as_voter
+  attr_accessible :arg_upvotes, :arg_downvotes
   
   # associations for debate participation
   has_many :debations
@@ -117,7 +118,12 @@ class Debater < ActiveRecord::Base
   
     def self.team_debaters(debater)
       team_ids = Relationship.get_teammates_id(debater).map{|v| v.followed_id}
-      where("id IN (#{team_ids})", {:debater_id => debater})
+      
+      if !team_ids.empty?
+        where("id IN (#{team_ids})", {:debater_id => debater})
+      else
+        where("id IN (3.14)", {:debater_id => debater}) #Fix for heroku.  This will always return an empty set
+      end
     end
   
   

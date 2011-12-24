@@ -70,9 +70,9 @@ ul.debaters {
 .sidebar {
 	border: 1px solid silver;
 	float:right;
-	width: 60%;
+	width: 85%;
 	margin-top: 1em;
-	margin-right:24px;
+	margin-right:5px;
 	padding: .5em;
 	vertical-align: top;
 	background: #fafafa;
@@ -128,5 +128,7 @@ ul.debaters {
 	margin: 2px auto;
 }
 
-
+.borrow_blocks {
+	margin-right: 16px;
+}
 

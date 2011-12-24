@@ -22,8 +22,10 @@ var javascript_countdown = function () {
 		
 		if((moving_clock[singleclock_count] == 1) && (static_clock[singleclock_count] < 1)) {
 			abort_timer[singleclock_count] = 1;
-			moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
-			debateEnd();
+			show_time_left(output_element_id, singleclock_count);
+			setTimeout("debateEnd()", 1000);
+			moving_clock[singleclock_count] = 0;
+			setTimeout("show_time_left(output_element_id, singleclock_count)", 1000);
 			return;
 		}
 		

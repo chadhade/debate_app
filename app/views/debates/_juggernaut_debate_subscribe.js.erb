@@ -9,25 +9,27 @@
 				});
 			<% end %>
  
-			if ("<%= current_debater.email %>" == data.obj.current_turn) {
-			    <% if Rails.env.development? or Rails.env.test? %>      	
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
-				<% else %>
-					$.each(data.obj.post_box, function(idx, val) {    
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-					});
-				<% end %>	
-			}
-			else {
-			    <% if Rails.env.development? or Rails.env.test? %> 
-				    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-				<% else %>
-					$.each(data.obj.post_box, function(idx, val) { 
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-					});
-				<% end %>	
-			}
-		
+			<% if !current_debater.nil? %>
+				if ("<%= current_debater.email %>" == data.obj.current_turn) {
+				    <% if Rails.env.development? or Rails.env.test? %>      	
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+					<% else %>
+						$.each(data.obj.post_box, function(idx, val) {    
+							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+						});
+					<% end %>	
+				}
+				else {
+				    <% if Rails.env.development? or Rails.env.test? %> 
+					    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+					<% else %>
+						$.each(data.obj.post_box, function(idx, val) { 
+							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+						});
+					<% end %>	
+				}
+			<% end %>
+			
 			if (data.obj.footnotes != false) {
 				<% if Rails.env.development? or Rails.env.test? %> 
 					$("#footnotes").html(data.obj.footnotes);
@@ -79,16 +81,20 @@
 			//var element = document.getElementById("judge-<%= debate.id %>");
 			//	element.innerHTML = "";
 			//	element.appendChild(img);
-				voteable[<%= debate.id %>] = true;
-			if ("<%= current_debater.email %>" == data.obj.current_turn) {
-			    <% if Rails.env.development? or Rails.env.test? %>      	
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
-				<% else %>
-					$.each(data.obj.post_box, function(idx, val) {    
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-					});
-				<% end %>
-			}
+			
+			voteable[<%= debate.id %>] = true;
+			
+			<% if !current_debater.nil? %>
+				if ("<%= current_debater.email %>" == data.obj.current_turn) {
+				    <% if Rails.env.development? or Rails.env.test? %>      	
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+					<% else %>
+						$.each(data.obj.post_box, function(idx, val) {    
+							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+						});
+					<% end %>
+				}
+			<% end %>
 		}
 
 		if (data.func == "joiner")	{
@@ -99,19 +105,23 @@
 		}
 
 		if (data.func == "end_single") {
-			if ("<%= current_debater.email %>" == data.obj.current_turn) {
+			
+			<% if !current_debater.nil? %>
+				if ("<%= current_debater.email %>" == data.obj.current_turn) {
 			 
-				<% if Rails.env.development? or Rails.env.test? %>      	
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
-				<% else %>
-					$.each(data.obj.post_box, function(idx, val) {    
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
-					});
-				<% end %>			
-			}
-			else {
-				$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
-			}
+					<% if Rails.env.development? or Rails.env.test? %>      	
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(data.obj.post_box);
+					<% else %>
+						$.each(data.obj.post_box, function(idx, val) {    
+							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html(val);
+						});
+					<% end %>			
+				}
+				else {
+					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").html("");
+				}
+			<% end %>
+			
 			position = Math.abs(moving_position[<%= debate.id %>] - 3);
 			javascript_countdown.init(static_clock[<%= debate.id %>], 0, position, <%= debate.id %>);
 		}
@@ -151,6 +161,10 @@
 			}
 		});
 	<% end %>
+	
+	if(<%= @debate.judge && @debate.joined %>) {
+		voteable[<%= debate.id %>] = true;
+	}
 	
 	function format_output(timetoformat) {
 		var hours, minutes, seconds;

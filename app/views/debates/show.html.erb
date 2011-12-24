@@ -74,7 +74,7 @@
 				<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 				</h2>
 			</div>
-			<%= render :partial => "/debates/debate", :locals => {:debate => @debate} %>			  
+			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid} %>			  
 		
 		</div>
 		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>

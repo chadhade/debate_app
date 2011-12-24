@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111214230119) do
+ActiveRecord::Schema.define(:version => 20111224023850) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(:version => 20111214230119) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.integer  "arg_upvotes",                           :default => 0
+    t.integer  "arg_downvotes",                         :default => 0
   end
 
   add_index "debaters", ["email"], :name => "index_debaters_on_email", :unique => true
@@ -92,6 +94,7 @@ ActiveRecord::Schema.define(:version => 20111214230119) do
     t.datetime "updated_at"
     t.integer  "winner_id"
     t.text     "comments"
+    t.integer  "loser_id"
   end
 
   create_table "relationships", :force => true do |t|

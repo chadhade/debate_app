@@ -16,9 +16,9 @@
 		<h3>Debates Participated In: <%= @debates.count %></h3>
 		<ul>
 			<li> Won: <%= @debateswon %></li>
-			<li> Lost: </li>
-			<li> Total Upvotes: </li>
-			<li> Total Downvotes: </li>
+			<li> Lost: <%= @debateslost %></li>
+			<li> Total Upvotes: <%= @positivevotes %></li>
+			<li> Total Downvotes: <%= @negativevotes %></li>
 			<li> Total Arguments: <%= @debater.arguments.count %>
 		</ul>
 	</div>

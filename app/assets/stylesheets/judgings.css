@@ -6,7 +6,6 @@
 	background-color: #fafafa;
 
 	position: relative;
-	overflow: auto;
 	float:left;
 	margin-left:40px;
 
@@ -30,6 +29,8 @@
 
 .containercontent {
 	text-align: left;
+	height: 190px;
+	overflow: auto;
 }
 
 #joined_no_judge {
@@ -54,12 +55,31 @@
 .debate_link_unjoined {
 	margin-bottom: 2px;
 	background-color: #e0eeee;
+
 }
 
 .pro li {
-	list-style-image: url(pro-bubble-d.gif);
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	height: 20px;
+	padding-left: 30px;
+	padding-top: 5px;
+	
+	background-image: url(pro-bubble-d.gif);
+	background-repeat: no-repeat;
+	background-position: 0 50%;
 }
 
 .con li {
-	list-style-image: url(con-bubble-d.gif);
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	height: 20px;
+	padding-left: 30px;
+	padding-top: 5px;
+	
+	background-image: url(pro-bubble-d.gif);
+	background-repeat: no-repeat;
+	background-position: 0 50%;
 }
