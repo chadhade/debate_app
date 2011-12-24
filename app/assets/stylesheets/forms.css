@@ -42,6 +42,17 @@ input[type="submit"] {
 	margin-top: 4px;
 }
 
+.edit_judging input[type="submit"] {
+	width: 207px;
+	margin-top: 4px;
+}
+
+.edit_judging textarea {
+	width: 200px;
+	height: 65px;
+	margin-top: 4px;
+}
+
 input[type="text"] {
 	width: 175px;
 	margin-left: 2px;

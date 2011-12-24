@@ -2,9 +2,10 @@
 <div class='judging_form'>
 	<%= form_for judging, :remote => true, :url => submission_judging_path(judging) do |f| %>
 		<div class = "field">
-			<%= f.select(:winner_id, [[judging.debate.creator.email, judging.debate.creator.id], [judging.debate.joiner.email, judging.debate.joiner.id]]) %><br />
+			Select a winner:<br>
+			<%= f.select(:winner_id, [[judging.debate.creator.email, judging.debate.creator.id], [judging.debate.joiner.email, judging.debate.joiner.id]]) %><br /> <br>
 			<%= f.label :comments %> <br/>
-			<%= f.text_field :comments %>
+			<%= f.text_area :comments, :size => "10x2" %>
 		</div>
 		<div class = "action">
 			<%= f.submit "Submit" %>

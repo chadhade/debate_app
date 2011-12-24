@@ -8,7 +8,7 @@
 
 #statuspanel {
 	padding: 10px 10px;
-	height: 234px;
+	height: 304px;
 	width: 245px;
 	margin: 5px 10px;	
 	border:1px solid #ccc;
@@ -22,7 +22,7 @@
 
 #footnotespanel {
 	padding: 10px 10px;
-	height: 234px;
+	height: 164px;
 	width: 245px;
 	margin: 5px 10px;	
 	border:1px solid #ccc;
@@ -190,8 +190,8 @@
 }
 
 #judge-timer {
-	padding: 10px 10px;	
-	margin-bottom: 15px;
+	padding: 10px 10px;
+	margin-bottom: 5px;
 	border:1px solid #ccc;
 	background-color: #fafafa;
 	
