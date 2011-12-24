@@ -79,8 +79,6 @@
 		</div>
 		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
 	</div>
-	
-<!-- <%= render :partial => "/debates/sliding_menus", :locals => {:debate => @debate} %> <br /> <div class="divclear"></div> -->
 
 <script>
 	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
@@ -110,7 +108,12 @@
 			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
 		<% end %>
 	</div>
-		
+	
+	<div id="footnotespanel" %>
+		<h2>Footnotes</h2>
+		<%= render @debate.footnotes %>
+	</div>
+	
 </div>
 
 <script>
