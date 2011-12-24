@@ -246,13 +246,12 @@ end
     
     @debate.update_attributes(:end_time => Time.now)
     
-    judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
-    Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})
-    reset_invocation_response # allow double rendering
     judgetime_div = render :partial => "/judgings/judging_timer"
     reset_invocation_response # allow double rendering    
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_timer", :obj => {:judgetime_div => judgetime_div, :judgetime => $judgetime}})
+    judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
     reset_invocation_response # allow double rendering
+    Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})    
     
     # update status bar on show page
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})

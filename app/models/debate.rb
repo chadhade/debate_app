@@ -103,24 +103,26 @@ class Debate < ActiveRecord::Base
     @matching_debates = Array.new
     @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     self.where(:id => @viewing_by_creator, :joined => false).each do |debate|
-      topic = debate.topic_positions.first(:order => "created_at ASC").topic
-      position = debate.topic_positions.first(:order => "created_at ASC").position
-      words = topic.split(/\s/)
-      current_words = current_tp.topic.split(/\s/)
-      pronouns = self.load_pronouns
-      if current_tp.position != position
-        match = false
-        # set match to true if even one word matches and append debate to array
-        current_words.each do |current_word|
-          if current_word.length >= 3 and match == false
-            words.each do |word|
-              # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
-              match = true if current_word.length >= 4 and word.length >= 4 and current_word[/..../] == word[/..../] and !pronouns.include?(current_word)
-              match = true if current_word.length >= 3 and word.length >= 3 and current_word == word and !pronouns.include?(current_word)
+      unless debate.tp.nil?
+        topic = debate.tp.topic
+        position = debate.tp.position
+        words = topic.split(/\s/)
+        current_words = current_tp.topic.split(/\s/)
+        pronouns = self.load_pronouns
+        if current_tp.position != position
+          match = false
+          # set match to true if even one word matches and append debate to array
+          current_words.each do |current_word|
+            if current_word.length >= 3 and match == false
+              words.each do |word|
+                # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
+                match = true if current_word.length >= 4 and word.length >= 4 and current_word[/..../] == word[/..../] and !pronouns.include?(current_word)
+                match = true if current_word.length >= 3 and word.length >= 3 and current_word == word and !pronouns.include?(current_word)
+              end
             end
           end
+          @matching_debates << debate if match == true
         end
-        @matching_debates << debate if match == true
       end
     end
     

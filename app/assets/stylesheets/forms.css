@@ -47,6 +47,10 @@ input[type="submit"] {
 	margin-top: 4px;
 }
 
+.new_argument input[type="submit"] {
+	width: 256px;	
+}
+
 .edit_judging textarea {
 	width: 200px;
 	height: 65px;
