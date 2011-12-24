@@ -35,6 +35,32 @@
   });
 </script>
 
+<script>
+var current_count = 0;
+
+function textCounter(field, target, max) {
+	var max_count = max;
+  	if (field.value.length > max_count) {
+	    field.value = field.value.substring(0, max_count);
+	  } else {
+	    current_count = max_count - field.value.length;
+	    target.value = current_count;
+	  }
+}
+</script>
+
+<script>
+function checkEmpty(element, name)
+{       
+	if ( document.forms[element][name].value == '' )
+	        {
+	                alert('Please Enter Something.');
+	                return false;
+	        }
+}
+</script>
+
+
 <span class="page-title"><h1> Join or Create a Debate! </h1></span>
 <br>
 

@@ -1,8 +1,8 @@
 <div class="create_form_container">
-	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"} do |f| %>
+	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"}, :html => {:name => 'createform', :onsubmit => "return checkEmpty('createform', 'argument[content]');"} do |f| %>
 		<div class = "field">
 			<h3>First Argument</h3> <br/>
-			<%= f.text_area :content, :size => "36x5" %> <br />
+			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, this.form.current_count, 1000);" %> <br />
 			<%= f.label "Allotted Minutes" %> <br/>
 			<%= f.number_field :time_left, :value => 10 %>
 		</div>

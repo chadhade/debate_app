@@ -47,7 +47,7 @@
 }
 
 .debatecontainer {
-	padding: 10px 10px;
+	padding: 10px 2px;
 	height: 500px;
 	width: 480px;
 	margin: 5px 10px;
@@ -88,16 +88,6 @@
 	text-decoration: none;
 }
 
-.name-creator {
-	color: #015353;
-	font-style: italic;
-}
-
-.name-joiner {
-	color: #cc0033;
-	font-style: italic;
-	
-}
 .footnote {
 	font-size: 13px;
 	line-height: 1em;

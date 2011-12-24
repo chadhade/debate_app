@@ -114,6 +114,20 @@
 </div>
 
 <script>
+var current_count = 0;
+
+function textCounter(field, target, max) {
+	var max_count = max;
+  	if (field.value.length > max_count) {
+	    field.value = field.value.substring(0, max_count);
+	  } else {
+	    current_count = max_count - field.value.length;
+	    target.value = current_count;
+	  }
+}
+</script>
+
+<script>
 // This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
 		

@@ -1,7 +1,3 @@
-// Place all the styles related to the Arguments controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 .argument {
 	float: left;
 	margin-right: 5px;
@@ -25,4 +21,21 @@
 
 .joiner {
 	background-color: #e0eeee;
+}
+
+.name-creator {
+	color: #015353;
+	font-style: italic;
+	width: 42px;
+	text-align: left;
+	float:left;
+}
+
+.name-joiner {
+	color: #cc0033;
+	font-style: italic;
+	width: 42px;
+	text-align: left;
+	float:left;
+	
 }

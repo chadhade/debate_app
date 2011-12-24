@@ -6,6 +6,8 @@ class Argument < ActiveRecord::Base
   
   has_many :footnotes, :dependent => :destroy
   
+  validates_length_of :content, :within => 0..1000
+  
   def votes_for_by(debater_id)
     Vote.where(:voteable_id => self.id, :voteable_type => self.class.name, :vote => true, :voter_type => debater.class.name, :voter_id => debater_id).count
   end

@@ -4,7 +4,7 @@
 		<div class = "field">
 			<%= f.select(:winner_id, [[judging.debate.creator.email, judging.debate.creator.id], [judging.debate.joiner.email, judging.debate.joiner.id]]) %><br />
 			<%= f.label :comments %> <br/>
-			<%= f.text_field :comments %>
+			<%= f.text_field :comments, :onkeyup => "textCounter(this, this.form.current_count, 1000);" %>
 		</div>
 		<div class = "action">
 			<%= f.submit "Submit" %>

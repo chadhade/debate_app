@@ -1,7 +1,7 @@
 <div class="argument_container <%= argument.debater.creator?(argument.debate) ? "creator" : "joiner" %>">
 	<div class="argument" data-time="<%= argument.created_at.to_i %>"> 
-		<span class="<%= argument.debater.creator?(argument.debate) ? "name-creator" : "name-joiner" %>"> <%= argument.debater.name %>
-			</span>: 
+		<div class="<%= argument.debater.creator?(argument.debate) ? "name-creator" : "name-joiner" %>"> <%= argument.debater.name %>
+			</div>: 
 		<span> <%= argument.content %> </span>
 	</div>
 	<%= render :partial => "/votes/vote", :locals => {:argument => argument, :judgeid => judgeid} %>
