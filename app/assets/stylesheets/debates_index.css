@@ -6,7 +6,6 @@
 	background-color: #fafafa;
 
 	position: relative;
-	overflow: auto;
 	float:left;
 	margin-left:40px;
 
@@ -53,10 +52,6 @@
 	margin-top: 4px;
 }
 
-/*also in judgings css sheet*/
-.containercontent {
-	text-align: left;
-}
 
 .containercontent li {
 	list-style: none;

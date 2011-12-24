@@ -1,5 +1,5 @@
 <div class="debate_link_joined <%= debate.topic_positions.first(:order => "created_at ASC").position == true ? "pro" : "con" %> data-id="<%= debate.id %>", data-joined-at="<%= debate.joined_at.to_i %>">
 	 
-	<li>:  <%= "#{debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
+	<li>:<%= "#{debate.topic_positions.first(:order => "created_at ASC").topic}"%> >>> <%= link_to debate.topic, "/judgings/create/#{debate.id}" %> </li>
 
 </div>

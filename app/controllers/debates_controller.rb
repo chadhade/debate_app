@@ -233,8 +233,8 @@ end
     	@debates_ongoing << debate if debate.end_time.nil? and debate.judge and debate.joined
       @debates_completed << debate if !debate.end_time.nil? and debate.judge and debate.joined
       @debates_in_limbo << debate if debate.end_time.nil? and (!debate.judge or !debate.joined)
-    end
-	
+	  end
+	  
   	respond_to do |format|
   	  format.html
   	  format.js
@@ -243,6 +243,7 @@ end
   
   def end
     @debate = Debate.find(params[:id])
+    
     @debate.update_attributes(:end_time => Time.now)
     
     judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)

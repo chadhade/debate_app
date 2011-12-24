@@ -6,7 +6,6 @@
 	background-color: #fafafa;
 
 	position: relative;
-	overflow: auto;
 	float:left;
 	margin-left:10px;
 
@@ -36,7 +35,6 @@
 	background-color: #fafafa;
 
 	position: relative;
-	overflow: auto;
 	float:right;
 	margin-right:10px;
 	
@@ -86,7 +84,6 @@
 	background-color: #fafafa;
 
 	position: relative;
-	overflow: auto;
 	margin: 0 auto;
 
 	-webkit-box-shadow:0 0 20px #000;
@@ -97,6 +94,10 @@
 .list_matches_container h3 {
 	margin: 0 auto;	
 	margin-bottom: 5px;
+}
+
+.smallcontent {
+	height: 105px;
 }
 
 .create_form_container h3 {
