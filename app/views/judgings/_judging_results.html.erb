@@ -1,4 +1,5 @@
 <!-- must pass in judging to partial!!! -->
 <div class='judging_results'>
-	<%= "#{judging.winner_id}: #{judging.comments}" %>
+	<%= "Winner is #{Debater.find(judging.winner_id).name}!!!" %><br> <br>
+	<%= "#{judging.debater.name}: \"#{judging.comments}\"" %>
 </div>
