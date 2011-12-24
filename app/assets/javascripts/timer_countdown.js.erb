@@ -19,8 +19,9 @@ var javascript_countdown = function () {
 			return;	
 		}
 		
-		if((moving_clock[singleclock_count] <= 0) && (static_clock[singleclock_count] < 1)) {
+		if((moving_clock[singleclock_count] == 1) && (static_clock[singleclock_count] < 1)) {
 			abort_timer[singleclock_count] = 1;
+			moving_clock[singleclock_count] = moving_clock[singleclock_count] - 1;
 			debateEnd();
 			return;
 		}
@@ -114,8 +115,6 @@ var javascript_countdown = function () {
 			if (moving_position[debateid] == 3) {
 				output_element_id[debateid] = "judge-timer";
 			}	
-			
-		
 		}
 	};
 }();

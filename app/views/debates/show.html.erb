@@ -82,13 +82,21 @@
 	
 <!-- <%= render :partial => "/debates/sliding_menus", :locals => {:debate => @debate} %> <br /> <div class="divclear"></div> -->
 
+<script>
+	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
+	<% if @debaters.count <= 1 %>
+		abort_timer[<%= @debate.id %>] = 1;
+	<% end %>
+</script>
+
 	<div id="statuspanel">
 		<%= render :partial => "/debates/status", :locals => {:status => @status}  %>
 		
 		<% if @debate.status[:status_code] == 4 %>
 			<%= render :partial => "/judgings/judging_timer" %>
 			<script> 
-				javascript_countdown.init(<%= $judgetime - (Time.now - @debate.end_time) %>, 0, 3, <%= @debate.id %> ); 
+				abort_timer[<%= @debate.id %>] = 1;
+				javascript_countdown.init(<%= $judgetime - (Time.now - @debate.end_time).seconds.to_i %>, 0, 3, <%= @debate.id %> ); 
 			</script>
 		<% end %>
 		
@@ -104,13 +112,6 @@
 	</div>
 		
 </div>
-
-<script>
-	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
-	<% if @debaters.count <= 1 %>
-		abort_timer[<%= @debate.id %>] = 1;
-	<% end %>
-</script>
 
 <script>
 // This function assures that the javascript runs only once the whole page is loaded

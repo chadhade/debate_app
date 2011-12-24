@@ -2,7 +2,7 @@ class DebatesController < ApplicationController
   # set load paths for redis and juggernaut
   before_filter :authenticate_debater!
   
-  $judgetime = 1000.seconds
+  $judgetime = 10000.seconds
   
   if Rails.env.development?
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/redis-2.2.2/lib'
