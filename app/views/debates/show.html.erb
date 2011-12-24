@@ -84,6 +84,14 @@
 
 	<div id="statuspanel">
 		<%= render :partial => "/debates/status", :locals => {:status => @status}  %>
+		
+		<% if @debate.status[:status_code] == 4 %>
+			<%= render :partial => "/judgings/judging_timer" %>
+			<script> 
+				javascript_countdown.init(<%= $judgetime - (Time.now - @debate.end_time) %>, 0, 3, <%= @debate.id %> ); 
+			</script>
+		<% end %>
+		
 		<% @judging = @debate.judge_entry %>
 		<% if !@judging.nil? and @currentdebater == @debate.judger %>
 			<% if !@debate.end_time.nil? and Time.now < @debate.end_time + 20.seconds %>
