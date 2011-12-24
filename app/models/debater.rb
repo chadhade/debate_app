@@ -117,7 +117,12 @@ class Debater < ActiveRecord::Base
   
     def self.team_debaters(debater)
       team_ids = Relationship.get_teammates_id(debater).map{|v| v.followed_id}
-      where("id IN (#{team_ids})", {:debater_id => debater})
+      
+      if !team_ids.nil?
+        where("id IN (#{team_ids})", {:debater_id => debater})
+      else
+        nil
+      end
     end
   
   

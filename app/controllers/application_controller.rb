@@ -30,4 +30,9 @@ class ApplicationController < ActionController::Base
 	def after_sign_up_path_for(resource)
 		stored_location_for(resource) || "/pages/landing"
 	end
+	
+	def after_sign_out_path_for(resource)
+	  stored_location_for(resource) || "/debaters/sign_in"
+	end
+	
  end

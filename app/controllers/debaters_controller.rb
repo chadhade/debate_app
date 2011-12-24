@@ -1,4 +1,5 @@
 class DebatersController < ApplicationController
+   before_filter :authenticate_debater!
 
   def new
     @debater = Debater.new

@@ -1,18 +1,21 @@
-<div class = "profile">
-		<div class="main">
-			<h1><%= @title %></h1>
-			<% unless @debaters.empty? %>
-				<ul class="debaters">
-					<%= render @debaters %>
-				</ul>		
-				<%= will_paginate @debaters %>
-			<% end %>
-		</div>
-	
-		<div class="sidebar round">
-			<strong>Username:</strong> <%= link_to @debater.name , @debater %> <br /><br />
-			<%= render 'stats' %>
-			<br />
-		</div>
+<span class="page-title"><h1><%= @debater.name %></h1></span>
 
+<div class = "profile">
+	<div class = "sidebar round">
+		<%= render 'stats' %>
+		<% if signed_in? %>
+			<%= render 'follow_form' %>
+			<%= render 'block_form' %>
+		<% end %>
+	</div>
+</div>
+
+<div class = "profile_container">
+	<h2><%= @title %></h2>
+	<% unless @debaters.empty? %>
+		<ul class="debaters">
+			<%= render @debaters %>
+		</ul>		
+		<%= will_paginate @debaters %>
+	<% end %>
 </div>
