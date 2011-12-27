@@ -1,0 +1,20 @@
+
+var current_count = 0;
+
+function textCounter(field, max) {
+	var max_count = max;
+  	if (field.value.length > max_count) {
+	    field.value = field.value.substring(0, max_count);
+	  } 
+}
+
+
+
+function checkEmpty(element, name)
+{       
+	if ( document.forms[element][name].value == '' )
+	        {
+	                alert('Please Enter Something.');
+	                return false;
+	        }
+}

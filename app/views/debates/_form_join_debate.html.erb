@@ -2,7 +2,7 @@
 	<%= form_for Argument.new, :remote => true, :url => join_debate_path(debate.id) do |f| %>
 		<div class = "field">
 			<!-- <%= f.label :content %> <br /> -->
-			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, this.form.current_count, 1000);" %><br />
+			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);" %><br />
 			<%= f.label "Allotted Minutes" %> <br/>
 			<%= f.number_field :time_left, :value => 10 %>
 		</div>

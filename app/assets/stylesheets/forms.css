@@ -124,6 +124,7 @@ buttond {
 buttond a {
 	text-decoration: none;
 	vertical-align: middle;
+	padding: 6px 90px 4px 100px;
 }
 
 .largebutton {

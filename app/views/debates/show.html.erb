@@ -6,6 +6,7 @@
 <%= javascript_include_tag "exit_tracking" %>
 <%= javascript_include_tag "timer_countdown" %>
 <%= javascript_include_tag "tracking" %>
+<%= javascript_include_tag "form_validations" %>
 
 <% if Rails.env.development? or Rails.env.test? %>
 	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
@@ -107,27 +108,15 @@
 		<% end %>
 	</div>
 	
-	<div id="footnotespanel" %>
+	<div id="footnotespanel">
 		<h2>Footnotes</h2>
-		<%= render @debate.footnotes %>
+		<div class="footnotescontent">
+			<%= render @debate.footnotes %>
+		</div>
 	</div>
 	<br><br>
 	<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
 </div>
-
-<script>
-var current_count = 0;
-
-function textCounter(field, target, max) {
-	var max_count = max;
-  	if (field.value.length > max_count) {
-	    field.value = field.value.substring(0, max_count);
-	  } else {
-	    current_count = max_count - field.value.length;
-	    target.value = current_count;
-	  }
-}
-</script>
 
 <script>
 // This function assures that the javascript runs only once the whole page is loaded

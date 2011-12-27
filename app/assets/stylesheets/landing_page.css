@@ -105,6 +105,10 @@
 	width: 240px;
 }
 
+.action-judgings input[type="submit"] { 
+	width: 240px;
+}
+
 .buttond2 {
 	-o-transform-origin: 26px 16px;
 	background-attachment: scroll;

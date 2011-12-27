@@ -25,7 +25,7 @@ var javascript_countdown = function () {
 			show_time_left(output_element_id, singleclock_count);
 			moving_clock[singleclock_count] = 0;
 			setTimeout("debateEnd()", 1000);
-			setTimeout("show_time_left(output_element_id, singleclock_count)", 1000);
+			show_time_left(output_element_id,singleclock_count);
 			return;
 		}
 		

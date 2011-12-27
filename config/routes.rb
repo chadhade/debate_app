@@ -1,6 +1,8 @@
 DebateApp::Application.routes.draw do
   
   get "judgings/index"
+  post "judgings/index"
+  
   # 
   # get "judgings/create"
   

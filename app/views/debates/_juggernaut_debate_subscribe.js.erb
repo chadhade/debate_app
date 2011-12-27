@@ -12,8 +12,10 @@
 			<% if !current_debater.nil? %>
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
 				    <% if Rails.env.development? or Rails.env.test? %>      	
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
 						$("#debatebody").append(data.obj.post_box);
 					<% else %>
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
 						$.each(data.obj.post_box, function(idx, val) {    
 							$("#debatebody").append(val);
 						});
@@ -32,10 +34,10 @@
 			
 			if (data.obj.footnotes != false) {
 				<% if Rails.env.development? or Rails.env.test? %> 
-					$("#footnotes").html(data.obj.footnotes);
+					$(".footnotescontent").html(data.obj.footnotes);
 				<% else %>
 					$.each(data.obj.footnotes, function(idx, val) { 
-						$("#footnotes").html(val);
+						$(".footnotescontent").html(val);
 					});
 				<% end %>
 			}
@@ -110,8 +112,10 @@
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
 			 
 					<% if Rails.env.development? or Rails.env.test? %>      	
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
 						$("#debatebody").append(data.obj.post_box);
 					<% else %>
+						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
 						$.each(data.obj.post_box, function(idx, val) {    
 							$("#debatebody").append(val);
 						});

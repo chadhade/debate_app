@@ -1,6 +1,6 @@
 .signup_container {
 	padding: 10px 10px;
-	height: 320px;
+	height: 325px;
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
@@ -8,7 +8,7 @@
 	margin: 0 auto;
 /*	margin-top: 30px;*/
 	position: relative;
-	overflow: auto;
+
 	text-align: center;
 
 	-moz-border-radius: 10px;
@@ -32,4 +32,14 @@
 
 label[for="debater_Username or Email"] {
 	text-align: left;
+}
+
+#error_explanation {
+	width: 345px;
+	text-align: center;
+	background:#fff;
+	color:#8a1f11;
+	border-color:#8a1f11; 
+	font: 13px/27px Arial,sans-serif;
+	margin: 0 auto;
 }

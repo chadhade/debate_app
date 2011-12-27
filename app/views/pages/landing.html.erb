@@ -17,9 +17,15 @@
 	<div class="middlelanding">
 		<div class="buttond2">
 			<h3>Choose a Debate to Judge</h3>
-			<buttond>
+			<!--<buttond>
 					<%= link_to "Debates", judgings_path %>
-			</buttond>
+			</buttond> -->
+			<%= form_for :judgingindex, :url => {:controller => :judgings, :action => "index"} do |f| %>
+				
+				<span class="action-judgings">
+					<%= f.submit "Debates" %>
+				</span>	
+			<% end %>
 		</div>
 	</div>
 </div>

@@ -34,6 +34,12 @@
     box-shadow:0 5px 10px #000;
 }
 
+.footnotescontent {
+	overflow: auto;
+	text-align: left;
+	height: 120px;
+}
+
 .post_to_debate {
 	padding: 10px 10px;
 	width: 480px;
