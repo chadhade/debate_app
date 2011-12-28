@@ -36,6 +36,12 @@ class DebatersController < ApplicationController
   def index
     @title = "All Debaters"
     @debaters = Debater.paginate(:page => params[:page])
+    @debaterranks = Array.new
+    @debaters.each do |debater|
+      rank = debater.rank
+      @debaterranks << {:name => debater.name, :rank => rank}
+    end
+    @debaterranks.sort!{|a,b| b[:rank] <=> a[:rank]}
   end
   
   def following

@@ -115,6 +115,11 @@ class Debater < ActiveRecord::Base
   def teammates
     ids = Relationship.get_teammates_id(self)
   end
+    
+  def rank
+    Judging.where("winner_id = ?", self.id).count / self.debates.count.to_f
+    #rank.nil? ? rank = 0 : rank
+  end
   
   private
   

@@ -132,3 +132,20 @@ ul.debaters {
 	margin-right: 16px;
 }
 
+.list_names {
+	width: 40%;
+	float: left;
+}
+
+.list_ranks {
+	width: 40%;
+	float: right;
+}
+
+.list_names li {
+	list-style: none;
+}
+
+.list_ranks li {
+	list-style: none;
+}

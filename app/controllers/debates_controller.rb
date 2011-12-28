@@ -52,7 +52,7 @@ class DebatesController < ApplicationController
     @debate = Debate.find(params[:id])
   	# link debater to debate
   	current_debater.debations.create(:debate_id => params[:id])
-
+    @currentid = current_debater.id
 	
   	#The amount of time Debater 2 has left.  
   	@Seconds_Left_2 = (params[:argument][:time_left]).to_i # * 60
@@ -75,7 +75,7 @@ class DebatesController < ApplicationController
 	  @movingclock = @debate.arguments.first(:order => "created_at ASC").time_left.to_i * 60
 	  
 	  # publish to appropriate channels
-	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id}, :layout => false)
+	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id, :currentid => @currentid, :status => @debate.status}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering

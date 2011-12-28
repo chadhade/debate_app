@@ -18,8 +18,10 @@
 			<div id="user-info">
 				<% if debater_signed_in? %>
 					<span class="username"> <%= link_to current_debater.name, current_debater %> </span>
-					<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %><!-- <%= link_to 'Debaters', debaters_path %> -->
+					<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %>
+					<%= link_to 'Debaters', debaters_path %>
 					<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
+					<span>Feedback: debunky@gmail.com </span>
 			    <% else %>
 			        <%= link_to 'Login', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
 			    	<!-- <%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
@@ -28,6 +30,17 @@
 			</div>
 		</nav>
 	</div>
+	
+	<% if request.url.index("debates/") %>
+		<div class="instruction_box">
+			<h3>Instructions</h3>
+			<p><div class="cat">Vote:</div> Click the Number</p>
+			<p><div class="cat">Add Footnotes:</div> Use double parenthesis</p>
+			<span class="instruc_example"> &nbsp ((this is a footnote))</span>
+		
+		</div>
+	<% end %>
+	
 	<div class= "sitewidth">
 		<% flash.each do |key, value| %>
 			<% if key == :alert %> 

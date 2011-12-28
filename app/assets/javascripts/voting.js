@@ -23,6 +23,6 @@ function downVote(argument_id, vote, debate_id) {
 	}
 }
 function incrementVotesAgainst(argument_id) {
-  $(".votes_against_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against_count[data-argument_id="+argument_id+"]").text())+1);
+  $(".votes_against_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against_count[data-argument_id="+argument_id+"]").text())-1);
 }
 

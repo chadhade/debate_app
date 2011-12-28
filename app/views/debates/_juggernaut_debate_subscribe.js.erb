@@ -73,6 +73,10 @@
 			<% end %>
 			$("#judge-timer").html("Winner");
 			
+			for ( var i in data.obj.judge_votes ) {
+				$(".votes_total_judge[data-argument_id="+ i +"]").html(data.obj.judge_votes[i]);
+			}
+			
 		}
 		
 		if (data.func == "judge_arrived") {

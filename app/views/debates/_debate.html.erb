@@ -1,13 +1,7 @@
 <div class="debate-background">
 <div class="debate" data-id="<%= debate.id %>">  
-    <% if currentid != debate.judge_id %>
 		<% debate.arguments(:order => "created_at ASC").each do |argument| %>
-			<%= render :partial => "/arguments/argument", :locals => {:argument => argument, :judgeid => debate.judge_id} %>
+			<%= render :partial => "/arguments/argument", :locals => {:argument => argument, :judgeid => debate.judge_id, :status => debate.status, :currentid => currentid} %>
 		<% end %>
-	<% else %>
-		<% debate.arguments(:order => "created_at ASC").each do |argument| %>
-			<%= render :partial => "/arguments/argument_judge", :locals => {:argument => argument, :judgeid => debate.judge_id} %>
-		<% end %>
-	<% end %>
 </div>
 </div>

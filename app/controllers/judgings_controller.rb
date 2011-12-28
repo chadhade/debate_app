@@ -42,6 +42,8 @@ class JudgingsController < ApplicationController
   
   def submission
     @judging = Judging.find(params[:id])
+    @judgeid = @judging.debater_id
+    
     @debate = @judging.debate
     @debate.creator.id == params[:judging][:winner_id] ? @loser_id = @debate.joiner.id : @loser_id = @debate.creator.id
     
@@ -49,7 +51,15 @@ class JudgingsController < ApplicationController
     if Time.now < @debate.end_time + $judgetime
       @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments], :loser_id => @loser_id)
       judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging})
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results}})
+      
+      #tally up judge's votes
+      @votes = Array.new
+      
+      @debate.arguments.each do |argument|
+        @votes[argument.id] = argument.votes_for_by(@judgeid) - argument.votes_against_by(@judgeid)
+      end
+      
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results, :judge_votes => @votes}})
       reset_invocation_response # allow double rendering
       Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
     end

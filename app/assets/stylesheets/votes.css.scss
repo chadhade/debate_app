@@ -3,34 +3,41 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .votes_for {
-float:left;
-margin-right: 5px;
+	float:left;
+	margin-right: 5px;
 }
 
 .votes_for_count {
-float:left;
-margin-right: 5px;
-color: #000000;
-font-weight:bold; 
+	float:left;
+	margin-right: 5px;
+	color: #000000;
+	font-weight:bold; 
 }
 
 .button {
-float:left;
-margin-right: 5px;
+	float:left;
+	margin-right: 5px;
 }
 
 .votes_against {
-float:left;
-margin-right: 5px;
+	float:left;
+	margin-right: 5px;
 }
 
 .votes_against_count {
-float:left;
-margin-right: 5px;
-color: #FF6666;
-font-weight:bold;
+	float:left;
+	margin-right: 5px;
+	color: #FF6666;
+	font-weight:bold;
 }
 
 .votes {
-float:right;
+	float:right;
+}
+
+.votes_total_judge {
+	float:left;
+	color: #0000FF;
+	font-weight:bold;
+	margin-right: 3px;
 }
