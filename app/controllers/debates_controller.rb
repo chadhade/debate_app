@@ -38,9 +38,9 @@ class DebatesController < ApplicationController
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
   	
     # Juggernaut.publish("judging_index", {:append => {:debate_id => @debate.id}})
-    debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
-    Juggernaut.publish("judging_index", {:function => "append_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
-	  reset_invocation_response # allow double rendering
+    # debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
+    # Juggernaut.publish("judging_index", {:function => "append_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
+    # reset_invocation_response # allow double rendering
 	
   	# Check if there are footnotes attached
   	@argument.has_footnote? ? @argument.save_footnote(@debate) : nil
@@ -91,6 +91,7 @@ class DebatesController < ApplicationController
 	  
 	  Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
 	  
+	  # update judgings index
     debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate}, :layout => false)	  
 	  Juggernaut.publish("judging_index", {:function => "append_to_joined", :debate_id => @debate.id, :object => debate_link_joined}) if !@debate.judge
 	  reset_invocation_response # allow double rendering
