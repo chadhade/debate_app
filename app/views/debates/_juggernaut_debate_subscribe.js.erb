@@ -51,6 +51,30 @@
 			$(".status").html("<h2>" + data.obj.status_value + "</h2>");
 		}
 		
+		if (data.func == "update_individual_exists") {
+			if (data.obj.who_code == "debater1") {
+				$("#debater1").html(data.obj.who_value);
+			}
+			if (data.obj.who_code == "debater2") {
+				$("#debater2").html(data.obj.who_value);
+			}
+			if (data.obj.who_code == "judge") {
+				$("#judge").html(data.obj.who_value);
+			}
+		}
+				
+		if (data.func == "update_individual_cv") {
+			if (data.obj.who_code == "debater1") {
+				$("#debater1").attr('currently_viewing', data.obj.who_value);
+			}
+			if (data.obj.who_code == "debater2") {
+				$("#debater2").attr('currently_viewing', data.obj.who_value);
+			}
+			if (data.obj.who_code == "judge") {
+				$("#judge").attr('currently_viewing', data.obj.who_value);
+			}
+		}
+		
 		if (data.func == "judge_timer") {
 			<% if Rails.env.development? or Rails.env.test? %>      	
 				$('#statuspanel').append(data.obj.judgetime_div);			

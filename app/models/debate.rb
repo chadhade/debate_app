@@ -43,10 +43,23 @@ class Debate < ActiveRecord::Base
   
   def creator
     @creator = Debater.find_by_id(self.arguments.first(:order => "created_at ASC").debater_id)
+  end
+  
+  def currently_viewing(who)
+    case who
+    when "joiner"
+      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.joiner.id).first(:order => "created_at ASC").currently_viewing if self.joined
+    when "creator"
+      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.creator.id).first(:order => "created_at ASC").currently_viewing
+    when "judge"
+      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.judger.id).first(:order => "created_at ASC").currently_viewing if self.judge
+    else
+      nil
+    end
   end  
   
   def joiner
-    @joiner = Debater.find_by_id(self.arguments.all(:order => "created_at ASC").second.debater_id)
+    @joiner = Debater.find_by_id(self.arguments.all(:order => "created_at ASC").second.debater_id) unless self.arguments.all(:order => "created_at ASC").second.nil?
   end
   
   def judge_entry

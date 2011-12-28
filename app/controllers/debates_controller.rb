@@ -97,6 +97,10 @@ class DebatesController < ApplicationController
 	  
 	  # update status bar on show page
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+    
+    # update individ status
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "debater2", :who_value => "Debater2"}})
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true"}})
 	  
 	  respond_to do |format|
   	  format.html
@@ -118,9 +122,6 @@ end
   	@previoustimeleft = @argument_last.time_left
   	@currentdebater = current_debater
   	@debaters = @debate.debaters
-  	
-  	# set status
-  	@status = @debate.status
 	
   	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
 	
@@ -131,6 +132,12 @@ end
     	  Juggernaut.publish("matches", {:func => "unhide", :obj => @debate.id})
   	  end
 	  end
+  	
+  	# set status
+  	@status = @debate.status	  
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true"}}) if @currentdebater.creator?(@debate)
+  	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true"}}) if @currentdebater.joiner?(@debate)
+  	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true"}}) if @currentdebater.judge?(@debate)
 	  
   	# Add footnotes if they exist
   	@arguments.each do |argument|

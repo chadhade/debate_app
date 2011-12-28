@@ -87,7 +87,7 @@
 </script>
 
 	<div id="statuspanel">
-		<%= render :partial => "/debates/status", :locals => {:status => @status}  %>
+		<%= render :partial => "/debates/status", :locals => {:status => @status, :debate => @debate}  %>
 		
 		<% if @debate.status[:status_code] == 4 %>
 			<%= render :partial => "/judgings/judging_timer" %>

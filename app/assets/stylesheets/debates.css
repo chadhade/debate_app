@@ -60,6 +60,24 @@
     box-shadow:0 5px 10px #000;	
 }
 
+.individual-status {
+	width: 80px;
+	float: left;
+	margin-right: 1px;
+	
+	-webkit-box-shadow:0 0 20px #000;
+    -moz-box-shadow: 0 0 20px #000;
+    box-shadow:0 5px 10px #000;
+}
+
+.individual-status[currently_viewing="true"] {
+	background-color: green;	
+}
+
+.individual-status[currently_viewing="false"] {
+/*	background-color: red;*/		
+}
+
 #footnotespanel {
 	padding: 10px 10px;
 	height: 164px;
@@ -132,7 +150,7 @@
 
 	font-size: 15px;
 	margin-top: 0;
-	height: 22px;
+/*	height: 22px;*/
 	padding-top: 8px;
 }
 

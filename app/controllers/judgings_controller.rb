@@ -37,6 +37,9 @@ class JudgingsController < ApplicationController
     # update status bar on show page
     Juggernaut.publish("debate_" + params[:debate_id], {:func => "update_status", :obj => @debate.status})
     
+    # update individual status
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "judge", :who_value => "Judge"}})
+    
     redirect_to @debate
   end
   

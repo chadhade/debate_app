@@ -56,6 +56,10 @@ class Debater < ActiveRecord::Base
     debate.creator == self
   end
   
+  def joiner?(debate)
+    debate.joiner == self  
+  end
+  
   def current_turn?(debate)
     debate.current_turn == self
   end
