@@ -59,7 +59,7 @@ class Debate < ActiveRecord::Base
   end  
   
   def joiner
-    @joiner = Debater.find_by_id(self.arguments.all(:order => "created_at ASC").second.debater_id)
+    @joiner = Debater.find_by_id(self.arguments.all(:order => "created_at ASC").second.debater_id) unless self.arguments.all(:order => "created_at ASC").second.nil?
   end
   
   def judge_entry

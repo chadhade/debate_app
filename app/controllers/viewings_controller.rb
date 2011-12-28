@@ -14,11 +14,16 @@ class ViewingsController < ApplicationController
     	  end
     	  if @currentdebater.judge?(@debate) and !@debate.joined?
     	    Judging.destroy(@debate.judge.id)
+    	    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "judge", :who_value => ""}})
     	    @debate.update_attributes(:judge => false)
     	    debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
     	    Juggernaut.publish("judging_index", {:function => "add_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
       	  reset_invocation_response # allow double rendering
     	  end
+    	  #update currently viewing status if creator, joiner or judge
+    	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "false"}}) if @currentdebater.creator?(@debate)
+      	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "false"}}) if @currentdebater.joiner?(@debate)
+      	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "false"}}) if @currentdebater.judge?(@debate)
     	end
     	
   	else
