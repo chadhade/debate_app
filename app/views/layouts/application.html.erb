@@ -41,6 +41,14 @@
 		</div>
 	<% end %>
 	
+	<% if request.url.index("judgings") %>
+		<div class="instruction_box">
+			<h3>Instructions</h3>
+			<p><div class="cat">The debate will start IMMEDIATELY with you as the judge if you click on the link!</div> </p>
+		
+		</div>
+	<% end %>	
+	
 	<div class= "sitewidth">
 		<% flash.each do |key, value| %>
 			<% if key == :alert %> 
