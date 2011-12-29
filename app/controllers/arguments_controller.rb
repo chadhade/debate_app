@@ -29,7 +29,7 @@ class ArgumentsController < ApplicationController
   		
   		# publish new argument
   		#argument_render = render(@current_argument, :layout => false)
-  	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => current_debater.id}, :layout => false)
+  	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => current_debater.id, :status => @debate.status}, :layout => false)
   	  reset_invocation_response # allow double rendering
   	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
   	  reset_invocation_response # allow double rendering

@@ -5,8 +5,7 @@
 		<span> <%= argument.any_footnotes ? argument.show_footnote : argument.content %> </span>
 	</div>
 	<% if currentid != judgeid %>
-			<%= render :partial => "/votes/vote", :locals => {:argument => argument, :judgeid => judgeid,
-											              :status => status} %>
+			<%= render :partial => "/votes/vote", :locals => {:argument => argument, :judgeid => judgeid, :status => status} %>
 	<% else %>
 			<%= render :partial => "/votes/vote_judge", :locals => {:argument => argument, :judgeid => judgeid, :status => status} %>
 	<% end %>
