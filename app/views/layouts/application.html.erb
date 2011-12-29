@@ -19,7 +19,7 @@
 				<% if debater_signed_in? %>
 					<span class="username"> <%= link_to current_debater.name, current_debater %> </span>
 					<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %>
-					<%= link_to 'Debaters', debaters_path %>
+					<%= link_to 'Rankings', debaters_path %>
 					<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
 					<span>Feedback: debunky@gmail.com </span>
 			    <% else %>
