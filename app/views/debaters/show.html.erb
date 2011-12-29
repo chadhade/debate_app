@@ -35,7 +35,9 @@
 				You Have Not Participated in Any Debates!
 			<% else %>
 				<% @recentdebates.each do |debate| %>
-					<li> <%= link_to debate.tp.topic, debate %> </li>
+					<% unless debate.tp.nil? %>
+						<li> <%= link_to debate.tp.topic, debate %> </li>
+					<% end %>
 				<% end %>
 			<% end %>
 		</ul>
