@@ -121,8 +121,9 @@ class Debater < ActiveRecord::Base
   end
     
   def rank
-    Judging.where("winner_id = ?", self.id).count / self.debates.count.to_f
-    #rank.nil? ? rank = 0 : rank
+    wins = Judging.where("winner_id = ?", self.id).count
+    losses = Judging.where("loser_id = ?", self.id).count
+    (wins == 0) ? rank = 0 : rank = wins.to_f/(wins + losses)
   end
   
   private
