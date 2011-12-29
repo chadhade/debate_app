@@ -46,7 +46,6 @@
 }
 
 .debate_link_joined {
-	margin-bottom: 2px;
 	background-color: #e0eeee;
 }
 
@@ -55,7 +54,6 @@
 }
 
 .debate_link_unjoined {
-	margin-bottom: 2px;
 	background-color: #e0eeee;
 
 }
@@ -64,9 +62,9 @@
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
-	height: 20px;
 	padding-left: 30px;
 	padding-top: 5px;
+	margin-bottom: 1px;
 	
 	background-image: url(pro-bubble-d.gif);
 	background-repeat: no-repeat;
@@ -77,11 +75,11 @@
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
-	height: 20px;
 	padding-left: 30px;
 	padding-top: 5px;
+	margin-bottom: 1px;
 	
-	background-image: url(pro-bubble-d.gif);
+	background-image: url(con-bubble-d.gif);
 	background-repeat: no-repeat;
 	background-position: 0 50%;
 }

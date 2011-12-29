@@ -1,13 +1,12 @@
 <div class="argument_container <%= argument.debater.creator?(argument.debate) ? "creator" : "joiner" %>">
-	<div class="argument" data-time="<%= argument.created_at.to_i %>"> 
-		<div class="<%= argument.debater.creator?(argument.debate) ? "name-creator" : "name-joiner" %>"> <%= argument.debater.name %>
-			</div>: 
-		<span> <%= argument.any_footnotes ? argument.show_footnote : argument.content %> </span>
-	</div>
+	<div class="<%= argument.debater.creator?(argument.debate) ? "name-creator" : "name-joiner" %>"> <%= argument.debater.name %>
+		</div>:
+	<span class = "argument"><%= argument.any_footnotes ? argument.show_footnote : argument.content %></span>
+	
+	
+</div>
 	<% if currentid != judgeid %>
 			<%= render :partial => "/votes/vote", :locals => {:argument => argument, :judgeid => judgeid, :status => status} %>
 	<% else %>
 			<%= render :partial => "/votes/vote_judge", :locals => {:argument => argument, :judgeid => judgeid, :status => status} %>
 	<% end %>
-</div>
-
