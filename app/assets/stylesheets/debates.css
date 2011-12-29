@@ -259,8 +259,9 @@
 }
 
 .viewing_count {
+	float: right;
 	text-align: center;
-	padding-right: 15px;
+	padding-right: 30px;
 	background-image: url(whos_online.gif);
 	background-repeat: no-repeat;
 	background-position: right top;

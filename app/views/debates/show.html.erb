@@ -64,6 +64,7 @@
 
 <div class="topic_position_container">
 	<%= "#{@debate.tp.position == true ? "PRO" : "CON"}: #{@debate.tp.topic}" %>
+	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 </div>
 
 <div id="debatebody">
@@ -72,7 +73,7 @@
 			<div class="containerpanel">
 				<h2>
 				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1name => @debater1name, :debater2name => @debater2name, :debaters => @debaters, :judge => @debate.judge} %>
-				<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
+				<%# render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 				</h2>
 			</div>
 			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid} %>			  

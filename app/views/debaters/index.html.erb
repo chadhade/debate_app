@@ -1,23 +1,21 @@
-<h1>Debaters</h1>
+<span class="page-title"><h1>Debaters</h1></span>
 
-<div class = "list_names">
-	<h3>Debaters</h3>
-	<ul>
+<div class = "list_debaters">
+	<div class = "list_names">
+		<h2>Name</h2>
 		<% @debaterranks.each do |debater| %>
-			<li><%= link_to debater[:name], debater %></li>
+			<span class = "list_name"><%= link_to debater[:name], debater %></span><br />
 		<% end %>
-	</ul>	
+	</div>
+	
+	<div class = "list_ranks">
+		<h2>Debates Won </h2>
+		<% @debaterranks.each do |debater| %>
+		 	<%= ((debater[:rank] * 100.0).round / 100.0) if !debater[:rank].nil? %>%<br />
+		<% end %>
+	</div>	
 </div>
+
+
 	
 	
-
-<div class = "list_ranks">
-	<h3>Debates Won</h3>
-	<ul>
-		<% @debaterranks.each do |debater| %>
-			<li><%= ((debater[:rank] * 100.0).round / 100.0) if !debater[:rank].nil? %>%</li>
-		<% end %>
-	</ul>	
-</div>	
-
-<%= will_paginate %>

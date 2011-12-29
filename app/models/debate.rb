@@ -75,7 +75,7 @@ class Debate < ActiveRecord::Base
   end
   
   def last_debater
-	Debater.find_by_id(self.arguments.last(:order => "created_at ASC").debater_id)
+	  Debater.find_by_id(self.arguments.last(:order => "created_at ASC").debater_id)
   end
   
   # assumes toggling between two debaters
