@@ -1,4 +1,5 @@
-<span class="page-title"><h1>Debaters</h1></span>
+<span class="page-title"><h1>Debater Rankings</h1></span>
+<br>
 
 <div class = "list_debaters">
 	<div class = "list_names">
@@ -9,7 +10,7 @@
 	</div>
 	
 	<div class = "list_ranks">
-		<h2>Debates Won </h2>
+		<h2>% Won </h2>
 		<% @debaterranks.each do |debater| %>
 		 	<%= ((debater[:rank] * 100.0).round / 100.0) if !debater[:rank].nil? %>%<br />
 		<% end %>
