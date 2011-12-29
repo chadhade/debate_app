@@ -105,7 +105,7 @@
 			<% end %>
 		<% end %>
 		<% if !@judging.nil? and !@judging.winner_id.nil? %>
-			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
+			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging, :upvotes => @upvotes, :downvotes => @downvotes} %>
 		<% end %>
 	</div>
 	

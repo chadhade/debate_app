@@ -1,7 +1,6 @@
 .argument {
-	float: left;
 	margin-right: 5px;
-	
+	width: 100px;
 }
 
 .button {
@@ -10,9 +9,13 @@
 }
 
 .argument_container {
-	margin-bottom: 2px;
-	height: 22px;
+	width: 85%;
+	margin-bottom: 1px;
 	padding-top: 5px;
+	height: auto;
+	text-align: left;
+	float: left;
+
 }
 
 .creator {

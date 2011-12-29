@@ -146,11 +146,23 @@ end
   	#toggle judgings index if applicable
   	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debate.id}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing("creator") and @debate.currently_viewing("joiner")
 	  
-  	# Add footnotes if they exist
+  	# Add footnotes, if any exist
   	@arguments.each do |argument|
   		argument.any_footnotes ? argument.content = argument.show_footnote : nil
   	end
 	
+	  #Tally up the judge votes if the debate is over
+	  @upvotes = 0
+    @downvotes = 0
+	  if @debate.end_time
+	    if !@debate.judge_entry.winner_id.nil?
+        @arguments.each do |argument|
+          @upvotes = @upvotes + argument.votes_for_by(@debate.judge_id)
+          @downvotes = @downvotes + argument.votes_against_by(@debate.judge_id)
+        end
+      end
+    end
+    
   	# Calculate the amount of time left for use in javascript timers
   	
     # If debate has ended, both debaters have 0 seconds left
