@@ -48,7 +48,7 @@ class JudgingsController < ApplicationController
     @judgeid = @judging.debater_id
     
     @debate = @judging.debate
-    @debate.creator.id == params[:judging][:winner_id] ? @loser_id = @debate.joiner.id : @loser_id = @debate.creator.id
+    @debate.creator.id.to_s == params[:judging][:winner_id] ? @loser_id = @debate.joiner.id : @loser_id = @debate.creator.id
     
 
     if Time.now < @debate.end_time + $judgetime
