@@ -11,7 +11,7 @@
 	<div class = "list_ranks">
 		<h2>Debates Won </h2>
 		<% @debaterranks.each do |debater| %>
-		 	<%= ((debater[:rank] * 100.0).round / 100.0) if !debater[:rank].nil? %>%<br />
+		 	<%= (((debater[:rank] * 100.0).round / 100.0) * 100) if !debater[:rank].nil? %>%<br />
 		<% end %>
 	</div>	
 </div>
