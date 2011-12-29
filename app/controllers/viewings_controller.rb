@@ -10,20 +10,22 @@ class ViewingsController < ApplicationController
   	    if @currentdebater.creator?(@debate) and !@debate.joined?
     	    Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
       	  reset_invocation_response # allow double rendering
-      	  Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
+          # Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
     	  end
-    	  if @currentdebater.judge?(@debate) and !@debate.joined?
-    	    Judging.destroy(@debate.judge.id)
-    	    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "judge", :who_value => ""}})
-    	    @debate.update_attributes(:judge => false)
-    	    debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
-    	    Juggernaut.publish("judging_index", {:function => "add_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
-      	  reset_invocation_response # allow double rendering
-    	  end
+        # if @currentdebater.judge?(@debate) and !@debate.joined?
+        #   Judging.destroy(@debate.judge.id)
+        #   Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "judge", :who_value => ""}})
+        #   @debate.update_attributes(:judge => false)
+        #   debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
+        #   Juggernaut.publish("judging_index", {:function => "add_to_unjoined", :debate_id => @debate.id, :object => debate_link_unjoined})
+        #   reset_invocation_response # allow double rendering
+        # end
     	  #update currently viewing status if creator, joiner or judge
     	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "false"}}) if @currentdebater.creator?(@debate)
       	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "false"}}) if @currentdebater.joiner?(@debate)
       	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "false"}}) if @currentdebater.judge?(@debate)
+      	#update judgings index if either the creator or joiner is leaving
+      	Juggernaut.publish("judging_index", {:function => "hide_joined", :debate_id => @debate.id}) if @debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)
     	end
     	
   	else
@@ -64,9 +66,15 @@ class ViewingsController < ApplicationController
   	existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
   	if existing_viewing.empty?
   	  creator = viewer.class.name == 'Debater' ? debate.creator?(viewer) : false
-  	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator)
+  	  joiner = viewer.class.name == 'Debater' ? debate.joiner?(viewer) : false
+  	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator, :joiner => joiner)
   	else
-  	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => false)} # unless existing_viewing.currently_viewing == true
+  	  existing_viewing.each do |viewing| 
+  	    viewing.update_attributes(:currently_viewing => true) # unless existing_viewing.currently_viewing == true
+  	    if viewer.class.name == 'Debater'
+  	      viewing.update_attributes(:joiner => true) if viewing.debate.joiner?(viewer)
+	      end
+	    end
   	end    
   end
 ##############################################################################  

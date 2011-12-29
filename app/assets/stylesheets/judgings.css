@@ -5,9 +5,11 @@
 	border: 1px solid silver;
 	background-color: #fafafa;
 
-	position: relative;
-	float:left;
-	margin-left:40px;
+/*	position: relative;*/
+/*	float:left;*/
+/*	margin-left:40px;*/
+	
+	margin:0 auto;
 
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;

@@ -73,6 +73,10 @@ class Debate < ActiveRecord::Base
   def creator?(debater)
     self.creator == debater
   end
+
+  def joiner?(debater)
+    self.joiner == debater
+  end
   
   def last_debater
 	  Debater.find_by_id(self.arguments.last(:order => "created_at ASC").debater_id)
@@ -148,9 +152,12 @@ class Debate < ActiveRecord::Base
   
   def self.judging_priority()
     @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
-    @joined_no_judge = self.where(:id => @viewing_by_creator, :joined => true, :judge => false).order("joined_at ASC")
-    @unjoined_no_judge = self.where(:id => @viewing_by_creator, :joined => false, :judge => false).order("created_at ASC")
-    {:joined_no_judge => @joined_no_judge, :unjoined_no_judge => @unjoined_no_judge}
+    @viewing_by_joiner = Viewing.where("currently_viewing = ? AND joiner = ?", true, true).map{|v| v.debate_id}
+    @viewing_by_both = @viewing_by_creator & @viewing_by_joiner
+    @joined_no_judge = self.where(:id => @viewing_by_both, :joined => true, :judge => false).order("joined_at ASC")
+    # @unjoined_no_judge = self.where(:id => @viewing_by_creator, :joined => false, :judge => false).order("created_at ASC")
+    # {:joined_no_judge => @joined_no_judge, :unjoined_no_judge => @unjoined_no_judge}
+    {:joined_no_judge => @joined_no_judge}
   end
   
   def self.load_pronouns
