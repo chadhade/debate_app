@@ -62,7 +62,10 @@ class DebatesController < ApplicationController
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
 	
   	# update joined columns of debates
-  	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at)	
+  	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at)
+  	
+  	# update joiner column of viewings
+  	update_viewings(current_debater, @debate)
 	
   	# Check if there are footnotes attached
 	  if @argument.has_footnote?
@@ -139,6 +142,9 @@ end
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true"}}) if @currentdebater.creator?(@debate)
   	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true"}}) if @currentdebater.joiner?(@debate)
   	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true"}}) if @currentdebater.judge?(@debate)
+  	
+  	#toggle judgings index if applicable
+  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debate.id}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing("creator") and @debate.currently_viewing("joiner")
 	  
   	# Add footnotes if they exist
   	@arguments.each do |argument|
@@ -222,9 +228,15 @@ end
   	existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
   	if existing_viewing.empty?
   	  creator = viewer.class.name == 'Debater' ? debate.creator?(viewer) : false
-  	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator)
+  	  joiner = viewer.class.name == 'Debater' ? debate.joiner?(viewer) : false
+  	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator, :joiner => joiner)
   	else
-  	  existing_viewing.each {|viewing| viewing.update_attributes(:currently_viewing => true)} # unless existing_viewing.currently_viewing == true
+  	  existing_viewing.each do |viewing| 
+  	    viewing.update_attributes(:currently_viewing => true) # unless existing_viewing.currently_viewing == true
+  	    if viewer.class.name == 'Debater'
+  	      viewing.update_attributes(:joiner => true) if viewing.debate.joiner?(viewer)
+	      end
+	    end
   	end    
   end
 ##############################################################################  
