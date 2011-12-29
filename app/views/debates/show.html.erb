@@ -63,7 +63,7 @@
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->
 
 <div class="topic_position_container">
-	<%= "#{@debate.tp.position == true ? "PRO" : "CON"}: #{@debate.tp.topic}" %>
+	<%= "#{@debate.tp.topic}" %>
 	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 </div>
 
