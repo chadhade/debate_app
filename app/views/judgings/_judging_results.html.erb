@@ -5,5 +5,5 @@
 	<%= "Total Judge Downvotes: #{downvotes}" %> <br />  -->
 	(see judge's votes in blue) <br>
 	<br />
-	<%= "Judge #{judging.debater.name} says: \"#{judging.comments}\"" %>
+	Judge <%= link_to judging.debater.name, judging.debater %> says: "<%= judging.comments %>"
 </div>
