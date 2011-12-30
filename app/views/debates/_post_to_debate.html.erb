@@ -1,7 +1,7 @@
-<% if debate.debaters.size == 1 %>
-  <%= render :partial => "debates/form_join_debate", :locals => {:debate => debate} if !debate.creator?(currentdebater) and !currentdebater.nil? %>
+<% if debate.debaters.size == 1 and !currentdebater.nil? %>
+  <%= render :partial => "debates/form_join_debate", :locals => {:debate => debate} if !debate.creator?(currentdebater) %>
 <% else %>
-	<% if debate.judge %>
-  		<%= render :partial => "arguments/form_argument", :locals => {:debate => debate} if debate.current_turn?(currentdebater) and debate.judge? and !currentdebater.nil?%>
+	<% if debate.judge and !currentdebater.nil? %>
+  		<%= render :partial => "arguments/form_argument", :locals => {:debate => debate} if debate.current_turn?(currentdebater) and debate.judge? %>
 	<% end %>
 <% end %>
