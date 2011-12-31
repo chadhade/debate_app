@@ -7,7 +7,7 @@ class DebatesController < ApplicationController
   end
   
   #Global Variables
-  $judgetime = 300.seconds
+  $judgetime = 30.seconds
   
   before_filter :authenticate_debater!
   skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -318,6 +318,11 @@ end
     
     # update status bar on show page
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+    
+    respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
   end
   
 end

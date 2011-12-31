@@ -16,8 +16,7 @@ var javascript_countdown = function () {
 	
 		if((moving_clock[singleclock_count] == 0) && (moving_position[singleclock_count] == 3)) {
 			abort_timer[singleclock_count] = 1;
-			//$('#judge-timer').remove();
-			endJudge();
+			setTimeout("endJudge()", 1000);
 			moving_clock[singleclock_count] = -1;
 			return;	
 		}

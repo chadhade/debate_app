@@ -60,9 +60,9 @@
 	}
 	
 	function endJudge() {
+		var debate_id = $(".debate").attr("data-id");
 		$('#judge-timer').remove();
 		$('.judging_form').remove();
-		
 		<% if @debate.creator == @currentdebater %>
 			$.ajax({
 		      type: "POST",
@@ -78,7 +78,7 @@
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->
 
 <div class="topic_position_container">
-	<%= "#{@debate.tp.topic}" %>
+	<%= "#{@debate.tp.position == true ? "PRO" : "CON"}: #{@debate.tp.topic}" %>
 	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 </div>
 
