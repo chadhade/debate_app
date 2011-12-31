@@ -13,13 +13,13 @@
 				<%= link_to 'Debate', new_topic_position_path %>
 				<%= link_to 'Judge', judgings_path %>
 				<%= link_to 'View', debates_path %>
+				<%= link_to 'Rankings', debaters_path %>				
 				<!-- <%= link_to 'Blog', 'http://debunky.tumblr.com' %> -->
 			</div>
 			<div id="user-info">
 				<% if debater_signed_in? %>
 					<span class="username"> <%= link_to current_debater.name, current_debater %> </span>
 					<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %>
-					<%= link_to 'Rankings', debaters_path %>
 					<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
 			    <% else %>
 			        <%= link_to 'Login', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
