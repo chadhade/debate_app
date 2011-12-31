@@ -1,5 +1,6 @@
 class DebatersController < ApplicationController
    before_filter :authenticate_debater!
+   skip_before_filter :authenticate_debater! #, :only => [:show, :index]
 
   def new
     @debater = Debater.new
