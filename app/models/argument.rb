@@ -25,7 +25,38 @@ class Argument < ActiveRecord::Base
   end
   
   def has_footnote?
-	  self.content.index(/\(\((.+)\)\)/)
+    content = self.content
+    
+    if content.index(/\(\((.+)\)\)/) # check for footnoote
+        #Make sure there isn't a footnote inside of a footnote -- Can make this search more efficient?
+        searchstart = 0
+        searchend = 1
+        alarm = false
+        alarm2 = false
+        
+        if (content.scan((/\(\((.+)\)\)/)).to_s.length + 4)== content.length #Argument cannot consist of just a footnote
+          return false
+        end
+        
+        until ((searchend == content.length) or (alarm2 == true)) do
+          if (content[searchstart..searchend]) == "(("
+            alarm == true ? alarm2 = true : alarm = true
+          end
+          if ((content[searchstart..searchend])) == "))"
+            alarm == true ? alarm = false : nil
+          end
+          searchstart = searchstart + 1
+          searchend = searchend + 1
+        end
+        
+        if (alarm2 == true)
+          return false
+        else
+          return true
+        end
+    else
+      return false
+    end
   end
 
   def save_footnote(thedebate)

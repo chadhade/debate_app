@@ -58,6 +58,21 @@
 		    });
 		<% end %>
 	}
+	
+	function endJudge() {
+		$('#judge-timer').remove();
+		$('.judging_form').remove();
+		
+		<% if @debate.creator == @currentdebater %>
+			$.ajax({
+		      type: "POST",
+		      url: "/debates/" + debate_id + "/end_judge.js",
+			  success: function(){
+		         //alert("Judge timer ended");
+		      }
+		    });
+		<% end %>
+	}
 </script>
 
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->

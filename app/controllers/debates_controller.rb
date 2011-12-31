@@ -311,4 +311,11 @@ end
   	end
   end
   
+  def end_judge
+    @debate = Debate.find(params[:id])
+    
+    # update status bar on show page
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+  end
+  
 end
