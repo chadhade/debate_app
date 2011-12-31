@@ -5,7 +5,7 @@
 	<div class = "list_names">
 		<h2>Name</h2>
 		<% @debaterranks.each do |debater| %>
-			<span class = "list_name"><%= link_to debater[:name], debater %></span><br />
+			<span class = "list_name"><%= link_to debater[:debater].name, debater[:debater] %></span><br />
 		<% end %>
 	</div>
 	

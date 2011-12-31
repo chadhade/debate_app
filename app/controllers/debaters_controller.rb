@@ -1,5 +1,6 @@
 class DebatersController < ApplicationController
    before_filter :authenticate_debater!
+   skip_before_filter :authenticate_debater! #, :only => [:show, :index]
 
   def new
     @debater = Debater.new
@@ -39,7 +40,7 @@ class DebatersController < ApplicationController
     @debaterranks = Array.new
     @debaters.each do |debater|
       rank = debater.rank
-      @debaterranks << {:name => debater.name, :rank => rank}
+      @debaterranks << {:debater => debater, :rank => rank}
     end
     @debaterranks.sort!{|a,b| b[:rank] <=> a[:rank]}
   end

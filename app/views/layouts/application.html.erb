@@ -21,22 +21,24 @@
 					<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %>
 					<%= link_to 'Rankings', debaters_path %>
 					<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
-					<span>Feedback: debunky@gmail.com </span>
 			    <% else %>
 			        <%= link_to 'Login', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
 			    	<!-- <%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
 					<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %> | -->
 				<% end %>
 			</div>
+			<div id="center-links">Feedback: debunky@gmail.com </div>
 		</nav>
 	</div>
 	
 	<% if request.url.index("debates/") %>
 		<div class="instruction_box">
 			<h3>Instructions</h3>
-			<p><div class="cat">Vote:</div> Click the Number</p>
-			<p><div class="cat">Add Footnotes:</div> Use double parenthesis</p>
-			<span class="instruc_example"> &nbsp ((this is a footnote))</span>
+			<p class="cat-note"><span class="cat">Note:</span> Always click "leave page" if a pop-up appears, even when refreshing (but definitely feel free to refresh, it just treats a refresh as you leaving the page and then coming back!).</p>
+			<p><span class="cat">Status:</span> If a Debater or Judge joins the debate, a box will pop up for them in the panel to the right of the main debate panel.  The box will be green if they are currently viewing the debate. </p>
+			<p><span class="cat">Voting:</span> Click on the numbers to the right of each argument to upvote or downvote an argument as many times as you like.</p>
+			<p><span class="cat">Footnotes:</span> Use double parenthesis like ((this)) to add footnotes to your arguments</p>
+			<!-- <span class="instruc_example"> &nbsp ((this is a footnote))</span> -->
 		
 		</div>
 	<% end %>
@@ -44,7 +46,7 @@
 	<% if request.url.index("judgings") %>
 		<div class="instruction_box">
 			<h3>Instructions</h3>
-			<p><div class="cat">The debate will start IMMEDIATELY with you as the judge if you click on the link!</div> </p>
+			<p class="cat-note"><span class="cat"> Note: </span> The debate will start immediately with you as the judge if you click on the link!</p>
 		
 		</div>
 	<% end %>	

@@ -84,11 +84,20 @@ nav a:hover {
 }
 
 #general-links {
+	width: 33%;
 	float: left;
 }
 
+#center-links {
+	width: 34%;
+	float: left;
+	text-align:center;
+}
+
 #user-info {
+	width: 33%;
 	float: right;
+	text-align:right;
 }
 
 .username a {

@@ -1,8 +1,9 @@
 <!-- must pass in judging to partial!!! -->
 <div class='judging_results'>
-	<%= "Winner is #{Debater.find(judging.winner_id).name}!!!" %><br> 
-	<%= "Total Judge Upvotes: #{upvotes}" %> <br />
-	<%= "Total Judge Downvotes: #{downvotes}" %> <br /> <br />
-	<%= "Judge #{judging.debater.name} says: \"#{judging.comments}\"" %>
-	
+	Winner is <%= link_to Debater.find(judging.winner_id).name, Debater.find(judging.winner_id) %>!!! <br> 
+	<!-- <%= "Total Judge Upvotes: #{upvotes}" %> <br />
+	<%= "Total Judge Downvotes: #{downvotes}" %> <br />  -->
+	(see judge's votes in blue) <br>
+	<br />
+	Judge <%= link_to judging.debater.name, judging.debater %> says: "<%= judging.comments %>"
 </div>

@@ -26,8 +26,9 @@ class Debate < ActiveRecord::Base
     @status = {:status_code => 2, :status_value => "We've got a Debater and a Judge! Waiting for Second Debater"} if !self.joined and self.judge
     @status = {:status_code => 3, :status_value => "Ongoing Debate!"} if self.joined and self.judge and self.end_time.nil?
     if self.joined and self.judge and !self.end_time.nil?
-      @status = {:status_code => 4, :status_value => "Waiting for Judging Results!"} if Time.now < self.end_time + $judgetime and self.judge_entry.winner_id.nil?
-      @status = {:status_code => 5, :status_value => "Completed Debate"} if Time.now >= self.end_time + $judgetime or (Time.now < self.end_time + $judgetime and !self.judge_entry.winner_id.nil?)
+      @status = {:status_code => 4, :status_value => "Waiting for Judging Results!"} if Time.now <= self.end_time + $judgetime and self.judge_entry.winner_id.nil?
+      @status = {:status_code => 5, :status_value => "Completed Debate"} if Time.now >= self.end_time and !self.judge_entry.winner_id.nil?
+      @status = {:status_code => 6, :status_value => "Debate Over, But No Judging Results Submitted"} if Time.now > self.end_time + $judgetime and self.judge_entry.winner_id.nil?
     end
     # @status = {:status_code => 5, :status_value => "Dead Debate"}
     @status
@@ -151,13 +152,25 @@ class Debate < ActiveRecord::Base
   end
   
   def self.judging_priority()
-    @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
-    @viewing_by_joiner = Viewing.where("currently_viewing = ? AND joiner = ?", true, true).map{|v| v.debate_id}
-    @viewing_by_both = @viewing_by_creator & @viewing_by_joiner
-    @joined_no_judge = self.where(:id => @viewing_by_both, :joined => true, :judge => false).order("joined_at ASC")
+    @joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
+    @joined_no_judge_cv = Array.new
+    @joined_no_judge.each do |debate|
+      @joined_no_judge_cv << debate if debate.currently_viewing("creator") and debate.currently_viewing("joiner")
+    end
+    {:joined_no_judge => @joined_no_judge_cv}
+    
+    #this way of pulling the appropriate debates was very inefficient
+    # @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
+    # @viewing_by_joiner = Viewing.where("currently_viewing = ? AND joiner = ?", true, true).map{|v| v.debate_id}
+    # @viewing_by_both = @viewing_by_creator & @viewing_by_joiner
+    # @joined_no_judge = self.where(:id => @viewing_by_both, :joined => true, :judge => false).order("joined_at ASC")
+    
+    #stuff for when we allowed judge to join unjoined debate
     # @unjoined_no_judge = self.where(:id => @viewing_by_creator, :joined => false, :judge => false).order("created_at ASC")
     # {:joined_no_judge => @joined_no_judge, :unjoined_no_judge => @unjoined_no_judge}
-    {:joined_no_judge => @joined_no_judge}
+    
+    #this was of pulling the appropriate debates was very inefficient
+    # {:joined_no_judge => @joined_no_judge}
   end
   
   def self.load_pronouns

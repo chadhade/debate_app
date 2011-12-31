@@ -7,7 +7,7 @@ class DebatesController < ApplicationController
   end
   
   #Global Variables
-  $judgetime = 30.seconds
+  $judgetime = 300.seconds
   
   before_filter :authenticate_debater!
   skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -139,9 +139,11 @@ end
   	
   	# set status
   	@status = @debate.status	  
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true"}}) if @currentdebater.creator?(@debate)
-  	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true"}}) if @currentdebater.joiner?(@debate)
-  	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true"}}) if @currentdebater.judge?(@debate)
+    unless @currentdebater.nil?
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true"}}) if @currentdebater.creator?(@debate)
+    	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true"}}) if @currentdebater.joiner?(@debate)
+    	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true"}}) if @currentdebater.judge?(@debate)
+  	end
   	
   	#toggle judgings index if applicable
   	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debate.id}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing("creator") and @debate.currently_viewing("joiner")
