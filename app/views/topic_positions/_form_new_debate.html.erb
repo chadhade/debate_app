@@ -3,7 +3,7 @@
 		<div class = "field">
 			<h3>First Argument</h3> <br/>
 			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);" %> <br />
-			<%= f.label "Allotted Minutes" %> <br/>
+			<%= f.label "Allotted Seconds" %> <br/>
 			<%= f.number_field :time_left, :value => 10 %>
 		</div>
 		<%= f.hidden_field :topic_position_id, :value => @topic_position.id %>
