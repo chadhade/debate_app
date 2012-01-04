@@ -22,7 +22,7 @@ class DebatersController < ApplicationController
     if Rails.env.development? or Rails.env.test?
       @debates = @debater.debates.where("end_time > ?", 0)
     else
-      @debates = @debater.debates.where("end_time != ?", nil)
+      @debates = @debater.debates.where("end_time > ?", "01/01/01")
     end
     
     @recentdebates = @debates.all(:order => "created_at DESC").first 5
