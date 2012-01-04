@@ -18,8 +18,9 @@
 			<li> Won: <%= @debateswon %></li>
 			<li> Lost: <%= @debateslost %></li>
 			<li> No Judging Results: <%= @debatesnoresults %> </li> <br />
-			<li> Upvotes: <%= @positivevotes %> (<%= @positivevotes.to_f / @arguments %> per argument)</li>
-			<li> Downvotes: <%= @negativevotes %> (<%= @negativevotes.to_f / @arguments %> per argument)</li>
+			
+			<li> Upvotes: <%= @positivevotes %> (<%= @arguments == 0 ? 0 : (@positivevotes.to_f / @arguments) %> per argument)</li>
+			<li> Downvotes: <%= @negativevotes %> (<%= @arguments == 0 ? 0 : (@negativevotes.to_f / @arguments) %> per argument)</li>
 		</ul>
 	</div>
 	<div class="profile_box">
