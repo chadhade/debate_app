@@ -22,7 +22,7 @@ class JudgingsController < ApplicationController
         @oldtime = @firstarg.time_left
         @timeleft = @oldtime + (Time.now - @judge.created_at).seconds.to_i
         @firstarg.update_attributes(:time_left => @timeleft)
-        @currentturn = @debate.debaters.first(:order => "created_at ASC").email
+        @currentturn = @debate.arguments.first(:order => "created_at ASC").debater.email
         post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
     	  reset_invocation_response # allow double rendering
         Juggernaut.publish("debate_" + params[:debate_id], {:func => "judge_arrived", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
