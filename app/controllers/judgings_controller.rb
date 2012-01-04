@@ -12,8 +12,6 @@ class JudgingsController < ApplicationController
       @judge = Judging.new(:debater_id => current_debater.id, :debate_id => @debate.id)
       @judge.save
       @debate.update_attributes(:judge => true)
-      @debate = Debate.find(params[:debate_id]) # Update the variable
-      
       # If judge joined after both debaters joined, add time spent waiting for judge back to debater 1's time bank
       # Then start timers
       if @debate.arguments.count == 2
