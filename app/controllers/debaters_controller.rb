@@ -18,7 +18,7 @@ class DebatersController < ApplicationController
   
   def show
     @debater = Debater.find(params[:id])
-    @debates = @debater.debates.where("end_time != ?", nil)
+    @debates = @debater.debates.where("end_time > ?", 0)
     
     @recentdebates = @debates.all(:order => "created_at DESC").first 5
     
