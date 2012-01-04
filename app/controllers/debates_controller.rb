@@ -265,9 +265,9 @@ end
     @debates_completed = Array.new
 
     @debates.each do |debate|
-    	@debates_ongoing << debate if debate.end_time.nil? and debate.judge and debate.joined
-      @debates_completed << debate if !debate.end_time.nil? and debate.judge and debate.joined
-      @debates_in_limbo << debate if debate.end_time.nil? and (!debate.judge or !debate.joined)
+    	@debates_ongoing.unshift(debate) if debate.end_time.nil? and debate.judge and debate.joined
+      @debates_completed.unshift(debate) if !debate.end_time.nil? and debate.judge and debate.joined
+      @debates_in_limbo.unshift(debate) if debate.end_time.nil? and (!debate.judge or !debate.joined)
 	  end
 	  
   	respond_to do |format|
