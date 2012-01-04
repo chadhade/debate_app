@@ -4,7 +4,7 @@
 	<div id="ongoing-debates" class="containercontent">
 		<% @debates_ongoing.each do |debate| %>
 			<div class="<%= debate.tp.position == true ? "pro" : "con" %>">
-				<li>: <%= "#{debate.tp.topic}"%> >>> <%= link_to debate.topic, debate %> </li>
+				<li><%= "#{debate.tp.topic}"%>: <%= link_to debate.topic, debate %> </li>
 			</div>
 		<% end %>
 	</div>
@@ -21,7 +21,7 @@
 	<div id="completed-debates" class="containercontent">
 		<% @debates_completed.each do |debate| %>
 			<div class="<%= debate.tp.position == true ? "pro" : "con" %>">
-				<li>: <%= "#{debate.tp.topic}"%> >>> <%= link_to debate.topic, debate %> </li>
+				<li><%= "#{debate.tp.topic}"%>: <%= link_to debate.topic, debate %> </li>
 			</div>
 		<% end %>
 	</div>
