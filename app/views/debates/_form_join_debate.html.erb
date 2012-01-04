@@ -3,8 +3,7 @@
 		<div class = "field">
 			<!-- <%= f.label :content %> <br /> -->
 			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);" %><br />
-			<%= f.label "Allotted Minutes" %> <br/>
-			<%= f.number_field :time_left, :value => 10 %>
+			
 		</div>
 	    <%= f.hidden_field :debate_id, :value => debate.id %>
 		<div class = "action">

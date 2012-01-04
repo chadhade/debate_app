@@ -8,6 +8,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
+  $debatetime = 2.minutes
   
   before_filter :authenticate_debater!
   skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -33,7 +34,7 @@ class DebatesController < ApplicationController
   	@content_of_post = params[:argument][:content]
 	
   	#The amount of time Debater 1 has left.  
-  	@Seconds_Left_1 = (params[:argument][:time_left]).to_i # * 60
+  	@Seconds_Left_1 = $debatetime
 		
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
   	
@@ -55,8 +56,8 @@ class DebatesController < ApplicationController
     @currentid = current_debater.id
 	
   	#The amount of time Debater 2 has left.  
-  	@Seconds_Left_2 = (params[:argument][:time_left]).to_i # * 60
-
+  	@Seconds_Left_2 = $debatetime
+  	
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)

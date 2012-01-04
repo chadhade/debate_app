@@ -18,15 +18,21 @@ class DebatersController < ApplicationController
   
   def show
     @debater = Debater.find(params[:id])
-    @debates = @debater.debates
+    @debates = @debater.debates.where("end_time != ?", "")
     
     @recentdebates = @debates.all(:order => "created_at DESC").first 5
     
     @debateswon = Judging.where("winner_id = ?", @debater.id).count
     @debateslost = Judging.where("loser_id = ?", @debater.id).count
-    
+    @debatesnoresults = @debates.count - (@debateswon + @debateslost)
+        
     @positivevotes = 0
     @negativevotes = 0
+    @arguments = 0
+    
+    @debates.each do |v|
+      @arguments += v.arguments.where("debater_id = ?", @debater.id).count
+    end
     
     @debater.arguments.each do |v|
       @positivevotes = @positivevotes + v.votes_for
