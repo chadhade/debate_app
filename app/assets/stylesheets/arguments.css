@@ -29,7 +29,8 @@
 .name-creator {
 	color: #015353;
 	font-style: italic;
-	width: 42px;
+	font-size: 12px;
+	width: 65px;
 	text-align: left;
 	float:left;
 }
@@ -37,7 +38,8 @@
 .name-joiner {
 	color: #cc0033;
 	font-style: italic;
-	width: 42px;
+	font-size: 12px;
+	width: 65px;
 	text-align: left;
 	float:left;
 	

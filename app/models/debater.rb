@@ -11,7 +11,7 @@ class Debater < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  validates_length_of :name, :within => 2..10
+  validates_length_of :name, :within => 2..8
   
   # Virtual attribute for authenticating by either username or email
   attr_accessor :login
