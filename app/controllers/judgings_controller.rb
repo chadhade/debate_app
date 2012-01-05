@@ -8,7 +8,7 @@ class JudgingsController < ApplicationController
   def create
     @debate = Debate.find(params[:debate_id])
     
-    if !@debate.creator?(current_debater) and !@debate.joiner?(current_debater)
+    if !@debate.creator?(current_debater) and !@debate.joiner?(current_debater) and !@debate.judge
       @judge = Judging.new(:debater_id => current_debater.id, :debate_id => @debate.id)
       @judge.save
       @debate.update_attributes(:judge => true)
