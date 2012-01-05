@@ -43,7 +43,13 @@
 			}
 			if (data.obj.judge == true) {
 				abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
-				javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
+				
+				moving_clock_adjusted = data.obj.timers.movingclock;
+				
+				if(moving_clock_adjusted == 0) {
+					moving_clock_adjusted = 1;
+				}
+				javascript_countdown.init(moving_clock_adjusted, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
 			}
 		}
 	
