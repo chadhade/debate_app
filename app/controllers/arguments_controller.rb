@@ -3,44 +3,47 @@ class ArgumentsController < ApplicationController
   def create    	
   	@debate_id = params[:argument][:debate_id]
     @debate = Debate.find_by_id(@debate_id)
-  	@lastargument = @debate.arguments.last(:order => "created_at ASC")
-  	@timeleft = time_left(@debate)
+    
+    if @debate.end_single_id != current_debater.id
+    	@lastargument = @debate.arguments.last(:order => "created_at ASC")
+    	@timeleft = time_left(@debate)
 	
-  	# Check if argument is made on time
+    	# Check if argument is made on time
   	
-    if (@timeleft > 0) && (@debate.current_turn?(current_debater)) && (@debate.judge)
-  		# create a new argument and redirect to debate page 
-  		# -- Make the repeat_turn column true if it was true before
-  		if @lastargument.Repeat_Turn == true 
-  			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], 
-  										     :time_left => @timeleft, :Repeat_Turn => true)
-  		else 
-  		  # -- Don't make the repeat_turn column true
-  			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], 
-  								:debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
-  		end
+      if (@timeleft > 0) && (@debate.current_turn?(current_debater)) && (@debate.judge)
+    		# create a new argument and redirect to debate page 
+    		# -- Make the repeat_turn column true if it was true before
+    		if @lastargument.Repeat_Turn == true 
+    			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], 
+    										     :time_left => @timeleft, :Repeat_Turn => true)
+    		else 
+    		  # -- Don't make the repeat_turn column true
+    			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], 
+    								:debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
+    		end
         
-  		# Check if there are footnotes attached
-  		if @current_argument.has_footnote?
-  		  @current_argument.save_footnote(@debate)
-  		  @current_argument.content = @current_argument.show_footnote
-  		  @argfoot = true
-  		end
+    		# Check if there are footnotes attached
+    		if @current_argument.has_footnote?
+    		  @current_argument.save_footnote(@debate)
+    		  @current_argument.content = @current_argument.show_footnote
+    		  @argfoot = true
+    		end
   		
-  		# publish new argument
-  		#argument_render = render(@current_argument, :layout => false)
-  	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => current_debater.id, :status => @debate.status}, :layout => false)
-  	  reset_invocation_response # allow double rendering
-  	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
-  	  reset_invocation_response # allow double rendering
+    		# publish new argument
+    		#argument_render = render(@current_argument, :layout => false)
+    	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => current_debater.id, :status => @debate.status}, :layout => false)
+    	  reset_invocation_response # allow double rendering
+    	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
+    	  reset_invocation_response # allow double rendering
   		
-  		@debate = Debate.find_by_id(@debate_id)
-  		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
+    		@debate = Debate.find_by_id(@debate_id)
+    		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
   		
-  		Juggernaut.publish("debate_" + @debate_id, {:func => "argument", :obj => {:timers => showtimers(@debate, @current_argument, @lastargument), 
-  		                  :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, 
-  		                  :footnotes => footnotes_render, :judge => @debate.judge}})
-  	  reset_invocation_response # allow double rendering
+    		Juggernaut.publish("debate_" + @debate_id, {:func => "argument", :obj => {:timers => showtimers(@debate, @current_argument, @lastargument), 
+    		                  :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, 
+    		                  :footnotes => footnotes_render, :judge => @debate.judge}})
+    	  reset_invocation_response # allow double rendering
+      end
     end
 
   	respond_to do |format|

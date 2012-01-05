@@ -300,6 +300,7 @@ end
   def end_single
     @debate = Debate.find(params[:id])
     @debater_timeleft = params[:clock_position] == 1.to_s ? @debate.joiner : @debate.creator  # 1 = creator, 2 = joiner
+    @debate.update_attributes(:end_single_id => params[:clock_position] == 1.to_s ? @debate.creator.id : @debate.joiner.id)
     
     @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
     @debate = Debate.find(params[:id])
