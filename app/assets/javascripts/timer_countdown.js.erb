@@ -33,7 +33,7 @@ var javascript_countdown = function () {
 		if(moving_clock[singleclock_count] < 1) {
 			if(static_clock[singleclock_count] > 0) {
 				abort_timer[singleclock_count] = 1;
-				endSingle();
+				endSingle(moving_position[singleclock_count]);
 				//return;
 			}
 		}

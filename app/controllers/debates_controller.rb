@@ -8,7 +8,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 2.minutes
+  $debatetime = 20.seconds
   
   before_filter :authenticate_debater!
   skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -299,7 +299,10 @@ end
 
   def end_single
     @debate = Debate.find(params[:id])
-    @debate.arguments.last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
+    @debater_timeleft = params[:clock_position] == 1.to_s ? @debate.joiner : @debate.creator  # 1 = creator, 2 = joiner
+    
+    @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
+    @debate = Debate.find(params[:id])
     
     post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering

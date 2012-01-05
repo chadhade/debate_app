@@ -46,12 +46,12 @@
 		<% end %>
 	}
 	
-	function endSingle() {
+	function endSingle(clock_position) {
 		var debate_id = $(".debate").attr("data-id");
 		<% if @debate.creator == @currentdebater %>
 			$.ajax({
 		      type: "POST",
-		      url: "/debates/" + debate_id + "/end_single.js",
+		      url: "/debates/" + debate_id + "/end_single.js?clock_position=" + clock_position,
 			  success: function(){
 		         //alert("First timer ended");
 		      }
@@ -78,7 +78,7 @@
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->
 
 <div class="topic_position_container">
-	<%= "#{@debate.tp.topic}" %>
+	<%= "#{@debate.tp.position == true ? "PRO" : "CON"}: #{@debate.tp.topic}" %>
 	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 </div>
 

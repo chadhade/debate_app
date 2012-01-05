@@ -63,7 +63,7 @@ body {
 	text-align: left;
 }
 
-nav {
+.nav {
 	background-color: #222;
 	border-bottom: 1px solid black;
 	height: 27px;
@@ -73,13 +73,13 @@ nav {
     text-align: left;
 }
 
-nav a {
+.nav a {
 	color: #5bb9df;
 	text-decoration: none;
 	padding: 4px 7px;
 }
 
-nav a:hover {																																		
+.nav a:hover {																																		
 	background-color: #2D2D2D;
 }
 
