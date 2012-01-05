@@ -47,7 +47,7 @@
 				moving_clock_adjusted = data.obj.timers.movingclock;
 				
 				if(moving_clock_adjusted == 0) {
-					moving_clock_adjusted = 1;
+					moving_clock_adjusted = 10;
 				}
 				javascript_countdown.init(moving_clock_adjusted, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
 			}
@@ -163,7 +163,13 @@
 			<% end %>
 			
 			position = Math.abs(moving_position[<%= debate.id %>] - 3);
-			javascript_countdown.init(static_clock[<%= debate.id %>], 0, position, <%= debate.id %>);
+			
+			moving_clock_adjusted = static_clock[<%= debate.id %>];
+			
+			if(moving_clock_adjusted <= 2) {
+				moving_clock_adjusted = 2;
+			}
+			javascript_countdown.init(moving_clock_adjusted, 0, position, <%= debate.id %>);
 		}
 	});
 	
