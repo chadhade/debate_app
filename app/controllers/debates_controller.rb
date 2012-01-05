@@ -299,9 +299,9 @@ end
 
   def end_single
     @debate = Debate.find(params[:id])
-    @debater_timeleft = params[:clock_position] == 1 ? @debate.joiner : @debate.creator  # 1 = creator, 2 = joiner
+    @debater_timeleft = params[:clock_position] == 1.to_s ? @debate.joiner : @debate.creator  # 1 = creator, 2 = joiner
     
-    @debate.arguments.where("debater_id = ?", @debater_timeout.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
+    @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
     @debate = Debate.find(params[:id])
     
     post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
