@@ -163,7 +163,8 @@
 			<% end %>
 			
 			position = Math.abs(moving_position[<%= debate.id %>] - 3);
-			
+			// Check if when argument is submitted, it changes around the static_clock variable (through a separate init) before the
+			// following line of code is made.
 			moving_clock_adjusted = static_clock[<%= debate.id %>];
 			
 			if(moving_clock_adjusted <= 2) {
