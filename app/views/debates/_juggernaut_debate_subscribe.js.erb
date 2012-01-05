@@ -162,14 +162,13 @@
 				}
 			<% end %>
 			
-			position = Math.abs(moving_position[<%= debate.id %>] - 3);
-			
-			moving_clock_adjusted = static_clock[<%= debate.id %>];
-			
-			if(moving_clock_adjusted <= 2) {
-				moving_clock_adjusted = 2;
+			if (data.obj.position != moving_position[<%= debate.id %>]) {
+				moving_clock_adjusted = static_clock[<%= debate.id %>];
+				if(moving_clock_adjusted <= 2) {
+					moving_clock_adjusted = 2;
+				}
+				javascript_countdown.init(moving_clock_adjusted, 0, data.obj.position, <%= debate.id %>);	
 			}
-			javascript_countdown.init(moving_clock_adjusted, 0, position, <%= debate.id %>);
 		}
 	});
 	

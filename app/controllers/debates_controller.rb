@@ -308,7 +308,7 @@ end
     post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
-	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:post_box => post_box_render, :current_turn => @debate.current_turn.email}})
+	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:post_box => post_box_render, :current_turn => @debate.current_turn.email, :position => (params[:clock_position].to_i - 3).abs}})
     
     reset_invocation_response # allow double rendering
     

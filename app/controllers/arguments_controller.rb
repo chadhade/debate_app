@@ -7,6 +7,7 @@ class ArgumentsController < ApplicationController
     if @debate.end_single_id != current_debater.id
     	@lastargument = @debate.arguments.last(:order => "created_at ASC")
     	@timeleft = time_left(@debate)
+      # File.open("listener_log", 'a+') {|f| f.write("first time: #{@timeleft}") }
 	
     	# Check if argument is made on time
   	
@@ -149,6 +150,7 @@ class ArgumentsController < ApplicationController
   	end
 
   	@timeleft = time_left(debate)
+    # File.open("listener_log", 'a+') {|f| f.write("second time: #{@timeleft}") }
   	#If a debater has run out of time, the other debater can continuously post
   	if (@timeleft <=0) && (argument_last.Repeat_Turn != true)
   		argument_last.update_attributes(:time_left => argument_last.time_left + argument_second_last.time_left, :Repeat_Turn => true)
