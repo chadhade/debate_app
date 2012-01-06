@@ -167,7 +167,7 @@
 	padding-top: 8px;
 }
 
-.status h2[status_code="3"] {	
+h2[status_code="3"] {	
 	background-color: green;    
     -webkit-animation: pulse 4s infinite alternate;
 }

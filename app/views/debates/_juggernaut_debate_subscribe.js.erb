@@ -54,7 +54,7 @@
 		}
 	
 		if (data.func == "update_status") {
-			$(".status").html("<h2>" + data.obj.status_value + "</h2>");
+			$(".status").html("<h2 status_code=\"" + data.obj.status_code + "\">" + data.obj.status_value + "</h2>");
 		}
 		
 		if (data.func == "update_individual_exists") {
