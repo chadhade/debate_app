@@ -21,6 +21,8 @@ class Debater < ActiveRecord::Base
   acts_as_voter
   attr_accessible :arg_upvotes, :arg_downvotes
   
+  attr_accessible :waiting_for
+  
   # associations for debate participation
   has_many :debations
   has_many :debates, :through => :debations

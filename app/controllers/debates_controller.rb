@@ -146,6 +146,11 @@ end
     	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true"}}) if @currentdebater.judge?(@debate)
   	end
   	
+  	#toggle waiting_for attribute if debater returns to that debate
+  	if @currentdebater.waiting_for = params[:id]
+  	  @currentdebater.update_attributes(:waiting_for => nil)
+  	end
+  	
   	#toggle judgings index if applicable
   	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debate.id}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing("creator") and @debate.currently_viewing("joiner")
 	  
@@ -331,6 +336,7 @@ end
   end
   
   def waiting
+    current_debater.update_attributes(:waiting_for => params[:id].to_i)
     redirect_to debates_path
   end
   
