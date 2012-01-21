@@ -1,0 +1,7 @@
+<% unless current_debater.waiting_for == nil %>
+	<% debate = Debate.find_by_id(current_debater.waiting_for) %>
+	<div id="waiting_box">
+		<h3>Waiting to Debunk...</h3>
+		<%= debate.tp.topic %>
+	</div>
+<% end %>

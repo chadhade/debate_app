@@ -38,8 +38,10 @@ class ApplicationController < ActionController::Base
 
 	def after_sign_out_path_for(resource)
     @debater = current_debater
-    @debater.waiting_for = nil
-    @debater.save
+    unless @debater.waiting_for == nil
+      @debater.waiting_for = nil
+      @debater.save
+    end
     stored_location_for(resource) || "/debaters/sign_in"
   end
  
