@@ -56,6 +56,7 @@ DebateApp::Application.routes.draw do
   	  post 'end'
   	  post 'end_single'
   	  post 'end_judge'
+  	  get 'waiting'
   	end
   end
   

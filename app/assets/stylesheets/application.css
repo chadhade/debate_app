@@ -30,6 +30,12 @@ body {
 	box-shadow:0 2px 10px #000;
 }
 
+.waiting-icon {
+	float:right;
+	margin-top: 40px;
+	margin-right: 100px;
+}
+
 .sitewidth {
 	width: 820px;
 	text-align: center;

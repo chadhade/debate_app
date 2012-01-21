@@ -79,6 +79,10 @@ class Debate < ActiveRecord::Base
     self.joiner == debater
   end
   
+  def participant?(debater)
+    self.creator == debater || self.joiner == debater || self.judge_id == debater.id
+  end
+  
   def last_debater
 	  Debater.find_by_id(self.arguments.last(:order => "created_at ASC").debater_id)
   end

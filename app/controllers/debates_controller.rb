@@ -330,4 +330,8 @@ end
   	end
   end
   
+  def waiting
+    redirect_to debates_path
+  end
+  
 end

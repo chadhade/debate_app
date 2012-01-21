@@ -31,25 +31,7 @@
 		</div>
 	</div>
 	
-	<% if request.url.index("debates/") and 0 == 1 %>
-		<div class="instruction_box">
-			<h3>Instructions</h3>
-			<p class="cat-note"><span class="cat">Note:</span> Always click "leave page" if a pop-up appears, even when refreshing (but definitely feel free to refresh, it just treats a refresh as you leaving the page and then coming back!).</p>
-			<p><span class="cat">Status:</span> If a Debater or Judge joins the debate, a box will pop up for them in the panel to the right of the main debate panel.  The box will be green if they are currently viewing the debate. </p>
-			<p><span class="cat">Voting:</span> Click on the numbers to the right of each argument to upvote or downvote an argument as many times as you like.</p>
-			<p><span class="cat">Footnotes:</span> Use double parenthesis like ((this)) to add footnotes to your arguments</p>
-			<!-- <span class="instruc_example"> &nbsp ((this is a footnote))</span> -->
-		
-		</div>
-	<% end %>
-	
-	<% if request.url.index("judgings") %>
-		<div class="instruction_box">
-			<h3>Instructions</h3>
-			<p class="cat-note"><span class="cat"> Note: </span> The debate will start immediately with you as the judge if you click on the link!</p>
-		
-		</div>
-	<% end %>	
+	<%= render :partial => "/layouts/instruction_boxes" %>
 	
 	<div class= "sitewidth">
 		<% flash.each do |key, value| %>
@@ -60,6 +42,8 @@
 		
 		<%= yield %>
 	</div>
+	
+	
 </body>
 
 </html>

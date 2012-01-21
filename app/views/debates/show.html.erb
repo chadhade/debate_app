@@ -1,4 +1,7 @@
-<span class="page-title"><h1>Debate!</h1></span>
+<span class="page-title"><h1>DeBunk!</h1></span>
+
+<%= render :partial => "/debates/waiting", :locals => {:debate => @debate} %>
+
 <br />
 
 <!-- <%= javascript_include_tag "short_polling" %> -->
@@ -78,7 +81,7 @@
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->
 
 <div class="topic_position_container">
-	<%= "#{@debate.tp.position == true ? "PRO" : "CON"}: #{@debate.tp.topic}" %>
+	"<%= "#{@debate.tp.topic}" %>"
 	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 </div>
 
