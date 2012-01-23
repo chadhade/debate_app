@@ -12,6 +12,12 @@ class JudgingsController < ApplicationController
       @judge = Judging.new(:debater_id => current_debater.id, :debate_id => @debate.id)
       @judge.save
       @debate.update_attributes(:judge => true)
+      
+      # if debater was currently waiting for another debate, he now stops waiting
+    	if current_debater.waiting_for
+    	  current_debater.update_attributes(:waiting_for => nil)
+    	end
+    	
       # If judge joined after both debaters joined, add time spent waiting for judge back to debater 1's time bank
       # Then start timers
       if @debate.arguments.count == 2
@@ -32,6 +38,9 @@ class JudgingsController < ApplicationController
       Juggernaut.publish("debate_" + params[:debate_id], {:func => "update_status", :obj => @debate.status})
       # update individual status
       Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "judge", :who_value => "Judge"}})
+      # Publish to waiting channel
+      Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debate.status[:status_value]}})
+      
       redirect_to @debate
     else
       redirect_to :controller => "judgings", :action => "index"

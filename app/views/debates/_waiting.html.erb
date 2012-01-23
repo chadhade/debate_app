@@ -1,5 +1,4 @@
 <% if debate.status[:status_code] <= 2 && debate.participant?(current_debater) && !current_debater.waiting_for%>
-
-	<span class="waiting-icon" id="waiting"><%= link_to image_tag("alarm-clock.png", :alt => "Alert Me When Debate Starts", :size => "50x50"), {:action => :waiting} %> </span>
-
+	<%= link_to image_tag("waiting.png", :title => "Alert Me When Debate Starts", :size => "50x50"), {:action => :waiting} %> 
 <% end %>
+

@@ -1,6 +1,6 @@
 <span class="page-title"><h1>DeBunk!</h1></span>
 
-<%= render :partial => "/debates/waiting", :locals => {:debate => @debate} %>
+<span class="waiting-icon"><%= render :partial => "/debates/waiting", :locals => {:debate => @debate} %> </span>
 
 <br />
 
@@ -11,23 +11,7 @@
 <%= javascript_include_tag "tracking" %>
 <%= javascript_include_tag "form_validations" %>
 
-<% if Rails.env.development? or Rails.env.test? %>
-	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" charset="utf-8">
-	  var jug = new Juggernaut;
-	</script>
-	
-<% else %>	
-	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	  var jug = new Juggernaut({     
-	     host: 'debate-app-jug.herokuapp.com',
-	     port: 80,
-		 secure: false,
-		 transports: ['xhr-polling', 'jsonp-polling']
-	  });	
-	</script>
-<% end %>
+<%= render :partial => "/shared/init_juggernaut" %>
 
 <script>
 	voteable[<%= @debate.id %>] = <%= @voteable == true %>;

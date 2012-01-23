@@ -55,6 +55,9 @@
 	
 		if (data.func == "update_status") {
 			$(".status").html("<h2>" + data.obj.status_value + "</h2>");
+			if (data.obj.status_code > 2) {
+				$(".waiting-icon").remove();
+			}
 		}
 		
 		if (data.func == "update_individual_exists") {
@@ -140,6 +143,14 @@
 			moving_clock[data.obj.timers.debateid] = data.obj.timers.staticclock;
 			$("#timer2-<%= debate.id %>").html(format_output(data.obj.timers.staticclock));
 			voteable[<%= debate.id %>] = false;
+			
+			<% if Rails.env.development? or Rails.env.test? %>      	
+				$(".waiting-icon").html(data.obj.waiting_icon);
+			<% else %>
+				$.each(data.obj.waiting_icon, function(idx, val) {    
+					$(".waiting-icon").html(val);
+				});
+			<% end %>
 		}
 
 		if (data.func == "end_single") {

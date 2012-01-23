@@ -2,9 +2,10 @@
 <html>
 <head>
   	<title>DeBunky</title>
-  	<%= stylesheet_link_tag "application" %>
+	<%= stylesheet_link_tag "application" %>
   	<%= javascript_include_tag "application" %>
   	<%= csrf_meta_tags %>
+		
 </head>
 <body>
 	<div id = "debater_nav">
@@ -42,10 +43,29 @@
 		
 		<%= yield %>
 	</div>
-	
 	<%= render :partial => "/layouts/waiting_box" %>
-	
+	<%= render :partial => "/shared/init_juggernaut" %>
+	<script>
+		// Subscribe debater to the Waiting Channel if he/she is currently waiting
+		$(document).ready(function(){
+			<% if debater_signed_in? %>
+				<% unless current_debater.waiting_for == nil %>
+
+					<% debate = Debate.find_by_id(current_debater.waiting_for) %>	
+					<% unless debate.end_time %>
+					
+							jug.subscribe("waiting_channel", function(data){  
+								if ((data.func == "debate_update") && (data.obj.debate == <%= current_debater.waiting_for %>)) {
+									$('.waiting_content').html(data.obj.status_value);
+								}	
+							});
+
+					<% end %>
+
+				<% end %>
+			<% end %>
+		});
+	</script>
 	
 </body>
-
 </html>

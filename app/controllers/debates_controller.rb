@@ -26,6 +26,11 @@ class DebatesController < ApplicationController
   	@debate.save
   	current_debater.debations.create(:debate_id => @debate.id)
   	
+  	# if debater was currently waiting for another debate, he now stops waiting
+  	if current_debater.waiting_for
+  	  current_debater.update_attributes(:waiting_for => nil)
+  	end
+  	
   	# update topic position with the debate id
   	@topic_position = TopicPosition.find(params[:argument][:topic_position_id])
   	@topic_position.update_attributes(:debate_id => @debate.id)
@@ -58,6 +63,11 @@ class DebatesController < ApplicationController
   	#The amount of time Debater 2 has left.  
   	@Seconds_Left_2 = $debatetime
   	
+  	# if debater was currently waiting for another debate, he now stops waiting
+  	if current_debater.waiting_for
+  	  current_debater.update_attributes(:waiting_for => nil)
+  	end
+  	
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
   	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
@@ -83,17 +93,21 @@ class DebatesController < ApplicationController
 	  reset_invocation_response # allow double rendering
 	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
+	  waiting_icon_render = render(:partial => "debates/waiting", :locals => {:debate => @debate}, :layout => false)
+	  reset_invocation_response # allow double rendering
+	  
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.name, 
 	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
 	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
-	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :joinerpath => "/debaters/" + current_debater.id.to_s, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
+	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :joinerpath => "/debaters/" + current_debater.id.to_s, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  
 	  reset_invocation_response # allow double rendering
 	  
 	  Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
+	  Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debate.status[:status_value]}})
 	  
 	  # update judgings index
     debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate}, :layout => false)	  
@@ -147,7 +161,7 @@ end
   	end
   	
   	#toggle waiting_for attribute if debater returns to that debate
-  	if @currentdebater.waiting_for = params[:id]
+  	if @currentdebater.waiting_for == params[:id].to_i
   	  @currentdebater.update_attributes(:waiting_for => nil)
   	end
   	
