@@ -1,0 +1,15 @@
+<div class="chat_container">
+	<div class= "name-chat">
+		<% if argument.debater_id == judgeid %>
+			judge
+		<% else %>
+			<% if debate.winner_id %>
+				<%= argument.debater_id == debate.winner_id ? "winner" : "loser" %> 
+			<% else %>
+				<%= argument.debater.name %>
+			<% end %>
+		<% end %>
+	</div>
+	
+	<span class = "argument">: <%= argument.content %></span>
+</div>

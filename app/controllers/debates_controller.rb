@@ -343,6 +343,13 @@ end
     # update status bar on show page
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
     
+    # Provide all participants with ability to chat, if judge's submission did not do this already
+    unless @debate.judge_entry.winner_id  
+      post_box_render = render(:partial => "arguments/form_chat", :locals => {:debate => @debate}, :layout => false)
+  	  reset_invocation_response # allow double rendering
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {:post_box => post_box_render, :joiner_id => @debate.joiner.id}})
+    end
+    
     respond_to do |format|
   	  format.html
   	  format.js {render :nothing => true}

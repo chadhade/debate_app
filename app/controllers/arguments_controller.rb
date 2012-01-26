@@ -81,6 +81,28 @@ class ArgumentsController < ApplicationController
   	end
   end
   
+  def chat
+    @debate_id = params[:argument][:debate_id]
+    @debate = Debate.find_by_id(@debate_id)
+    
+    #Allow chatting between debate participants once debate is over
+    if @debate.participant?(current_debater) and @debate.status[:status_code] > 4
+      @current_argument = current_debater.arguments.create(:content => params[:argument][:content], 
+                                                :debate_id => params[:argument][:debate_id], :debate_over => true)
+		end
+		
+	  argument_render = render(:partial => "arguments/chat", :locals => {:argument => @current_argument, :debate => @debate, :judgeid => @debate.judge_id, :currentid => current_debater.id}, :layout => false)
+	  reset_invocation_response # allow double rendering
+	  
+	  #Publish the Chat
+		Juggernaut.publish("debate_" + @debate_id, {:func => "chat", :obj => {:chat => argument_render}})
+		                  
+		respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
+  end
+  
   # create a hash of updated currently viewing counts:: :id => debate id, :currently_viewing_count => count
   def updated_currently_viewing_counts(debates)
     currently_viewing_counts = Array.new

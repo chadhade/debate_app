@@ -84,6 +84,16 @@
 			}
 		}
 		
+		if (data.func == "chat") {
+			<% if Rails.env.development? or Rails.env.test? %>
+				$(".debate[data-id="+ <%= debate.id %> +"]").append(data.obj.chat);
+			<% else %>
+				$.each(data.obj.chat, function(idx, val) {   
+					$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
+				});
+			<% end %>
+		}
+		
 		if (data.func == "judge_timer") {
 			<% if Rails.env.development? or Rails.env.test? %>      	
 				$('#statuspanel').append(data.obj.judgetime_div);			
@@ -180,6 +190,21 @@
 				}
 				javascript_countdown.init(moving_clock_adjusted, 0, data.obj.position, <%= debate.id %>);	
 			}
+		}
+		
+		if (data.func == "end_debate") {
+			<% if !current_debater.nil? %>
+				if((<%= debate.participant?(current_debater) %>) || (<%= current_debater.id %> == data.obj.joiner_id)) {
+			    
+						<% if Rails.env.development? or Rails.env.test? %>      	
+							$("#debatebody").append(data.obj.post_box);
+						<% else %>
+							$.each(data.obj.post_box, function(idx, val) {    
+								$("#debatebody").append(val);
+							});
+						<% end %>
+				}
+			<% end %>
 		}
 	});
 	

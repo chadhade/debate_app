@@ -60,7 +60,12 @@ DebateApp::Application.routes.draw do
   	end
   end
   
-  resources :arguments
+  resources :arguments do
+    member do
+      post 'chat'
+    end
+  end
+  
   resources :relationships, :only => [:create, :destroy]
   resources :blockings, :only => [:create, :destroy] do
     collection do

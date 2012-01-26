@@ -18,6 +18,16 @@
 
 }
 
+.chat_container {
+	width: 85%;
+	margin-bottom: 1px;
+	padding-top: 5px;
+	height: auto;
+	text-align: left;
+	float: left;
+	background-color: #ffffff;
+}
+
 .creator {
 	background-color: #eef0ee;
 }
@@ -37,6 +47,16 @@
 
 .name-joiner {
 	color: #cc0033;
+	font-style: italic;
+	font-size: 12px;
+	width: 65px;
+	text-align: left;
+	float:left;
+	
+}
+
+.name-chat {
+	color: #000000;
 	font-style: italic;
 	font-size: 12px;
 	width: 65px;
