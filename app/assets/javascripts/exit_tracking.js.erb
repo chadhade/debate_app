@@ -1,0 +1,10 @@
+window.onbeforeunload = OnBeforeUnLoad;
+function OnBeforeUnLoad () {
+	
+	if(debater_waiting != true) { 
+		$.getScript(window.location.pathname + "/leaving.js");
+	}
+	//return "DeBunky says ALWAYS CLICK LEAVE PAGE!";
+	return;  
+
+}
