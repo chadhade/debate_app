@@ -32,8 +32,8 @@ body {
 
 .waiting-icon {
 	float:right;
-	margin-top: 40px;
-	margin-right: 100px;
+	margin-top: -40px;
+	margin-right: 0px;
 }
 
 .waiting_box {
