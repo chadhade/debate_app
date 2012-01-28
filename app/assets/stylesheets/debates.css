@@ -133,11 +133,13 @@
 }
 
 .judging_results {
-	padding: 10px 10px;
+	text-align: left;
+	font-size: 14px;
+	padding: 10px 20px;
 	border:1px solid #ccc;
-	background-color: #fafafa;
-	
-	height: 215px;
+	bbackground-color: #fafafa;
+	background-color: #cccccc;
+	color: #000000;
 	overflow:auto;
 	
 	-webkit-box-shadow:0 0 20px #000;
