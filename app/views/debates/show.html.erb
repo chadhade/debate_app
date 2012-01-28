@@ -10,6 +10,8 @@
 <%= javascript_include_tag "timer_countdown" %>
 <%= javascript_include_tag "tracking" %>
 <%= javascript_include_tag "form_validations" %>
+<%= javascript_include_tag "jquery.qtip.js" %>
+
 
 <%= render :partial => "/shared/init_juggernaut" %>
 
@@ -114,7 +116,7 @@
 	</div>
 	
 	<div id="footnotespanel">
-		<h2>Footnotes</h2>
+		<h2>Footnotes<div class="info-icon" id="info-footnotes"><%= image_tag("question.gif", :alt => "Footnotes Help") %></div></h2>
 		<div class="footnotescontent">
 			<%= render @debate.footnotes %>
 		</div>
@@ -131,3 +133,4 @@
 	});
 </script>
 
+<%= javascript_include_tag "jquery_tips.js" %>
