@@ -94,9 +94,11 @@
 </script>
 
 	<div id="statuspanel">
+		<!-- Show Debate Status -->
 		<%= render :partial => "/debates/status", :locals => {:status => @status, :debate => @debate}  %>
 		
-		<% if @debate.status[:status_code] == 4 %>
+		<!-- Show Judge Timer -->
+		<% if @status[:status_code] == 4 %>
 			<%= render :partial => "/judgings/judging_timer" %>
 			<script> 
 				abort_timer[<%= @debate.id %>] = 1;
@@ -104,15 +106,36 @@
 			</script>
 		<% end %>
 		
+		<!-- Show Judging Form -->
 		<% @judging = @debate.judge_entry %>
 		<% if !@judging.nil? and @currentdebater == @debate.judger and @judging.winner_id.nil? %>
 			<% if !@debate.end_time.nil? and Time.now < @debate.end_time + $judgetime %>
 				<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
 			<% end %>
 		<% end %>
+		
+		<!-- Show Judging Results -->
 		<% if !@judging.nil? and !@judging.winner_id.nil? %>
-			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging, :upvotes => @upvotes, :downvotes => @downvotes} %>
+			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
 		<% end %>
+		
+		<div id="debater-ratings">
+			<!-- Show Debater Ratings -->
+			<% if @status[:status_code] == 5 %>
+				<%= render :partial => "/judgings/debater_ratings", :locals => {:judging => @judging} %>
+			<% end %>
+		</div>
+		
+		<!-- Show Debater Rating Form -->
+		<% if @status[:status_code] == 5 %>
+			<% if @currentdebater.id == @judging.winner_id and @judging.winner_approve.nil? %>
+				<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debate.id} %>
+			<% end %>
+			<% if @currentdebater.id == @judging.loser_id and @judging.loser_approve.nil? %>
+				<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debate.id} %>
+			<% end %>
+		<% end %>
+		
 	</div>
 	
 	<div id="footnotespanel">

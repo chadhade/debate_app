@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120125205521) do
+ActiveRecord::Schema.define(:version => 20120130010852) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20120125205521) do
     t.integer  "arg_upvotes",                           :default => 0
     t.integer  "arg_downvotes",                         :default => 0
     t.integer  "waiting_for"
+    t.integer  "judge_points",                          :default => 0
   end
 
   add_index "debaters", ["email"], :name => "index_debaters_on_email", :unique => true
@@ -100,6 +101,8 @@ ActiveRecord::Schema.define(:version => 20120125205521) do
     t.integer  "winner_id"
     t.text     "comments"
     t.integer  "loser_id"
+    t.boolean  "winner_approve"
+    t.boolean  "loser_approve"
   end
 
   create_table "relationships", :force => true do |t|

@@ -8,7 +8,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 90.seconds
+  $debatetime = 10.seconds
   
   before_filter :authenticate_debater!
   skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -340,20 +340,21 @@ end
   def end_judge
     @debate = Debate.find(params[:id])
     
-    # update status bar on show page
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+      unless @debate.judge_entry.winner_id
+      # update status bar on show page
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
     
-    # Provide all participants with ability to chat, if judge's submission did not do this already
-    unless @debate.judge_entry.winner_id  
-      post_box_render = render(:partial => "arguments/form_chat", :locals => {:debate => @debate}, :layout => false)
-  	  reset_invocation_response # allow double rendering
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {:post_box => post_box_render, :joiner_id => @debate.joiner.id}})
-    end
+      # Provide all participants with ability to chat, if judge's submission did not do this already
+      
+        post_box_render = render(:partial => "arguments/form_chat", :locals => {:debate => @debate}, :layout => false)
+    	  reset_invocation_response # allow double rendering
+        Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {:post_box => post_box_render, :joiner_id => @debate.joiner.id}})
     
-    respond_to do |format|
-  	  format.html
-  	  format.js {render :nothing => true}
-  	end
+      respond_to do |format|
+    	  format.html
+    	  format.js {render :nothing => true}
+    	end
+	  end
   end
   
   def waiting

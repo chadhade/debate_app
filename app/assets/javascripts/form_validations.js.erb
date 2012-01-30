@@ -1,4 +1,3 @@
-
 var current_count = 0;
 
 function textCounter(field, max) {
@@ -18,3 +17,16 @@ function checkEmpty(element, name)
 	                return false;
 	        }
 }
+
+
+// Clears Chat form after Submit button is pressed
+$(document).ready(function() {
+	$('#argument_chat').live("ajax:beforeSend", function(event,xhr,status){
+	  $('#argument_content').val('');
+	})
+
+	$('#rate_judge').live("ajax:complete", function(event,xhr,status){
+	  $('.rating_form').remove();
+	})
+
+});

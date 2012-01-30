@@ -11,6 +11,7 @@ DebateApp::Application.routes.draw do
   resources :judgings do
     member do 
       get 'submission'
+      post 'rating'
     end
   end
 

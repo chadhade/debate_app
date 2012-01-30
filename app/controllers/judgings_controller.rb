@@ -60,6 +60,7 @@ class JudgingsController < ApplicationController
       
       # Trying to move winner_id and loser_id to the debate table
       @debate.update_attributes(:winner_id => params[:judging][:winner_id], :loser_id => @loser_id)
+      @debate.save
       
       #tally up judge's votes
       @votes = Array.new
@@ -75,8 +76,13 @@ class JudgingsController < ApplicationController
       end
       
       judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging, :upvotes => upvotes, :downvotes => downvotes})
+      reset_invocation_response # allow double rendering
       
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results, :judge_votes => @votes, :judgeid => @judgeid}})
+      # Show Judge Rating form on status bar
+      ratings_form_render = render(:partial => "judgings/rate_judge", :layout => false, :locals => {:judging => @judging, :debateid => @debate.id})
+      
+      reset_invocation_response # allow double rendering
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results, :judge_votes => @votes, :judgeid => @judgeid, :ratings_form => ratings_form_render, :winner_id => params[:judging][:winner_id].to_i, :loser_id => @loser_id}})
       reset_invocation_response # allow double rendering
       Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
     
@@ -95,6 +101,40 @@ class JudgingsController < ApplicationController
   	  format.html
   	  format.js {render :nothing => true}
   	end
+  end
+  
+  def rating
+    @judging = Judging.find_by_id(params[:judging][:judging_id])
+    
+    if current_debater.id == @judging.winner_id
+      @judging.update_attributes(:winner_approve => params[:judging][:winner_approve])
+      @judging.save
+      if params[:judging][:winner_approve] == "true" and @judging.loser_approve
+        debater = Debater.find_by_id(@judging.debater_id)
+        debater.update_attributes(:judge_points => debater.judge_points + 1)
+        debater.save
+      end
+    end
+    
+    if current_debater.id == @judging.loser_id
+      @judging.update_attributes(:loser_approve => params[:judging][:winner_approve])
+      @judging.save
+      if params[:judging][:winner_approve] == "true" and @judging.winner_approve
+        debater = Debater.find_by_id(@judging.debater_id)
+        debater.update_attributes(:judge_points => debater.judge_points + 1)
+        debater.save
+      end
+    end
+    
+    # update status bar on show page
+    ratings_render = render(:partial => "judgings/debater_ratings", :locals => {:judging => @judging}, :layout => false)
+    reset_invocation_response # allow double rendering
+    Juggernaut.publish("debate_" + params[:judging][:debate_id], {:func => "debater_ratings", :obj => {:ratings => ratings_render}})
+    
+    respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end  
   end
   
   ############ allow double rendering ###################
