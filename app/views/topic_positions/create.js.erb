@@ -1,0 +1,15 @@
+// Update the Matching Debates, with a half second delay
+$('#matching-debates').html(".....");
+setTimeout("display_matches()", 500);
+
+// Update the Suggested Debates
+$('#suggest-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_suggested_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
+
+$('#first-argument').attr('disabled', false);
+$('#first-argument').css('background-color', "#ffffff");
+$('#first-argument').css('color', "#444444");
+$('#first-argument').html("Your thoughts about <%= @topic_position.topic %>...?");
+
+function display_matches() {
+	$('#matching-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_matching_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
+}

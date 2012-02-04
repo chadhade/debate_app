@@ -2,11 +2,11 @@
 	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"}, :html => {:name => 'createform', :onsubmit => "return checkEmpty('createform', 'argument[content]');"} do |f| %>
 		<div class = "field">
 			<h3>First Argument</h3> <br/>
-			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);" %> <br />
+			<%= f.text_area :content, :size => "36x5", :disabled => "disabled", :class => "argument-field", :id => "first-argument", :onkeyup => "textCounter(this, 1000);", :onClick => "this.value='';" %> <br />
 		</div>
 		<%= f.hidden_field :topic_position_id, :value => @topic_position.id %>
 		<div class = "action">
-			<%= f.submit "Wait for Joiner" %>
+			<%= f.submit "Wait for Joiner", :disabled => "disabled" %>
 		</div>	
 	<% end %>
 </div>

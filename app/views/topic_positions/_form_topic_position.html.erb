@@ -1,5 +1,5 @@
 <!-- form class attribute is set to new_topic_position -->
-<%= form_for :topic_position, :url => {:controller => :topic_positions, :action => "create"}, :html => {:name => 'topicform', :class => 'new_topic_position', :onsubmit => "return checkEmpty('topicform', 'topic_position[topic]');"} do |f| %>
+<%= form_for :topic_position, :url => {:controller => :topic_positions, :action => "create"}, :html => {:name => 'topicform', :class => 'new_topic_position', :onsubmit => "return checkEmpty('topicform', 'topic_position[topic]'); "}, :remote => true do |f| %>
 	<div class="field-topicposition">
 		<span class="field-topic">
 			<%= f.label :topic %> <br>
@@ -11,6 +11,6 @@
 		</span>
 	</div>
 	<div class="action-topicposition">
-		<%= f.submit "Match" %>
+		<%= f.submit "Match", :disable_with => 'Searching...' %>
 	</div>	
 <% end %>

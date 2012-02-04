@@ -41,7 +41,7 @@
 <br>
 
 <!--<div class="topic_position_container">
-	<%= "#{@topic_position.position == true ? "You are PRO" : "You are CON"} #{@topic_position.topic}." %>
+	<%# "#{@topic_position.position == true ? "You are PRO" : "You are CON"} #{@topic_position.topic}." %>
 </div>
 <br> -->
 
@@ -88,8 +88,4 @@
 <div class="or_container">
 	<h2>or</h2>
 </div> 
-<script>
-$('#matching-debates').bind('ajax:success', function() {  
-    $(this).closest('tr').fadeOut();  
-});
-</script>
+
