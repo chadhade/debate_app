@@ -106,16 +106,10 @@
 }
 
 .create_form_container {
-	padding: 10px 10px;
-	width: 300px;
-	
+	text-align: center;	
 	background-color: #fafafa;
+	margin: 10px;
 
-	position: relative;
-	overflow: auto;
-	margin: 0 auto;
-
-	
 }
 
 .debate_link a {

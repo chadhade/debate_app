@@ -61,7 +61,7 @@
 	<br /> <br />
 	
 
-	<%= render :partial => "/topic_positions/form_new_debate" %> 
+	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position} %> 
 
 </div>
 
@@ -88,4 +88,8 @@
 <div class="or_container">
 	<h2>or</h2>
 </div> 
-
+<script>
+$('#matching-debates').bind('ajax:success', function() {  
+    $(this).closest('tr').fadeOut();  
+});
+</script>

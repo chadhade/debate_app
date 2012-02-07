@@ -1,13 +1,13 @@
 <div class="debate-background">
-<div class="debate" data-id="<%= debate.id %>">  
-		<% debate.arguments(:order => "created_at ASC").each do |argument| %>
+	<div class="debate" data-id="<%= debate.id %>">  
+			<% debate.arguments(:order => "created_at ASC").each do |argument| %>
 			
-			<% if argument.debate_over %>
-				<%= render :partial => "/arguments/chat", :locals => {:argument => argument, :judgeid => debate.judge_id, :currentid => currentid, :debate => debate} %>
-			<% else %>
-				<%= render :partial => "/arguments/argument", :locals => {:argument => argument, :judgeid => debate.judge_id, :status => debate.status, :currentid => currentid} %>
-			<% end %>
+				<% if argument.debate_over %>
+					<%= render :partial => "/arguments/chat", :locals => {:argument => argument, :judgeid => debate.judge_id, :currentid => currentid, :debate => debate} %>
+				<% else %>
+					<%= render :partial => "/arguments/argument", :locals => {:argument => argument, :judgeid => debate.judge_id, :status => debate.status, :currentid => currentid} %>
+				<% end %>
 		
-		<% end %>
-</div>
+			<% end %>
+	</div>
 </div>

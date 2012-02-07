@@ -22,8 +22,8 @@ $("#info-footnotes").qtip({
    	content: 'Use double parenthesis like ((this)) to add footnotes to your arguments.',
    	position: {
       corner: {
-         target: 'topLeft',
-         tooltip: 'topRight'
+         target: 'topMiddle',
+         tooltip: 'bottomRight'
       }
    	},
 	style: { 
@@ -34,7 +34,7 @@ $("#info-footnotes").qtip({
 			color: '#0000FF'
 		},
 		width: 250,
-		tip: 'topRight'
+		tip: 'bottomRight'
 	}
 });
 $("#info-votes").qtip({

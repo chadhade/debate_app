@@ -32,7 +32,8 @@ class DebatesController < ApplicationController
   	end
   	
   	# update topic position with the debate id
-  	@topic_position = TopicPosition.find(params[:argument][:topic_position_id])
+  	@topic_position = TopicPosition.new(:debater_id => current_debater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position])
+  	#@topic_position = TopicPosition.find(params[:argument][:topic_position_id])
   	@topic_position.update_attributes(:debate_id => @debate.id)
 	
   	# create a new argument object

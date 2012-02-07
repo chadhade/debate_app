@@ -15,17 +15,16 @@ DebateApp::Application.routes.draw do
     end
   end
 
-  # CAN GET RID OF
-  # get "topic_positions/create"
-  # 
-  # get "topic_positions/destroy"
   
   resources :topic_positions do
     member do 
-      get 'matches'
+      post 'matches'
     end
   end
-
+  
+  get "topic_positions/matches"
+  post "topic_positions/matches"
+  
   get "pages/landing"
 
   match 'debates/:debate_id/leaving' => 'viewings#leaving_page'
