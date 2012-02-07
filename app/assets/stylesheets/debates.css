@@ -3,7 +3,7 @@
 }
 
 #debatebody {
-	margin: 1em auto;
+	margin: .5em auto;
 }
 
 .debateleft {
@@ -12,7 +12,7 @@
 
 .debatecontainer {
 	padding: 10px 10px;
-	height: 325px;
+	height: 310px;
 	width: 480px;
 	margin: 5px 10px;
 	margin-bottom: 15px;
@@ -31,7 +31,7 @@
 	font-family: Ariel;
 	font-size: 15px;
 	background-color: #fafafa;
-	height: 275px;
+	height: 250px;
 	overflow: auto;
 }
 
@@ -124,9 +124,9 @@
 
 #footnotespanel {
 	padding: 10px 10px;
-	height: 154px;
+	height: 126px;
 	width: 245px;
-	margin: 5px 10px;	
+	margin: 10px;	
 	border:1px solid #ccc;
 	float: right;	
 	background-color: #fafafa;
@@ -143,9 +143,10 @@
 }
 
 .post_to_debate {
-	padding: 10px 10px;
+	padding: 5px 10px;
+	padding-bottom: 15px;
 	width: 480px;
-	margin: 5px 10px;	
+	margin: 0px 10px;	
 	border:1px solid #ccc;
 /*	float: left;	*/
 	background-color: #fafafa;
