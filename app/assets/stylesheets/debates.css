@@ -183,16 +183,7 @@
     box-shadow:0 5px 10px #000;
 }
 
-.rating_form {
-	margin-top: 10px;
-	padding: 10px 10px;
-	border:1px solid #ccc;
-	background-color: #fafafa;
-	
-	-webkit-box-shadow:0 0 20px #000;
-    -moz-box-shadow: 0 0 20px #000;
-    box-shadow:0 5px 10px #000;
-}
+
 
 #footnotespanel h2 {
 	-webkit-box-shadow:0 0 10px #000;  

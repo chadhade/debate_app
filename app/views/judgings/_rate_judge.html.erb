@@ -2,7 +2,6 @@
 	<%= form_for Judging.new, :url => { :controller => "judgings", :action => "rating" }, :html => {:id => 'rate_judge'}, :remote => true do |f| %>	
 		<strong>Was the Judge Fair?</strong>
 		<div class = "field">
-			
 				<%= f.select(:winner_approve, [["Fair", true], ["Not Fair", false]], :id => 'select_rating') %><br />
 				<%# f.hidden_field :debater, :value => current_debater.id %>
 				<%= f.hidden_field :judging_id, :value => judging.id %>
