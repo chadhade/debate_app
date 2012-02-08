@@ -83,3 +83,11 @@
 	background-repeat: no-repeat;
 	background-position: 0 50%;
 }
+
+.rating_form select {
+	width: 80px;
+	float:left; 
+	margin-top: 25px;
+	margin-left: 30px;
+}
+
