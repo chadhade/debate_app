@@ -9,7 +9,6 @@
 <%= javascript_include_tag "exit_tracking" %>
 <%= javascript_include_tag "timer_countdown" %>
 <%= javascript_include_tag "tracking" %>
-<%= javascript_include_tag "form_validations" %>
 <%= javascript_include_tag "jquery.qtip.js" %>
 
 
@@ -157,4 +156,9 @@
 	});
 </script>
 
+<script>
+      debate_id = <%= @debate.id %>
+</script>
+
 <%= javascript_include_tag "jquery_tips.js" %>
+<%= javascript_include_tag "form_validations" %>

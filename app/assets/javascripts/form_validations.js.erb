@@ -19,12 +19,33 @@ function checkEmpty(element, name)
 }
 
 
-// Clears Chat form after Submit button is pressed
+
+
 $(document).ready(function() {
+	// Clears Chat form after Submit button is pressed
 	$('#argument_chat').live("ajax:beforeSend", function(event,xhr,status){
 	  $('#argument_content').val('');
-	})
-
+	}),
+	
+	// Submits the form when user presses Enter (but not Shift + Enter)
+	$('#chat_textarea').keypress(function(e) {
+	  	if (e.keyCode == 13 && !e.shiftKey) {
+	    	post_url = "/arguments/" + debate_id + "/chat";
+			e.preventDefault();
+		    jQuery.ajax({
+				type: "POST",
+				url: post_url,
+		      	data: $('#argument_chat').serialize(),
+		      	success: function(){
+					$('#chat_textarea').value = '';
+				},
+		      	dataType: "json"
+		    });
+		}
+	}),
+	
+		
+	
 	$('#rate_judge').live("ajax:complete", function(event,xhr,status){
 	  $('.rating_form').remove();
 	})
