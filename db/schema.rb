@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120130010852) do
+ActiveRecord::Schema.define(:version => 20120211200332) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -114,6 +114,14 @@ ActiveRecord::Schema.define(:version => 20120130010852) do
 
   add_index "relationships", ["followed_id"], :name => "index_relationships_on_followed_id"
   add_index "relationships", ["follower_id"], :name => "index_relationships_on_follower_id"
+
+  create_table "suggested_topics", :force => true do |t|
+    t.string   "topic"
+    t.string   "topic2"
+    t.decimal  "rating",     :precision => 5, :scale => 3, :default => 1.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "topic_positions", :force => true do |t|
     t.integer  "debater_id"

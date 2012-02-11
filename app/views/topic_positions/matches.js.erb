@@ -14,6 +14,8 @@ $('#first-argument').html("Your thoughts about <%= @topic_position.topic %>...?"
 
 $('#first-argument-button').attr('disabled', false);
 
+//Refresh the topic field with the topic, in case the topic was chosen by clicking an outside link
+$('#topic-position-field').val("<%= @topic_position.topic %>");
 
 
 function display_matches() {

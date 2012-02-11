@@ -3,7 +3,7 @@
 	<div class="field-topicposition">
 		<span class="field-topic">
 			<%= f.label :topic %> <br>
-			<%= f.text_field :topic, :onkeyup => "textCounter(this, 65);", :onClick => "if(this.value.substr(0,3) == '...') {this.value='';}" %>
+			<%= f.text_field :topic, :onkeyup => "textCounter(this, 65);", :id => "topic-position-field", :onClick => "if(this.value.substr(0,3) == '...') {this.value='';}" %>
 		</span>
 		<span class="field-position">		
 			<%= f.label :position %> <br>	

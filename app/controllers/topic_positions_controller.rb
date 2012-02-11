@@ -21,6 +21,7 @@ class TopicPositionsController < ApplicationController
   def index
     @matching = nil
     @topic_position = TopicPosition.new(:debater_id => current_debater, :topic => "...", :position => true)
+    @trending = Suggested_Topic.trending(5)
   end
   
   def new
