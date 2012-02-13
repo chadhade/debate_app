@@ -1,0 +1,19 @@
+<%= form_for :topic_position, :url => {:controller => "topic_positions", :action => "matches"}, :html => {:name => 'topicform', :class => 'new_topic_position'}, :remote => true do |f| %>
+	<div class="field-topicposition">
+		<span class="field-topic">
+			<%= f.label :topic %> <br>
+			<%= f.text_field :topic, :onkeyup => "textCounter(this, 20); checkEmpty2(this, '#versusmatch_button', '#versus-position-field2');", :id => "versus-position-field", :onClick => "if(this.value.substr(0,3) == '...') {this.select();}" %>
+		</span>
+		<span class="field-position">		
+			<%= f.label "+" %> <br>	
+			<%= f.select(:position, [["vs.", "vs"], ["", nil]], {:selected => "vs"}, :onchange => 'toggleTopic(this, "versusform");') %>
+		</span>
+		<span class="field-topic">
+			<%= f.label "topic2" %> <br>
+			<%= text_field_tag :topic2, nil, {:onkeyup => "textCounter(this, 20); checkEmpty2(this, '#versusmatch_button', '#versus-position-field');", :id => "versus-position-field2", :onClick => "if(this.value.substr(0,3) == '...') {this.select();}"} %>
+		</span>
+	</div>
+	<div class="action-topicposition">
+		<%= f.submit "Match", :disable_with => 'Searching...', :disabled => true, :id => 'versusmatch_button' %>
+	</div>	
+<% end %>

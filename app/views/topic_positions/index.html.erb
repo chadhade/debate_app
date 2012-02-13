@@ -48,13 +48,23 @@
 <div class="topic_container">
 	<h2> Choose a Topic</h2>
 
-	<div class="buttond2">
-		<span class="debate-topic-position">
-			<%= render '/topic_positions/form_topic_position' %>
-		</span>
+	<div id="topicform">
+		<div class="buttond2">
+			<span class="debate-topic-position">
+				<%= render '/topic_positions/form_topic_position' %>
+			</span>
+		</div>
 	</div>
 	
-	<br /> <br />
+	<div id="versusform" class="hidden">
+		<div class="buttond2">
+			<span class="debate-topic-position">
+				<%= render '/topic_positions/form_versus_position' %>
+			</span>
+		</div>
+	</div>
+	
+	<br />
 	
 
 	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position} %> 

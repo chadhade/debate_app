@@ -18,7 +18,38 @@ function checkEmpty(element, name)
 	        }
 }
 
+function checkEmpty2(field, button, field2)
+{       
+	if ( field.value == '' )
+	    {    
+			$(button).attr('disabled', true);
+	    }
+	else
+		{
+			if(field2 == "") {
+				$(button).attr('disabled', false);
+			}
+			else {
+				if($(field2).value != '') {
+					$(button).attr('disabled', false);
+				}
+			}	
+		}
+}
 
+function toggleTopic(position, formtype) {
+
+	if(position.value == "vs") {
+		$('#topicform').hide();
+		$('#versusform').show();
+		if(formtype=="topicform") {position.value = ""};
+	}
+	else {
+		$('#topicform').show();
+		$('#versusform').hide();
+		if(formtype=="versusform") {position.value = "vs"};
+	}
+}
 
 
 $(document).ready(function() {
@@ -32,22 +63,54 @@ $(document).ready(function() {
 	  	if (e.keyCode == 13 && !e.shiftKey) {
 	    	post_url = "/arguments/" + debate_id + "/chat";
 			e.preventDefault();
-		    jQuery.ajax({
+		    // Disable the Submit Button
+			$('#chat_button').attr('disabled', true);
+			$('#chat_button').val('Sending...');
+			
+			jQuery.ajax({
 				type: "POST",
 				url: post_url,
 		      	data: $('#argument_chat').serialize(),
-		      	success: function(){
-					$('#chat_textarea').value = '';
-				},
-		      	dataType: "json"
+		      	dataType: 'json',
+				success: function(result){
+				}
 		    });
+		$('#chat_textarea').val('');
+		// Re-enable the Submit Button
+		setTimeout("$('#chat_button').val('Chat'); $('#chat_button').attr('disabled', false);", 500);
 		}
 	}),
 	
+	$('#argument_textarea').keypress(function(e) {
+	  	if (e.keyCode == 13 && !e.shiftKey) {
+	    	post_url = "/arguments";
+			e.preventDefault();
+		    // Disable the Submit Button
+			$('#debunk_button').attr('disabled', true);
+			$('#debunk_button').val('Sending...');
+			
+			jQuery.ajax({
+				type: "POST",
+				url: post_url,
+		      	data: $('#argument_debunk').serialize(),
+		      	dataType: "json",
+				success: function(result){
+				}
+		    });
+			$('#argument_textarea').val('');
+			// Re-enable the Submit Button
+			setTimeout("$('#debunk_button').val('deBunk!'); $('#debunk_button').attr('disabled', false);", 500);
+		}
+	}),
 		
 	
 	$('#rate_judge').live("ajax:complete", function(event,xhr,status){
 	  $('.rating_form').remove();
 	})
+	
+	$('#argument_chat').live("ajax:complete", function(event,xhr,status){
+	  $('#chat_textarea').val('');
+	})
+	
 
 });

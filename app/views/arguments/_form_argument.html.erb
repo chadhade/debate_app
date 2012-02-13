@@ -1,11 +1,11 @@
 <div class = "post_to_debate", data-id="<%= debate.id %>">
-	<%= form_for Argument.new, :remote => true do |f| %>
+	<%= form_for Argument.new, :html => {:id => 'argument_debunk', :name => 'debunkform'}, :remote => true do |f| %>
 		<div class = "field">
 			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);", :id => "argument_textarea" %>
 		</div>
 		<%= f.hidden_field :debate_id, :value => debate.id %>
 		<div class = "action">
-			<%= f.submit "deBunk!" %>
+			<%= f.submit "deBunk!", :disable_with => 'Debunking...', :id => "debunk_button" %>
 		</div>	
 	<% end %>
 </div>

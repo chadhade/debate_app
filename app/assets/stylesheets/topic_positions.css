@@ -11,3 +11,32 @@
 .argument-field {
 	background-color: #cccccc;
 }
+
+
+/*div class for topic field*/
+.field-topic {
+	float: left;
+	text-align: left;
+}
+
+/*label tag for topic*/
+label[for=topic_position_topic] {
+
+}
+
+#versus-position-field, #versus-position-field2 {
+	width: 90px;
+}
+
+
+/*div class for position field*/
+.field-position {
+	float: left;
+}
+
+
+/*div class for topic position action*/
+.action-topicposition{
+	clear: both;
+	text-align: center;
+}
