@@ -34,14 +34,12 @@ class ArgumentsController < ApplicationController
     		#argument_render = render(@current_argument, :layout => false)
     	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => current_debater.id, :status => @debate.status}, :layout => false)
     	  reset_invocation_response # allow double rendering
-    	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
-    	  reset_invocation_response # allow double rendering
-  		
+  
     		@debate = Debate.find_by_id(@debate_id)
     		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
   		
     		Juggernaut.publish("debate_" + @debate_id, {:func => "argument", :obj => {:timers => showtimers(@debate, @current_argument, @lastargument), 
-    		                  :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.email, 
+    		                  :argument => argument_render, :current_turn => @debate.current_turn.email, 
     		                  :footnotes => footnotes_render, :judge => @debate.judge}})
     	  reset_invocation_response # allow double rendering
       end

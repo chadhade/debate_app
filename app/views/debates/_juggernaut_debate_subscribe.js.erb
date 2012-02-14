@@ -11,24 +11,11 @@
  
 			<% if !current_debater.nil? %>
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
-				    <% if Rails.env.development? or Rails.env.test? %>      	
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
-						$("#debatebody").append(data.obj.post_box);
-					<% else %>
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
-						$.each(data.obj.post_box, function(idx, val) {    
-							$("#debatebody").append(val);
-						});
-					<% end %>	
+					$(".post_to_debate").show();
 				}
 				else {
-				    <% if Rails.env.development? or Rails.env.test? %> 
-					    $(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
-					<% else %>
-						$.each(data.obj.post_box, function(idx, val) { 
-							$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
-						});
-					<% end %>	
+					$(".post_to_debate").hide();
+					$(".join_to_debate").hide();
 				}
 			<% end %>
 			
@@ -101,7 +88,7 @@
 				$('#statuspanel').append(data.obj.judgetime_div[0]);
 			<% end %>			
 			javascript_countdown.init(data.obj.judgetime, 0, 3, <%= debate.id %> );	
-			$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
+			$(".post_to_debate").hide();
 		}
 		
 		if (data.func == "judge_timer_remove") {
@@ -148,23 +135,11 @@
 		if (data.func == "judge_arrived") {
 			//abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
 			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
-			//var img = document.createElement("IMG");
-			//	img.src = "/assets/gavel.png";
-			//var element = document.getElementById("judge-<%= debate.id %>");
-			//	element.innerHTML = "";
-			//	element.appendChild(img);
-			
 			voteable[<%= debate.id %>] = true;
 			
 			<% if !current_debater.nil? %>
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
-				    <% if Rails.env.development? or Rails.env.test? %>      	
-						$("#debatebody").append(data.obj.post_box);
-					<% else %>
-						$.each(data.obj.post_box, function(idx, val) {    
-							$("#debatebody").append(val);
-						});
-					<% end %>
+					$(".post_to_debate").show();
 				}
 			<% end %>
 		}
@@ -187,20 +162,11 @@
 		if (data.func == "end_single") {
 			
 			<% if !current_debater.nil? %>
-				if ("<%= current_debater.email %>" == data.obj.current_turn) {
-			 
-					<% if Rails.env.development? or Rails.env.test? %>      	
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
-						$("#debatebody").append(data.obj.post_box);
-					<% else %>
-						$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
-						$.each(data.obj.post_box, function(idx, val) {    
-							$("#debatebody").append(val);
-						});
-					<% end %>			
+				if ("<%= current_debater.email %>" == data.obj.current_turn) {   	
+					$(".post_to_debate").show();	
 				}
 				else {
-					$(".post_to_debate[data-id="+ <%= debate.id %> +"]").remove();
+					$(".post_to_debate").hide();
 				}
 			<% end %>
 			
@@ -215,15 +181,8 @@
 		
 		if (data.func == "end_debate") {
 			<% if !current_debater.nil? %>
-				if((<%= debate.participant?(current_debater) %>) || (<%= current_debater.id %> == data.obj.joiner_id)) {
-			    
-						<% if Rails.env.development? or Rails.env.test? %>      	
-							$("#debatebody").append(data.obj.post_box);
-						<% else %>
-							$.each(data.obj.post_box, function(idx, val) {    
-								$("#debatebody").append(val);
-							});
-						<% end %>
+				if((<%= debate.participant?(current_debater) %>) || (<%= current_debater.id %> == data.obj.joiner_id)) {	  	
+					$(".chat_to_debate").show();
 				}
 			<% end %>
 		}

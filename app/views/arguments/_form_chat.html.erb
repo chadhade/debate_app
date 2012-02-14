@@ -1,4 +1,4 @@
-<div class = "post_to_debate", data-id="<%= debate.id %>">
+<div class = "chat_to_debate <%= hidden %>", data-id="<%= debate.id %>">
 	<%= form_for Argument.new, :url => { :controller => "arguments", :action => "chat" }, :html => {:id => 'argument_chat', :name => 'chatform'}, :remote => true do |f| %>
 		<div class = "field">
 			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);", :id => "chat_textarea" %>

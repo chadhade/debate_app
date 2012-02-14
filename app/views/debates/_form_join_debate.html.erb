@@ -1,4 +1,4 @@
-<div class = "post_to_debate", data-id="<%= debate.id %>">
+<div class = "join_to_debate <%= hidden %>", data-id="<%= debate.id %>">
 	<%= form_for Argument.new, :url => join_debate_path(debate.id), :html => {:name => 'postdebateform', :before => "return checkEmpty('postdebateform', 'argument[content]'); "}, :remote => true do |f| %>
 		<div class = "field">
 			<!-- <%= f.label :content %> <br /> -->

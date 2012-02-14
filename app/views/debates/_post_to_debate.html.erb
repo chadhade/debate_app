@@ -1,15 +1,26 @@
 <% unless currentdebater.nil? %>
 	
+	<%# ALL FORMS ARE RENDERED %>
+	<%# THE FORMS NOT NEEDED ARE HIDDEN %>
+	
 	<% if debate.debaters.size == 1 %>
-	  <%= render :partial => "debates/form_join_debate", :locals => {:debate => debate} if !debate.creator?(currentdebater) %>
-	<% else %>
-		<% if debate.judge and debate.current_turn?(currentdebater) %>
-	  		<%= render :partial => "arguments/form_argument", :locals => {:debate => debate} %>
-		<% else %>
-			<% if debate.participant?(current_debater) and debate.status[:status_code] > 4 %>
-				<%= render :partial => "arguments/form_chat", :locals => {:debate => debate} %>
+	  	<%= render :partial => "debates/form_join_debate", :locals => {:debate => debate, :hidden => ""} if !debate.creator?(currentdebater) %>
+		<%= render :partial => "arguments/form_argument", :locals => {:debate => debate, :hidden => "hidden"} %>
+		<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => "hidden"} %>
+	<% else %>	
+		<% if debate.participant?(current_debater) %>
+			<% if debate.status[:status_code] > 4 %>
+				<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => ""} %>
+			<% else %>
+				<% if debate.status[:status_code] <= 4 %>
+					<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => "hidden"} %>
+				<% end %>
 			<% end %>
-		<% end %>
+		
+			<% if debate.judge and debate.current_turn?(currentdebater) %>
+		  		<%= render :partial => "arguments/form_argument", :locals => {:debate => debate, :hidden => ""} %>
+			<% end %>
+		<% end %>	
 	<% end %>
 
 <% end %>

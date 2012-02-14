@@ -8,7 +8,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 1000.seconds
+  $debatetime = 60.seconds
   
   before_filter :authenticate_debater!
   skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -92,15 +92,14 @@ class DebatesController < ApplicationController
 	  # publish to appropriate channels
 	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id, :currentid => @currentid, :status => @debate.status}, :layout => false)
 	  reset_invocation_response # allow double rendering
-	  post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
-	  reset_invocation_response # allow double rendering
+	  
 	  waiting_icon_render = render(:partial => "debates/waiting", :locals => {:debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
-	                                              :argument => argument_render, :post_box => post_box_render, :current_turn => @debate.current_turn.name, 
+	                                              :argument => argument_render, :current_turn => @debate.current_turn.name, 
 	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
 	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :joinerpath => "/debaters/" + current_debater.id.to_s, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
@@ -325,10 +324,7 @@ end
     @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
     @debate = Debate.find(params[:id])
     
-    post_box_render = render(:partial => "arguments/form_argument", :locals => {:debate => @debate}, :layout => false)
-	  reset_invocation_response # allow double rendering
-	  
-	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:post_box => post_box_render, :current_turn => @debate.current_turn.email, :position => (params[:clock_position].to_i - 3).abs}})
+	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:current_turn => @debate.current_turn.email, :position => (params[:clock_position].to_i - 3).abs}})
     
     reset_invocation_response # allow double rendering
     
@@ -342,20 +338,17 @@ end
     @debate = Debate.find(params[:id])
     
       unless @debate.judge_entry.winner_id
-      # update status bar on show page
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+        # update status bar on show page
+        Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
     
-      # Provide all participants with ability to chat, if judge's submission did not do this already
+        # Provide all participants with ability to chat, if judge's submission did not do this already
+          Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {joiner_id => @debate.joiner.id}})
+      end
       
-        post_box_render = render(:partial => "arguments/form_chat", :locals => {:debate => @debate}, :layout => false)
-    	  reset_invocation_response # allow double rendering
-        Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {:post_box => post_box_render, :joiner_id => @debate.joiner.id}})
-    
-      respond_to do |format|
-    	  format.html
-    	  format.js {render :nothing => true}
-    	end
-	  end
+        respond_to do |format|
+      	  format.html {render :nothing => true}
+      	  format.js {render :nothing => true}
+      	end
   end
   
   def waiting
