@@ -1,11 +1,11 @@
 <div class = "chat_to_debate <%= hidden %>", data-id="<%= debate.id %>">
 	<%= form_for Argument.new, :url => { :controller => "arguments", :action => "chat" }, :html => {:id => 'argument_chat', :name => 'chatform'}, :remote => true do |f| %>
 		<div class = "field">
-			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);", :id => "chat_textarea" %>
+			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000); checkEmpty2(this, '#chat_button')", :id => "chat_textarea" %>
 		</div>
 		<%= f.hidden_field :debate_id, :value => debate.id %>
 		<div class = "action">
-			<%= f.submit "Chat", :disable_with => 'Sending...', :id => "chat_button" %>
+			<%= f.submit "Chat", :disable_with => 'Sending...', :disabled => true , :id => "chat_button" %>
 		</div>	
 	<% end %>
 </div>

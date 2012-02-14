@@ -11,6 +11,7 @@
  
 			<% if !current_debater.nil? %>
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
+					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 				}
 				else {
@@ -139,6 +140,7 @@
 			
 			<% if !current_debater.nil? %>
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {
+					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 				}
 			<% end %>
@@ -163,6 +165,7 @@
 			
 			<% if !current_debater.nil? %>
 				if ("<%= current_debater.email %>" == data.obj.current_turn) {   	
+					$('#argument_textarea').val('');
 					$(".post_to_debate").show();	
 				}
 				else {

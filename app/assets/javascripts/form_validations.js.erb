@@ -109,7 +109,8 @@ $(document).ready(function() {
 	})
 	
 	$('#argument_chat').live("ajax:complete", function(event,xhr,status){
-	  $('#chat_textarea').val('');
+	  	$('#chat_button').attr('disabled', true);
+		$('#chat_textarea').val('');
 	})
 	
 
