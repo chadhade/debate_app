@@ -3,8 +3,17 @@
 	<% if !matching.nil? %>
 		<% if !matching[:matching_debates].empty? %>
 			<% matching[:matching_debates].each do |matching_debate| %>
-				<div class='debate_link <%= matching_debate.tp.position == true ? 'pro' : 'con' %>' data-id='<%= matching_debate.id %>'> 
-					<li> <%= "#{matching_debate.tp.topic}"%>: <%= link_to "\"#{matching_debate.topic}\"", matching_debate %> </li>
+				<div class="debate_link" data-id="<%= matching_debate.id %>"> 
+					<li> <span class = "debate-link-topic">
+					<%= link_to matching_debate.tp.topic, matching_debate %> </span>
+					<% if matching_debate.tp.position == true %>
+						<span class = "pro">&nbsp</span>
+					<% else %> 
+					<% if matching_debate.tp.position == false %>
+						<span class = "con">&nbsp</span>
+					<% end %>
+					<% end %> 
+					- <%= link_to "\"#{matching_debate.topic}\"", matching_debate %> </li>
 				</div>
 			<% end %>
 		<% else %>

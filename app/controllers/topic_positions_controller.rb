@@ -1,4 +1,4 @@
-class TopicPositionsController < ApplicationController
+ class TopicPositionsController < ApplicationController
   before_filter :authenticate_debater!
   
   def create

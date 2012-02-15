@@ -26,11 +26,11 @@ function checkEmpty2(field, button, field2)
 	    }
 	else
 		{
-			if(field2 == "") {
+			if(typeof field2 === 'undefined') {
 				$(button).attr('disabled', false);
 			}
 			else {
-				if($(field2).value != '') {
+				if($(field2).val() != '') {
 					$(button).attr('disabled', false);
 				}
 			}	
@@ -113,5 +113,5 @@ $(document).ready(function() {
 		$('#chat_textarea').val('');
 	})
 	
-
+	
 });

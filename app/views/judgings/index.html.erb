@@ -112,9 +112,7 @@
 <div id="joined_no_judge" class="judge_container">
 	<h2>Debates</h2>
 	<div class="containercontent">
-		<% @judging_priority[:joined_no_judge].each do |debate| %>
-			<%= render :partial => "debate_link_joined", :locals => {:debate => debate} %>
-		<% end %>
+			<%= render :partial => "debate_link_joined", :locals => {:judging_priority => @judging_priority} %>
 	</div>
 </div>
 <!-- to put unjoined debates back in, do the exact same thing as above but for unjoined debates -->

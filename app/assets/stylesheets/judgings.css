@@ -58,32 +58,6 @@
 
 }
 
-.pro li {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-	padding-left: 30px;
-	padding-top: 5px;
-	margin-bottom: 1px;
-	
-	background-image: url(pro-bubble-d.gif);
-	background-repeat: no-repeat;
-	background-position: 0 50%;
-}
-
-.con li {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-	padding-left: 30px;
-	padding-top: 5px;
-	margin-bottom: 1px;
-	
-	background-image: url(con-bubble-d.gif);
-	background-repeat: no-repeat;
-	background-position: 0 50%;
-}
-
 .rating_form {
 	margin-top: 10px;
 	padding: 5px 10px;
