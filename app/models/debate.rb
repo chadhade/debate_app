@@ -131,11 +131,13 @@ class Debate < ActiveRecord::Base
         words = topic.split(/\s/)
         current_words = current_tp.topic.split(/\s/)
         pronouns = self.load_pronouns
-        if current_tp.position != position
+        
+        current_tp.position != position ? position_match = true : position_match = false
+          
           match = false
           # set match to true if even one word matches and append debate to array
           current_words.each do |current_word|
-            if current_word.length >= 3 and match == false
+            if current_word.length >= 3
               words.each do |word|
                 # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
                 match = true if current_word.length >= 4 and word.length >= 4 and current_word[/..../] == word[/..../] and !pronouns.include?(current_word)
@@ -143,16 +145,27 @@ class Debate < ActiveRecord::Base
               end
             end
           end
+          debate.position_match = position_match
           @matching_debates << debate if match == true
-        end
       end
     end
     
+    #Sort the matches so that opposing positions appear at the topic
+    @matching_debates = @matching_debates.sort_by {|a| a.position_match ? 0 : 1}
+      
     @viewing_by_creator_minus_matching = @viewing_by_creator - @matching_debates.map{|v| v.id}
     @suggested_debates = self.where(:id => @viewing_by_creator_minus_matching, :joined => false).order("judge DESC", "created_at ASC")
     
     # return the array
     @matching = {:matching_debates => @matching_debates, :suggested_debates => @suggested_debates}
+  end
+  
+  def position_match
+    @position_match
+  end
+  
+  def position_match=(new_match)
+    @position_match = new_match
   end
   
   def self.judging_priority()

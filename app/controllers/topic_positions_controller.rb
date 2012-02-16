@@ -28,7 +28,7 @@
   def index
     @matching = nil
     @topic_position = TopicPosition.new(:debater_id => current_debater, :topic => "...", :position => nil)
-    @trending = Suggested_Topic.trending(5)
+    @trending = Suggested_Topic.trending(10)
   end
   
   def new

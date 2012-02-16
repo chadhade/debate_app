@@ -52,6 +52,8 @@
 	margin-bottom: 2px;
 	padding: 2px 5px ;
 	background-color: #e0eeee;
+	text-align: left;
+	overflow: auto;
 }
 
 .search_debates input[type="submit"] {
