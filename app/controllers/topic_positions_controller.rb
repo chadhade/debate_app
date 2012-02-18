@@ -1,8 +1,8 @@
  class TopicPositionsController < ApplicationController
-  before_filter :authenticate_debater!
+  #before_filter :authenticate_debater!
   
   def create
-    @topic_position = TopicPosition.new(:debater_id => current_debater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position])
+    @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position])
     @topic_position.save
     
     redirect_to :controller => "debates", :action => 'create', :argument => {:content => params[:argument][:content], :topic_position_id => @topic_position.id}
@@ -16,7 +16,7 @@
       position = params[:topic_position][:position]
     end
     
-    @topic_position = TopicPosition.new(:debater_id => current_debater, :topic => topic, :position => position)    
+    @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => topic, :position => position)    
     @matching = Debate.matching_debates(@topic_position)
 	  
     respond_to do |format|
@@ -27,7 +27,7 @@
   
   def index
     @matching = nil
-    @topic_position = TopicPosition.new(:debater_id => current_debater, :topic => "...", :position => nil)
+    @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => "...", :position => nil)
     @trending = Suggested_Topic.trending(10)
   end
   

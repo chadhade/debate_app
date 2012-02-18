@@ -1,5 +1,6 @@
 class JudgingsController < ApplicationController
   before_filter :authenticate_debater!
+  skip_before_filter :authenticate_debater!, :only => [:rating]
   
   def index
     @judging_priority = Debate.judging_priority()
@@ -8,14 +9,14 @@ class JudgingsController < ApplicationController
   def create
     @debate = Debate.find(params[:debate_id])
     
-    if !@debate.creator?(current_debater) and !@debate.joiner?(current_debater) and !@debate.judge
-      @judge = Judging.new(:debater_id => current_debater.id, :debate_id => @debate.id)
+    if !@debate.creator?(current_or_guest_debater) and !@debate.joiner?(current_or_guest_debater) and !@debate.judge
+      @judge = Judging.new(:debater_id => current_or_guest_debater.id, :debate_id => @debate.id)
       @judge.save
       @debate.update_attributes(:judge => true)
       
       # if debater was currently waiting for another debate, he now stops waiting
-    	if current_debater.waiting_for
-    	  current_debater.update_attributes(:waiting_for => nil)
+    	if current_or_guest_debater.waiting_for
+    	  current_or_guest_debater.update_attributes(:waiting_for => nil)
     	end
     	
       # If judge joined after both debaters joined, add time spent waiting for judge back to debater 1's time bank
@@ -104,7 +105,7 @@ class JudgingsController < ApplicationController
   def rating
     @judging = Judging.find_by_id(params[:judging][:judging_id])
     
-    if current_debater.id == @judging.winner_id
+    if current_or_guest_debater.id == @judging.winner_id
       @judging.update_attributes(:winner_approve => params[:judging][:winner_approve])
       @judging.save
       if params[:judging][:winner_approve] == "true" and @judging.loser_approve
@@ -114,7 +115,7 @@ class JudgingsController < ApplicationController
       end
     end
     
-    if current_debater.id == @judging.loser_id
+    if current_or_guest_debater.id == @judging.loser_id
       @judging.update_attributes(:loser_approve => params[:judging][:winner_approve])
       @judging.save
       if params[:judging][:winner_approve] == "true" and @judging.winner_approve

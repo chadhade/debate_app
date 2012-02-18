@@ -3,8 +3,17 @@
 
 	<div id="ongoing-debates" class="containercontent">
 		<% @debates_ongoing.each do |debate| %>
-			<div class="<%= debate.tp.position == true ? "pro" : "con" %>">
-				<li><%= "#{debate.tp.topic}"%>: <%= link_to debate.topic, debate %> </li>
+			<div class="debate_link" data-id="<%= debate.id %>"> 
+				<li> <span class = "debate-link-topic">
+				<%= link_to debate.tp.topic, debate %> </span>
+				<% if debate.tp.position == true %>
+					<span class = "pro">&nbsp</span>
+				<% else %> 
+				<% if debate.tp.position == false %>
+					<span class = "con">&nbsp</span>
+				<% end %>
+				<% end %> 
+				- <%= link_to "\"#{debate.topic}\"", debate %> </li>
 			</div>
 		<% end %>
 	</div>
@@ -20,8 +29,17 @@
 	
 	<div id="completed-debates" class="containercontent">
 		<% @debates_completed.each do |debate| %>
-			<div class="<%= debate.tp.position == true ? "pro" : "con" %>">
-				<li><%= "#{debate.tp.topic}"%>: <%= link_to debate.topic, debate %> </li>
+			<div class="debate_link" data-id="<%= debate.id %>"> 
+				<li> <span class = "debate-link-topic">
+				<%= link_to debate.tp.topic, debate %> </span>
+				<% if debate.tp.position == true %>
+					<span class = "pro">&nbsp</span>
+				<% else %> 
+				<% if debate.tp.position == false %>
+					<span class = "con">&nbsp</span>
+				<% end %>
+				<% end %> 
+				- <%= link_to "\"#{debate.topic}\"", debate %> </li>
 			</div>
 		<% end %>
 	</div>

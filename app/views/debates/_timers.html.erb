@@ -1,5 +1,11 @@
 <div class="timer">
-	<span class="timertitle-1"><%= link_to debater1name, debaters[0] %>: &nbsp;</span>
+	<span class="timertitle-1">
+	<% if debaters[0].current_sign_in_at %>
+		<%= link_to debater1name, debaters[0] %>
+	<% else %>
+		<%= debater1name %>
+	<% end %>
+	: &nbsp;</span>
 	<span id="timer1-<%= debate_id %>"></span>
 </div>
 
@@ -10,16 +16,21 @@
 		<% if debaters[1].nil? %>
 			<%= debater2name %>
 		<% else %>
-			<%= link_to debater2name, debaters[1] %>
+			<% if debaters[1].current_sign_in_at %>
+				<%= link_to debater2name, debaters[1] %>
+			<% else %>
+				<%= debater2name %>
+			<% end %>
 		<% end %>
-			: &nbsp;</span>
+		: &nbsp;</span>
 	<span id="timer2-<%= debate_id %>"></span>
 </div>
 
 <div class="vote_titles">
 	Votes
-	<div class="info-icon" id="info-votes">
-		<%= image_tag("question.gif", :alt => "Footnotes Help") %>
+	<% debater_signed_in? ? vote_tip = "Click on the numbers below to upvote or downvote an argument." : vote_tip = "Sign up for the ability to vote and be ranked!" %>
+	<div class="info-icon" id="info-votes" title="<%= vote_tip %>">
+		<%= image_tag("question.gif", :alt => "Voting Help") %>
 	</div>
 </div>
 

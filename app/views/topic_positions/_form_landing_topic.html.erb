@@ -1,0 +1,15 @@
+<%= form_for :topic_position, :url => {:controller => "topic_positions", :action => "matches"}, :html => {:name => 'topicform', :class => 'new_topic_position'} do |f| %>
+	<div class="field-topicposition">
+		<span class="field-topic">
+			<%= f.label :topic %> <br>
+			<%= f.text_field :topic, :onkeyup => "textCounter(this, 65); checkEmpty2(this, '#topicmatch_button')", :id => "topic-position-field", :onClick => "if(this.value.substr(0,3) == '...') {this.value='';}" %>
+		</span>
+		<span class="field-position">		
+			<%= f.label "+" %> <br>	
+			<%= f.select(:position, [["", nil], ["vs.", "vs"], ["Pro", true], ["Con", false],], {:selected => nil}, :onchange => 'toggleTopic(this, "topicform");') %>
+		</span>
+	</div>
+	<div class="action-topicposition">
+		<%= f.submit "Match", :disable_with => 'Searching...', :disabled => true, :id => 'topicmatch_button' %>
+	</div>	
+<% end %>

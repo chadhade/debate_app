@@ -128,11 +128,13 @@
 		
 		<!-- Show Debater Rating Form -->
 		<% if @status[:status_code] == 5 %>
-			<% if @currentdebater.id == @judging.winner_id and @judging.winner_approve.nil? %>
-				<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debate.id} %>
-			<% end %>
-			<% if @currentdebater.id == @judging.loser_id and @judging.loser_approve.nil? %>
-				<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debate.id} %>
+			<% if @debate.participant?(current_or_guest_debater) %>
+				<% if @currentdebater.id == @judging.winner_id and @judging.winner_approve.nil? %>
+					<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debate.id} %>
+				<% end %>
+				<% if @currentdebater.id == @judging.loser_id and @judging.loser_approve.nil? %>
+					<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debate.id} %>
+				<% end %>
 			<% end %>
 		<% end %>
 		
@@ -160,5 +162,5 @@
       debate_id = <%= @debate.id %>
 </script>
 
-<%= javascript_include_tag "jquery_tips.js" %>
+<%= javascript_include_tag "jquery_tips" %>
 <%= javascript_include_tag "form_validations" %>

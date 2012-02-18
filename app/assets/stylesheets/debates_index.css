@@ -1,6 +1,7 @@
 .debatelist_container {
 	padding: 10px 10px;
-	height: 250px;
+	min-height: 250px;
+	max-height: 600px;
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
@@ -47,13 +48,17 @@
 	box-shadow:0 5px 10px #000;
 }
 
+.containercontent {
+	max-height: 550px;
+	overflow: auto;
+}
+
 .containercontent li {
 	list-style: none;
 	margin-bottom: 2px;
 	padding: 2px 5px ;
 	background-color: #e0eeee;
 	text-align: left;
-	overflow: auto;
 }
 
 .search_debates input[type="submit"] {

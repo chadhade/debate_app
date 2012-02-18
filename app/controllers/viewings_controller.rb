@@ -1,6 +1,6 @@
 class ViewingsController < ApplicationController
   def leaving_page
-    @currentdebater = current_debater
+    @currentdebater = current_or_guest_debater
 
   	if !params[:debate_id].nil?
   	  @debate = Debate.find(params[:debate_id])

@@ -8,7 +8,7 @@
 		<%= render :partial => "arguments/form_argument", :locals => {:debate => debate, :hidden => "hidden"} %>
 		<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => "hidden"} %>
 	<% else %>	
-		<% if debate.participant?(current_debater) %>
+		<% if debate.participant?(currentdebater) %>
 			<% if debate.status[:status_code] > 4 %>
 				<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => ""} %>
 			<% else %>

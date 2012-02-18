@@ -9,8 +9,8 @@
 				});
 			<% end %>
  
-			<% if !current_debater.nil? %>
-				if ("<%= current_debater.email %>" == data.obj.current_turn) {
+			<% if !current_or_guest_debater.nil? %>
+				if ("<%= current_or_guest_debater.email %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 				}
@@ -100,8 +100,8 @@
 			<% if Rails.env.development? or Rails.env.test? %>      	
 				$('#statuspanel').append(data.obj.judging_results);
 				
-				<% if !current_debater.nil? %>
-					if((<%= current_debater.id %> == data.obj.winner_id) || (<%= current_debater.id %> == data.obj.loser_id)) {
+				<% if !current_or_guest_debater.nil? %>
+					if((<%= current_or_guest_debater.id %> == data.obj.winner_id) || (<%= current_or_guest_debater.id %> == data.obj.loser_id)) {
 						$('#statuspanel').append(data.obj.ratings_form);
 					}
 				<% end %>
@@ -109,8 +109,8 @@
 			<% else %>
 				$('#statuspanel').append(data.obj.judging_results[0]);
 				
-				<% if !current_debater.nil? %>
-					if((<%= current_debater.id %> == data.obj.winner_id) || (<%= current_debater.id %> == data.obj.loser_id)) {
+				<% if !current_or_guest_debater.nil? %>
+					if((<%= current_or_guest_debater.id %> == data.obj.winner_id) || (<%= current_or_guest_debater.id %> == data.obj.loser_id)) {
 						$('#statuspanel').append(data.obj.ratings_form[0]);
 					}
 				<% end %>
@@ -138,8 +138,8 @@
 			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
 			voteable[<%= debate.id %>] = true;
 			
-			<% if !current_debater.nil? %>
-				if ("<%= current_debater.email %>" == data.obj.current_turn) {
+			<% if !current_or_guest_debater.nil? %>
+				if ("<%= current_or_guest_debater.email %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 				}
@@ -147,7 +147,8 @@
 		}
 
 		if (data.func == "joiner")	{
-			$(".timertitle-2").html("<a href='" + data.obj.joinerpath + "'>" + data.obj.joiner + "</a>");
+			//$(".timertitle-2").html("<a href='" + data.obj.joinerpath + "'>" + data.obj.joiner + "</a>:  ");
+			$(".timertitle-2").html(data.obj.joinerpath);
 			moving_clock[data.obj.timers.debateid] = data.obj.timers.staticclock;
 			$("#timer2-<%= debate.id %>").html(format_output(data.obj.timers.staticclock));
 			voteable[<%= debate.id %>] = false;
@@ -163,8 +164,8 @@
 
 		if (data.func == "end_single") {
 			
-			<% if !current_debater.nil? %>
-				if ("<%= current_debater.email %>" == data.obj.current_turn) {   	
+			<% if !current_or_guest_debater.nil? %>
+				if ("<%= current_or_guest_debater.email %>" == data.obj.current_turn) {   	
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();	
 				}
@@ -183,15 +184,13 @@
 		}
 		
 		if (data.func == "end_debate") {
-			<% if !current_debater.nil? %>
-				if((<%= debate.participant?(current_debater) %>) || (<%= current_debater.id %> == data.obj.joiner_id)) {	  	
+				if((<%= debate.participant?(current_or_guest_debater) %>) || (<%= current_or_guest_debater.id %> == data.obj.joiner_id)) {	  	
 					$(".chat_to_debate").show();
 				}
-			<% end %>
 		}
 	});
 	
-	<% if current_debater != debate.judger %>
+	<% if current_or_guest_debater != debate.judger %>
 		jug.subscribe("debate_" + <%= debate.id %> + "_votes", function(votes){
 		
 			if (votes.obj.type == "true") {
@@ -203,7 +202,7 @@
 		});
 	<% end %>
 	
-	<% if current_debater == debate.judger %>
+	<% if current_or_guest_debater == debate.judger %>
 		jug.subscribe("debate_" + <%= debate.id %> + "_judge", function(data){
 			if (data.judging_form =="clear_form") {
 				$('.judging_form').remove();
@@ -223,10 +222,11 @@
 					incrementVotesAgainst(data.obj.votes.id);
 				}
 			}
+			
 		});
 	<% end %>
 	
-	if(<%= @debate.judge && @debate.joined %>) {
+	if(<%= @debate.judge and @debate.joined and debater_signed_in? %>) {
 		voteable[<%= debate.id %>] = true;
 	}
 	

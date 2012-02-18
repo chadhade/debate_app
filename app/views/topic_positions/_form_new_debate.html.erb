@@ -3,13 +3,13 @@
 	<%# form_for Argument.new, :url => {:controller => "topic_positions", :action => "create"}, :html => {:name => 'createform', :onsubmit => "return checkEmpty('createform', 'argument[content]');"} do |f| %>
 		<div class = "field">
 			<h3>First Argument</h3> <br/>
-			<%= f.text_area :content, :size => "36x5", :disabled => "disabled", :class => "argument-field", :id => "first-argument", :onkeyup => "textCounter(this, 1000);", :onClick => "if(this.value.substr(0,19) == 'Your thoughts about') {this.value='';}" %> <br />
+			<%= f.text_area :content, :size => "36x4", :disabled => "disabled", :class => "argument-field", :id => "first-argument", :onkeyup => "textCounter(this, 1000);", :onClick => "if(this.value.substr(0,19) == 'Your thoughts about') {this.value='';}" %> <br />
 		</div>
 		<%= f.hidden_field :topic_position_topic, :value => topic_position.topic %>
 		<%= f.hidden_field :topic_position_position, :value => topic_position.position %>
 		<%= f.hidden_field :topic_position_id, :value => topic_position.id %>
 		<div class = "action">
-			<%= f.submit "Wait for Joiner", :disabled => "disabled", :id => "first-argument-button" %>
+			<%= f.submit "Wait for Joiner", :disabled => "disabled", :disable_with => "Creating Debate...", :id => "first-argument-button" %>
 		</div>	
 	<% end %>
 </div>

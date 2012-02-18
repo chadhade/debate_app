@@ -1,7 +1,7 @@
 <% judging_priority[:joined_no_judge].each do |debate| %>
 	<div class="debate_link" data-id="<%= debate.id %>"> 
 		<li> <span class = "debate-link-topic">
-		<%= link_to debate.tp.topic, debate %> </span>
+		<%= link_to debate.tp.topic, :controller => :judgings, :action => :create, :debate_id => debate.id %> </span>
 		<% if debate.tp.position == true %>
 			<span class = "pro">&nbsp</span>
 		<% else %> 

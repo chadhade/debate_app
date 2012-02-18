@@ -3,7 +3,6 @@
 		<strong>Was the Judge Fair?</strong>
 		<div class = "field">
 				<%= f.select(:winner_approve, [["Fair", true], ["Not Fair", false]], :id => 'select_rating') %><br />
-				<%# f.hidden_field :debater, :value => current_debater.id %>
 				<%= f.hidden_field :judging_id, :value => judging.id %>
 				<%= f.hidden_field :debate_id, :value => debateid %>
 		</div>

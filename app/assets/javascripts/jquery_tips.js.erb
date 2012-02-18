@@ -37,12 +37,14 @@ $("#info-footnotes").qtip({
 		tip: 'bottomRight'
 	}
 });
+
 $("#info-votes").qtip({
-   	content: 'Click on the numbers below to upvote or downvote an argument.',
-   	position: {
-      corner: {
-         target: 'topMiddle',
-         tooltip: 'bottomRight'
+	//content: 'Click on the numbers below to upvote or downvote an argument.',
+	content: false,
+	position: {
+     	corner: {
+    		target: 'topMiddle',
+    		tooltip: 'bottomRight'
       }
    	},
 	style: { 
@@ -57,3 +59,8 @@ $("#info-votes").qtip({
 	}
 });
 
+//if(debaterSignedIn == false) {
+///	$("#info-votes").qtip({
+//			content: 'Sign up for the ability to vote and get ranked!'
+//	});
+//}

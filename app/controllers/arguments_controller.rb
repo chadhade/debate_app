@@ -4,22 +4,22 @@ class ArgumentsController < ApplicationController
   	@debate_id = params[:argument][:debate_id]
     @debate = Debate.find_by_id(@debate_id)
     
-    if @debate.end_single_id != current_debater.id
+    if @debate.end_single_id != current_or_guest_debater.id
     	@lastargument = @debate.arguments.last(:order => "created_at ASC")
     	@timeleft = time_left(@debate)
       # File.open("listener_log", 'a+') {|f| f.write("first time: #{@timeleft}") }
 	
     	# Check if argument is made on time
   	
-      if (@timeleft > 0) && (@debate.current_turn?(current_debater)) && (@debate.judge)
+      if (@timeleft > 0) && (@debate.current_turn?(current_or_guest_debater)) && (@debate.judge)
     		# create a new argument and redirect to debate page 
     		# -- Make the repeat_turn column true if it was true before
     		if @lastargument.Repeat_Turn == true 
-    			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], 
+    			@current_argument = current_or_guest_debater.arguments.create(:content => params[:argument][:content], :debate_id => params[:argument][:debate_id], 
     										     :time_left => @timeleft, :Repeat_Turn => true)
     		else 
     		  # -- Don't make the repeat_turn column true
-    			@current_argument = current_debater.arguments.create(:content => params[:argument][:content], 
+    			@current_argument = current_or_guest_debater.arguments.create(:content => params[:argument][:content], 
     								:debate_id => params[:argument][:debate_id], :time_left => @timeleft) 
     		end
         
@@ -31,10 +31,9 @@ class ArgumentsController < ApplicationController
     		end
   		
     		# publish new argument
-    		#argument_render = render(@current_argument, :layout => false)
-    	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => current_debater.id, :status => @debate.status}, :layout => false)
+    	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => current_or_guest_debater.id, :status => @debate.status}, :layout => false)
     	  reset_invocation_response # allow double rendering
-  
+        
     		@debate = Debate.find_by_id(@debate_id)
     		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
   		
@@ -62,7 +61,7 @@ class ArgumentsController < ApplicationController
   	@arguments = new_arguments(@arguments_params)
 	
   	#@debate = Debate.find_by_id(params[:debate_id])
-  	@currentdebater = current_debater
+  	@currentdebater = current_or_guest_debater
 	
   	@voting_params = parse_voting_params_string(params[:voting_params])
   	@votes = new_votes(@voting_params)
@@ -84,12 +83,12 @@ class ArgumentsController < ApplicationController
     @debate = Debate.find_by_id(@debate_id)
     
     #Allow chatting between debate participants once debate is over
-    if @debate.participant?(current_debater) and @debate.status[:status_code] > 4
-      @current_argument = current_debater.arguments.create(:content => params[:argument][:content], 
+    if @debate.participant?(current_or_guest_debater) and @debate.status[:status_code] > 4
+      @current_argument = current_or_guest_debater.arguments.create(:content => params[:argument][:content], 
                                                 :debate_id => params[:argument][:debate_id], :debate_over => true)
 		end
 		
-	  argument_render = render(:partial => "arguments/chat", :locals => {:argument => @current_argument, :debate => @debate, :judgeid => @debate.judge_id, :currentid => current_debater.id}, :layout => false)
+	  argument_render = render(:partial => "arguments/chat", :locals => {:argument => @current_argument, :debate => @debate, :judgeid => @debate.judge_id, :currentid => current_or_guest_debater.id}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
 	  #Publish the Chat
@@ -156,7 +155,7 @@ class ArgumentsController < ApplicationController
   
   def showtimers(debate, argument_last, argument_second_last)
   	@previoustimeleft = argument_last.time_left
-  	@currentdebater = current_debater
+  	@currentdebater = current_or_guest_debater
   	@debaters = debate.debaters
     
     # Calculate the amount of time left for use in javascript timers

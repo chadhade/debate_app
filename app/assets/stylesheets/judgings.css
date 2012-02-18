@@ -1,6 +1,7 @@
 .judge_container {
 	padding: 10px 10px;
-	height: 250px;
+	min-height: 250px;
+	max-height: 600px;
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;

@@ -41,27 +41,33 @@
 <br>
 
 <!--<div class="topic_position_container">
-	<%= "#{@topic_position.position == true ? "You are PRO" : "You are CON"} #{@topic_position.topic}." %>
+	<%# "#{@topic_position.position == true ? "You are PRO" : "You are CON"} #{@topic_position.topic}." %>
 </div>
 <br> -->
 
 <div class="topic_container">
 	<h2> Choose a Topic</h2>
 
-	<!--<%# render :partial => "/topic_positions/list_matching_debates" %> 
-	<br>
-	<%# render :partial => "/topic_positions/list_suggested_debates" %>-->
-	
-	<div class="buttond2">
-		<span class="debate-topic-position">
-			<%= render '/topic_positions/form_topic_position' %>
-		</span>
+	<div id="topicform">
+		<div class="buttond2">
+			<span class="debate-topic-position">
+				<%= render '/topic_positions/form_topic_position' %>
+			</span>
+		</div>
 	</div>
 	
-	<br /> <br />
+	<div id="versusform" class="hidden">
+		<div class="buttond2">
+			<span class="debate-topic-position">
+				<%= render '/topic_positions/form_versus_position' %>
+			</span>
+		</div>
+	</div>
+	
+	<br />
 	
 
-	<%= render :partial => "/topic_positions/form_new_debate" %> 
+	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position} %> 
 
 </div>
 
@@ -71,7 +77,7 @@
 
 
 <div class="create_container">
-	<h2> Choose a Debate </h2>
+	<h2> Match Up </h2>
 	<div id="matching-debates" class="list_matches_container">
 			<%= render :partial => "/topic_positions/list_matching_debates", :locals => {:matching => @matching} %> 	
 	</div>
@@ -81,13 +87,16 @@
 	</div>
 	
 	<div id="suggested-debates" class="list_matches_container">
-		<%= render :partial => "/topic_positions/list_suggested_debates", :locals => {:matching => @matching} %>
+		<%= render :partial => "/topic_positions/list_suggested_topics", :locals => {:trending => @trending} %>
 	</div>
 </div>
 
-<div class="or_container">
+
+
+<!--<div class="or_container">
 	<h2>or</h2>
-</div> 
+</div> -->
+ 
 <script>
 $('#matching-debates').bind('ajax:success', function() {  
     $(this).closest('tr').fadeOut();  

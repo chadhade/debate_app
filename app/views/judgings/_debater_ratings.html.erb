@@ -2,12 +2,22 @@
 	<div class='debater_ratings'>
 		<% unless judging.winner_approve.nil? %>
 			<% debater = Debater.find(judging.winner_id) %>
-			<%= link_to debater.name, debater %> declares the judge was <strong><%= judging.winner_approve ? "fair." : "not fair." %></strong> <br />
+			<% if debater.current_sign_in_at %>
+				<%= link_to debater.name, debater %>
+			<% else %>
+				<%= debater.name %>
+			<% end %>
+			declares the judge was <strong><%= judging.winner_approve ? "fair." : "not fair." %></strong> <br />
 		<% end %> 
 	
 		<% unless judging.loser_approve.nil? %>
 			<% debater = Debater.find(judging.loser_id) %>
-			<%= link_to debater.name, debater %> declares the judge was <strong><%= judging.loser_approve ? "fair." : "not fair." %><strong> <br />
+			<% if debater.current_sign_in_at %>
+				<%= link_to debater.name, debater %>
+			<% else %>
+				<%= debater.name %>
+			<% end %> 
+			declares the judge was <strong><%= judging.loser_approve ? "fair." : "not fair." %><strong> <br />
 		<% end %>
 	</div>
 <% end %>

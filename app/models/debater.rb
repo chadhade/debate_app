@@ -11,7 +11,7 @@ class Debater < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  validates_length_of :name, :within => 2..8
+  validates_length_of :name, :within => 2..14
   
   # Virtual attribute for authenticating by either username or email
   attr_accessor :login
@@ -126,6 +126,10 @@ class Debater < ActiveRecord::Base
     wins = Judging.where("winner_id = ?", self.id).count
     losses = Judging.where("loser_id = ?", self.id).count
     (wins == 0) ? rank = 0 : rank = wins.to_f/(wins + losses)
+  end
+  
+  def mini_name
+    self.name[0..9]
   end
   
   private

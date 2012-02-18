@@ -1,7 +1,13 @@
 <!-- must pass in judging to partial!!! -->
 <div class='judging_results'>
 	<strong>Winner:</strong> 
-	<%= link_to Debater.find(judging.winner_id).name, Debater.find(judging.winner_id) %> <br> 
+	<% debater = Debater.find(judging.winner_id) %>
+	<% if debater.current_sign_in_at %>
+		<%= link_to debater.name, debater %>
+	<% else %>
+		<%= debater.name %>
+	<% end %>
+	<br> 
 	
 	<strong>Judge <%= link_to judging.debater.name, judging.debater %> says:</strong> "<%= judging.comments %>"
 	

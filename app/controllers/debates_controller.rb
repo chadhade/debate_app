@@ -8,10 +8,10 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 600.seconds
+  $debatetime = 60.seconds
   
-  before_filter :authenticate_debater!
-  skip_before_filter :authenticate_debater!, :only => [:show, :index]
+  #before_filter :authenticate_debater!
+  #skip_before_filter :authenticate_debater!, :only => [:show, :index]
     
   def new
     
@@ -24,15 +24,15 @@ class DebatesController < ApplicationController
   	# create a new debate linked to debater
   	@debate = Debate.new(:joined => false, :judge => false)
   	@debate.save
-  	current_debater.debations.create(:debate_id => @debate.id)
+  	current_or_guest_debater.debations.create(:debate_id => @debate.id)
   	
   	# if debater was currently waiting for another debate, he now stops waiting
-  	if current_debater.waiting_for
-  	  current_debater.update_attributes(:waiting_for => nil)
+  	if current_or_guest_debater.waiting_for
+  	  current_or_guest_debater.update_attributes(:waiting_for => nil)
   	end
   	
   	# update topic position with the debate id
-  	@topic_position = TopicPosition.new(:debater_id => current_debater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position])
+  	@topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position])
   	#@topic_position = TopicPosition.find(params[:argument][:topic_position_id])
   	@topic_position.update_attributes(:debate_id => @debate.id)
 	
@@ -42,7 +42,7 @@ class DebatesController < ApplicationController
   	#The amount of time Debater 1 has left.  
   	@Seconds_Left_1 = $debatetime
 		
-  	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
+  	@argument = current_or_guest_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
   	
     # Juggernaut.publish("judging_index", {:append => {:debate_id => @debate.id}})
     # debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
@@ -58,26 +58,26 @@ class DebatesController < ApplicationController
     
     @debate = Debate.find(params[:id])
   	# link debater to debate
-  	current_debater.debations.create(:debate_id => params[:id])
-    @currentid = current_debater.id
+  	current_or_guest_debater.debations.create(:debate_id => params[:id])
+    @currentid = current_or_guest_debater.id
 	
   	#The amount of time Debater 2 has left.  
   	@Seconds_Left_2 = $debatetime
   	
   	# if debater was currently waiting for another debate, he now stops waiting
-  	if current_debater.waiting_for
-  	  current_debater.update_attributes(:waiting_for => nil)
+  	if current_or_guest_debater.waiting_for
+  	  current_or_guest_debater.update_attributes(:waiting_for => nil)
   	end
   	
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
-  	@argument = current_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
+  	@argument = current_or_guest_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
 	
   	# update joined columns of debates
   	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at)
   	
   	# update joiner column of viewings
-  	update_viewings(current_debater, @debate)
+  	update_viewings(current_or_guest_debater, @debate)
 	
   	# Check if there are footnotes attached
 	  if @argument.has_footnote?
@@ -98,19 +98,21 @@ class DebatesController < ApplicationController
 	  
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
 	  
+	  current_or_guest_debater.current_sign_in_at ? joinerpath = "<a href=\"/debaters/#{current_or_guest_debater.id.to_s}\">#{current_or_guest_debater.mini_name}</a>" : joinerpath = current_or_guest_debater.mini_name + " : "
+	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :current_turn => @debate.current_turn.name, 
 	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
-	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
-	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_debater.name, :joinerpath => "/debaters/" + current_debater.id.to_s, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  
+	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => "/debaters/" + current_or_guest_debater.id.to_s, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
+	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => joinerpath, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  reset_invocation_response # allow double rendering
 	  
 	  Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
 	  Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debate.status[:status_value]}})
 	  
 	  # update judgings index
-    debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate}, :layout => false)	  
+    debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate, :judging_priority => Debate.judging_priority()}, :layout => false)	  
 	  Juggernaut.publish("judging_index", {:function => "append_to_joined", :debate_id => @debate.id, :object => debate_link_joined}) if !@debate.judge
 	  reset_invocation_response # allow double rendering
 	  
@@ -139,11 +141,12 @@ end
   	@arguments = @debate.arguments
   	@argument_last = @arguments.last(:order => "created_at ASC")
   	@previoustimeleft = @argument_last.time_left
-  	@currentdebater = current_debater
+  	@currentdebater = current_or_guest_debater
   	@debaters = @debate.debaters
 	
-  	debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
-	
+  	#debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
+	  @currentid = @currentdebater.id
+	  
   	# for viewings
   	update_viewings(@currentdebater, @debate)
   	if !@currentdebater.nil?
@@ -192,8 +195,8 @@ end
       @movingclock = 0
       @staticclock = 0
       @movingposition = 0
-      @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].name
-    	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].name
+      @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].mini_name
+    	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].mini_name
     	return
     end
     
@@ -202,14 +205,14 @@ end
   		@movingclock = 0
   		@staticclock = @previoustimeleft
   		@movingposition = 2
-  	  @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].name
+  	  @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].mini_name
   		@debater2name = "Waiting"
   		return
   	end
 	
   	# Debater names
-  	@currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].name
-  	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].name
+  	@currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].mini_name
+  	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].mini_name
 	
 	  # If no judge has joined, timers do not move
 	  if @debate.judge == false
@@ -352,7 +355,7 @@ end
   end
   
   def waiting
-    current_debater.update_attributes(:waiting_for => params[:id].to_i)
+    current_or_guest_debater.update_attributes(:waiting_for => params[:id].to_i)
     redirect_to debates_path
   end
   
