@@ -19,6 +19,11 @@ class DebatersController < ApplicationController
   def show
     @debater = Debater.find(params[:id])
     
+    #Cannot view profile page of guests
+    if !@debater.last_sign_in_at 
+      redirect_to topic_positions_path
+    end
+    
     if Rails.env.development? or Rails.env.test?
       @debates = @debater.debates.where("end_time > ?", 0)
     else
