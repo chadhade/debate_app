@@ -39,7 +39,8 @@ DebateApp::Application.routes.draw do
   root :to => "pages#landing"
 
   resources :votes, :only => :create
-
+  post "votes/topicvote"
+  
   resources :debaters, :only => [:new, :create, :show] do
     resources :trackings, :only => [:index, :new, :create, :destroy]
   end

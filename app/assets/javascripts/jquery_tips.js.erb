@@ -11,7 +11,7 @@ $(".waiting-icon").qtip({
 	 	name: 'blue',
 		color: 'black',
 		border: {
-			width: 2,
+			width: 1,
 			color: '#0000FF'
 		},
 		width: 275,
@@ -22,18 +22,17 @@ $("#info-footnotes").qtip({
    	content: 'Use double parenthesis like ((this)) to add footnotes to your arguments.',
    	position: {
       corner: {
-         target: 'topMiddle',
-         tooltip: 'bottomRight'
+         target: 'topMiddle'
       }
    	},
 	style: { 
 	 	name: 'blue',
 		color: 'black',
 		border: {
-			width: 2,
+			width: 1,
 			color: '#0000FF'
 		},
-		width: 250,
+		width: 245,
 		tip: 'bottomRight'
 	}
 });
@@ -51,7 +50,7 @@ $("#info-votes").qtip({
 	 	name: 'blue',
 		color: 'black',
 		border: {
-			width: 2,
+			width: 1,
 			color: '#0000FF'
 		},
 		width: 250,
@@ -59,8 +58,23 @@ $("#info-votes").qtip({
 	}
 });
 
-//if(debaterSignedIn == false) {
-///	$("#info-votes").qtip({
-//			content: 'Sign up for the ability to vote and get ranked!'
-//	});
-//}
+$(".topic_vote").qtip({
+	//content: 'Click on the numbers below to upvote or downvote an argument.',
+	content: 'Vote for this Topic',
+	position: {
+     	corner: {
+    		target: 'topMiddle',
+    		tooltip: 'rightMiddle'
+      }
+   	},
+	style: { 
+	 	name: 'blue',
+		color: 'black',
+		border: {
+			width: 1,
+			color: '#0000FF'
+		},
+		tip: 'rightMiddle',
+	},
+	hide: { when: { event: 'unfocus' }, delay: 200 }
+});

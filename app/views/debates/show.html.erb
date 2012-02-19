@@ -67,10 +67,13 @@
 
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->
 
+<span class="topic_vote"><%= render :partial => "/debates/topic_vote", :locals => {:debate => @debate} %> </span>
+
 <div class="topic_position_container">
 	"<%= "#{@debate.tp.topic}" %>"
 	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 </div>
+<%= debater_signed_in? ? nil : "<br /> <br />".html_safe %>
 
 <div id="debatebody">
 	<div class="debateleft">

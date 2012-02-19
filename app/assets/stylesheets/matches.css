@@ -56,25 +56,7 @@
 	margin-top: 0;
 }
 
-.topic_position_container {
-	padding: 5px 10px;
-/*	height: 20px;*/
-	width: 250px;
-	border: 1px solid silver;
-	background-color: #fafafa;
 
-	position: relative;
-	overflow: auto;
-	margin: 0 auto;
-
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-
-	-webkit-box-shadow:0 0 10px #000;
-	-moz-box-shadow: 0 0 10px #000;
-	box-shadow:0 2.5px 5px #000;
-}
 
 .list_matches_container {
 	padding: 5px 10px 10px 10px;

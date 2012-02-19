@@ -26,3 +26,9 @@ function incrementVotesAgainst(argument_id) {
   $(".votes_against_count[data-argument_id="+argument_id+"]").text(parseInt($(".votes_against_count[data-argument_id="+argument_id+"]").text())-1);
 }
 
+function upVoteTopic(topic_id) {
+	$.ajax({
+      	type: "POST",
+      	url: "/votes/topicvote.js?topic_id=" + topic_id
+    });
+}

@@ -30,4 +30,14 @@ class VotesController < ApplicationController
 	    format.js {render :nothing => true}
 	  end	
   end
+
+  def topicvote
+    topic = TopicPosition.find_by_id(params[:topic_id])
+    current_debater.vote(topic, :direction => :up)
+    
+    respond_to do |format|
+	    format.html {render :nothing => true}
+	    format.js {render :template => 'debates/topicvote'}
+	  end
+  end
 end

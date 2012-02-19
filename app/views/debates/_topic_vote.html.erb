@@ -1,0 +1,4 @@
+<% if debater_signed_in? %>
+	<%= image_tag("thumbs_up.png", :alt => "Like Topic", :onclick => "upVoteTopic(#{debate.tp.id});", :size => "34x34") %> 
+
+<% end %>
