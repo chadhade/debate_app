@@ -1,25 +1,45 @@
 <h3> Open Suggested Debates </h3>
+<div class = "topic-link-width topic-heading" > Topic </div>
+<div class = "topic-starter-width topic-heading" > Creator </div>
+<div class = "topic-argument-width topic-heading" > Argument </div>
 <div class="containercontent">
 	<% if !matching.nil? %>
 		<% if !matching[:suggested_debates].empty? %>
+			
 			<% @matching[:suggested_debates].each do |suggested_debate| %>
 				<div class="debate_link" data-id="<%= suggested_debate.id %>"> 
-					<li> <span class = "debate-link-topic">
-					<%= link_to suggested_debate.tp.topic, suggested_debate %> </span>
-					<% if suggested_debate.tp.position == true %>
-						<span class = "pro">&nbsp</span>
-					<% else %> 
-					<% if suggested_debate.tp.position == false %>
-						<span class = "con">&nbsp</span>
-					<% end %>
-					<% end %> 
-					- <%= link_to "\"#{suggested_debate.topic}\"", suggested_debate %> </li>
+					<li> 
+						<div class = "topic-link-width" title = "<%= suggested_debate.tp.topic %>">
+							<span class = "debate-link-topic">
+								<%= link_to suggested_debate.tp.topic, suggested_debate %> 
+							</span>
+							<% if suggested_debate.tp.position == true %>
+								<span class = "pro">&nbsp</span>
+							<% else %> 
+							<% if suggested_debate.tp.position == false %>
+								<span class = "con">&nbsp</span>
+							<% end %>
+							<% end %>
+						</div>
+						<div class = "topic-starter-width">
+							<% starter = Debater.find_by_id(suggested_debate.creator_id) %>
+							<% starter.nil? ? starter = Debater.find_by_id(1) : nil %> <%# Remove This %>
+							<% if starter.last_sign_in_at %>
+								<%= link_to starter.name, starter %>
+							<% else %>
+								<%= starter.mini_name %>
+							<% end %>
+						</div>
+						<div class = "topic-argument-width" title = "<%= suggested_debate.topic %>">
+							- <%= link_to "\"#{suggested_debate.topic[0..14]}\"", suggested_debate %>
+						</div> 
+					</li>
 				</div>
 			<% end %>
 		<% else %>
-			No Suggested Debates
+			<strong>No Suggested Debates</strong>
 		<% end %>
 	<% else %>
-		No Suggested Debates
+		<strong>No Suggested Debates</strong>
 	<% end %>
 </div>

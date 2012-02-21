@@ -1,14 +1,44 @@
-<% judging_priority[:joined_no_judge].each do |debate| %>
-	<div class="debate_link" data-id="<%= debate.id %>"> 
-		<li> <span class = "debate-link-topic">
-		<%= link_to debate.tp.topic, :controller => :judgings, :action => :create, :debate_id => debate.id %> </span>
-		<% if debate.tp.position == true %>
-			<span class = "pro">&nbsp</span>
-		<% else %> 
-		<% if debate.tp.position == false %>
-			<span class = "con">&nbsp</span>
-		<% end %>
-		<% end %> 
-		- <%= link_to "\"#{debate.topic}\"", debate %> </li>
-	</div>
-<% end %>
+<div class = "topic-link-width topic-heading" style="min-width: 25%;max-width:25%;"> Topic </div>
+<div class = "topic-starter-width topic-heading" style="min-width:20%;max-width:20%" > Creator </div>
+<div class = "topic-starter-width topic-heading" style="min-width: 20%;max-width:20%" > Joiner </div>
+<div class = "topic-argument-width topic-heading" style="min-width:30%;max-width:35%" > Joined At </div>
+<div class="containercontent">
+	<% judging_priority[:joined_no_judge].each do |debate| %>
+		<div class="debate_link" data-id="<%= debate.id %>"> 
+			<li> 
+				<div class = "topic-link-width" style="min-width: 25%;max-width:25%;" title = "<%= debate.tp.topic %>">
+					<span class = "debate-link-topic">
+					<%= link_to debate.tp.topic, :controller => :judgings, :action => :create, :debate_id => debate.id %> </span>
+					<% if debate.tp.position == true %>
+						<span class = "pro">&nbsp</span>
+					<% else %> 
+					<% if debate.tp.position == false %>
+						<span class = "con">&nbsp</span>
+					<% end %>
+					<% end %> 
+				</div>
+				<div class = "topic-starter-width" style="min-width:20%;max-width:20%">
+					<% starter = Debater.find_by_id(debate.creator_id) %>
+					<% starter.nil? ? starter = Debater.find_by_id(1) : nil %> <%# Remove This %>
+					<% if starter.last_sign_in_at %>
+						<%= link_to starter.name, starter %>
+					<% else %>
+						<%= starter %>
+					<% end %>
+				</div>
+				<div class = "topic-starter-width" style="min-width:20%;max-width:20%">
+					<% joiner = Debater.find_by_id(debate.joiner_id) %>
+					<% starter.nil? ? starter = Debater.find_by_id(1) : nil %> <%# Remove This %>
+					<% if starter.last_sign_in_at %>
+						<%= link_to starter.name, starter %>
+					<% else %>
+						<%= starter %>
+					<% end %>
+				</div>
+				<div class = "topic-created-width">
+					<%= time_towords(((Time.now - debate.joined_at).seconds.to_i)) %>
+				</div> 
+			</li>
+		</div>
+	<% end %>
+</div>

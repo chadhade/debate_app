@@ -1,25 +1,44 @@
 <h3> Your Matches </h3>
+<div class = "topic-link-width topic-heading" > Topic </div>
+<div class = "topic-starter-width topic-heading" > Creator </div>
+<div class = "topic-argument-width topic-heading" > Argument </div>
 <div class='containercontent'>
 	<% if !matching.nil? %>
 		<% if !matching[:matching_debates].empty? %>
 			<% matching[:matching_debates].each do |matching_debate| %>
 				<div class="debate_link" data-id="<%= matching_debate.id %>"> 
-					<li> <span class = "debate-link-topic">
-					<%= link_to matching_debate.tp.topic, matching_debate %> </span>
-					<% if matching_debate.tp.position == true %>
-						<span class = "pro">&nbsp</span>
-					<% else %> 
-					<% if matching_debate.tp.position == false %>
-						<span class = "con">&nbsp</span>
-					<% end %>
-					<% end %> 
-					- <%= link_to "\"#{matching_debate.topic}\"", matching_debate %> </li>
+					<li> 
+						<div class = "topic-link-width" title = "<%= matching_debate.tp.topic %>">
+							<span class = "debate-link-topic">
+							<%= link_to matching_debate.tp.topic, matching_debate %> 
+							</span>
+							<% if matching_debate.tp.position == true %>
+								<span class = "pro">&nbsp</span>
+							<% else %> 
+							<% if matching_debate.tp.position == false %>
+								<span class = "con">&nbsp</span>
+							<% end %>
+							<% end %>
+						</div> 
+						<div class = "topic-starter-width">
+							<% starter = Debater.find_by_id(matching_debate.creator_id) %>
+							<% starter.nil? ? starter = Debater.find_by_id(1) : nil %> <%# Remove This %>
+							<% if starter.last_sign_in_at %>
+								<%= link_to starter.name, starter %>
+							<% else %>
+								<%= starter.mini_name %>
+							<% end %>
+						</div>
+						<div class = "topic-argument-width" title = "<%= matching_debate.topic %>">
+							- <%= link_to "\"#{matching_debate.topic[0..14]}\"", matching_debate %>
+						</div> 
+					</li>
 				</div>
 			<% end %>
 		<% else %>
-			No Matching Debates
+			<strong>No Matching Debates</strong>
 		<% end %>
 	<% else %>
-		No Matching Debates
+		<strong>No Matching Debates</strong>
 	<% end %>
 </div>

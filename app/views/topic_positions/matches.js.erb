@@ -1,6 +1,5 @@
-// Update the Matching Debates, with a half second delay
-$('#matching-debates').html(".....");
-setTimeout("display_matches()", 500);
+// Update the Matching Debates
+$('#matching-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_matching_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
 
 // Update the Suggested Debates
 $('#suggested-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_suggested_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
@@ -18,6 +17,40 @@ $('#first-argument-button').attr('disabled', false);
 $('#topic-position-field').val("<%= @topic_position.topic %>");
 
 
-function display_matches() {
-	$('#matching-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_matching_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
-}
+//  For use with javascript popups to show entire argument, when it doesn't fit on the screen
+
+$(document).ready(function() {
+	$(".topic-argument-width").qtip({
+		content: false,
+		position: {
+	     	corner: {
+	    		target: 'topMiddle',
+	    		tooltip: 'bottomMiddle'
+	      }
+	   	},
+		style: { 
+		 	name: 'light',
+			color: 'black',
+			'font-size': 12,
+			tip: 'bottomMiddle'
+		},
+		show: { delay: 500 }
+	});
+	
+	$(".topic-link-width").qtip({
+		content: false,
+		position: {
+	     	corner: {
+	    		target: 'topMiddle',
+	    		tooltip: 'bottomMiddle'
+	      }
+	   	},
+		style: { 
+		 	name: 'light',
+			color: 'black',
+			'font-size': 13,
+			tip: 'bottomMiddle'
+		},
+		show: { delay: 1000 }
+	});
+});

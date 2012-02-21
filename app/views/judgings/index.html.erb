@@ -1,3 +1,5 @@
+<%= javascript_include_tag "jquery.qtip.js" %>
+
 <% if Rails.env.development? or Rails.env.test? %>
 	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
@@ -111,8 +113,7 @@
 
 <div id="joined_no_judge" class="judge_container">
 	<h2>Debates</h2>
-	<div class="containercontent">
-			<%= render :partial => "debate_link_joined", :locals => {:judging_priority => @judging_priority} %>
-	</div>
+	<%= render :partial => "debate_link_joined", :locals => {:judging_priority => @judging_priority} %>
 </div>
 <!-- to put unjoined debates back in, do the exact same thing as above but for unjoined debates -->
+<%= javascript_include_tag "jquery_tips" %>

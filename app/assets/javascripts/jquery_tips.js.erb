@@ -22,7 +22,8 @@ $("#info-footnotes").qtip({
    	content: 'Use double parenthesis like ((this)) to add footnotes to your arguments.',
    	position: {
       corner: {
-         target: 'topMiddle'
+         target: 'topMiddle',
+		 tooltip: 'bottomRight'
       }
    	},
 	style: { 
@@ -32,7 +33,7 @@ $("#info-footnotes").qtip({
 			width: 1,
 			color: '#0000FF'
 		},
-		width: 245,
+		width: 250,
 		tip: 'bottomRight'
 	}
 });
@@ -58,9 +59,43 @@ $("#info-votes").qtip({
 	}
 });
 
+$(".topic-argument-width").qtip({
+	content: false,
+	position: {
+     	corner: {
+    		target: 'topMiddle',
+    		tooltip: 'bottomMiddle'
+      }
+   	},
+	style: { 
+	 	name: 'light',
+		color: 'black',
+		'font-size': 12,
+		tip: 'bottomMiddle'
+	},
+	show: { delay: 500 }
+});
+
+$(".topic-link-width").qtip({
+	content: false,
+	position: {
+     	corner: {
+    		target: 'topLeft',
+    		tooltip: 'bottomMiddle'
+      }
+   	},
+	style: { 
+	 	name: 'light',
+		color: 'black',
+		'font-size': 13,
+		tip: 'bottomMiddle'
+	},
+	show: { delay: 1000 }
+});
+
 $(".topic_vote").qtip({
 	//content: 'Click on the numbers below to upvote or downvote an argument.',
-	content: 'Vote for this Topic',
+	content: 'UpVote this topic.',
 	position: {
      	corner: {
     		target: 'topMiddle',
@@ -78,3 +113,4 @@ $(".topic_vote").qtip({
 	},
 	hide: { when: { event: 'unfocus' }, delay: 200 }
 });
+

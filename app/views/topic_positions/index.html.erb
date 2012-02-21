@@ -1,4 +1,5 @@
 <%= javascript_include_tag "form_validations" %>
+<%= javascript_include_tag "jquery.qtip.js" %>
 
 <% if Rails.env.development? or Rails.env.test? %>
 	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
@@ -78,6 +79,7 @@
 
 <div class="create_container">
 	<h2> Match Up </h2>
+	
 	<div id="matching-debates" class="list_matches_container">
 			<%= render :partial => "/topic_positions/list_matching_debates", :locals => {:matching => @matching} %> 	
 	</div>
@@ -102,3 +104,5 @@ $('#matching-debates').bind('ajax:success', function() {
     $(this).closest('tr').fadeOut();  
 });
 </script>
+
+<%= javascript_include_tag "jquery_tips" %>

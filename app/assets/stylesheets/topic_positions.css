@@ -43,12 +43,57 @@
 	background-position: 100% 0%;
 }
 
+.topic-containercontent {
+	max-height: 150px;
+	overflow: auto;
+}
+
 .debate_link a {
 	font-size: 12px;
+	color: #0000FF;
+}
+
+.topic-link-width {
+	float: left;
+	width: 40%;
+	height: 19px;
+	overflow: hidden;
+}
+
+.topic-starter-width {
+	float: left;
+	min-width: 30%;
+	max-width: 32%;
+	font-size: 12px;
+}
+
+.topic-argument-width {
+	width: 27%;
+	height: 20px;
+	overflow: hidden;
+}
+
+.topic-argument-width a {
 	color: #000000;
 	text-decoration: none;
 }
 
+.topic-created-width {
+	min-width:30%;
+	max-width:35%; 
+	height: 20px; 
+	overflow: hidden; 
+	font-size: 12px;
+}
+
+.topic-heading {
+	font-size: 12px; 
+	text-align: left;
+	font-weight: bold;
+	margin-left: 2px;
+	color: #888888;
+
+}
 .debate-link-topic a {
 	padding: 0 3px;
 	font-size: 13px;

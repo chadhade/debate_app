@@ -22,7 +22,7 @@ class DebatesController < ApplicationController
   def create
   	
   	# create a new debate linked to debater
-  	@debate = Debate.new(:joined => false, :judge => false)
+  	@debate = Debate.new(:joined => false, :judge => false, :creator_id => current_or_guest_debater.id)
   	@debate.save
   	current_or_guest_debater.debations.create(:debate_id => @debate.id)
   	
@@ -74,7 +74,7 @@ class DebatesController < ApplicationController
   	@argument = current_or_guest_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
 	
   	# update joined columns of debates
-  	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at)
+  	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at, :joiner_id => current_or_guest_debater.id)
   	
   	# update joiner column of viewings
   	update_viewings(current_or_guest_debater, @debate)

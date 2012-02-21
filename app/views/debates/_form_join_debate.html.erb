@@ -1,8 +1,8 @@
 <div class = "join_to_debate <%= hidden %>", data-id="<%= debate.id %>">
-	<%= form_for Argument.new, :url => join_debate_path(debate.id), :html => {:name => 'postdebateform', :before => "return checkEmpty('postdebateform', 'argument[content]'); "}, :remote => true do |f| %>
+	<%= form_for Argument.new, :url => join_debate_path(debate.id), :html => {:name => 'postdebateform', :before => "return checkEmpty('postdebateform', 'argument[content]'); ", :id => "argument_respond"}, :remote => true do |f| %>
 		<div class = "field">
 			<!-- <%= f.label :content %> <br /> -->
-			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000); checkEmpty2(this, '#respond_button')" %><br />
+			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000); checkEmpty2(this, '#respond_button')", :id => "respond_textarea" %><br />
 		</div>
 	    <%= f.hidden_field :debate_id, :value => debate.id %>
 		<div class = "action">
