@@ -8,7 +8,8 @@
 					$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
 				});
 			<% end %>
- 
+ 			$(".debate[data-id="+ <%= debate.id %> +"]").prop({ scrollTop: $(".debate[data-id="+ <%= debate.id %> +"]").prop("scrollHeight") });
+			
 			<% if !current_or_guest_debater.nil? %>
 				if ("<%= current_or_guest_debater.email %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
@@ -80,6 +81,7 @@
 					$(".debate[data-id="+ <%= debate.id %> +"]").append(val);
 				});
 			<% end %>
+			$(".debate[data-id="+ <%= debate.id %> +"]").prop({ scrollTop: $(".debate[data-id="+ <%= debate.id %> +"]").prop("scrollHeight") });
 		}
 		
 		if (data.func == "judge_timer") {

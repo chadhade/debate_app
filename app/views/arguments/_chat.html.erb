@@ -6,7 +6,7 @@
 			<% if debate.winner_id %>
 				<%= argument.debater_id == debate.winner_id ? "winner" : "loser" %> 
 			<% else %>
-				<%= argument.debater.name %>
+				<%= argument.debater.mini_name %>
 			<% end %>
 		<% end %>
 	</div>
