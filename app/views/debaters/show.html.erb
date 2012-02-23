@@ -1,7 +1,8 @@
-<span class="page-title"><h1><%= @debater.name %></h1></span>
+<span class="page-title" style="float:left;"><h1>Debunker: <%= @debater.name %></h1></span>
 
 <div class = "profile">
 	<div class = "sidebar round">
+		Rank: Coming Soon.
 		<%= render 'stats' %>
 		<% if signed_in? %>
 			<%= render 'follow_form' %>
@@ -10,8 +11,7 @@
 	</div>
 </div>
 
-<div class="profile_container">
-	<h2>Total Debates: <%= @debates.count + @debater.judgings.count %></h2>
+<!--	<h2>Total Debates: <%= @debates.count + @debater.judgings.count %></h2>
 	<div class="profile_box">
 		<h3>Debates Participated In: <%= @debates.count %></h3>
 		<ul>
@@ -28,7 +28,30 @@
 		<ul>	
 			<li>Judge Points: <%= @debater.judge_points %> </li>
 		</ul>
+	</div> -->
+	
+	<div class="profile_box">
+		<h3> Statistics </h3>
+		<div class = "stat-heading">Debates Participated</div>
+		<div class = "stat-heading">Debates Won </div>
+		<div class = "stat-heading">Debates Lost </div>
+		<div class = "stat-heading">No Results </div>
+		<div class = "stat-heading">Debates Judged </div>
+		<div class = "stat-heading">Judge Points </div>
+		<div class = "stat-heading">UpVotes </div>
+		<div class = "stat-heading">DownVotes </div>
+		<br>
+		<div class = "stat-heading"><h4><%= @debates.count %></h4></div>
+		<div class = "stat-heading"><h4 style="color:#0000FF"><%= @debateswon %></h4></div>
+		<div class = "stat-heading"><h4><%= @debateslost %></h4></div>
+		<div class = "stat-heading"><h4><%= @debatesnoresults %></h4></div>
+		<div class = "stat-heading"><h4><%= @debater.judgings.count %></h4></div>
+		<div class = "stat-heading"><h4 style="color:#0000FF"><%= @debater.judge_points %></h4></div>
+		<div class = "stat-heading"><h4><%= @positivevotes %></h4></div>
+		<div class = "stat-heading"><h4><%= @negativevotes %></h4></div>
+		
 	</div>
+	
 	<div class="profile_box">
 		<h3>Recent Debates</h3>
 		<ul>
@@ -44,4 +67,3 @@
 		</ul>
 		
 	</div>
-</div>

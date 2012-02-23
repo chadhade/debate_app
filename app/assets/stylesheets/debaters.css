@@ -1,7 +1,7 @@
 .profile {
 	float: right;
-	width: 20%;
-	margin-bottom: 0;
+	width: 25%;
+	margin-bottom: 30px;
 	text-align: center;
 }
 
@@ -16,7 +16,7 @@ ul.debaters {
 
 .profile_container {
 	padding: 10px 10px;
-	min-height: 425px;
+	mmin-height: 425px;
 	width: 600px;
 	border: 1px solid silver;
 	background-color: #fafafa;
@@ -46,15 +46,12 @@ ul.debaters {
 
 .profile_box {
 	padding: 5px 10px;
-	height: auto;
-	width: 560px;
+	height: 100px;
+	clear: both;
 	border: 1px solid silver;
 	background-color: #fafafa;
 	margin: 10px;
-	margin-top: 10px;
-	position: relative;
-	overflow: auto;
-	text-align: left;
+    overflow: auto;
 	
 	-webkit-box-shadow:0 0 10px #000;
     -moz-box-shadow: 0 0 10px #000;
@@ -67,11 +64,31 @@ ul.debaters {
 	text-align: center;
 }
 
+.stat-heading {
+	float: left;
+	width: 12%;
+	height: 30px;
+	font-size: 12px; 
+	text-align: left;
+	font-weight: bold;
+	margin-left: 2px;
+	margin-right: 1px;
+	color: #888888;
+
+}
+
+.stat-heading h4 {
+	font-weight: bold;
+	font-size: 14px;
+	color: #000000;
+}
+
 .sidebar {
 	border: 1px solid silver;
 	float:right;
 	width: 85%;
-	margin-top: 1em;
+	font-size: 13px;
+	
 	margin-right:5px;
 	padding: .5em;
 	vertical-align: top;
@@ -85,6 +102,7 @@ ul.debaters {
 
 .sidebar a {
 	text-decoration: none;
+	font-size: 14px;
 }
 
 .stats {
