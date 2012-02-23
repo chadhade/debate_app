@@ -1,3 +1,5 @@
+<%= javascript_include_tag "jquery.qtip.js" %>
+
 <span class="page-title" style="float:left;"><h1>Debunker: <%= @debater.name %></h1></span>
 
 <div class = "profile">
@@ -73,7 +75,7 @@
 											<%# end %>
 						<div class="debate_link" data-id="<%= debate.id %>"> 
 							<li> 
-								<div class = "topic-link-width">
+								<div class = "topic-link-width" title = "<%= debate.tp.topic %>">
 									<span class = "debate-link-topic">
 									<%= link_to debate.tp.topic, debate %> </span>
 								</div> 
@@ -92,7 +94,7 @@
 								<div class = "topic-argument-width">
 									<% @judge_comments = debate.judge_entry.comments %>
 									<% if !@judge_comments.nil? %>
-										- <%= link_to "\"#{@judge_comments[0..14]}\"", debate, :title => @judge_comments %>
+										- <%= link_to "\"#{@judge_comments[0..14]}\"", debate, :title => "\"#{@judge_comments}\"" %>
 									<% else %>
 										&nbsp
 									<% end %>
@@ -119,7 +121,7 @@
 					<% @followdebates.each do |debate| %>					
 						<div class="debate_link" data-id="<%= debate.id %>"> 
 							<li> 
-								<div class = "topic-link-width">
+								<div class = "topic-link-width" title = "<%= debate.tp.topic %>">
 									<span class = "debate-link-topic">
 									<%= link_to debate.tp.topic, debate %> </span>
 								</div> 
@@ -139,7 +141,7 @@
 									<% if !debate.judge_entry.nil? %>
 										<% if !debate.judge_entry.comments.nil? %>
 											<% @judge_comments = debate.judge_entry.comments %>
-											- <%= link_to "\"#{@judge_comments[0..14]}\"", debate, :title => @judge_comments %>
+											- <%= link_to "\"#{@judge_comments[0..14]}\"", debate, :title => "\"#{@judge_comments}\"" %>
 										<% else %>
 											&nbsp
 										<% end %>
@@ -156,3 +158,22 @@
 				<% end %>
 			</div>	
 	</div>
+
+<script>
+$(".topic-link-width").qtip({
+	content: false,
+	position: {
+     	corner: {
+    		target: 'topLeft',
+    		tooltip: 'bottomMiddle'
+      }
+   	},
+	style: { 
+	 	name: 'light',
+		color: 'black',
+		'font-size': 13,
+		tip: 'bottomMiddle'
+	},
+	show: { delay: 1000 }
+});
+</script>
