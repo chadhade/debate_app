@@ -24,30 +24,62 @@ class DebatersController < ApplicationController
       redirect_to topic_positions_path
     end
     
-    if Rails.env.development? or Rails.env.test?
-      @debates = @debater.debates.where("end_time > ?", 0)
-    else
-      @debates = @debater.debates.where("end_time > ?", "01/01/01")
-    end
+    # Individual Status
+      if Rails.env.development? or Rails.env.test?
+        @debates = @debater.debates.where("end_time > ?", 0)
+      else
+        @debates = @debater.debates.where("end_time > ?", "01/01/01")
+      end
     
-    @recentdebates = @debates.all(:order => "created_at DESC").first 5
-    
-    @debateswon = Judging.where("winner_id = ?", @debater.id).count
-    @debateslost = Judging.where("loser_id = ?", @debater.id).count
-    @debatesnoresults = @debates.count - (@debateswon + @debateslost)
+     # @recentdebates = @debates.all(:order => "created_at DESC").first 5
+      #@recentdebates = @debates.all(:order => "created_at DESC").paginate(:page => params[:page], :per_page => 5)
+      @recentdebates = Debate.paginate(:page => params[:page], :per_page => 5)
+      
+      @debateswon = Judging.where("winner_id = ?", @debater.id).count
+      @debateslost = Judging.where("loser_id = ?", @debater.id).count
+      @debatesnoresults = @debates.count - (@debateswon + @debateslost)
         
-    @positivevotes = 0
-    @negativevotes = 0
-    @arguments = 0
-    
-    @debates.each do |v|
-      @arguments += v.arguments.where("debater_id = ?", @debater.id).count
-    end
-    
-    @debater.arguments.each do |v|
-      @positivevotes = @positivevotes + v.votes_for
-      @negativevotes = @negativevotes + v.votes_against
-    end
+      
+      argument_ids = @debater.arguments.collect{|u| u.id}
+      @positivevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", argument_ids, "Argument", true).count
+      @negativevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", argument_ids, "Argument", false).count
+      
+    # Team Stats
+      @teammates = Debater.teammates(@debater)
+      if @teammates.empty?
+        return # Only perform calculations if debater has teammates
+      else
+        @teammates << @debater
+        teamargument_ids = Array.new
+      
+        if Rails.env.development? or Rails.env.test?
+          @teamdebates = 0
+          @teamjudgepoints = 0
+          @teammates.each do |deb|
+            @teamdebates += deb.debates.where("end_time > ?", 0).count
+            @teamjudgepoints += deb.judge_points
+            teamargument_ids =  teamargument_ids + deb.arguments.collect{|u| u.id}
+          end
+        else
+          @teamdebates = Array.new
+          @teamjudgepoints = 0
+          @teammates.each do |deb|
+            @teamdebates << deb.debates.where("end_time > ?", "01/01/01")
+            @teamjudgepoints += deb.judge_points
+            teamargument_ids = teamargument_ids + deb.arguments.collect{|u| u.id}
+          end
+        end
+
+        team_ids = @teammates.collect{|u| u.id}
+      
+        @teamdebateswon = Judging.where("winner_id IN (?)", team_ids).count
+        @teamdebateslost = Judging.where("loser_id IN (?)", team_ids).count
+        @teamdebatesnoresults = @teamdebates - (@teamdebateswon + @teamdebateslost)
+        @teamjudgings = Judging.where("debater_id IN (?) AND winner_id > ?", team_ids, 0).count
+      
+        @teampositivevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", teamargument_ids, "Argument", true).count
+        @teamnegativevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", teamargument_ids, "Argument", false).count
+      end
   end
   
   def index

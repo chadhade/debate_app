@@ -11,25 +11,7 @@
 	</div>
 </div>
 
-<!--	<h2>Total Debates: <%= @debates.count + @debater.judgings.count %></h2>
-	<div class="profile_box">
-		<h3>Debates Participated In: <%= @debates.count %></h3>
-		<ul>
-			<li> Won: <%= @debateswon %></li>
-			<li> Lost: <%= @debateslost %></li>
-			<li> No Judging Results: <%= @debatesnoresults %> </li> <br />
-			
-			<li> Upvotes: <%= @positivevotes %> (<%= @arguments == 0 ? 0 : (@positivevotes.to_f / @arguments) %> per argument)</li>
-			<li> Downvotes: <%= @negativevotes %> (<%= @arguments == 0 ? 0 : (@negativevotes.to_f / @arguments) %> per argument)</li>
-		</ul>
-	</div>
-	<div class="profile_box">
-		<h3>Debates Judged: <%= @debater.judgings.count %> </h3>
-		<ul>	
-			<li>Judge Points: <%= @debater.judge_points %> </li>
-		</ul>
-	</div> -->
-	
+
 	<div class="profile_box">
 		<h3> Statistics </h3>
 		<div class = "stat-heading">Debates Participated</div>
@@ -52,18 +34,71 @@
 		
 	</div>
 	
-	<div class="profile_box">
+	<% if !@teammates.empty? %>
+		<div class="profile_box">
+			<h3> Team Statistics </h3>
+			<div class = "stat-heading">Total Debates</div>
+			<div class = "stat-heading">Debates Won </div>
+			<div class = "stat-heading">Debates Lost </div>
+			<div class = "stat-heading">No Results </div>
+			<div class = "stat-heading">Debates Judged </div>
+			<div class = "stat-heading">Judge Points </div>
+			<div class = "stat-heading">UpVotes </div>
+			<div class = "stat-heading">DownVotes </div>
+			<br>
+			<div class = "stat-heading"><h4><%= @teamdebates %></h4></div>
+			<div class = "stat-heading"><h4 style="color:#0000FF"><%= @teamdebateswon %></h4></div>
+			<div class = "stat-heading"><h4><%= @teamdebateslost %></h4></div>
+			<div class = "stat-heading"><h4><%= @teamdebatesnoresults %></h4></div>
+			<div class = "stat-heading"><h4><%= @teamjudgings %></h4></div>
+			<div class = "stat-heading"><h4 style="color:#0000FF"><%= @teamjudgepoints %></h4></div>
+			<div class = "stat-heading"><h4><%= @teampositivevotes %></h4></div>
+			<div class = "stat-heading"><h4><%= @teamnegativevotes %></h4></div>
+		</div>
+	<% end %>
+	
+	<div class="debatelist_container" style="margin:8px;padding:10px;padding-top:0;">
 		<h3>Recent Debates</h3>
-		<ul>
-			<% if @recentdebates.empty? %>
-				You Have Not Participated in Any Debates!
-			<% else %>
-				<% @recentdebates.each do |debate| %>
-					<% unless debate.tp.nil? %>
-						<li> <%= link_to debate.tp.topic, debate %> </li>
+		<div class = "topic-link-width topic-heading" > Topic </div>
+		<div class = "topic-starter-width topic-heading" > Winner </div>
+		<div class = "topic-argument-width topic-heading" style="height: 30px;"> Judge Comments </div>	
+			<div id="recent-debates" class="containercontent">
+				<% if @recentdebates.empty? %>
+					You Have Not Participated in Any Debates!
+				<% else %>
+					<% @recentdebates.each do |debate| %>
+											<%# unless debate.tp.nil? %>
+												<!-- ><li> <%# link_to debate.tp.topic, debate %> </li> -->
+											<%# end %>
+						<div class="debate_link" data-id="<%= debate.id %>"> 
+							<li> 
+								<div class = "topic-link-width">
+									<span class = "debate-link-topic">
+									<%= link_to debate.tp.topic, debate %> </span>
+								</div> 
+								<div class = "topic-starter-width">
+									<% winner = Debater.find_by_id(debate.winner_id) %>
+									<% if !winner.nil? %>
+										<% if winner.last_sign_in_at %>
+											<%= link_to winner.name, winner %>
+										<% else %>
+											<%= winner.mini_name %>
+										<% end %>
+									<% else %>
+										&nbsp
+									<% end %>
+								</div>
+								<div class = "topic-argument-width">
+									<% @judge_comments = debate.judge_entry.comments %>
+									<% if !@judge_comments.nil? %>
+										- <%= link_to "\"#{@judge_comments[0..14]}\"", debate, :title => @judge_comments %>
+									<% else %>
+										&nbsp
+									<% end %>
+								</div> 
+							</li>
+						</div>
 					<% end %>
 				<% end %>
-			<% end %>
-		</ul>
-		
+			</div>	
 	</div>

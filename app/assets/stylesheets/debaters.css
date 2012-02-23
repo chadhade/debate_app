@@ -46,12 +46,11 @@ ul.debaters {
 
 .profile_box {
 	padding: 5px 10px;
-	height: 100px;
+	height: 90px;
 	clear: both;
 	border: 1px solid silver;
 	background-color: #fafafa;
 	margin: 10px;
-    overflow: auto;
 	
 	-webkit-box-shadow:0 0 10px #000;
     -moz-box-shadow: 0 0 10px #000;
@@ -59,15 +58,14 @@ ul.debaters {
 }
 
 .profile_box h3 {
-	margin: 0 auto;	
-	margin-bottom: 5px;
+	margin: 5px;	
 	text-align: center;
 }
 
 .stat-heading {
 	float: left;
 	width: 12%;
-	height: 30px;
+	height: 20px;
 	font-size: 12px; 
 	text-align: left;
 	font-weight: bold;
