@@ -2,6 +2,8 @@ class DebatersController < ApplicationController
    before_filter :authenticate_debater!
    skip_before_filter :authenticate_debater! #, :only => [:show, :index]
 
+   require 'will_paginate/array'
+   
   def new
     @debater = Debater.new
   end
@@ -31,14 +33,13 @@ class DebatersController < ApplicationController
         @debates = @debater.debates.where("end_time > ?", "01/01/01")
       end
     
-     # @recentdebates = @debates.all(:order => "created_at DESC").first 5
-      #@recentdebates = @debates.all(:order => "created_at DESC").paginate(:page => params[:page], :per_page => 5)
-      @recentdebates = Debate.paginate(:page => params[:page], :per_page => 5)
+      @recentdebates = @debates.all(:order => "created_at DESC")
+      @recentdebates = @recentdebates.paginate(:page => params[:page], :per_page => 10)
       
       @debateswon = Judging.where("winner_id = ?", @debater.id).count
       @debateslost = Judging.where("loser_id = ?", @debater.id).count
       @debatesnoresults = @debates.count - (@debateswon + @debateslost)
-        
+      @debaterjudgings = Judging.where("debater_id = ? AND winner_id > ?", @debater.id, 0).count  
       
       argument_ids = @debater.arguments.collect{|u| u.id}
       @positivevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", argument_ids, "Argument", true).count
@@ -46,9 +47,8 @@ class DebatersController < ApplicationController
       
     # Team Stats
       @teammates = Debater.teammates(@debater)
-      if @teammates.empty?
-        return # Only perform calculations if debater has teammates
-      else
+      
+      if !@teammates.empty? # Only perform calculations if debater has teammates
         @teammates << @debater
         teamargument_ids = Array.new
       
@@ -69,7 +69,7 @@ class DebatersController < ApplicationController
             teamargument_ids = teamargument_ids + deb.arguments.collect{|u| u.id}
           end
         end
-
+        
         team_ids = @teammates.collect{|u| u.id}
       
         @teamdebateswon = Judging.where("winner_id IN (?)", team_ids).count
@@ -79,7 +79,21 @@ class DebatersController < ApplicationController
       
         @teampositivevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", teamargument_ids, "Argument", true).count
         @teamnegativevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", teamargument_ids, "Argument", false).count
+      
       end
+      
+      follow_ids = Array.new
+      @following = @debater.following
+      @following.empty? ? return : nil # Exit if there are no 'followees'
+      
+      @following.each do |debater|
+        debater.debates.all(:order => "id DESC").first(20).each do |debate|
+          follow_ids << debate.id
+        end
+      end
+      @followdebates = Debate.where("id IN (?)", follow_ids).last(30)
+      @followdebates = @followdebates.paginate(:page => params[:following_page], :per_page => 10)
+
   end
   
   def index

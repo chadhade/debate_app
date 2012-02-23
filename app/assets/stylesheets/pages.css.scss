@@ -1,3 +1,29 @@
-// Place all the styles related to the Pages controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.list_pagination {
+  text-align: center;
+  padding: 0.3em;
+  cursor: default; }
+  .list_pagination a, .list_pagination span, .list_pagination em {
+    padding: 0.2em 0.5em; }
+  .list_pagination .disabled {
+    color: #aaaaaa; }
+  .list_pagination .current {
+    font-style: normal;
+    font-weight: bold;
+    color: #ff0084; }
+  .list_pagination a {
+    border: 1px solid #dddddd;
+    color: #0063dc;
+    text-decoration: none; }
+    .list_pagination a:hover, .list_pagination a:focus {
+      border-color: #003366;
+      background: #0063dc;
+      color: white; }
+  .list_pagination .page_info {
+    color: #aaaaaa;
+    padding-top: 0.8em; }
+  .list_pagination .previous_page, .list_pagination .next_page {
+    border-width: 2px; }
+  .list_pagination .previous_page {
+    margin-right: 1em; }
+  .list_pagination .next_page {
+    margin-left: 1em; }
