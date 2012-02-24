@@ -3,7 +3,15 @@ class JudgingsController < ApplicationController
   skip_before_filter :authenticate_debater!, :only => [:rating]
   
   def index
-    @judging_priority = Debate.judging_priority()
+    judging_priority = Debate.judging_priority(30)
+    if !judging_priority.nil?
+      @joined_no_judge = judging_priority.paginate(:page => params[:page], :per_page => 10)
+    end
+    
+    respond_to do |format|
+        format.html 
+        format.js
+      end
   end
 
   def create

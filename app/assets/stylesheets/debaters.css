@@ -150,8 +150,9 @@ ul.debaters {
 
 .list_debaters {
 	padding: 10px 10px;
-	height: 250px;
-	width: 325px;
+	min-height: 250px;
+	max-height: 500px;
+	width: 575px;
 	border: 1px solid silver;
 	background-color: #fafafa;
 
@@ -179,12 +180,18 @@ ul.debaters {
 }
 
 .list_names {
-	width: 49%;
+	width: 31%;
 	margin-right:5px;
 	float:left;
 }
 
 .list_ranks {
-	width: 49%;
+	width: 35%;
+	float:left;
+	margin-right: 5px;
+}
+
+.list_joined {
+	width: 32%;
 	float:left;
 }

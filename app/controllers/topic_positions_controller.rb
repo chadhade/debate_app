@@ -17,7 +17,7 @@
     end
     
     @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => topic, :position => position)    
-    @matching = Debate.matching_debates(@topic_position)
+    @matching = Debate.matching_debates(@topic_position, 30, 15)
 	  
     respond_to do |format|
   	  format.html

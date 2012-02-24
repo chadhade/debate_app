@@ -148,7 +148,10 @@ end
 	  @currentid = @currentdebater.id
 	  
   	# for viewings
-  	update_viewings(@currentdebater, @debate)
+  	if @debate.participant?(@currentdebater)
+  	  update_viewings(@currentdebater, @debate)
+  	end
+  	
   	if !@currentdebater.nil?
     	if @currentdebater.creator?(@debate) and !@debate.joined?
     	  Juggernaut.publish("matches", {:func => "unhide", :obj => @debate.id})
@@ -246,13 +249,8 @@ end
 ##############################################################################  
   def update_viewings(currentdebater, debates)
   	# set viewer variable
-  	if currentdebater.nil?
-  	  ip = Ip.new(:IP_address => request.remote_ip)
-      ip = Ip.find_by_IP_address(request.remote_ip) unless ip.save
-      viewer = ip
-  	else
   	  viewer = currentdebater
-  	end
+
   	# go through debates and update viewings for viewer and debate
   	if debates.kind_of?(Array)
   	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate)}
@@ -280,7 +278,7 @@ end
   
   def index
     # returns debates that match search criterion or all debates if empty string submitted
-  	@debates = Debate.search(params[:search])
+  	@debates = Debate.search(params[:search]).last(100)
   	
   	@debates_ongoing = Array.new
     @debates_in_limbo = Array.new
@@ -292,6 +290,15 @@ end
       @debates_in_limbo.unshift(debate) if debate.end_time.nil? and (!debate.judge or !debate.joined)
 	  end
 	  
+	  @debates_ongoing = @debates_ongoing.first(50)
+	  @debates_ongoing = @debates_ongoing.paginate(:page => params[:ongoing_page], :per_page => 10)
+	  @debates_completed = @debates_completed.first(50)
+	  @debates_completed = @debates_completed.paginate(:page => params[:completed_page], :per_page => 10)
+	
+	  @ajaxupdate = 1 if !params[:ongoing_page].nil?
+    @ajaxupdate = 2 if !params[:completed_page].nil?
+  	@ajaxupdate = 3 if !params[:search].nil?
+  	
   	respond_to do |format|
   	  format.html
   	  format.js

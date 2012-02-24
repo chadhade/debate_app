@@ -1,0 +1,8 @@
+<% if @ajaxupdate == 1 %>
+	$('#recent_debates').html('<%=escape_javascript render :partial => "recent_debates", :locals => {:recentdebates => @recentdebates} %>');
+<% end %>
+<% if @ajaxupdate == 2 %>
+	$('#following_debates').html('<%=escape_javascript render :partial => "following_debates", :locals => {:followdebates => @followdebates} %>');
+<% end %>
+
+$('.pagination a').attr('data-remote', 'true');

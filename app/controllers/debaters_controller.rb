@@ -92,19 +92,31 @@ class DebatersController < ApplicationController
         end
       end
       @followdebates = Debate.where("id IN (?)", follow_ids).last(30)
-      @followdebates = @followdebates.paginate(:page => params[:following_page], :per_page => 10)
-
+      @followdebates = @followdebates.paginate(:page => params[:following_page], :per_page => 8)
+      
+      @ajaxupdate = 1 if !params[:page].nil?
+      @ajaxupdate = 2 if !params[:following_page].nil?
+      respond_to do |format|
+          format.html 
+          format.js
+        end
   end
   
   def index
     @title = "All Debaters"
-    @debaters = Debater.where("current_sign_in_at > ?", 0).paginate(:page => params[:page])
+    debaters = Debater.where("current_sign_in_at > ?", 0)
     @debaterranks = Array.new
-    @debaters.each do |debater|
+    debaters.each do |debater|
       rank = debater.rank
-      @debaterranks << {:debater => debater, :rank => rank}
+      @debaterranks << {:debater => debater, :rank => rank, :joined => debater.created_at}
     end
     @debaterranks.sort!{|a,b| b[:rank] <=> a[:rank]}
+    @debaterranks = @debaterranks.paginate(:page => params[:page], :per_page => 15)
+    
+    respond_to do |format|
+        format.html 
+        format.js
+      end
   end
   
   def following

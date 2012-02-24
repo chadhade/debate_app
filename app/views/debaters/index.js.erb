@@ -1,0 +1,2 @@
+$('.list_debaters').html('<%=escape_javascript render :partial => "list_debaters", :locals => {:debaterranks => @debaterranks} %>');
+$('.pagination a').attr('data-remote', 'true');

@@ -1,3 +1,12 @@
-$(function(){    
-  $("#list_of_debates").html('<%= escape_javascript(render 'debates/list_of_debates') %>');
-});
+<% if @ajaxupdate == 1 %>
+	$('#ongoing_debates').html('<%=escape_javascript render :partial => "ongoing_debates", :locals => {:debates_ongoing => @debates_ongoing} %>');
+<% end %>
+<% if @ajaxupdate == 2 %>
+	$('#completed_debates').html('<%=escape_javascript render :partial => "completed_debates", :locals => {:debates_completed => @debates_completed} %>');
+<% end %>
+<% if @ajaxupdate == 3 %>
+	$('#ongoing_debates').html('<%=escape_javascript render :partial => "ongoing_debates", :locals => {:debates_ongoing => @debates_ongoing} %>');
+	$('#completed_debates').html('<%=escape_javascript render :partial => "completed_debates", :locals => {:debates_completed => @debates_completed} %>');
+<% end %>
+
+$('.pagination a').attr('data-remote', 'true');

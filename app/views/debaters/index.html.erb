@@ -1,22 +1,14 @@
 <span class="page-title"><h1>Debater Rankings</h1></span>
 <br>
 
+
 <div class = "list_debaters">
-	<div class = "list_names">
-		<h2>Name</h2>
-		<% @debaterranks.each do |debater| %>
-			<span class = "list_name"><%= link_to debater[:debater].name, debater[:debater] %></span><br />
-		<% end %>
-	</div>
-	
-	<div class = "list_ranks">
-		<h2>% Won </h2>
-		<% @debaterranks.each do |debater| %>
-		 	<%= (((debater[:rank] * 100.0).round / 100.0) * 100) if !debater[:rank].nil? %>%<br />
-		<% end %>
-	</div>	
+	<%= render :partial => 'list_debaters', :locals => {:debaterranks => @debaterranks} %>
 </div>
 
-
-	
-	
+<script>	
+$(document).ready(function() {
+    // Make pagination submit ajax
+	$('.pagination a').attr('data-remote', 'true');
+});
+</script>

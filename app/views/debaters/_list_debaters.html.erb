@@ -1,0 +1,26 @@
+<div class = "list_names">
+	<h2>Name</h2>
+</div>
+<div class = "list_ranks">
+	<h2>% Won </h2>
+</div>
+<div class = "list_joined">
+	<h2>Joined</h2>
+</div>
+
+<% debaterranks.each do |debater| %>
+	<div class = "list_names">
+		<span class = "list_name"><%= link_to debater[:debater].name, debater[:debater] %></span><br />
+	</div>
+	<div class = "list_ranks">
+		<%= (((debater[:rank] * 100.0).round / 100.0) * 100) if !debater[:rank].nil? %>%<br />
+	</div>
+	<div class = "list_joined">
+		<%= debater[:joined].strftime("%b. %d, %Y") %> <br />
+	</div>
+<% end %> 
+<div>&nbsp</div>
+
+<div class="list_pagination">
+	<%= will_paginate debaterranks %>
+</div>

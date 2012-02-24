@@ -113,15 +113,15 @@ class Debate < ActiveRecord::Base
   end
   
   def self.search(search)
-	if search
-      @debates = Array.new; all.each {|debate| @debates << debate if debate.topic.match(/#{search}/)}
-	  @debates
+	  if search
+      @debates = Array.new; all.each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.match(/#{search}/))}
+	    @debates
     else
       find(:all)
     end    
   end
   
-  def self.matching_debates(current_tp)
+  def self.matching_debates(current_tp, max1, max2)
     @matching_debates = Array.new
     @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     self.where(:id => @viewing_by_creator, :joined => false).each do |debate|
@@ -154,7 +154,7 @@ class Debate < ActiveRecord::Base
     @matching_debates = @matching_debates.sort_by {|a| a.position_match ? 0 : 1}
       
     @viewing_by_creator_minus_matching = @viewing_by_creator - @matching_debates.map{|v| v.id}
-    @suggested_debates = self.where(:id => @viewing_by_creator_minus_matching, :joined => false).order("judge DESC", "created_at ASC")
+    @suggested_debates = self.where(:id => @viewing_by_creator_minus_matching, :joined => false).order("judge DESC", "created_at ASC").first(max2)
     
     # return the array
     @matching = {:matching_debates => @matching_debates, :suggested_debates => @suggested_debates}
@@ -168,13 +168,19 @@ class Debate < ActiveRecord::Base
     @position_match = new_match
   end
   
-  def self.judging_priority()
-    @joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
-    @joined_no_judge_cv = Array.new
-    @joined_no_judge.each do |debate|
-      @joined_no_judge_cv << debate if debate.currently_viewing("creator") and debate.currently_viewing("joiner")
+  def self.judging_priority(max)
+    joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
+    joined_no_judge_cv = Array.new
+    joined_no_judge.each do |debate|
+      if debate.currently_viewing("creator") and debate.currently_viewing("joiner")
+        joined_no_judge_cv << debate
+        max -= 1
+        return joined_no_judge_cv if max == 0
+      end
     end
-    {:joined_no_judge => @joined_no_judge_cv}
+    
+    #{:joined_no_judge => @joined_no_judge_cv}
+    return joined_no_judge_cv 
     
     #this way of pulling the appropriate debates was very inefficient
     # @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}

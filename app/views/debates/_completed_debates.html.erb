@@ -1,0 +1,48 @@
+<h2>Completed Debates</h2>
+<div class = "topic-link-width topic-heading" > Topic </div>
+<div class = "topic-starter-width topic-heading" > Winner </div>
+<div class = "topic-argument-width topic-heading" style="height: 30px;"> Judge Comments </div>
+
+<div class="containercontent">	
+	<% debates_completed.each do |debate| %>
+		<div class="debate_link" data-id="<%= debate.id %>"> 
+			<li> 
+				<div class = "topic-link-width">
+					<span class = "debate-link-topic">
+					<%= link_to debate.tp.topic, debate %> </span>
+					<% if debate.tp.position == true %>
+						<span class = "pro">&nbsp</span>
+					<% else %> 
+					<% if debate.tp.position == false %>
+						<span class = "con">&nbsp</span>
+					<% end %>
+					<% end %>
+				</div> 
+				<div class = "topic-starter-width">
+					<% winner = Debater.find_by_id(debate.winner_id) %>
+					<% if !winner.nil? %>
+						<% if winner.last_sign_in_at %>
+							<%= link_to winner.name, winner %>
+						<% else %>
+							<%= winner.mini_name %>
+						<% end %>
+					<% else %>
+						&nbsp
+					<% end %>
+				</div>
+				<div class = "topic-argument-width">
+					<% judge_comments = debate.judge_entry.comments %>
+					<% if !judge_comments.nil? %>
+						- <%= link_to "\"#{judge_comments[0..14]}\"", debate, :title => judge_comments %>
+					<% else %>
+						&nbsp
+					<% end %>
+				</div> 
+			</li>
+		</div>
+	<% end %>
+
+	<div class="list_pagination">
+		<%= will_paginate debates_completed, :param_name => :completed_page %>
+	</div>
+</div>

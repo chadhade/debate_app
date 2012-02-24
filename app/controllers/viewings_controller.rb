@@ -47,13 +47,8 @@ class ViewingsController < ApplicationController
 ##############################################################################  
   def update_viewings(currentdebater, debates)
 	# set viewer variable
-	if currentdebater.nil?
-	  ip = Ip.new(:IP_address => request.remote_ip)
-      ip = Ip.find_by_IP_address(request.remote_ip) unless ip.save
-      viewer = ip
-	else
-	  viewer = currentdebater
-	end
+	viewer = currentdebater
+	
 	# go through debates and update viewings for viewer and debate
 	if debates.kind_of?(Array)
 	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate)}

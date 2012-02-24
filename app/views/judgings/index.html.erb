@@ -112,8 +112,7 @@
 <br>
 
 <div id="joined_no_judge" class="judge_container">
-	<h2>Debates</h2>
-	<%= render :partial => "debate_link_joined", :locals => {:judging_priority => @judging_priority} %>
+	<%= render :partial => "debate_link_joined", :locals => {:joined_no_judge => @joined_no_judge} %>
 </div>
 <!-- to put unjoined debates back in, do the exact same thing as above but for unjoined debates -->
 <%= javascript_include_tag "jquery_tips" %>

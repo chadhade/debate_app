@@ -1,0 +1,38 @@
+<h2>Ongoing Debates</h2>
+<div class = "topic-link-width topic-heading" > Topic </div>
+<div class = "topic-starter-width topic-heading" > Creator </div>
+<div class = "topic-argument-width topic-heading"> Start Time </div>
+<div class="containercontent">
+	<% debates_ongoing.each do |debate| %>
+		<div class="debate_link" data-id="<%= debate.id %>"> 
+			<li> 
+				<div class = "topic-link-width">
+					<span class = "debate-link-topic">
+					<%= link_to debate.tp.topic, debate %> </span>
+					<% if debate.tp.position == true %>
+						<span class = "pro">&nbsp</span>
+					<% else %> 
+					<% if debate.tp.position == false %>
+						<span class = "con">&nbsp</span>
+					<% end %>
+					<% end %>
+				</div>
+				<div class = "topic-starter-width">
+					<% starter = Debater.find_by_id(debate.creator_id) %>
+					<% starter.nil? ? starter = Debater.find_by_id(1) : nil %> <%# Remove This %>
+					<% if starter.last_sign_in_at %>
+						<%= link_to starter.name, starter %>
+					<% else %>
+						<%= starter.mini_name %>
+					<% end %>
+				</div> 
+				<div class = "topic-argument-width" style="font-size: 12px;">
+					 <%= "#{(Time.now - debate.judge_entry.created_at).to_i.seconds} seconds ago" %>
+				</div> 
+			</li>
+		</div>
+	<% end %>
+	<div class="list_pagination">
+		<%= will_paginate debates_ongoing, :param_name => :ongoing_page %>
+	</div>
+</div>

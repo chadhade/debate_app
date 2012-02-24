@@ -9,6 +9,19 @@
 </div>
 <br>
 
-<div id="list_of_debates"><%= render 'debates/list_of_debates' %></div>
+<div class="debatelist_container" id="ongoing_debates">
+	<%= render :partial => 'ongoing_debates', :locals => {:debates_ongoing => @debates_ongoing} %>
+</div>
+
+<div class="debatelist_container" id="completed_debates">
+	<%= render :partial => 'completed_debates', :locals => {:debates_completed => @debates_completed} %>
+</div>
+
+<script>	
+$(document).ready(function() {
+    // Make pagination submit ajax
+	$('.pagination a').attr('data-remote', 'true');
+});
+</script>
 
 <!-- <p>Create a new debate! <%= link_to "Create!", new_debate_path %></p> -->

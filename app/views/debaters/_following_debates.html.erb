@@ -1,0 +1,47 @@
+<h3>Following Debates</h3>
+<div class = "topic-link-width topic-heading" > Topic </div>
+<div class = "topic-starter-width topic-heading" > Winner </div>
+<div class = "topic-argument-width topic-heading" style="height: 30px;"> Judge Comments </div>	
+	<div id="recent-debates" class="containercontent">
+		<% if followdebates.nil? %>
+				<br />No Debates to Follow!
+		<% else %>	
+			<% followdebates.each do |debate| %>					
+				<div class="debate_link" data-id="<%= debate.id %>"> 
+					<li> 
+						<div class = "topic-link-width" title = "<%= debate.tp.topic %>">
+							<span class = "debate-link-topic">
+							<%= link_to debate.tp.topic, debate %> </span>
+						</div> 
+						<div class = "topic-starter-width">
+							<% winner = Debater.find_by_id(debate.winner_id) %>
+							<% if !winner.nil? %>
+								<% if winner.last_sign_in_at %>
+									<%= link_to winner.name, winner %>
+								<% else %>
+									<%= winner.mini_name %>
+								<% end %>
+							<% else %>
+								&nbsp
+							<% end %>
+						</div>
+						<div class = "topic-argument-width">
+							<% if !debate.judge_entry.nil? %>
+								<% if !debate.judge_entry.comments.nil? %>
+									<% judge_comments = debate.judge_entry.comments %>
+									- <%= link_to "\"#{judge_comments[0..14]}\"", debate, :title => "\"#{judge_comments}\"" %>
+								<% else %>
+									&nbsp
+								<% end %>
+							<% else %>
+								&nbsp
+							<% end %>
+						</div> 
+					</li>
+				</div>
+			<% end %>
+			<div class="list_pagination">
+				<%= will_paginate followdebates, :param_name => :following_page %>
+			</div>
+		<% end %>
+	</div>
