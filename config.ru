@@ -5,7 +5,7 @@
 
 #Added to work with Heroku (2/25/12)
 
-require "config/environment"
+require "../config/environment"
 
 use Rails::Rack::LogTailer
 use Rails::Rack::Static
