@@ -14,7 +14,7 @@
 	
 	 <a href="<%= teammates_debater_path(@debater) %>">
 		<span id="Teammates" class = "stat">
-			<%= @debater.teammates.count %> teammates
+			<%= pluralize(@debater.teammates.count, "teammate") %>
 		</span>
 	</a>
 	
@@ -31,9 +31,9 @@
 						<%= @debater.is_blocking.count %>
 					<span>
 				</a><br />
-				<span id="Borrow_Blocks">
-					<%= render 'block_borrow' %>
-				</span>
+				<!-- ><span id="Borrow_Blocks">
+					<%# render 'block_borrow' %>
+				</span> -->
 			</div>
 		<% end %>
 	<% end %>

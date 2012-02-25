@@ -1,4 +1,4 @@
-<span class="page-title"><h1><%= @debater.name %></h1></span>
+<span class="page-title" style="float:left;"><h1>Debunker: <%= @debater.name %></h1></span>
 
 <div class = "profile">
 	<div class = "sidebar round">
@@ -12,11 +12,23 @@
 
 <div class = "profile_container">
 	<h2><%= @title %></h2>
+	<div class = "network_heading"> Debunker </div>
+	<div class = "network_heading"> Joined </div>
+	<br />
+	
+	
 	<% unless @debaters.empty? %>
-		<ul class="debaters">
-			<%= render @debaters %>
-		</ul>		
-		<%= will_paginate @debaters %>
+		<% @debaters.each do |debater| %>
+			<div class = "network_list">
+				<%= link_to debater.name, debater %>
+			</div>
+			<div class = "network_list">
+				<%= debater.created_at.strftime("%b. %d, %Y") %>
+			</div>
+			<div style="clear:both;"></div>
+		<% end %>
+		<div class="list_pagination">
+			<%= will_paginate @debaters %>
+		</div>
 	<% end %>
-
 </div>

@@ -122,21 +122,21 @@ class DebatersController < ApplicationController
   def following
     @title = "Following"
     @debater = Debater.find(params[:id])
-    @debaters = @debater.following.paginate(:page => params[:page])
+    @debaters = @debater.following.paginate(:page => params[:page], :per_page => 15)
     render 'show_network'
   end
   
   def followers
     @title = "Followers"
     @debater = Debater.find(params[:id])
-    @debaters = @debater.followers.paginate(:page => params[:page])
+    @debaters = @debater.followers.paginate(:page => params[:page], :per_page => 15)
     render 'show_network'
   end
   
   def is_blocking
     @title = "Blocking"
     @debater = Debater.find(params[:id])
-    @debaters = @debater.is_blocking.paginate(:page => params[:page])
+    @debaters = @debater.is_blocking.paginate(:page => params[:page], :per_page => 15)
     render 'show_network'
   end
   
@@ -144,7 +144,7 @@ class DebatersController < ApplicationController
     @title = "Teammates"
     @debater = Debater.find(params[:id])
     @debaters = Debater.teammates(@debater)
-    @debaters = @debaters.paginate(:page => params[:page])
+    @debaters = @debaters.paginate(:page => params[:page], :per_page => 15)
     render 'show_network'
   end
   
