@@ -15,6 +15,6 @@ class Relationship < ActiveRecord::Base
     
     def self.teammates_with(debater)
       follower_ids = %(SELECT follower_id FROM relationships WHERE followed_id = :debater_id)
-      where("followed_id IN (#{follower_ids})", {:debater_id => debater})
+      where("follower_id = :debater_id AND followed_id IN (#{follower_ids})", {:debater_id => debater})
     end
 end
