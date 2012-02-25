@@ -5,7 +5,7 @@
 
 #Added to work with Heroku (2/25/12)
 
-require "../config/environment"
+require ::File.expand_path('../config/environment',  __FILE__)
 
 use Rails::Rack::LogTailer
 use Rails::Rack::Static
