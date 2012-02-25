@@ -104,14 +104,17 @@ class DebatersController < ApplicationController
   
   def index
     @title = "All Debaters"
-    debaters = Debater.where("current_sign_in_at > ?", 0)
+    debaters = Debater.where("current_sign_in_at > ?", "01/01/01")
     @debaterranks = Array.new
-    debaters.each do |debater|
-      rank = debater.rank
-      @debaterranks << {:debater => debater, :rank => rank, :joined => debater.created_at}
+    
+    if !debaters.empty?
+      debaters.each do |debater|
+        rank = debater.rank
+        @debaterranks << {:debater => debater, :rank => rank, :joined => debater.created_at}
+      end
+      @debaterranks.sort!{|a,b| b[:rank] <=> a[:rank]}
+      @debaterranks = @debaterranks.paginate(:page => params[:page], :per_page => 15)
     end
-    @debaterranks.sort!{|a,b| b[:rank] <=> a[:rank]}
-    @debaterranks = @debaterranks.paginate(:page => params[:page], :per_page => 15)
     
     respond_to do |format|
         format.html 
