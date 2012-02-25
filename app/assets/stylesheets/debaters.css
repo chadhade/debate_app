@@ -58,7 +58,6 @@ ul.debaters {
 }
 
 .network_list a {
-	clear: both;
 	float: left;
 	width: 47%;
 	font-size: 15px; 
