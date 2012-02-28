@@ -18,16 +18,16 @@
 					<% if starter.last_sign_in_at %>
 						<%= link_to starter.name, starter %>
 					<% else %>
-						<%= starter %>
+						<%= starter.name %>
 					<% end %>
 				</div>
 				<div class = "topic-starter-width" style="min-width:19%;max-width:19%">
 					<% joiner = Debater.find_by_id(debate.joiner_id) %>
-					<% starter.nil? ? starter = Debater.find_by_id(1) : nil %> <%# Remove This %>
-					<% if starter.last_sign_in_at %>
-						<%= link_to starter.name, starter %>
+					<% joiner.nil? ? joiner = Debater.find_by_id(1) : nil %> <%# Remove This %>
+					<% if joiner.last_sign_in_at %>
+						<%= link_to joiner.name, joiner %>
 					<% else %>
-						<%= starter %>
+						<%= joiner.name %>
 					<% end %>
 				</div>
 				<div class = "topic-created-width">
@@ -36,6 +36,4 @@
 			</li>
 		</div>
 	<% end %>
-	<div class="list_pagination">
-		<%= will_paginate joined_no_judge %>
-	</div>
+	

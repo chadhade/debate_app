@@ -119,7 +119,11 @@
 	<div class = "topic-argument-width topic-heading" style="min-width:32%;max-width:37%" > Joined At </div>
 	<div class="containercontent" style = "max-height:600px;">
 		<%= render :partial => "debate_link_joined", :locals => {:joined_no_judge => @joined_no_judge} %>
+	</div>	
+	<div class="list_pagination">
+		<%= will_paginate @joined_no_judge %>
 	</div>
+	
 </div>
 <!-- to put unjoined debates back in, do the exact same thing as above but for unjoined debates -->
 <%= javascript_include_tag "jquery_tips" %>
