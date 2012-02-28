@@ -112,7 +112,7 @@ class DebatesController < ApplicationController
 	  Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debate.status[:status_value]}})
 	  
 	  # update judgings index
-    debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate, :joined_no_judge => Debate.judging_priority(1)}, :layout => false)	  
+    debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate, :joined_no_judge => Debate.judging_priority(1).paginate(:page => params[:page], :per_page => 10)}, :layout => false)	  
 	  Juggernaut.publish("judging_index", {:function => "append_to_joined", :debate_id => @debate.id, :object => debate_link_joined}) if !@debate.judge
 	  reset_invocation_response # allow double rendering
 	  
