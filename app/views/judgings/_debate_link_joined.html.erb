@@ -1,10 +1,4 @@
-<h2>Debates</h2>
-<div class = "topic-link-width topic-heading" style="min-width: 25%;max-width:25%;"> Topic </div>
-<div class = "topic-starter-width topic-heading" style="min-width:19%;max-width:19%" > Creator </div>
-<div class = "topic-starter-width topic-heading" style="min-width: 19%;max-width:19%" > Joiner </div>
-<div class = "topic-argument-width topic-heading" style="min-width:32%;max-width:37%" > Joined At </div>
-<div class="containercontent" style = "max-height:600px;">
-	<% joined_no_judge.each do |debate| %>
+<% joined_no_judge.each do |debate| %>
 		<div class="debate_link" data-id="<%= debate.id %>"> 
 			<li> 
 				<div class = "topic-link-width" style="min-width: 25%;max-width:25%;" title = "<%= debate.tp.topic %>">
@@ -45,4 +39,3 @@
 	<div class="list_pagination">
 		<%= will_paginate joined_no_judge %>
 	</div>
-</div>
