@@ -114,3 +114,20 @@ $(".topic_vote").qtip({
 	hide: { when: { event: 'unfocus' }, delay: 200 }
 });
 
+$("#judge_inactive").qtip({
+	content: 'Cannot Judge while waiting for an existing debate.',
+	position: {
+     	corner: {
+    		target: 'bottomRight',
+    		tooltip: 'topMiddle'
+      }
+   	},
+	style: { 
+	 	name: 'blue',
+		color: 'red',
+		'font-size': 13,
+		width: 180,
+		tip: 'topMiddle'
+	},
+	show: { delay: 200 }
+});

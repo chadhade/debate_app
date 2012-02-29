@@ -4,6 +4,7 @@
   	<title>DeBunky</title>
 	<%= stylesheet_link_tag "application" %>
   	<%= javascript_include_tag "application" %>
+	<%= javascript_include_tag "jquery.qtip" %>
   	<%= csrf_meta_tags %>
 		
 </head>
@@ -12,7 +13,12 @@
 	    <div class="nav">
 			<div id="general-links">
 				<%= link_to 'Debate', topic_positions_path %>
-				<%= link_to 'Judge', judgings_path %>
+				<% if current_or_guest_debater.waiting_for == nil %>
+					<%= link_to 'Judge', judgings_path %>
+				<% else %>
+					<span id ="judge_inactive">Judge</span>
+					<%= javascript_include_tag "jquery_tips" %>
+				<% end %>
 				<%= link_to 'View', debates_path %>
 				<%= link_to 'Rankings', debaters_path %>				
 				<!-- <%= link_to 'Blog', 'http://debunky.tumblr.com' %> -->
