@@ -21,9 +21,9 @@ class ViewingsController < ApplicationController
         #   reset_invocation_response # allow double rendering
         # end
     	  #update currently viewing status if creator, joiner or judge
-    	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "false"}}) if @currentdebater.creator?(@debate)
-      	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "false"}}) if @currentdebater.joiner?(@debate)
-      	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "false"}}) if @currentdebater.judge?(@debate)
+    	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "false", :who_message => "#{@currentdebater.mini_name} has left."}}) if @currentdebater.creator?(@debate)
+      	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "false", :who_message => "#{@currentdebater.mini_name} has left."}}) if @currentdebater.joiner?(@debate)
+      	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "false", :who_message => "Judge has left the debate page.\n"}}) if @currentdebater.judge?(@debate)
       	#update judgings index if either the creator or joiner is leaving
       	Juggernaut.publish("judging_index", {:function => "hide_joined", :debate_id => @debate.id}) if @debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)
     	end

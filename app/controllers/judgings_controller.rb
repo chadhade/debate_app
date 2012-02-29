@@ -27,6 +27,8 @@ class JudgingsController < ApplicationController
     	  current_or_guest_debater.update_attributes(:waiting_for => nil)
     	end
     	
+    	@debatestatus = @debate.status
+    	
       # If judge joined after both debaters joined, add time spent waiting for judge back to debater 1's time bank
       # Then start timers
       if @debate.arguments.count == 2
@@ -43,11 +45,11 @@ class JudgingsController < ApplicationController
       # remove debate from judging index page
       Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
       # update status bar on show page
-      Juggernaut.publish("debate_" + params[:debate_id], {:func => "update_status", :obj => @debate.status})
+      Juggernaut.publish("debate_" + params[:debate_id], {:func => "update_status", :obj => @debatestatus})
       # update individual status
       Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "judge", :who_value => "Judge"}})
       # Publish to waiting channel
-      Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debate.status[:status_value]}})
+      Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debatestatus[:status_value], :status_code => @debatestatus[:status_code]}})
       
       redirect_to @debate
     else

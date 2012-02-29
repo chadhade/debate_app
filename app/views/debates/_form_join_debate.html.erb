@@ -1,12 +1,15 @@
 <div class = "join_to_debate <%= hidden %>", data-id="<%= debate.id %>">
 	<%= form_for Argument.new, :url => join_debate_path(debate.id), :html => {:name => 'postdebateform', :before => "return checkEmpty('postdebateform', 'argument[content]'); ", :id => "argument_respond"}, :remote => true do |f| %>
 		<div class = "field">
-			<!-- <%= f.label :content %> <br /> -->
-			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000); checkEmpty2(this, '#respond_button')", :id => "respond_textarea" %><br />
+			<% if !current_or_guest_debater.waiting_for %>
+				<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000); checkEmpty2(this, '#respond_button')", :id => "respond_textarea" %><br />
+			<% else %>
+				<%= f.text_area :content, :size => "36x5", :id => "respond_textarea", :disabled => "disabled", :value => "You cannot join a new debate while waiting for an existing debate to begin." %><br />
+			<% end %>
 		</div>
 	    <%= f.hidden_field :debate_id, :value => debate.id %>
 		<div class = "action">
-			<%= f.submit "Respond", :disable_with => 'Responding...', :disabled => true, :id => 'respond_button' %>
+			<%= f.submit "Respond to Join", :disable_with => 'Responding...', :disabled => true, :id => 'respond_button' %>
 		</div>	
 	<% end %>
 </div>

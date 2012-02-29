@@ -1,10 +1,19 @@
 window.onbeforeunload = OnBeforeUnLoad;
 function OnBeforeUnLoad () {
 	
-	if(debater_waiting != true) { 
-		$.getScript(window.location.pathname + "/leaving.js");
+	if(debater_waiting != true && debater_participant == true) { 
+		//$.getScript(window.location.pathname + "/leaving.js");
+		path_url = window.location.pathname + "/leaving.js"
+		$.ajax({
+		  url: path_url,
+		  async: false,
+		  dataType: "script",
+		});
+		$(".debate[data-id="+ debate_id +"]").append('<br>');
+		$(".debate[data-id="+ debate_id +"]").append("<div class='debate-message'> Refresh page to rejoin debate. </div>");
 	}
 	//return "DeBunky says ALWAYS CLICK LEAVE PAGE!";
+	
 	return;  
 
 }

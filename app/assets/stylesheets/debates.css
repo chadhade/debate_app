@@ -292,6 +292,11 @@ h2[status_code="3"] {
 	margin-top: 15px;
 }
 
+.debate-message {
+	clear: both;
+	text-align: left;
+	font-size: 13px;
+}
 .viewing_count {
 	float: right;
 	text-align: center;

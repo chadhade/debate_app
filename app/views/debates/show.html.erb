@@ -15,9 +15,11 @@
 <%= render :partial => "/shared/init_juggernaut" %>
 
 <script>
-	voteable[<%= @debate.id %>] = <%= @voteable == true %>;
-	// Exit tracking will catch a departing debater, unless "debater_waiting" becomes true by clicking the waiting icon
-	debater_waiting = false; 
+	voteable[<%= @debate.id %>] = <%= @voteable == true && !@guest %>;
+	// Exit tracking will catch a departing (participating) debater, unless "debater_waiting" becomes true by clicking the waiting icon
+	debater_waiting = false;
+	debater_participant = <%= @participant %>;
+	debate_id = <%= @debate.id %>; 
 </script>
 
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>

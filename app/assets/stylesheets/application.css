@@ -44,7 +44,7 @@ body {
 	padding: 0 5px;
 	
 	mmargin-top: -30px;
-	mmargin-right: 20px;
+	margin-right: 15px;
 	font-size: 15px;
 	background-color: #f4f4f4;
 	
@@ -56,6 +56,8 @@ body {
 .waiting_box h3 {
 	margin-top: 0px;
 	padding: 0 3px;
+	color: #FFFFFF;
+	background-color: #333333;
 	
 	-webkit-box-shadow:0 0 10px #000;  
 	-moz-box-shadow: 0 0 10px #000;

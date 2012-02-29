@@ -71,6 +71,8 @@
 			if (data.obj.who_code == "judge") {
 				$("#judge").attr('currently_viewing', data.obj.who_value);
 			}
+			$(".debate[data-id="+ <%= debate.id %> +"]").append("<div class='debate-message'>" + data.obj.who_message + "</div>");
+			//$(".debate[data-id="+ <%= debate.id %> +"]").append('<br>');
 		}
 		
 		if (data.func == "chat") {

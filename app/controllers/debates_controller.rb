@@ -8,7 +8,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 120.seconds
+  $debatetime = 90.seconds
   
   #before_filter :authenticate_debater!
   #skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -20,6 +20,11 @@ class DebatesController < ApplicationController
   end
   
   def create
+  	
+  	# if debater was currently waiting for another debate, he is not allowed to create a new debate
+  	if current_or_guest_debater.waiting_for
+  	  return
+  	end
   	
   	# create a new debate linked to debater
   	@debate = Debate.new(:joined => false, :judge => false, :creator_id => current_or_guest_debater.id)
@@ -56,6 +61,11 @@ class DebatesController < ApplicationController
   
   def join
     
+    # if debater was currently waiting for another debate, he is not allowed to join
+  	if current_or_guest_debater.waiting_for
+  	  return
+  	end
+  	
     @debate = Debate.find(params[:id])
   	# link debater to debate
   	current_or_guest_debater.debations.create(:debate_id => params[:id])
@@ -63,11 +73,6 @@ class DebatesController < ApplicationController
 	
   	#The amount of time Debater 2 has left.  
   	@Seconds_Left_2 = $debatetime
-  	
-  	# if debater was currently waiting for another debate, he now stops waiting
-  	if current_or_guest_debater.waiting_for
-  	  current_or_guest_debater.update_attributes(:waiting_for => nil)
-  	end
   	
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
@@ -89,8 +94,10 @@ class DebatesController < ApplicationController
 	  #Info for timers
 	  @movingclock = @debate.arguments.first(:order => "created_at ASC").time_left.to_i * 60
 	  
+	  @debatestatus = @debate.status
+	  
 	  # publish to appropriate channels
-	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id, :currentid => @currentid, :status => @debate.status}, :layout => false)
+	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id, :currentid => @currentid, :status => @debatestatus}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
 	  waiting_icon_render = render(:partial => "debates/waiting", :locals => {:debate => @debate}, :layout => false)
@@ -109,7 +116,7 @@ class DebatesController < ApplicationController
 	  reset_invocation_response # allow double rendering
 	  
 	  Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
-	  Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debate.status[:status_value]}})
+	  Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debatestatus[:status_value], :status_code => @debatestatus[:status_code]}})
 	  
 	  # update judgings index
     debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate, :joined_no_judge => Array(Debate.judging_priority(30).last)}, :layout => false)	  
@@ -117,11 +124,11 @@ class DebatesController < ApplicationController
 	  reset_invocation_response # allow double rendering
 	  
 	  # update status bar on show page
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debatestatus})
     
     # update individ status
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "debater2", :who_value => "Debater2"}})
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true"}})
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true", :who_message =>"A Debunker has joined this debate."}})
 	  
 	  respond_to do |format|
   	  format.html
@@ -142,6 +149,7 @@ end
   	@argument_last = @arguments.last(:order => "created_at ASC")
   	@previoustimeleft = @argument_last.time_left
   	@currentdebater = current_or_guest_debater
+  	@guest = !debater_signed_in?
   	@debaters = @debate.debaters
 	
   	#debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
@@ -150,6 +158,9 @@ end
   	# for viewings
   	if @debate.participant?(@currentdebater)
   	  update_viewings(@currentdebater, @debate)
+  	  @participant = true
+  	else
+  	  @particpant = false
   	end
   	
   	if !@currentdebater.nil?
@@ -161,9 +172,9 @@ end
   	# set status
   	@status = @debate.status	  
     unless @currentdebater.nil?
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true"}}) if @currentdebater.creator?(@debate)
-    	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true"}}) if @currentdebater.joiner?(@debate)
-    	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true"}}) if @currentdebater.judge?(@debate)
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @currentdebater.creator?(@debate)
+    	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @currentdebater.joiner?(@debate)
+    	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true", :who_message => "Judge has arrived."}}) if @currentdebater.judge?(@debate)
   	end
   	
   	#toggle waiting_for attribute if debater returns to that debate
