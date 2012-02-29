@@ -8,7 +8,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 90.seconds
+  $debatetime = 10.seconds
   
   #before_filter :authenticate_debater!
   #skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -79,7 +79,7 @@ class DebatesController < ApplicationController
   	@argument = current_or_guest_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
 	
   	# update joined columns of debates
-  	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at, :joiner_id => current_or_guest_debater.id)
+  	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at, :joiner_id => @currentid)
   	
   	# update joiner column of viewings
   	update_viewings(current_or_guest_debater, @debate)
@@ -112,7 +112,7 @@ class DebatesController < ApplicationController
 	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
 	  
 	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => "/debaters/" + current_or_guest_debater.id.to_s, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
-	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => joinerpath, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
+	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => joinerpath, :joinerid => @currentid, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  reset_invocation_response # allow double rendering
 	  
 	  Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
@@ -145,6 +145,7 @@ end
   def show
     # pull all arguments from that debate and pass debate object
   	@debate = Debate.find(params[:id])
+  	@debateid = @debate.id
   	@arguments = @debate.arguments
   	@argument_last = @arguments.last(:order => "created_at ASC")
   	@previoustimeleft = @argument_last.time_left
@@ -160,21 +161,21 @@ end
   	  update_viewings(@currentdebater, @debate)
   	  @participant = true
   	else
-  	  @particpant = false
+  	  @participant = false
   	end
   	
   	if !@currentdebater.nil?
     	if @currentdebater.creator?(@debate) and !@debate.joined?
-    	  Juggernaut.publish("matches", {:func => "unhide", :obj => @debate.id})
+    	  Juggernaut.publish("matches", {:func => "unhide", :obj => @debateid})
   	  end
 	  end
   	
   	# set status
   	@status = @debate.status	  
     unless @currentdebater.nil?
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @currentdebater.creator?(@debate)
-    	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @currentdebater.joiner?(@debate)
-    	Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true", :who_message => "Judge has arrived."}}) if @currentdebater.judge?(@debate)
+      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @currentdebater.creator?(@debate)
+    	Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @currentdebater.joiner?(@debate)
+    	Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true", :who_message => "Judge has arrived."}}) if @currentdebater.judge?(@debate)
   	end
   	
   	#toggle waiting_for attribute if debater returns to that debate
@@ -183,7 +184,7 @@ end
   	end
   	
   	#toggle judgings index if applicable
-  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debate.id}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing("creator") and @debate.currently_viewing("joiner")
+  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing("creator") and @debate.currently_viewing("joiner")
 	  
   	# Add footnotes, if any exist
   	@arguments.each do |argument|
@@ -318,18 +319,19 @@ end
   
   def end
     @debate = Debate.find(params[:id])
+    @debateid = @debate.id
     
     @debate.update_attributes(:end_time => Time.now)
     
     judgetime_div = render :partial => "/judgings/judging_timer"
     reset_invocation_response # allow double rendering    
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_timer", :obj => {:judgetime_div => judgetime_div, :judgetime => $judgetime}})
+    Juggernaut.publish("debate_" + @debateid.to_s, {:func => "judge_timer", :obj => {:judgetime_div => judgetime_div, :judgetime => $judgetime}})
     judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
     reset_invocation_response # allow double rendering
-    Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})    
+    Juggernaut.publish("debate_" + @debateid.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})    
     
     # update status bar on show page
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+    Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
     
     respond_to do |format|
   	  format.html
@@ -339,31 +341,36 @@ end
 
   def end_single
     @debate = Debate.find(params[:id])
-    @debater_timeleft = params[:clock_position] == 1.to_s ? @debate.joiner : @debate.creator  # 1 = creator, 2 = joiner
-    @debate.update_attributes(:end_single_id => params[:clock_position] == 1.to_s ? @debate.creator.id : @debate.joiner.id)
     
-    @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
-    @debate = Debate.find(params[:id])
+    unless @debate.end_single_id != nil # Make sure this is only called once
+      
+      @debater_timeleft = params[:clock_position] == 1.to_s ? @debate.joiner : @debate.creator  # 1 = creator, 2 = joiner
+      @debate.update_attributes(:end_single_id => params[:clock_position] == 1.to_s ? @debate.creator.id : @debate.joiner.id)
     
-	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:current_turn => @debate.current_turn.email, :position => (params[:clock_position].to_i - 3).abs}})
+      @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
+      @debate = Debate.find(params[:id])
     
-    reset_invocation_response # allow double rendering
+  	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:current_turn => @debate.current_turn.email, :position => (params[:clock_position].to_i - 3).abs}})
     
-    respond_to do |format|
-  	  format.html
-  	  format.js {render :nothing => true}
-  	end
+      reset_invocation_response # allow double rendering
+    
+      respond_to do |format|
+    	  format.html
+    	  format.js {render :nothing => true}
+    	end
+    end
   end
   
   def end_judge
     @debate = Debate.find(params[:id])
+    @debateid = @debate.id
     
       unless @debate.judge_entry.winner_id
         # update status bar on show page
-        Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status})
+        Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
     
         # Provide all participants with ability to chat, if judge's submission did not do this already
-          Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {joiner_id => @debate.joiner.id}})
+          Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {joiner_id => @debate.joiner.id}})
       end
       
         respond_to do |format|

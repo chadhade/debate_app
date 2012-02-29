@@ -15,11 +15,13 @@
 <%= render :partial => "/shared/init_juggernaut" %>
 
 <script>
-	voteable[<%= @debate.id %>] = <%= @voteable == true && !@guest %>;
+	voteable[<%= @debateid %>] = <%= @voteable == true && !@guest %>;
+	joiner = new Array();
+	joiner[<%= @debateid %>] = 0;
 	// Exit tracking will catch a departing (participating) debater, unless "debater_waiting" becomes true by clicking the waiting icon
 	debater_waiting = false;
 	debater_participant = <%= @participant %>;
-	debate_id = <%= @debate.id %>; 
+	debate_id = <%= @debateid %>; 
 </script>
 
 <%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
@@ -27,43 +29,42 @@
 <script>
 	function debateEnd() {
 		var debate_id = $(".debate").attr("data-id");
-		<% if @debate.creator == @currentdebater %>
-			$.ajax({
-		      type: "POST",
-		      url: "/debates/" + debate_id + "/end.js",
-		      success: function(){
-		        // alert("debate ended");
-		      }
-			});
+		url = "/debates/" + debate_id + "/end.js";
+		
+		<% if @debate.creator == @currentdebater %>	
+			endAjax(url);
 		<% end %>
 	}
 	
 	function endSingle(clock_position) {
 		var debate_id = $(".debate").attr("data-id");
+		url = "/debates/" + debate_id + "/end_single.js?clock_position=" + clock_position
 		<% if @debate.creator == @currentdebater %>
-			$.ajax({
-		      type: "POST",
-		      url: "/debates/" + debate_id + "/end_single.js?clock_position=" + clock_position,
-			  success: function(){
-		         //alert("First timer ended");
-		      }
-		    });
+			endAjax(url);
 		<% end %>
+		if((<%= @debate.joiner == @currentdebater %>) || (joiner[<%= @debateid %>] == <%= @currentdebater.id %>)) {
+			setTimeout("endAjax(url)", 1000);
+		}
 	}
 	
 	function endJudge() {
 		var debate_id = $(".debate").attr("data-id");
 		$('#judge-timer').remove();
 		$('.judging_form').remove();
+		url = "/debates/" + debate_id + "/end_judge.js"
 		<% if @debate.creator == @currentdebater %>
-			$.ajax({
-		      type: "POST",
-		      url: "/debates/" + debate_id + "/end_judge.js",
-			  success: function(){
-		         //alert("Judge timer ended");
-		      }
-		    });
+			endAjax(url);
 		<% end %>
+	}
+	
+	function endAjax(post_url) {
+		$.ajax({
+	      type: "POST",
+	      url: post_url,
+		  success: function(){
+	         //alert("Judge timer ended");
+	      }
+	    });
 	}
 </script>
 
@@ -73,7 +74,7 @@
 
 <div class="topic_position_container">
 	"<%= "#{@debate.tp.topic}" %>"
-	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
+	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debateid} %>
 </div>
 <%= debater_signed_in? ? nil : "<br /> <br />".html_safe %>
 
@@ -82,7 +83,7 @@
 		<div class="debatecontainer">
 			<div class="containerpanel">
 				<h2>
-				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debate.id, :debater1name => @debater1name, :debater2name => @debater2name, :debaters => @debaters, :judge => @debate.judge} %>
+				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debateid, :debater1name => @debater1name, :debater2name => @debater2name, :debaters => @debaters, :judge => @debate.judge} %>
 				<%# render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 				</h2>
 			</div>
@@ -92,9 +93,9 @@
 	</div>
 
 <script>
-	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debate.id %>);
+	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debateid %>);
 	<% if @debaters.count <= 1 %>
-		abort_timer[<%= @debate.id %>] = 1;
+		abort_timer[<%= @debateid %>] = 1;
 	<% end %>
 </script>
 
@@ -106,8 +107,8 @@
 		<% if @status[:status_code] == 4 %>
 			<%= render :partial => "/judgings/judging_timer" %>
 			<script> 
-				abort_timer[<%= @debate.id %>] = 1;
-				javascript_countdown.init(<%= $judgetime - (Time.now - @debate.end_time).seconds.to_i %>, 0, 3, <%= @debate.id %> ); 
+				abort_timer[<%= @debateid %>] = 1;
+				javascript_countdown.init(<%= $judgetime - (Time.now - @debate.end_time).seconds.to_i %>, 0, 3, <%= @debateid %> ); 
 			</script>
 		<% end %>
 		
@@ -135,10 +136,10 @@
 		<% if @status[:status_code] == 5 %>
 			<% if @debate.participant?(current_or_guest_debater) %>
 				<% if @currentdebater.id == @judging.winner_id and @judging.winner_approve.nil? %>
-					<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debate.id} %>
+					<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debateid} %>
 				<% end %>
 				<% if @currentdebater.id == @judging.loser_id and @judging.loser_approve.nil? %>
-					<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debate.id} %>
+					<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debateid} %>
 				<% end %>
 			<% end %>
 		<% end %>
@@ -158,13 +159,15 @@
 <script>
 // This function assures that the javascript runs only once the whole page is loaded
 	$(document).ready(function() {
-		
+		<% if @status[:status_code] >= 3 %>
+			abort_timer[<%= @debateid %>] = 0;
+		<% end %>
 		setTimeout("javascript_countdown.startTimers()", 500); 
 	});
 </script>
 
 <script>
-      debate_id = <%= @debate.id %>
+      debate_id = <%= @debateid %>
 </script>
 
 <%= javascript_include_tag "jquery_tips" %>

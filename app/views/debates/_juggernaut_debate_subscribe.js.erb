@@ -39,6 +39,7 @@
 					moving_clock_adjusted = 10;
 				}
 				javascript_countdown.init(moving_clock_adjusted, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
+				abort_timer[<%= debate.id %>] = 0;
 			}
 		}
 	
@@ -92,7 +93,8 @@
 			<% else %>
 				$('#statuspanel').append(data.obj.judgetime_div[0]);
 			<% end %>			
-			javascript_countdown.init(data.obj.judgetime, 0, 3, <%= debate.id %> );	
+			javascript_countdown.init(data.obj.judgetime, 0, 3, <%= debate.id %> );
+			abort_timer[<%= debate.id %>] = 0;	
 			$(".post_to_debate").hide();
 		}
 		
@@ -141,6 +143,7 @@
 			//abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
 			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
 			voteable[<%= debate.id %>] = true;
+			abort_timer[<%= debate.id %>] = 0;
 			
 			<% if !current_or_guest_debater.nil? %>
 				if ("<%= current_or_guest_debater.email %>" == data.obj.current_turn) {
@@ -156,6 +159,7 @@
 			moving_clock[data.obj.timers.debateid] = data.obj.timers.staticclock;
 			$("#timer2-<%= debate.id %>").html(format_output(data.obj.timers.staticclock));
 			voteable[<%= debate.id %>] = false;
+			joiner[<%= debate.id %>] = data.obj.joinerid;
 			
 			<% if Rails.env.development? or Rails.env.test? %>      	
 				$(".waiting-icon").html(data.obj.waiting_icon);
@@ -183,7 +187,8 @@
 				if(moving_clock_adjusted <= 2) {
 					moving_clock_adjusted = 2;
 				}
-				javascript_countdown.init(moving_clock_adjusted, 0, data.obj.position, <%= debate.id %>);	
+				javascript_countdown.init(moving_clock_adjusted, 0, data.obj.position, <%= debate.id %>);
+				abort_timer[<%= debate.id %>] = 0;	
 			}
 		}
 		
