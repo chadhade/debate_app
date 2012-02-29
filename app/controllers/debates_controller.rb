@@ -334,11 +334,12 @@ end
       # update status bar on show page
       Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
     
-      respond_to do |format|
-    	  format.html
-    	  format.js {render :nothing => true}
-    	end
     end
+    
+    respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
   end
 
   def end_single
@@ -355,12 +356,12 @@ end
   	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:current_turn => @debate.current_turn.email, :position => (params[:clock_position].to_i - 3).abs}})
     
       reset_invocation_response # allow double rendering
-    
-      respond_to do |format|
-    	  format.html
-    	  format.js {render :nothing => true}
-    	end
     end
+    
+    respond_to do |format|
+  	  format.html
+  	  format.js {render :nothing => true}
+  	end
   end
   
   def end_judge
@@ -372,7 +373,7 @@ end
         Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
     
         # Provide all participants with ability to chat, if judge's submission did not do this already
-          Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {joiner_id => @debate.joiner.id}})
+          Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner.id}})
       end
       
         respond_to do |format|

@@ -55,7 +55,7 @@
 		$('#judge-timer').remove();
 		$('.judging_form').remove();
 		url = "/debates/" + debate_id + "/end_judge.js"
-		<% if @debate.creator == @currentdebater %>
+		<% if @debate.creator == @currentdebater or @debate.judge_id == @currentdebater.id %>
 			endAjax(url);
 		<% end %>
 	}
@@ -65,7 +65,7 @@
 	      type: "POST",
 	      url: post_url,
 		  success: function(){
-	         //alert("Judge timer ended");
+	         
 	      }
 	    });
 	}
