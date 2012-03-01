@@ -125,8 +125,20 @@ class DebatersController < ApplicationController
   def following
     @title = "Following"
     @debater = Debater.find(params[:id])
-    @debaters = @debater.following.paginate(:page => params[:page], :per_page => 15)
-    render 'show_network'
+    @debaters = @debater.following
+    
+    if current_or_guest_debater == @debater
+      teammates = Debater.teammates(@debater)
+      nonteammates = @debaters - teammates
+      teammates.each do |mate|
+        mate.sign_in_count = -1 #Unique way to identify teammates
+      end
+      @debaters = (teammates + nonteammates).paginate(:page => params[:page], :per_page => 15)
+      render 'show_network_team'
+    else
+      @debaters = @debaters.paginate(:page => params[:page], :per_page => 15)
+      render 'show_network'
+    end
   end
   
   def followers
@@ -146,9 +158,19 @@ class DebatersController < ApplicationController
   def teammates
     @title = "Teammates"
     @debater = Debater.find(params[:id])
-    @debaters = Debater.teammates(@debater)
-    @debaters = @debaters.paginate(:page => params[:page], :per_page => 15)
-    render 'show_network'
+    debaters = Debater.teammates(@debater)
+    
+    if current_or_guest_debater == @debater
+      debaters.each do |mate|
+        mate.sign_in_count = -1 #Unique way to identify teammates
+      end
+      test = Array.new #Subtracting this array converts the result to an array
+      @debaters = (debaters - test).paginate(:page => params[:page], :per_page => 15)
+      render 'show_network_team'
+    else
+      @debaters = debaters.paginate(:page => params[:page], :per_page => 15)
+      render 'show_network'
+    end
   end
   
 end

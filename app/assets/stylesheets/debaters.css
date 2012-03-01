@@ -36,6 +36,11 @@ ul.debaters {
     box-shadow:0 5px 10px #000;
 }
 
+.bigger_profile {
+	width: 450px;
+	margin-left: 175px;
+}
+
 .profile_container h2 {
 	-webkit-box-shadow:0 0 10px #000;  
 	-moz-box-shadow: 0 0 10px #000;
@@ -67,13 +72,19 @@ ul.debaters {
 	margin-top: 2px;
 }
 
-.network_list {
+.network_list, .network_team {
 	float: left;
 	width: 47%;
 	font-size: 13px; 
 	text-align: center;
 	font-weight: bold;
 	margin-top: 2px;
+}
+
+.network_team a {
+	font-size: 12px; 
+	font-weight: bold;
+	margin-left: 3px;
 }
 
 .profile_box {

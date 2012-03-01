@@ -1,0 +1,42 @@
+<span class="page-title" style="float:left;"><h1>Debunker: <%= @debater.name %></h1></span>
+
+<div class = "profile">
+	<div class = "sidebar round">
+		<%= render 'stats' %>
+		<% if signed_in? %>
+			<%= render 'follow_form' %>
+			<%= render 'block_form' %>
+		<% end %>
+	</div>
+</div>
+
+<div class = "profile_container bigger_profile">
+	<h2><%= @title %></h2>
+	<div class = "network_heading" style="width:32%;"> Debunker </div>
+	<div class = "network_heading" style="width:32%;"> Joined </div>
+	<div class = "network_heading" style="width:32%;"> Team </div>
+	<br />
+	
+	
+	<% unless @debaters.empty? %>
+		<% @debaters.each do |debater| %>
+			<div class = "network_list" style="width:32%;">
+				<%= link_to debater.name, debater %>
+			</div>
+			<div class = "network_list" style="width:32%;">
+				<%= debater.created_at.strftime("%b. %d, %Y") %>
+			</div>
+			<div class = "network_team" style="width:32%;">
+				<% if debater.sign_in_count == -1 %>
+					Teammate. <%= link_to "Remove.", :controller => "relationships", :action => "remove_teammate", :debater_id => debater.id, :page => @title %>
+				<% else %>
+					<%= link_to "Send teammate request.", :controller => "relationships", :action => "create_teammate", :debater_id => debater.id, :page => @title %>
+				<% end %>
+			</div>
+			<div style="clear:both;"></div>
+		<% end %>
+		<div class="list_pagination">
+			<%= will_paginate @debaters %>
+		</div>
+	<% end %>
+</div>

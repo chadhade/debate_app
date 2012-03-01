@@ -73,6 +73,8 @@ DebateApp::Application.routes.draw do
       post 'borrow'
     end
   end
+  get "relationships/create_teammate"
+  get "relationships/remove_teammate"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
