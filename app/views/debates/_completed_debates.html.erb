@@ -7,7 +7,7 @@
 	<% debates_completed.each do |debate| %>
 		<div class="debate_link" data-id="<%= debate.id %>"> 
 			<li> 
-				<div class = "topic-link-width">
+				<div class = "topic-link-width" title="<%= debate.tp.topic %>">
 					<span class = "debate-link-topic">
 					<%= link_to debate.tp.topic, debate %> </span>
 					<% if debate.tp.position == true %>
@@ -30,10 +30,10 @@
 						&nbsp
 					<% end %>
 				</div>
-				<div class = "topic-argument-width">
-					<% judge_comments = debate.judge_entry.comments %>
+				<% judge_comments = debate.judge_entry.comments %>
+				<div class = "topic-argument-width" title="<%= judge_comments %>">	
 					<% if !judge_comments.nil? %>
-						- <%= link_to "\"#{judge_comments[0..14]}\"", debate, :title => judge_comments %>
+						- <%= link_to "\"#{judge_comments[0..14]}\"", debate %>
 					<% else %>
 						&nbsp
 					<% end %>

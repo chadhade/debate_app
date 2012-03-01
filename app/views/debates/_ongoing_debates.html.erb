@@ -6,7 +6,7 @@
 	<% debates_ongoing.each do |debate| %>
 		<div class="debate_link" data-id="<%= debate.id %>"> 
 			<li> 
-				<div class = "topic-link-width">
+				<div class = "topic-link-width" title="<%= debate.tp.topic %>">
 					<span class = "debate-link-topic">
 					<%= link_to debate.tp.topic, debate %> </span>
 					<% if debate.tp.position == true %>

@@ -9,34 +9,7 @@
 		
 </head>
 <body>
-	<div id = "debater_nav">
-	    <div class="nav">
-			<div id="general-links">
-				<%= link_to 'Debate', topic_positions_path %>
-				<% if current_or_guest_debater.waiting_for == nil %>
-					<%= link_to 'Judge', judgings_path %>
-				<% else %>
-					<span id ="judge_inactive">Judge</span>
-					<%= javascript_include_tag "jquery_tips" %>
-				<% end %>
-				<%= link_to 'View', debates_path %>
-				<%= link_to 'Rankings', debaters_path %>				
-				<!-- <%= link_to 'Blog', 'http://debunky.tumblr.com' %> -->
-			</div>
-			<div id="user-info">
-				<% if debater_signed_in? %>
-					<span class="username"> <%= link_to current_debater.name, current_debater %> </span>
-					<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %>
-					<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
-			    <% else %>
-			        <%= link_to 'Login', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
-			    	<!-- <%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
-					<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %> | -->
-				<% end %>
-			</div>
-			<div id="center-links">Feedback: debunky@gmail.com </div>
-		</div>
-	</div>
+	<%= render :partial => "/layouts/navigation" %>
 	
 	<%= render :partial => "/layouts/instruction_boxes" %>
 	
@@ -76,6 +49,6 @@
 			//<%# end %>
 		});
 	</script>
-	
+	<%= javascript_include_tag "jquery_tips" %>
 </body>
 </html>
