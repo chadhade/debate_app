@@ -5,10 +5,10 @@
 	</div>
 	<div class="individual-status-bar">
 		<div id="debater1" class="individual-status" currently_viewing="<%= debate.currently_viewing("creator") ? "true" : "false" %>"> 
-			Debater1 
+			Debunker1 
 		</div>
 		<div id="debater2" class="individual-status" currently_viewing="<%= debate.currently_viewing("joiner") ? "true" : "false" %>"> 
-			<%= "Debater2" if debate.joined %> 
+			<%= "Debunker2" if debate.joined %> 
 		</div>
 		<div id="judge" class="individual-status" currently_viewing="<%= debate.currently_viewing("judge") ? "true" : "false" %>"> 
 			<%= "Judge" if debate.judge %>
