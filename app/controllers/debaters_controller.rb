@@ -61,10 +61,10 @@ class DebatersController < ApplicationController
             teamargument_ids =  teamargument_ids + deb.arguments.collect{|u| u.id}
           end
         else
-          @teamdebates = Array.new
+          @teamdebates = 0
           @teamjudgepoints = 0
           @teammates.each do |deb|
-            @teamdebates << deb.debates.where("end_time > ?", "01/01/01")
+            @teamdebates += deb.debates.where("end_time > ?", "01/01/01").count
             @teamjudgepoints += deb.judge_points
             teamargument_ids = teamargument_ids + deb.arguments.collect{|u| u.id}
           end
@@ -74,7 +74,7 @@ class DebatersController < ApplicationController
       
         @teamdebateswon = Judging.where("winner_id IN (?)", team_ids).count
         @teamdebateslost = Judging.where("loser_id IN (?)", team_ids).count
-        @teamdebatesnoresults = @teamdebates.count - (@teamdebateswon + @teamdebateslost)
+        @teamdebatesnoresults = @teamdebates - (@teamdebateswon + @teamdebateslost)
         @teamjudgings = Judging.where("debater_id IN (?) AND winner_id > ?", team_ids, 0).count
       
         @teampositivevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", teamargument_ids, "Argument", true).count
