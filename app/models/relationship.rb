@@ -15,7 +15,8 @@ class Relationship < ActiveRecord::Base
     
     def self.teammates_with(debater)
       #follower_ids = %(SELECT follower_id FROM relationships WHERE followed_id = :debater_id)
-      follower_ids = Relationship.where("followed_id = ? AND teammate = ?", debater.id.to_i, true).select("follower_id").map(&:follower_id)
+      follower_ids = Array.new
+      follower_ids << Relationship.where("followed_id = ? AND teammate = ?", debater.id.to_i, true).select("follower_id").map(&:follower_id)
       
       if !follower_ids.empty?
         where("follower_id = :debater_id AND teammate = :teammate_t AND followed_id IN (#{follower_ids})", {:debater_id => debater, :teammate_t => true})
