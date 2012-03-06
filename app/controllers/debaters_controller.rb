@@ -74,7 +74,7 @@ class DebatersController < ApplicationController
       
         @teamdebateswon = Judging.where("winner_id IN (?)", team_ids).count
         @teamdebateslost = Judging.where("loser_id IN (?)", team_ids).count
-        @teamdebatesnoresults = @teamdebates - (@teamdebateswon + @teamdebateslost)
+        @teamdebatesnoresults = @teamdebates.count - (@teamdebateswon + @teamdebateslost)
         @teamjudgings = Judging.where("debater_id IN (?) AND winner_id > ?", team_ids, 0).count
       
         @teampositivevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", teamargument_ids, "Argument", true).count
