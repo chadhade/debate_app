@@ -29,7 +29,13 @@
 			<div class = "network_team" style="width:32%;">
 				<% if debater.sign_in_count == -1 %>
 					Teammate. <%= link_to "Remove.", :controller => "relationships", :action => "remove_teammate", :debater_id => debater.id, :page => @title %>
-				<% else %>
+				<% end %>
+				
+				<% if debater.sign_in_count == -2 %>
+					Teammate Request Sent.
+				<% end %>
+				
+				<% if debater.sign_in_count >= 0 %>
 					<%= link_to "Send teammate request.", :controller => "relationships", :action => "create_teammate", :debater_id => debater.id, :page => @title %>
 				<% end %>
 			</div>

@@ -130,6 +130,12 @@ class DebatersController < ApplicationController
     if current_or_guest_debater == @debater
       teammates = Debater.teammates(@debater)
       nonteammates = @debaters - teammates
+      nonteammates.each do |debater|
+        if Relationship.where("follower_id = ? AND followed_id = ?", @debater.id, debater.id).first.teammate == true
+          debater.sign_in_count = -2 #Unique way to identify those who have received a teammate request
+        end
+      end
+      
       teammates.each do |mate|
         mate.sign_in_count = -1 #Unique way to identify teammates
       end

@@ -24,7 +24,7 @@ module ApplicationHelper
   private
 
   def create_guest_debater
-    u = Debater.create(:name => "guest_#{(Time.now - 15380.days).to_i.to_s.reverse}#{rand(99)}", :email => "guest_#{Time.now.to_i}#{rand(99)}@debunky.com", :password => generated_password(8))
+    u = Debater.create(:name => "guest#{(Time.now - 15380.days).to_i.to_s.reverse}#{rand(9)}", :email => "guest_#{Time.now.to_i}#{rand(99)}@debunky.com", :password => generated_password(8))
     u.save!
     u
   end
