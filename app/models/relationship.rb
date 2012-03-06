@@ -20,7 +20,8 @@ class Relationship < ActiveRecord::Base
       
       if !follower_ids.empty?
         #where("follower_id = :debater_id AND teammate = :teammate_t AND followed_id IN (#{follower_ids})", {:debater_id => debater, :teammate_t => true})
-        where("follower_id = ? AND teammate = ? AND followed_id IN (?)", debater, true, follower_ids)
+        #where("follower_id = ? AND teammate = ? AND followed_id IN (?)", debater, true, follower_ids)
+        where("follower_id = ? AND teammate = ?", debater, true).where(:followed_id => follower_ids)
       else
         where("id IN (3.14)", {:debater_id => debater}) #Fix for heroku.  This will always return an empty set
       end
