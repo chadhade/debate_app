@@ -139,7 +139,9 @@ class Debater < ActiveRecord::Base
       team_ids = Relationship.get_teammates_id(debater).map{|v| v.followed_id}
       
       if !team_ids.empty?
-        where("id IN (#{team_ids})", {:debater_id => debater})
+        
+        #where("id IN (#{team_ids})", {:debater_id => debater})
+        where(:id => team_ids)
       else
         where("id IN (3.14)", {:debater_id => debater}) #Fix for heroku.  This will always return an empty set
       end
