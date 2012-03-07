@@ -1,23 +1,7 @@
 <%= javascript_include_tag "form_validations" %>
 <%= javascript_include_tag "jquery.qtip" %>
 
-<% if Rails.env.development? or Rails.env.test? %>
-	<script src="http://localhost:8080/application.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" charset="utf-8">
-	  var jug = new Juggernaut;
-	</script>
-
-<% else %>	
-	<script src="http://debate-app-jug.herokuapp.com:80/application.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	  var jug = new Juggernaut({     
-	     host: 'debate-app-jug.herokuapp.com',
-	     port: 80,
-		 secure: false,
-		 transports: ['xhr-polling', 'jsonp-polling']
-	  });	
-	</script>
-<% end %>
+<%= render :partial => "/shared/init_juggernaut" %>
 
 <script type="text/javascript">
   jug.subscribe("matches", function(data){
@@ -66,10 +50,14 @@
 	</div>
 	
 	<br />
+	<br />
 	
-
-	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position} %> 
-
+	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position, :hidden => (!@matches.nil? or @matching.nil?)} %> 
+	<br />
+	<div id="suggested-topics" class="list_matches_container flat">
+		<%= render :partial => "/topic_positions/list_suggested_topics", :locals => {:trending => @trending} %>
+	</div>
+	<br />
 </div>
 
 
@@ -78,30 +66,52 @@
 
 
 <div class="create_container">
-	<h2> Match Up </h2>
+	<h2> Matches </h2>
 	
 	<div id="matching-debates" class="list_matches_container">
 			<%= render :partial => "/topic_positions/list_matching_debates", :locals => {:matching => @matching} %> 	
 	</div>
-	
+	<br />
 	<div id="suggested-debates" class="list_matches_container">
 		<%= render :partial => "/topic_positions/list_suggested_debates", :locals => {:matching => @matching} %>
 	</div>
-
-	<div id="suggested-debates" class="list_matches_container">
-		<%= render :partial => "/topic_positions/list_suggested_topics", :locals => {:trending => @trending} %>
-	</div>
+	
+	
 </div>
 
-
-
-<!--<div class="or_container">
-	<h2>or</h2>
-</div> -->
  
-<script>
-$('#matching-debates').bind('ajax:success', function() {  
-    $(this).closest('tr').fadeOut();  
-});
-</script>
+<% if @from_landing == true %> 
+	<script>
+		// Update the Matching Debates
+		$('#matching-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_matching_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
+
+		// Update the Suggested Debates
+		$('#suggested-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_suggested_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
+
+		//Update the "First Argument" text box, if debater is allowed to create a new debate
+		<% unless current_or_guest_debater.waiting_for or @matching == nil %>
+			$('.create_form_container').html("<%= escape_javascript(render(:partial => "topic_positions/form_new_debate", :locals => {:topic_position => @topic_position}, :layout => false) ) %>");
+			$('#first-argument').attr('disabled', false);
+			$('#first-argument').css('background-color', "#ffffff");
+			$('#first-argument').css('color', "#444444");
+			$('#first-argument').html("Your thoughts about <%= @topic_position.topic %>...?");
+			$('#first-argument-button').attr('disabled', true);
+			$('.create_form_container').show();
+		<% end %>
+
+		//Refresh the topic field with the topic, in case the topic was chosen by clicking an outside link
+		$('#topic-position-field').val("<%= @topic_position.topic %>");
+
+		// Scroll to the bottom of the page if there are no matches.  Focus on the create box
+		<% if @matching[:matching_debates].empty? %>
+			window.scrollTo(0,100);
+			$('#first-argument').focus();
+			$('#matching-debates').removeClass('pop');
+		<% else %>
+			// If there are matches, make the matches container pop out
+			$('#matching-debates').addClass('pop');
+		<% end %>
+	</script>
+	
+<% end %>
 

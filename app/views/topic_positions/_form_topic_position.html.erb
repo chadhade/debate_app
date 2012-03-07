@@ -2,7 +2,7 @@
 	<div class="field-topicposition">
 		<span class="field-topic">
 			<%= f.label :topic %> <br>
-			<%= f.text_field :topic, :onkeyup => "textCounter(this, 65); checkEmpty3(this, '#topicmatch_button','.create_form_container');", :id => "topic-position-field", :onClick => "if(this.value.substr(0,3) == '...') {this.value='';}; this.select();" %>
+			<%= f.text_field :topic, :onkeyup => "textCounter(this, 65); checkEmpty3(this, '#topicmatch_button','.create_form_container', '#matching-debates');", :id => "topic-position-field", :onClick => "if(this.value.substr(0,3) == '...') {this.value='';}; this.select();" %>
 		</span>
 		<span class="field-position">		
 			<%= f.label "+" %> <br>	

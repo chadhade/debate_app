@@ -17,11 +17,13 @@
     end
     
     @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => topic, :position => position)    
+    @trending = Suggested_Topic.trending(10)
     @matching = Debate.matching_debates(@topic_position, 30, 15)
+	  @from_landing = true
 	  
     respond_to do |format|
-  	  format.html
-  	  format.js 
+  	  format.html {render "matches"}
+  	  format.js
   	end
   end
   
@@ -29,6 +31,11 @@
     @matching = nil
     @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => "...", :position => nil)
     @trending = Suggested_Topic.trending(10)
+    
+    respond_to do |format|
+  	  format.html {render "matches"}
+  	  format.js {render :nothing => true}
+  	end
   end
   
   def new

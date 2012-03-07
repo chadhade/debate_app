@@ -40,12 +40,13 @@ function checkEmpty2(field, button, field2)
 		}
 }
 
-function checkEmpty3(field, button, field2)
+function checkEmpty3(field, button, field2, field3)
 {       
 	if ( field.value == '' )
 	    {    
 			$(button).attr('disabled', true);
 				$(field2).hide();
+				$(field3).removeClass('pop');
 	    }
 	else
 		{

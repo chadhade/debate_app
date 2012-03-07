@@ -21,7 +21,7 @@ $('#topic-position-field').val("<%= @topic_position.topic %>");
 
 // Scroll to the bottom of the page if there are no matches.  Focus on the create box
 <% if @matching[:matching_debates].empty? %>
-	window.scrollTo(0,document.body.scrollHeight);
+	window.scrollTo(0,100);
 	$('#first-argument').focus();
 	$('#matching-debates').removeClass('pop');
 <% else %>
@@ -66,8 +66,3 @@ $(document).ready(function() {
 		show: { delay: 1000 }
 	});
 });
-
-function pauseScript (ms) {
-	ms += new Date().getTime();
-	while (new Date() < ms){}
-}

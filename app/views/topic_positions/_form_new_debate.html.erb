@@ -1,4 +1,4 @@
-<div class="create_form_container hidden">
+<div class="create_form_container <%= :hidden  %>">
 	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"}, :html => {:name => 'createform', :onsubmit => "return checkEmpty('createform', 'argument[content]');"} do |f| %>
 		<div class = "field">
 			<h3> No Matches? </h3>
