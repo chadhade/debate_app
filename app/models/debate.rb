@@ -126,10 +126,10 @@ class Debate < ActiveRecord::Base
     @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     self.where(:id => @viewing_by_creator, :joined => false).each do |debate|
       unless debate.tp.nil?
-        topic = debate.tp.topic
+        topic = debate.tp.topic.upcase
         position = debate.tp.position
         words = topic.split(/\s/)
-        current_words = current_tp.topic.split(/\s/)
+        current_words = current_tp.topic.upcase.split(/\s/)
         pronouns = self.load_pronouns
         
         current_tp.position != position ? position_match = true : position_match = false
