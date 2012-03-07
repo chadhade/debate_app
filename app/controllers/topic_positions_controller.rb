@@ -16,7 +16,7 @@
       position = params[:topic_position][:position]
     end
     
-    @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => topic, :position => position)    
+    @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater.id, :topic => topic, :position => position)    
     @trending = Suggested_Topic.trending(10)
     @matching = Debate.matching_debates(@topic_position, 30, 15)
 	  @from_landing = true

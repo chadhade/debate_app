@@ -81,13 +81,7 @@
 
  
 <% if @from_landing == true %> 
-	<script>
-		// Update the Matching Debates
-		$('#matching-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_matching_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
-
-		// Update the Suggested Debates
-		$('#suggested-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_suggested_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
-
+	<script>	
 		//Update the "First Argument" text box, if debater is allowed to create a new debate
 		<% unless current_or_guest_debater.waiting_for or @matching == nil %>
 			$('.create_form_container').html("<%= escape_javascript(render(:partial => "topic_positions/form_new_debate", :locals => {:topic_position => @topic_position}, :layout => false) ) %>");
@@ -99,9 +93,6 @@
 			$('.create_form_container').show();
 		<% end %>
 
-		//Refresh the topic field with the topic, in case the topic was chosen by clicking an outside link
-		$('#topic-position-field').val("<%= @topic_position.topic %>");
-
 		// Scroll to the bottom of the page if there are no matches.  Focus on the create box
 		<% if @matching[:matching_debates].empty? %>
 			window.scrollTo(0,100);
@@ -112,6 +103,5 @@
 			$('#matching-debates').addClass('pop');
 		<% end %>
 	</script>
-	
 <% end %>
 
