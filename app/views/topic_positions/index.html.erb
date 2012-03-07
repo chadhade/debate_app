@@ -67,8 +67,12 @@
 	
 	<br />
 	<br />
-
+	
 	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position} %> 
+	<br />
+	<div id="suggested-topics" class="list_matches_container flat">
+		<%= render :partial => "/topic_positions/list_suggested_topics", :locals => {:trending => @trending} %>
+	</div>
 	<br />
 </div>
 
@@ -78,19 +82,17 @@
 
 
 <div class="create_container">
-	<h2> Match Up </h2>
+	<h2> Matches </h2>
 	
 	<div id="matching-debates" class="list_matches_container">
 			<%= render :partial => "/topic_positions/list_matching_debates", :locals => {:matching => @matching} %> 	
 	</div>
-	
+	<br />
 	<div id="suggested-debates" class="list_matches_container">
 		<%= render :partial => "/topic_positions/list_suggested_debates", :locals => {:matching => @matching} %>
 	</div>
 	
-	<div id="suggested-debates" class="list_matches_container">
-		<%= render :partial => "/topic_positions/list_suggested_topics", :locals => {:trending => @trending} %>
-	</div>
+	
 </div>
 
 

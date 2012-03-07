@@ -1,9 +1,10 @@
-<div class="create_form_container">
+<div class="create_form_container hidden">
 	<%= form_for Argument.new, :url => {:controller => "debates", :action => "create"}, :html => {:name => 'createform', :onsubmit => "return checkEmpty('createform', 'argument[content]');"} do |f| %>
 		<div class = "field">
-			<h3>Start Your Own Debate</h3> 
+			<h3> No Matches? </h3>
+			<h3>Create a Debate</h3> 
 			<% if !current_or_guest_debater.waiting_for %>
-				<%= f.text_area :content, :size => "36x4", :disabled => "disabled", :class => "argument-field", :id => "first-argument", :onkeyup => "textCounter(this, 1000);", :onClick => "if(this.value.substr(0,19) == 'Your thoughts about') {this.value='';}" %> <br />
+				<%= f.text_area :content, :size => "36x4", :disabled => "disabled", :class => "argument-field", :id => "first-argument", :onkeyup => "textCounter(this, 1000); checkEmpty2(this, '#first-argument-button');", :onClick => "if(this.value.substr(0,19) == 'Your thoughts about') {this.select();}", :value => "Create a topic to get started." %> <br />
 			<% else %>
 				<%= f.text_area :content, :size => "36x4", :disabled => "disabled", :class => "argument-field", :id => "first-argument", 
 				:value => "You cannot create a new debate while waiting for an existing debate to begin." %> <br />

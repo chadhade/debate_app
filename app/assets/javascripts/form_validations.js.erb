@@ -23,6 +23,9 @@ function checkEmpty2(field, button, field2)
 	if ( field.value == '' )
 	    {    
 			$(button).attr('disabled', true);
+			//if(field2 == ".create_form_container") {
+				//$('.create_form_container').hide();
+			//}
 	    }
 	else
 		{
@@ -34,6 +37,19 @@ function checkEmpty2(field, button, field2)
 					$(button).attr('disabled', false);
 				}
 			}	
+		}
+}
+
+function checkEmpty3(field, button, field2)
+{       
+	if ( field.value == '' )
+	    {    
+			$(button).attr('disabled', true);
+				$(field2).hide();
+	    }
+	else
+		{
+			$(button).attr('disabled', false);
 		}
 }
 

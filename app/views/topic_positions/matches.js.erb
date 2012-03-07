@@ -1,3 +1,4 @@
+
 // Update the Matching Debates
 $('#matching-debates').html("<%= escape_javascript(render(:partial => "topic_positions/list_matching_debates", :locals => {:matching => @matching}, :layout => false) ) %>");
 
@@ -11,12 +12,22 @@ $('#suggested-debates').html("<%= escape_javascript(render(:partial => "topic_po
 	$('#first-argument').css('background-color', "#ffffff");
 	$('#first-argument').css('color', "#444444");
 	$('#first-argument').html("Your thoughts about <%= @topic_position.topic %>...?");
-	$('#first-argument-button').attr('disabled', false);
+	$('#first-argument-button').attr('disabled', true);
+	$('.create_form_container').show();
 <% end %>
 
 //Refresh the topic field with the topic, in case the topic was chosen by clicking an outside link
 $('#topic-position-field').val("<%= @topic_position.topic %>");
 
+// Scroll to the bottom of the page if there are no matches.  Focus on the create box
+<% if @matching[:matching_debates].empty? %>
+	window.scrollTo(0,document.body.scrollHeight);
+	$('#first-argument').focus();
+	$('#matching-debates').removeClass('pop');
+<% else %>
+	// If there are matches, make the matches container pop out
+	$('#matching-debates').addClass('pop');
+<% end %>
 
 //  For use with javascript popups to show entire argument, when it doesn't fit on the screen
 
@@ -55,3 +66,8 @@ $(document).ready(function() {
 		show: { delay: 1000 }
 	});
 });
+
+function pauseScript (ms) {
+	ms += new Date().getTime();
+	while (new Date() < ms){}
+}
