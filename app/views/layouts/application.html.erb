@@ -15,9 +15,7 @@
 	
 	<div class= "sitewidth">
 		<% flash.each do |key, value| %>
-			<% if [:alert, :alert2, :alert3, :alert4, :alert5].include?(key) %> 
-				<div class="flash alert"><%= value %></div>
-			<% end %>
+			<div class="flash <%= key %>"><%= value %></div>
 		<% end %>
 		
 		<%= yield %>

@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'redis'
 gem 'juggernaut'
 gem 'will_paginate'
+gem 'gravatar_image_tag'
 
 group :production do
   gem 'therubyracer-heroku', '0.8.1.pre3' # you will need this too

@@ -13,7 +13,7 @@
 
 <% debaterranks.each do |debater| %>
 	<div class = "list_names">
-		<span class = "list_name"><%= link_to debater[:debater].name, debater[:debater] %></span><br />
+		<span class = "list_name"><%= gravatar_for debater[:debater], :size => 15 %><%= link_to debater[:debater].name, debater[:debater] %></span><br />
 	</div>
 	<div class = "list_ranks">
 		<%= (((debater[:rank] * 100.0).round / 100.0) * 100) if !debater[:rank].nil? %>%<br />

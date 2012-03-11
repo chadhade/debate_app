@@ -51,6 +51,12 @@ ul.debaters {
 	margin-top: 0;
 }
 
+img.gravatar {
+	border: 1px solid #999999;
+	margin: 5px;
+	float: left;
+	clear: both;
+}
 .network_heading {
 	float: left;
 	width: 47%;
@@ -198,6 +204,7 @@ ul.debaters {
 	width: 700px;
 	border: 1px solid silver;
 	background-color: #fafafa;
+	line-height: 30px;
 
 	margin: 0 auto;
 /*	margin-top: 30px;*/
