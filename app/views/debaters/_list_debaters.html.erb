@@ -4,6 +4,9 @@
 <div class = "list_ranks">
 	<h2>% Won </h2>
 </div>
+<div class = "list_points">
+	<h2>Judge Points</h2>
+</div>
 <div class = "list_joined">
 	<h2>Joined</h2>
 </div>
@@ -14,6 +17,9 @@
 	</div>
 	<div class = "list_ranks">
 		<%= (((debater[:rank] * 100.0).round / 100.0) * 100) if !debater[:rank].nil? %>%<br />
+	</div>
+	<div class = "list_points" style="color: #006666;">
+		<%= debater[:judge_points] %>
 	</div>
 	<div class = "list_joined">
 		<%= debater[:joined].strftime("%b. %d, %Y") %> <br />

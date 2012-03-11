@@ -110,9 +110,10 @@ class DebatersController < ApplicationController
     if !debaters.empty?
       debaters.each do |debater|
         rank = debater.rank
-        @debaterranks << {:debater => debater, :rank => rank, :joined => debater.created_at}
+        @debaterranks << {:debater => debater, :rank => rank, :joined => debater.created_at, :judge_points => debater.judge_points}
       end
-      @debaterranks.sort!{|a,b| b[:rank] <=> a[:rank]}
+      #@debaterranks.sort!{|a,b| b[:rank] <=> a[:rank]}
+      @debaterranks = @debaterranks.sort_by{ |a| [ a[:rank], a[:judge_points] ] }.reverse!
       @debaterranks = @debaterranks.paginate(:page => params[:page], :per_page => 15)
     end
     

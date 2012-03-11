@@ -141,8 +141,8 @@ body {
 	display: none;
 }
 
-.error, .alert, .notice, .success, .info {margin-bottom:1em;margin-top: 10px; border:2px solid #ddd; width: 50%; margin: auto;}
-.error, .alert {background:#fff;color:#8a1f11;border-color:#8a1f11; font: 13px/27px Arial,sans-serif;margin-top: 10px;}
+.error, .alert, .notice, .success, .info, #error_explanation {margin-bottom:1em;margin-top: 10px; border:2px solid #ddd; min-width: 50%; max-width: 75%; margin: auto;}
+.error, .alert, #error_explanation {background:#fff;color:#8a1f11;border-color:#8a1f11; font: 13px/27px Arial,sans-serif;margin-top: 10px;}
 .notice {background:#fff6bf;color:#514721;border-color:#ffd324;}
 .success {background:#e6efc2;color:#264409;border-color:#c6d880;}
 .info {background:#d5edf8;color:#205791;border-color:#92cae4;}

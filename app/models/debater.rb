@@ -11,7 +11,7 @@ class Debater < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  validates_length_of :name, :within => 2..14
+  validates_length_of :name, :within => 2..15
   validates_uniqueness_of :name
   
   # Virtual attribute for authenticating by either username or email
@@ -29,8 +29,8 @@ class Debater < ActiveRecord::Base
   has_many :debates, :through => :debations
   
   # associations for debate tracking
-  has_many :trackings
-  has_many :tracking_debates, :class_name => "Debate", :through => :trackings  
+  #has_many :trackings
+  #has_many :tracking_debates, :class_name => "Debate", :through => :trackings  
   
   #associations for arguments
   has_many :arguments
@@ -75,19 +75,21 @@ class Debater < ActiveRecord::Base
    
   def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
     data = access_token.extra.raw_info
-    if debater = Debater.find_by_email(data.email)
+    debater = Debater.find_by_email(data.email)
+    if debater 
       debater
     else # Create a debater with a stub password. 
-      Debater.create!(:email => data.email, :password => Devise.friendly_token[0,20], :validate => false) 
+      debater = Debater.new(:email => data.email, :name => data.name, :password => Devise.friendly_token[0,20]) 
     end
   end
   
   def self.find_for_twitter_oauth(access_token, signed_in_resource=nil)
     data = access_token.extra.raw_info
-    if debater = Debater.find_by_email(data.email)
+    debater = Debater.find_by_email(data.screen_name.downcase + "@twitters.com")
+    if debater
       debater
     else # Create a debater with a stub password. 
-      Debater.create!(:email => "#{data.screen_name}@twitter.com", :password => Devise.friendly_token[0,20], :validate => false) 
+      debater = Debater.new(:email => "#{data.screen_name}@twitter.com", :name => data.screen_name, :password => Devise.friendly_token[0,20]) 
     end
   end
 

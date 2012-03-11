@@ -5,7 +5,7 @@ class JudgingsController < ApplicationController
   def index
     judging_priority = Debate.judging_priority(30)
     if !judging_priority.nil?
-      @joined_no_judge = judging_priority.paginate(:page => params[:page], :per_page => 10)
+      @joined_no_judge = judging_priority.paginate(:page => params[:page], :per_page => 15)
     end
     
     respond_to do |format|

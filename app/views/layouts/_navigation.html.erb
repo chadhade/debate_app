@@ -14,13 +14,13 @@
 		</div>
 		<div id="user-info">
 			<% if debater_signed_in? %>
-				<span class="username"> <%= link_to current_debater.name, current_debater %> </span>
+				<span class="username"> <%= link_to "[ #{current_debater.name} ]", current_debater %> </span>
 				<%= link_to 'Sign out', destroy_debater_session_path, :method => :delete %>
 				<!-- <%= link_to 'Trackings', debater_trackings_path(current_debater) %> | -->
 		    <% else %>
 		        <%= link_to 'Login', new_debater_session_path %> or <%= link_to 'Register', new_debater_registration_path %>
-		    	<!-- <%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
-				<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %> | -->
+		     	<%= link_to "Sign in with Facebook", debater_omniauth_authorize_path(:facebook) %> |
+				<%= link_to "Sign in with Twitter", debater_omniauth_authorize_path(:twitter) %>
 			<% end %>
 		</div>
 		<div id="center-links">Feedback: debunky@gmail.com </div>
