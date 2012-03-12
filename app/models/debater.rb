@@ -80,7 +80,9 @@ class Debater < ActiveRecord::Base
     if debater 
       debater
     else # Create a debater with a stub password. 
-      debater = Debater.new(:email => data.email, :name => data.name, :password => Devise.friendly_token[0,20]) 
+      debater = Debater.new(:email => data.email, :name => data.name, :confirmed_at => Time.now, :password => Devise.friendly_token[0,20]) 
+      debater.confirmed_at = Time.now
+      debater
     end
   end
   
@@ -91,6 +93,8 @@ class Debater < ActiveRecord::Base
       debater
     else # Create a debater with a stub password. 
       debater = Debater.new(:email => "#{data.screen_name}@twitter.com", :name => data.screen_name, :password => Devise.friendly_token[0,20]) 
+      debater.confirmed_at = Time.now
+      debater
     end
   end
 
