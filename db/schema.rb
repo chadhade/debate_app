@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120301011624) do
+ActiveRecord::Schema.define(:version => 20120311065727) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -54,10 +54,18 @@ ActiveRecord::Schema.define(:version => 20120301011624) do
     t.integer  "arg_downvotes",                         :default => 0
     t.integer  "waiting_for"
     t.integer  "judge_points",                          :default => 0
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.integer  "failed_attempts",                       :default => 0
+    t.string   "unlock_token"
+    t.datetime "locked_at"
   end
 
+  add_index "debaters", ["confirmation_token"], :name => "index_debaters_on_confirmation_token", :unique => true
   add_index "debaters", ["email"], :name => "index_debaters_on_email", :unique => true
   add_index "debaters", ["reset_password_token"], :name => "index_debaters_on_reset_password_token", :unique => true
+  add_index "debaters", ["unlock_token"], :name => "index_debaters_on_unlock_token", :unique => true
 
   create_table "debates", :force => true do |t|
     t.datetime "created_at"
