@@ -49,10 +49,10 @@ class Debater < ActiveRecord::Base
   scope :teammates, lambda { |debater| team_debaters(debater)}
   
   def judge?(debate)
-    if debate.judge_entry.nil?
+    if !debate.judge
       false
     else
-      debate.judge_entry.debater_id == self.id
+      debate.judge_id == self.id
     end
   end
     

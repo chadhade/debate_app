@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120311065727) do
+ActiveRecord::Schema.define(:version => 20120312015321) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20120311065727) do
     t.integer  "loser_id"
     t.integer  "creator_id"
     t.integer  "joiner_id"
+    t.integer  "judge_id"
   end
 
   create_table "debations", :force => true do |t|

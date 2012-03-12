@@ -26,7 +26,7 @@ class DebatersController < ApplicationController
       redirect_to topic_positions_path
     end
     
-    # Individual Status
+    # Individual Stats
       if Rails.env.development? or Rails.env.test?
         @debates = @debater.debates.where("end_time > ?", 0)
       else

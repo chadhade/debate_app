@@ -21,12 +21,7 @@ class JudgingsController < ApplicationController
       if !@debate.creator?(current_or_guest_debater) and !@debate.joiner?(current_or_guest_debater) and !@debate.judge
         @judge = Judging.new(:debater_id => current_or_guest_debater.id, :debate_id => @debate.id)
         @judge.save
-        @debate.update_attributes(:judge => true)
-      
-        # if debater was currently waiting for another debate, he now stops waiting
-      	if current_or_guest_debater.waiting_for
-      	  current_or_guest_debater.update_attributes(:waiting_for => nil)
-      	end
+        @debate.update_attributes(:judge => true, :judge_id => current_or_guest_debater.id)
     	
       	@debatestatus = @debate.status
     	
@@ -64,7 +59,7 @@ class JudgingsController < ApplicationController
     @judgeid = @judging.debater_id
     
     @debate = @judging.debate
-    @debate.creator.id.to_s == params[:judging][:winner_id] ? @loser_id = @debate.joiner.id : @loser_id = @debate.creator.id
+    @debate.creator_id.to_s == params[:judging][:winner_id] ? @loser_id = @debate.joiner_id : @loser_id = @debate.creator_id
     
 
     if Time.now < @debate.end_time + $judgetime
@@ -100,7 +95,7 @@ class JudgingsController < ApplicationController
     
       # Signal that debate has ended
  
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner.id}})
+      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
       
     end
     

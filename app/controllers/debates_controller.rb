@@ -246,7 +246,7 @@ end
   		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true, :content => "test")
   		@movingclock = @argument_last.time_left - (Time.now - @argument_last.created_at).seconds.to_i
   		@staticclock = 0
-  		@movingposition = (@argument_last.debater_id != @debate.creator.id) ? 2 : 1
+  		@movingposition = (@argument_last.debater_id != @debate.creator_id) ? 2 : 1
   		@debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
   		return
   	end
@@ -348,7 +348,7 @@ end
     unless @debate.end_single_id != nil # Make sure this is only called once
       
       @debater_timeleft = params[:clock_position] == 1.to_s ? @debate.joiner : @debate.creator  # 1 = creator, 2 = joiner
-      @debate.update_attributes(:end_single_id => params[:clock_position] == 1.to_s ? @debate.creator.id : @debate.joiner.id)
+      @debate.update_attributes(:end_single_id => params[:clock_position] == 1.to_s ? @debate.creator_id : @debate.joiner_id)
     
       @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
       @debate = Debate.find(params[:id])
@@ -373,7 +373,7 @@ end
         Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
     
         # Provide all participants with ability to chat, if judge's submission did not do this already
-          Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner.id}})
+          Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
       end
       
         respond_to do |format|

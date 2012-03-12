@@ -175,7 +175,7 @@ class ArgumentsController < ApplicationController
   		argument_last.update_attributes(:time_left => argument_last.time_left + argument_second_last.time_left, :Repeat_Turn => true)
   		@movingclock = argument_last.time_left - (Time.now - argument_last.created_at).seconds.to_i
   		@staticclock = 0
-  		@movingposition = (argument_last.debater_id != debate.creator.id) ? 2 : 1
+  		@movingposition = (argument_last.debater_id != debate.creator_id) ? 2 : 1
   		debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
   		return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
   	end

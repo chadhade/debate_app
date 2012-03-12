@@ -19,7 +19,7 @@ class VotesController < ApplicationController
 	    @votee.update_attributes(:arg_downvotes => downvotes + 1)
     end
   
-	  if current_debater.id != @debate.judge_entry.debater_id
+	  if current_debater.id != @debate.judge_id
 	    Juggernaut.publish("debate_" + @debate_id + "_votes", {:func => "viewer_votes", :obj => {:id => params[:argument_id], :type => @vote}})
 	  else
 	    Juggernaut.publish("debate_" + @debate_id + "_judge", {:func => "judge_votes", :obj => {:votes => {:id => params[:argument_id], :type => @vote}}})

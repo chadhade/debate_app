@@ -39,37 +39,39 @@ class Debate < ActiveRecord::Base
   end
   
   def judger
-    self.judge_entry.debater if !self.judge_entry.nil?
+    #self.judge_entry.debater if !self.judge_entry.nil?
+    judger = Debater.find_by_id(self.judge_id) unless !self.judge
   end
   
   def creator
-    @creator = Debater.find_by_id(self.arguments.first(:order => "created_at ASC").debater_id)
+    #@creator = Debater.find_by_id(self.arguments.first(:order => "created_at ASC").debater_id)
+    creator = Debater.find_by_id(self.creator_id)
   end
   
   def currently_viewing(who)
     case who
     when "joiner"
-      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.joiner.id).first(:order => "created_at ASC").currently_viewing if self.joined
+      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.joiner_id).first(:order => "created_at ASC").currently_viewing if self.joined
     when "creator"
-      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.creator.id).first(:order => "created_at ASC").currently_viewing
+      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.creator_id).first(:order => "created_at ASC").currently_viewing
     when "judge"
-      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.judger.id).first(:order => "created_at ASC").currently_viewing if self.judge
+      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.judge_id).first(:order => "created_at ASC").currently_viewing if self.judge
     else
       nil
     end
   end  
   
   def joiner
-    @joiner = Debater.find_by_id(self.arguments.all(:order => "created_at ASC").second.debater_id) unless self.arguments.all(:order => "created_at ASC").second.nil?
+    #@joiner = Debater.find_by_id(self.arguments.all(:order => "created_at ASC").second.debater_id) unless self.arguments.all(:order => "created_at ASC").second.nil?
+    joiner = Debater.find_by_id(self.joiner_id) unless !self.joined
   end
   
   def judge_entry
     self.judgings.first(:order => "created_at ASC")
   end
   
-  def judge_id
-    self.judge? == true ? self.judgings.first(:order => "created_at ASC").debater_id : nil
-  end
+  #def judge_id
+  #end
   
   def creator?(debater)
     self.creator == debater
