@@ -41,10 +41,12 @@ class ApplicationController < ActionController::Base
 	end
 
 	def after_sign_out_path_for(resource)
-    debater = current_or_guest_debater
-    debater.waiting_for = nil
-    debater.current_sign_in_at = nil
-    debater.save
+    debater = current_debater
+    if debater
+      debater.waiting_for = nil
+      debater.current_sign_in_at = nil
+      debater.save
+    end
     stored_location_for(resource) || "/debaters/sign_in"
   end
  

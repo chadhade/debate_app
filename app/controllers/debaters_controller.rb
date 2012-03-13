@@ -105,7 +105,7 @@ class DebatersController < ApplicationController
   
   def index
     @title = "All Debaters"
-    debaters = Debater.where("current_sign_in_at > ?", "01/01/01")
+    debaters = Debater.where("sign_in_count > ?", 0)
     @debaterranks = Array.new
     
     if !debaters.empty?

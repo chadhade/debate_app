@@ -10,7 +10,7 @@
 <%= javascript_include_tag "timer_countdown" %>
 <%= javascript_include_tag "tracking" %>
 <%= javascript_include_tag "jquery.qtip" %>
-
+<%= javascript_include_tag "timed_out" %>
 
 <%= render :partial => "/shared/init_juggernaut" %>
 
@@ -169,8 +169,5 @@
 	});
 </script>
 
-<script>
-      debate_id = <%= @debateid %>
-</script>
 
 <%= javascript_include_tag "form_validations" %>

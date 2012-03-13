@@ -86,13 +86,13 @@ class ArgumentsController < ApplicationController
     if @debate.participant?(current_or_guest_debater) and @debate.status[:status_code] > 4
       @current_argument = current_or_guest_debater.arguments.create(:content => params[:argument][:content], 
                                                 :debate_id => params[:argument][:debate_id], :debate_over => true)
-		end
 		
-	  argument_render = render(:partial => "arguments/chat", :locals => {:argument => @current_argument, :debate => @debate, :judgeid => @debate.judge_id, :currentid => current_or_guest_debater.id}, :layout => false)
-	  reset_invocation_response # allow double rendering
+	    argument_render = render(:partial => "arguments/chat", :locals => {:argument => @current_argument, :debate => @debate, :judgeid => @debate.judge_id, :currentid => current_or_guest_debater.id}, :layout => false)
+  	  reset_invocation_response # allow double rendering
 	  
-	  #Publish the Chat
-		Juggernaut.publish("debate_" + @debate_id, {:func => "chat", :obj => {:chat => argument_render}})
+  	  #Publish the Chat
+  		Juggernaut.publish("debate_" + @debate_id, {:func => "chat", :obj => {:chat => argument_render}})
+		end
 		                  
 		respond_to do |format|
   	  format.html
