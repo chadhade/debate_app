@@ -7,9 +7,9 @@ class Debater < ActiveRecord::Base
   has_many :viewings, :as => :viewer
   
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, and :omniauthable
+  # :token_authenticatable, :encryptable, :rememberable, and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable,
+         :recoverable, :trackable, :validatable, :omniauthable,
          :confirmable, :lockable, :timeoutable
 
   validates_length_of :name, :within => 2..15
@@ -88,7 +88,7 @@ class Debater < ActiveRecord::Base
   
   def self.find_for_twitter_oauth(access_token, signed_in_resource=nil)
     data = access_token.extra.raw_info
-    debater = Debater.find_by_email(data.screen_name.downcase + "@twitters.com")
+    debater = Debater.find_by_email(data.screen_name.downcase + "@twitter.com")
     if debater
       debater
     else # Create a debater with a stub password. 
