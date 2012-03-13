@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def after_sign_out_path_for(resource)
-    debater = current_debater
+    debater = current_or_guest_debater
     debater.waiting_for = nil
     debater.current_sign_in_at = nil
     debater.save
@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
       end
       current_debater
     else
-      guest_debater
+      guest_debater unless self.controller_name == 'sessions' or self.controller_name == 'registrations'
     end
   end
 
@@ -77,8 +77,10 @@ class ApplicationController < ActionController::Base
 
   def create_guest_debater
     u = Debater.new(:name => "guest#{(Time.now - 15380.days).to_i.to_s.reverse}#{rand(9)}", :email => "guest_#{Time.now.to_i}#{rand(99)}@debunky.com", :password => generated_password(8))
-    u.skip_confirmation!
-    u.save
+    u.confirmed_at = Time.now
+    u.current_sign_in_at = Time.now
+    #u.skip_confirmation!
+    u.save!
     u
   end
  
@@ -90,12 +92,15 @@ class ApplicationController < ActionController::Base
   #Update debater's activity time every 2 minutes
   def record_activity_time
     debater = current_or_guest_debater  
-    if debater.last_request_at.nil?
-      debater.last_request_at = Time.now
-    else
-      if Time.now > debater.last_request_at + 2.minutes
+    if debater
+      if debater.last_request_at.nil?
         debater.last_request_at = Time.now
         debater.save
+      else
+        if Time.now > debater.last_request_at + 2.minutes
+          debater.last_request_at = Time.now
+          debater.save
+        end
       end
     end
   end

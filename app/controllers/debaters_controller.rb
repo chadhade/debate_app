@@ -1,6 +1,6 @@
 class DebatersController < ApplicationController
    before_filter :authenticate_debater!
-   skip_before_filter :authenticate_debater! #, :only => [:show, :index]
+   skip_before_filter :authenticate_debater! , :only => [:sign_in, :sign_up, :index]
    skip_before_filter :record_activity_time, :only => [:sign_in, :sign_up]
    
    require 'will_paginate/array'

@@ -2,11 +2,15 @@
     <div class="nav">
 		<div id="general-links">
 			<%= link_to 'Debunk', topic_positions_path %>
-			<% if current_or_guest_debater.waiting_for == nil %>
+			<% if !thisdebater %>
 				<%= link_to 'Judge', judgings_path %>
 			<% else %>
-				<%= javascript_include_tag "jquery.qtip" %>
-				<span id ="judge_inactive">Judge</span>
+				<% if thisdebater.waiting_for == nil %>
+					<%= link_to 'Judge', judgings_path %>
+				<% else %>
+					<%= javascript_include_tag "jquery.qtip" %>
+					<span id ="judge_inactive">Judge</span>
+				<% end %>
 			<% end %>
 			<%= link_to 'View', debates_path %>
 			<%= link_to 'See Rankings', debaters_path %>				

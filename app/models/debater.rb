@@ -48,6 +48,10 @@ class Debater < ActiveRecord::Base
   
   scope :teammates, lambda { |debater| team_debaters(debater)}
   
+  def active?
+    self.current_sign_in_at and !self.timedout?(self.last_request_at)
+  end
+  
   def judge?(debate)
     if !debate.judge
       false

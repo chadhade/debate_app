@@ -1,9 +1,9 @@
-<%# if debater_signed_in? %>
-	<% unless current_or_guest_debater.waiting_for == nil %>
-		<% debate = Debate.find_by_id(current_or_guest_debater.waiting_for) %>
+<% if thisdebater %>
+	<% unless thisdebater.waiting_for == nil %>
+		<% debate = Debate.find_by_id(thisdebater.waiting_for) %>
 		<div class="waiting_box">
 			<h3>Waiting...</h3>
 				<strong><%= link_to debate.tp.topic.upcase, debate %> </strong> - <div class="waiting_content"> <%= debate.status[:status_value] %></div>
 		</div>
 	<% end %>
-<%# end %>
+<% end %>
