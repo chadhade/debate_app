@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120312015321) do
+ActiveRecord::Schema.define(:version => 20120313014955) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20120312015321) do
     t.integer  "failed_attempts",                       :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.datetime "last_request_at"
   end
 
   add_index "debaters", ["confirmation_token"], :name => "index_debaters_on_confirmation_token", :unique => true

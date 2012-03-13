@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-
+  before_filter :record_activity_time
+   
   # include SessionsHelper in all controllers
   # they are in all views by default
   # include SessionsHelper
@@ -29,6 +30,9 @@ class ApplicationController < ActionController::Base
 	end
   
 	def after_sign_in_path_for(resource)
+		debater = current_debater
+		debater.last_request_at = Time.now
+		debater.save
 		stored_location_for(resource) || "/pages/landing"
 	end
  
@@ -37,11 +41,10 @@ class ApplicationController < ActionController::Base
 	end
 
 	def after_sign_out_path_for(resource)
-    @debater = current_debater
-    unless @debater.waiting_for == nil
-      @debater.waiting_for = nil
-      @debater.save
-    end
+    debater = current_debater
+    debater.waiting_for = nil
+    debater.current_sign_in_at = nil
+    debater.save
     stored_location_for(resource) || "/debaters/sign_in"
   end
  
@@ -73,14 +76,28 @@ class ApplicationController < ActionController::Base
   private
 
   def create_guest_debater
-    u = Debater.create(:name => "guest#{(Time.now - 15380.days).to_i.to_s.reverse}#{rand(9)}", :email => "guest_#{Time.now.to_i}#{rand(99)}@debunky.com", :password => generated_password(8))
-    u.save!
+    u = Debater.new(:name => "guest#{(Time.now - 15380.days).to_i.to_s.reverse}#{rand(9)}", :email => "guest_#{Time.now.to_i}#{rand(99)}@debunky.com", :password => generated_password(8))
+    u.skip_confirmation!
+    u.save
     u
   end
  
   def generated_password(len)
     chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
     return Array.new(len){||chars[rand(chars.size)]}.join
+  end
+  
+  #Update debater's activity time every 2 minutes
+  def record_activity_time
+    debater = current_or_guest_debater  
+    if debater.last_request_at.nil?
+      debater.last_request_at = Time.now
+    else
+      if Time.now > debater.last_request_at + 2.minutes
+        debater.last_request_at = Time.now
+        debater.save
+      end
+    end
   end
   
  end
