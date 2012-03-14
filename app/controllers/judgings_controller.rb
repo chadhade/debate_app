@@ -62,41 +62,43 @@ class JudgingsController < ApplicationController
     @debate = @judging.debate
     @debate.creator_id.to_s == params[:judging][:winner_id] ? @loser_id = @debate.joiner_id : @loser_id = @debate.creator_id
     
-
-    if Time.now < @debate.end_time + $judgetime
-      @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments], :loser_id => @loser_id)
+    #Make sure it is submitted at the proper time and only once
+    if @debate.end_time and !@debate.winner_id
+      if Time.now < @debate.end_time + $judgetime
+        @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments], :loser_id => @loser_id)
       
-      @debate.update_attributes(:winner_id => params[:judging][:winner_id], :loser_id => @loser_id)
-      @debate.save
+        @debate.update_attributes(:winner_id => params[:judging][:winner_id], :loser_id => @loser_id)
+        @debate.save
       
-      #tally up judge's votes
-      @votes = Array.new
-      upvotes = 0
-      downvotes = 0
+        #tally up judge's votes
+        @votes = Array.new
+        upvotes = 0
+        downvotes = 0
       
-      @debate.arguments.each do |argument|
-        votes_for = argument.votes_for_by(@judgeid)
-        votes_against = argument.votes_against_by(@judgeid)
-        @votes[argument.id] = votes_for - votes_against
-        upvotes = upvotes + votes_for
-        downvotes = downvotes + votes_against
-      end
+        @debate.arguments.each do |argument|
+          votes_for = argument.votes_for_by(@judgeid)
+          votes_against = argument.votes_against_by(@judgeid)
+          @votes[argument.id] = votes_for - votes_against
+          upvotes = upvotes + votes_for
+          downvotes = downvotes + votes_against
+        end
       
-      judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging, :upvotes => upvotes, :downvotes => downvotes})
-      reset_invocation_response # allow double rendering
+        judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging, :upvotes => upvotes, :downvotes => downvotes})
+        reset_invocation_response # allow double rendering
       
-      # Show Judge Rating form on status bar
-      ratings_form_render = render(:partial => "judgings/rate_judge", :layout => false, :locals => {:judging => @judging, :debateid => @debate.id})
+        # Show Judge Rating form on status bar
+        ratings_form_render = render(:partial => "judgings/rate_judge", :layout => false, :locals => {:judging => @judging, :debateid => @debate.id})
       
-      reset_invocation_response # allow double rendering
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results, :judge_votes => @votes, :judgeid => @judgeid, :ratings_form => ratings_form_render, :winner_id => params[:judging][:winner_id].to_i, :loser_id => @loser_id}})
-      reset_invocation_response # allow double rendering
-      Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
+        reset_invocation_response # allow double rendering
+        Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results, :judge_votes => @votes, :judgeid => @judgeid, :ratings_form => ratings_form_render, :winner_id => params[:judging][:winner_id].to_i, :loser_id => @loser_id}})
+        reset_invocation_response # allow double rendering
+        Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
     
-      # Signal that debate has ended
+        # Signal that debate has ended
  
-      Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
+        Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
       
+      end
     end
     
     # update status bar on show page
@@ -113,7 +115,7 @@ class JudgingsController < ApplicationController
     @judging = Judging.find_by_id(params[:judging][:judging_id])
     @currentdebater = current_or_guest_debater
     
-    if @currentdebater.id == @judging.winner_id
+    if @currentdebater.id == @judging.winner_id and !@judging.winner_approve
       @judging.update_attributes(:winner_approve => params[:judging][:winner_approve])
       @judging.save
       if params[:judging][:winner_approve] == "true" and @judging.loser_approve
@@ -123,7 +125,7 @@ class JudgingsController < ApplicationController
       end
     end
     
-    if @currentdebater.id == @judging.loser_id
+    if @currentdebater.id == @judging.loser_id and !@judging.loser_approve
       @judging.update_attributes(:loser_approve => params[:judging][:winner_approve])
       @judging.save
       if params[:judging][:winner_approve] == "true" and @judging.winner_approve
