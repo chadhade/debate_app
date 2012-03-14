@@ -117,9 +117,13 @@ class Debate < ActiveRecord::Base
   
   def self.matching_debates(current_tp, max1, max2)
     @matching_debates = Array.new
-    @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
-    self.where(:id => @viewing_by_creator, :joined => false).each do |debate|
-      unless debate.tp.nil?
+    @suggested_debates = Array.new
+    
+    viewing_by_creator_ids = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
+    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("judge DESC", "created_at ASC")
+    
+    @debates.each do |debate|
+      unless debate.tp.nil? or !debate.creator.active?
         topic = debate.tp.topic.upcase
         position = debate.tp.position
         words = topic.split(/\s/)
@@ -140,15 +144,14 @@ class Debate < ActiveRecord::Base
             end
           end
           debate.position_match = position_match
-          @matching_debates << debate if match == true
+          match ? @matching_debates << debate : @suggested_debates << debate
       end
     end
     
     #Sort the matches so that opposing positions appear at the topic
     @matching_debates = @matching_debates.sort_by {|a| a.position_match ? 0 : 1}
       
-    @viewing_by_creator_minus_matching = @viewing_by_creator - @matching_debates.map{|v| v.id}
-    @suggested_debates = self.where(:id => @viewing_by_creator_minus_matching, :joined => false).order("judge DESC", "created_at ASC").first(max2)
+    @suggested_debates = @suggested_debates.first(max2)
     
     # return the array
     @matching = {:matching_debates => @matching_debates, :suggested_debates => @suggested_debates}
