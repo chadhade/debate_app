@@ -112,7 +112,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  config.timeout_in = 1.hour
+  config.timeout_in = 10.seconds
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
@@ -206,8 +206,60 @@ Devise.setup do |config|
   # change the failure app, you can configure them inside the config.warden block.
   #
   config.warden do |manager|
-     manager.failure_app   = CustomFailureApp
+     manager.failure_app = CustomFailureApp
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
+  end
+end
+
+# Modify Devise's Warden Hook so that it returns the id of the debater whose session has timed out
+Warden::Manager.after_set_user do |record, warden, options|
+  scope = options[:scope]
+
+  if record && record.respond_to?(:timedout?) && warden.authenticated?(scope) && options[:store] != false
+    last_request_at = warden.session(scope)['last_request_at']
+
+    if record.timedout?(last_request_at)
+      warden.logout(scope)
+      throw :warden, :scope => scope, :message => :timeout, :recordid => record.id
+    end
+
+    unless warden.request.env['devise.skip_trackable']
+      warden.session(scope)['last_request_at'] = Time.now.utc
+    end
+  end
+end
+
+#Modify Devise's Failure Process, so if a debater times out, it calls the clean_session method
+class CustomFailureApp < Devise::FailureApp
+  def redirect_url
+    message = warden.message || warden_options[:message]
+    if message == :timeout     
+      if warden_options[:recordid]
+        clean_session(warden_options[:recordid])
+      end
+      flash[:alert] = "Your session expired, please sign in again to continue."
+      store_location!
+      new_debater_session_path
+    else 
+      super
+    end
+  end
+  
+  def respond
+      if http_auth?
+        http_auth
+      else
+        redirect
+      end
+  end
+    
+  def clean_session(debater_id)
+    debater = Debater.find(debater_id)
+    if debater
+      debater.waiting_for = nil
+      debater.current_sign_in_at = nil
+      debater.save
+    end
   end
 end

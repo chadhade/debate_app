@@ -49,8 +49,7 @@ class ApplicationController < ActionController::Base
     end
     stored_location_for(resource) || "/debaters/sign_in"
   end
- 
- 
+  
   # if user is logged in, return current_user, else return guest_user
   def current_or_guest_debater
     if current_debater
@@ -81,7 +80,7 @@ class ApplicationController < ActionController::Base
     u = Debater.new(:name => "guest#{(Time.now - 15380.days).to_i.to_s.reverse}#{rand(9)}", :email => "guest_#{Time.now.to_i}#{rand(99)}@debunky.com", :password => generated_password(8))
     u.confirmed_at = Time.now
     u.current_sign_in_at = Time.now
-    #u.skip_confirmation!
+    u.last_request_at = Time.now
     u.save!
     u
   end
@@ -95,7 +94,7 @@ class ApplicationController < ActionController::Base
   def record_activity_time
     debater = current_or_guest_debater  
     if debater
-      if (Time.now > debater.last_request_at + 2.minutes) or debater.last_request_at.nil?
+      if (Time.now > debater.last_request_at + 2.minutes)
         debater.last_request_at = Time.now
         debater.save
       end
