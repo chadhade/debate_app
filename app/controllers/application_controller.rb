@@ -16,8 +16,8 @@ class ApplicationController < ActionController::Base
 			return timeleft
 		end
 		
-		# If there are only 2 arguments, you know the timers first started as soon as the judge joined
     if thisdebate.judge
+  		# If there are only 2 arguments, you know the timers first started as soon as the judge joined
   		if arguments.count == 2
   		  return arguments.first(:order => "created_at ASC").time_left - (Time.now - thisdebate.judge_entry.created_at).seconds.to_i
   		else

@@ -319,8 +319,11 @@ end
   def end
     @debate = Debate.find(params[:id])
     @debateid = @debate.id
+    arguments = @debate.arguments.all(:order => "created_at ASC").first(2)
+    debatetime = arguments[0].time_left.seconds + arguments[1].time_left.seconds
     
-    unless @debate.end_time != nil # Make sure this is only called once
+    #Make sure this is only done once and that time is really up
+    if @debate.status[:status_code] == 3 and (Time.now + 2.seconds > @debate.judge_entry.created_at + debatetime) #Allow a 2 second leeway
       @debate.update_attributes(:end_time => Time.now)
     
       judgetime_div = render :partial => "/judgings/judging_timer"
@@ -344,7 +347,7 @@ end
   def end_single
     @debate = Debate.find(params[:id])
     
-    unless @debate.end_single_id != nil # Make sure this is only called once
+    if time_left(@debate) <= 1 and !@debate.end_single_id # Make sure this is only called once and time is really up
       
       @debater_timeleft = params[:clock_position] == 1.to_s ? @debate.joiner : @debate.creator  # 1 = creator, 2 = joiner
       @debate.update_attributes(:end_single_id => params[:clock_position] == 1.to_s ? @debate.creator_id : @debate.joiner_id)
@@ -367,18 +370,19 @@ end
     @debate = Debate.find(params[:id])
     @debateid = @debate.id
     
-      unless @debate.judge_entry.winner_id
-        # update status bar on show page
-        Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
-    
-        # Provide all participants with ability to chat, if judge's submission did not do this already
-          Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
-      end
+    #Make sure this is only done once and that time is really up
+    if @debate.end_time and Time.now + 2.seconds > self.end_time + $judgetime
+      # update status bar on show page
+      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
+  
+      # Provide all participants with ability to chat, if judge's submission did not do this already
+        Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
+    end
       
-        respond_to do |format|
-      	  format.html {render :nothing => true}
-      	  format.js {render :nothing => true}
-      	end
+    respond_to do |format|
+  	  format.html {render :nothing => true}
+  	  format.js {render :nothing => true}
+  	end
   end
   
   def waiting

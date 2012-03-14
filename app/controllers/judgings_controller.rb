@@ -29,11 +29,11 @@ class JudgingsController < ApplicationController
         # If judge joined after both debaters joined, add time spent waiting for judge back to debater 1's time bank
         # Then start timers
         if @debate.arguments.count == 2
-          @firstarg = @debate.arguments.first(:order => "created_at ASC")
-          @secondarg = @debate.arguments.all(:order => "created_at ASC").second
-          @oldtime = @firstarg.time_left
-          @timeleft = @oldtime + (Time.now - @judge.created_at).seconds.to_i
-          @firstarg.update_attributes(:time_left => @timeleft)
+          #@firstarg = @debate.arguments.first(:order => "created_at ASC")
+          #@secondarg = @debate.arguments.all(:order => "created_at ASC").second
+          #@oldtime = @firstarg.time_left
+          #@timeleft = @oldtime + (Time.now - @judge.created_at).seconds.to_i
+          #@firstarg.update_attributes(:time_left => @timeleft)
           @currentturn = @debate.arguments.first(:order => "created_at ASC").debater.email
  
           Juggernaut.publish("debate_" + params[:debate_id], {:func => "judge_arrived", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
@@ -66,7 +66,6 @@ class JudgingsController < ApplicationController
     if Time.now < @debate.end_time + $judgetime
       @judging.update_attributes(:winner_id => params[:judging][:winner_id], :comments => params[:judging][:comments], :loser_id => @loser_id)
       
-      # Trying to move winner_id and loser_id to the debate table
       @debate.update_attributes(:winner_id => params[:judging][:winner_id], :loser_id => @loser_id)
       @debate.save
       

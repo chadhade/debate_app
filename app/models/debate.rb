@@ -4,7 +4,7 @@ class Debate < ActiveRecord::Base
   has_many :topic_positions
   
   # associations for viewings
-  has_many :viewings
+  has_many :viewings, :dependent => :destroy
   
   # associations for debate participation
   has_many :debations
@@ -15,7 +15,7 @@ class Debate < ActiveRecord::Base
   has_many :debaters_tracking, :class_name => "Debater", :through => :trackings  
   
   # associations for arguments
-  has_many :arguments
+  has_many :arguments, :dependent => :destroy
   
   # associations for footnotes
   has_many :footnotes, :through => :arguments
