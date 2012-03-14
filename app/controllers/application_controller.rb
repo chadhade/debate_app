@@ -95,14 +95,9 @@ class ApplicationController < ActionController::Base
   def record_activity_time
     debater = current_or_guest_debater  
     if debater
-      if debater.last_request_at.nil?
+      if (Time.now > debater.last_request_at + 2.minutes) or debater.last_request_at.nil?
         debater.last_request_at = Time.now
         debater.save
-      else
-        if Time.now > debater.last_request_at + 2.minutes
-          debater.last_request_at = Time.now
-          debater.save
-        end
       end
     end
   end

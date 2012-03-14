@@ -5,6 +5,7 @@ class DebatesController < ApplicationController
     $LOAD_PATH << '/opt/local/lib/ruby/gems/1.8/gems/juggernaut-2.1.0/lib/'
     require 'juggernaut'  
   end
+  require 'will_paginate/array'
   
   #Global Variables
   $judgetime = 30.seconds
@@ -184,7 +185,7 @@ end
   	end
   	
   	#toggle judgings index if applicable
-  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing("creator") and @debate.currently_viewing("joiner")
+  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing(@debate.creator_id) and (@debate.currently_viewing(@debate.joiner_id) if @debate.joined)
 	  
   	# Add footnotes, if any exist
   	@arguments.each do |argument|
@@ -302,9 +303,9 @@ end
       @debates_in_limbo.unshift(debate) if debate.end_time.nil? and (!debate.judge or !debate.joined)
 	  end
 	  
-	  @debates_ongoing = @debates_ongoing.first(50)
-	  @debates_ongoing = @debates_ongoing.paginate(:page => params[:ongoing_page], :per_page => 10)
-	  @debates_completed = @debates_completed.first(50)
+	  @debates_ongoing = @debates_ongoing.first(30)
+	  @debates_ongoing = @debates_ongoing.paginate(:page => params[:ongoing_page], :per_page => 10) 
+	  @debates_completed = @debates_completed.first(30)
 	  @debates_completed = @debates_completed.paginate(:page => params[:completed_page], :per_page => 10)
 	
 	  @ajaxupdate = 1 if !params[:ongoing_page].nil?

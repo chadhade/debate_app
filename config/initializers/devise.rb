@@ -112,7 +112,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  config.timeout_in = 10.seconds
+  config.timeout_in = 1.hour
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
@@ -205,9 +205,9 @@ Devise.setup do |config|
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
   #
-  # config.warden do |manager|
-  #   manager.failure_app   = AnotherApp
+  config.warden do |manager|
+     manager.failure_app   = CustomFailureApp
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
-  # end
+  end
 end

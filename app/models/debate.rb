@@ -48,18 +48,6 @@ class Debate < ActiveRecord::Base
     creator = Debater.find_by_id(self.creator_id)
   end
   
-  def currently_viewing(who)
-    case who
-    when "joiner"
-      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.joiner_id).first(:order => "created_at ASC").currently_viewing if self.joined
-    when "creator"
-      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.creator_id).first(:order => "created_at ASC").currently_viewing
-    when "judge"
-      self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", self.judge_id).first(:order => "created_at ASC").currently_viewing if self.judge
-    else
-      nil
-    end
-  end  
   
   def joiner
     #@joiner = Debater.find_by_id(self.arguments.all(:order => "created_at ASC").second.debater_id) unless self.arguments.all(:order => "created_at ASC").second.nil?
@@ -174,28 +162,22 @@ class Debate < ActiveRecord::Base
     joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
     joined_no_judge_cv = Array.new
     joined_no_judge.each do |debate|
-      if debate.currently_viewing("creator") and debate.currently_viewing("joiner")
-        joined_no_judge_cv << debate
-        max -= 1
-        return joined_no_judge_cv if max == 0
+      if debate.joiner.active? and debate.creator.active?
+        if debate.currently_viewing(debate.creator_id) and debate.currently_viewing(debate.joiner_id)
+          joined_no_judge_cv << debate
+          max -= 1
+          return joined_no_judge_cv if max == 0
+        end
       end
     end
     
-    #{:joined_no_judge => @joined_no_judge_cv}
     return joined_no_judge_cv 
     
-    #this way of pulling the appropriate debates was very inefficient
-    # @viewing_by_creator = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
-    # @viewing_by_joiner = Viewing.where("currently_viewing = ? AND joiner = ?", true, true).map{|v| v.debate_id}
-    # @viewing_by_both = @viewing_by_creator & @viewing_by_joiner
-    # @joined_no_judge = self.where(:id => @viewing_by_both, :joined => true, :judge => false).order("joined_at ASC")
-    
-    #stuff for when we allowed judge to join unjoined debate
-    # @unjoined_no_judge = self.where(:id => @viewing_by_creator, :joined => false, :judge => false).order("created_at ASC")
-    # {:joined_no_judge => @joined_no_judge, :unjoined_no_judge => @unjoined_no_judge}
-    
-    #this was of pulling the appropriate debates was very inefficient
-    # {:joined_no_judge => @joined_no_judge}
+  end
+  
+  def currently_viewing(debater_id)
+    return false if debater_id.nil?
+    self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", debater_id).first(:order => "created_at ASC").currently_viewing
   end
   
   def self.load_pronouns

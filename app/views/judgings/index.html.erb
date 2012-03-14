@@ -103,10 +103,15 @@
 	<div class = "topic-starter-width topic-heading" style="min-width: 16%;max-width:16%" > Joiner </div>
 	<div class = "topic-argument-width topic-heading"> Joined At </div>
 	<div class="containercontent" style = "max-height:600px;">
-		<%= render :partial => "debate_link_joined", :locals => {:joined_no_judge => @joined_no_judge} %>
+		<% if @joined_no_judge %>
+			<%= render :partial => "debate_link_joined", :locals => {:joined_no_judge => @joined_no_judge} unless @joined_no_judge.nil? %>
+		<% else %>
+			<br />
+			Currently no debates waiting for a Judge.  Why don't you <%= link_to "start one", topic_positions_path %>?
+		<% end %>
 	</div>	
 	<div class="list_pagination">
-		<%= will_paginate @joined_no_judge %>
+		<%= will_paginate @joined_no_judge unless @joined_no_judge.nil? %>
 	</div>
 	
 </div>
