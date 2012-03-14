@@ -69,6 +69,10 @@ class Debate < ActiveRecord::Base
     self.joiner == debater
   end
   
+  def judger?(debater)
+    self.judger == debater
+  end
+  
   def participant?(debater)
     self.creator == debater || self.joiner == debater || self.judge_id == debater.id
   end
@@ -177,7 +181,7 @@ class Debate < ActiveRecord::Base
   
   def currently_viewing(debater_id)
     return false if debater_id.nil?
-    self.viewings.where("viewer_type = ? and viewer_id = ?", "Debater", debater_id).first(:order => "created_at ASC").currently_viewing
+    self.viewings.where("viewer_id = ?", debater_id).first(:order => "created_at ASC").currently_viewing
   end
   
   def self.load_pronouns

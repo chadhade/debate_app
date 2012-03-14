@@ -13,18 +13,18 @@
 					<% end %> 
 				</div>
 				<div class = "topic-starter-width" style="min-width:16%;max-width:16%">
-					<% starter = Debater.find_by_id(debate.creator_id) %>
+					<% starter = debate.creator %>
 					<% starter.nil? ? starter = Debater.find_by_id(1) : nil %> <%# Remove This %>
-					<% if starter.last_sign_in_at %>
+					<% if !starter.guest? %>
 						<%= link_to starter.name, starter %>
 					<% else %>
 						<%= starter.name %>
 					<% end %>
 				</div>
 				<div class = "topic-starter-width" style="min-width:16%;max-width:16%">
-					<% joiner = Debater.find_by_id(debate.joiner_id) %>
+					<% joiner = debate.joiner %>
 					<% joiner.nil? ? joiner = Debater.find_by_id(1) : nil %> <%# Remove This %>
-					<% if joiner.last_sign_in_at %>
+					<% if !joiner.guest? %>
 						<%= link_to joiner.name, joiner %>
 					<% else %>
 						<%= joiner.name %>

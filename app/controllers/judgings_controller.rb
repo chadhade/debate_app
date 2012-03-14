@@ -16,12 +16,13 @@ class JudgingsController < ApplicationController
 
   def create
     @debate = Debate.find(params[:debate_id])
+    @currentdebater = current_or_guest_debater
     
-    unless current_or_guest_debater.waiting_for != nil
-      if !@debate.creator?(current_or_guest_debater) and !@debate.joiner?(current_or_guest_debater) and !@debate.judge
-        @judge = Judging.new(:debater_id => current_or_guest_debater.id, :debate_id => @debate.id)
+    unless @currentdebater.waiting_for != nil
+      if !@debate.creator?(@currentdebater) and !@debate.joiner?(@currentdebater) and !@debate.judge
+        @judge = Judging.new(:debater_id => @currentdebater.id, :debate_id => @debate.id)
         @judge.save
-        @debate.update_attributes(:judge => true, :judge_id => current_or_guest_debater.id)
+        @debate.update_attributes(:judge => true, :judge_id => @currentdebater.id)
     	
       	@debatestatus = @debate.status
     	
@@ -111,8 +112,9 @@ class JudgingsController < ApplicationController
   
   def rating
     @judging = Judging.find_by_id(params[:judging][:judging_id])
+    @currentdebater = current_or_guest_debater
     
-    if current_or_guest_debater.id == @judging.winner_id
+    if @currentdebater.id == @judging.winner_id
       @judging.update_attributes(:winner_approve => params[:judging][:winner_approve])
       @judging.save
       if params[:judging][:winner_approve] == "true" and @judging.loser_approve
@@ -122,7 +124,7 @@ class JudgingsController < ApplicationController
       end
     end
     
-    if current_or_guest_debater.id == @judging.loser_id
+    if @currentdebater.id == @judging.loser_id
       @judging.update_attributes(:loser_approve => params[:judging][:winner_approve])
       @judging.save
       if params[:judging][:winner_approve] == "true" and @judging.winner_approve

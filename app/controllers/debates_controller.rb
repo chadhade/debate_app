@@ -61,29 +61,29 @@ class DebatesController < ApplicationController
   end
   
   def join
-    
+    @currentdebater = current_or_guest_debater
     # if debater was currently waiting for another debate, he is not allowed to join
-  	if current_or_guest_debater.waiting_for
+  	if @currentdebater.waiting_for
   	  return
   	end
   	
     @debate = Debate.find(params[:id])
   	# link debater to debate
-  	current_or_guest_debater.debations.create(:debate_id => params[:id])
-    @currentid = current_or_guest_debater.id
+  	@currentdebater.debations.create(:debate_id => params[:id])
+    @currentid = @currentdebater.id
 	
   	#The amount of time Debater 2 has left.  
   	@Seconds_Left_2 = $debatetime
   	
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
-  	@argument = current_or_guest_debater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
+  	@argument = @currentdebater.arguments.create(:content => @content_of_post, :debate_id => params[:id], :time_left => @Seconds_Left_2)
 	
   	# update joined columns of debates
   	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at, :joiner_id => @currentid)
   	
   	# update joiner column of viewings
-  	update_viewings(current_or_guest_debater, @debate)
+  	update_viewings(@currentdebater, @debate)
 	
   	# Check if there are footnotes attached
 	  if @argument.has_footnote?
@@ -101,19 +101,19 @@ class DebatesController < ApplicationController
 	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id, :currentid => @currentid, :status => @debatestatus}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
-	  waiting_icon_render = render(:partial => "debates/waiting", :locals => {:debate => @debate}, :layout => false)
+	  waiting_icon_render = render(:partial => "debates/waiting", :locals => {:debate => @debate, :status => @debatestatus, :debater => @currentdebater, :participant => true}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
 	  
-	  current_or_guest_debater.current_sign_in_at ? joinerpath = "<a href=\"/debaters/#{current_or_guest_debater.id.to_s}\">#{current_or_guest_debater.mini_name}</a>" : joinerpath = current_or_guest_debater.mini_name + " : "
+	  @currentdebater.guest? ? joinerpath = "<a href=\"/debaters/#{@currentdebater.id.to_s}\">#{@currentdebater.mini_name}</a>" : joinerpath = @currentdebater.mini_name + " : "
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :current_turn => @debate.current_turn.name, 
 	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
 	  
 	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => "/debaters/" + current_or_guest_debater.id.to_s, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
-	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => joinerpath, :joinerid => @currentid, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
+	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => @currentdebater.mini_name, :joinerpath => joinerpath, :joinerid => @currentid, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  reset_invocation_response # allow double rendering
 	  
 	  Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
@@ -151,22 +151,25 @@ end
   	@argument_last = @arguments.last(:order => "created_at ASC")
   	@previoustimeleft = @argument_last.time_left
   	@currentdebater = current_or_guest_debater
-  	@guest = !debater_signed_in?
+  	@guest = @currentdebater.guest?
   	@debaters = @debate.debaters
 	
   	#debater_signed_in? ? @currentid = @currentdebater.id : @currentid = nil
 	  @currentid = @currentdebater.id
-	  
+	  @is_creator = @debate.creator?(@currentdebater)
+	  @is_joiner = @debate.joiner?(@currentdebater)
+	  @is_judger = @debate.judger?(@currentdebater)
+  	
   	# for viewings
-  	if @debate.participant?(@currentdebater)
-  	  update_viewings(@currentdebater, @debate)
+  	if @is_creator or @is_joiner or @is_judger
+  	  update_viewings(@currentdebater, @debate, @is_creator, @is_joiner)
   	  @participant = true
   	else
   	  @participant = false
   	end
   	
   	if !@currentdebater.nil?
-    	if @currentdebater.creator?(@debate) and !@debate.joined?
+    	if @is_creator and !@debate.joined?
     	  Juggernaut.publish("matches", {:func => "unhide", :obj => @debateid})
   	  end
 	  end
@@ -174,9 +177,9 @@ end
   	# set status
   	@status = @debate.status	  
     unless @currentdebater.nil?
-      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @currentdebater.creator?(@debate)
-    	Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @currentdebater.joiner?(@debate)
-    	Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true", :who_message => "Judge has arrived."}}) if @currentdebater.judge?(@debate)
+      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @is_creator
+    	Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @is_joiner
+    	Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true", :who_message => "Judge has arrived."}}) if @is_judger
   	end
   	
   	#toggle waiting_for attribute if debater returns to that debate
@@ -185,7 +188,7 @@ end
   	end
   	
   	#toggle judgings index if applicable
-  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@debate.creator?(@currentdebater) or @debate.joiner?(@currentdebater)) and @debate.currently_viewing(@debate.creator_id) and (@debate.currently_viewing(@debate.joiner_id) if @debate.joined)
+  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@is_creator or @is_joiner) and @debate.currently_viewing(@debate.creator_id) and (@debate.currently_viewing(@debate.joiner_id) if @debate.joined)
 	  
   	# Add footnotes, if any exist
   	@arguments.each do |argument|
@@ -260,30 +263,25 @@ end
   end
 
 ##############################################################################  
-  def update_viewings(currentdebater, debates)
+  def update_viewings(currentdebater, debates, is_creator, is_joiner)
   	# set viewer variable
   	  viewer = currentdebater
 
   	# go through debates and update viewings for viewer and debate
   	if debates.kind_of?(Array)
-  	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate)}
+  	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate, is_creator, is_joiner)}
   	else
-  	  update_viewings_for_viewer_debate(viewer, debates)
+  	  update_viewings_for_viewer_debate(viewer, debates, is_creator, is_joiner)
   	end	
   end
   
-  def update_viewings_for_viewer_debate(viewer, debate)
+  def update_viewings_for_viewer_debate(viewer, debate, creator, joiner)
   	existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
   	if existing_viewing.empty?
-  	  creator = viewer.class.name == 'Debater' ? debate.creator?(viewer) : false
-  	  joiner = viewer.class.name == 'Debater' ? debate.joiner?(viewer) : false
   	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator, :joiner => joiner)
   	else
   	  existing_viewing.each do |viewing| 
-  	    viewing.update_attributes(:currently_viewing => true) # unless existing_viewing.currently_viewing == true
-  	    if viewer.class.name == 'Debater'
-  	      viewing.update_attributes(:joiner => true) if viewing.debate.joiner?(viewer)
-	      end
+  	    viewing.update_attributes(:currently_viewing => true) unless viewing.current_viewing
 	    end
   	end    
   end

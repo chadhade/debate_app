@@ -37,6 +37,9 @@ class ApplicationController < ActionController::Base
 	end
  
 	def after_sign_up_path_for(resource)
+		debater = current_debater
+		debater.last_request_at = Time.now
+		debater.save
 		stored_location_for(resource) || "/pages/landing"
 	end
 
@@ -46,6 +49,7 @@ class ApplicationController < ActionController::Base
       debater.waiting_for = nil
       debater.current_sign_in_at = nil
       debater.save
+      debater.clear_viewings if debater.view_count > 0
     end
     stored_location_for(resource) || "/debaters/sign_in"
   end
@@ -93,7 +97,8 @@ class ApplicationController < ActionController::Base
   #Update debater's activity time every 2 minutes
   def record_activity_time
     debater = current_or_guest_debater  
-    if debater
+    return if !debater
+    if debater.last_request_at
       if (Time.now > debater.last_request_at + 2.minutes)
         debater.last_request_at = Time.now
         debater.save

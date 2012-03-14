@@ -23,7 +23,7 @@ class DebatersController < ApplicationController
     @debater = Debater.find(params[:id])
     
     #Cannot view profile page of guests
-    if !@debater.last_sign_in_at 
+    if @debater.guest? 
       redirect_to topic_positions_path
     end
     

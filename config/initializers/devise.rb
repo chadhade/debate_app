@@ -260,6 +260,7 @@ class CustomFailureApp < Devise::FailureApp
       debater.waiting_for = nil
       debater.current_sign_in_at = nil
       debater.save
+      debater.clear_viewings if debater.view_count > 0
     end
   end
 end

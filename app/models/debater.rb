@@ -49,7 +49,12 @@ class Debater < ActiveRecord::Base
   scope :teammates, lambda { |debater| team_debaters(debater)}
   
   def active?
-    self.current_sign_in_at and !self.timedout?(self.last_request_at)
+    return false if self.current_sign_in_at 
+    !self.timedout?(self.last_request_at)
+  end
+  
+  def guest?
+    self.sign_in_count > 0
   end
   
   def judge?(debate)
@@ -142,6 +147,14 @@ class Debater < ActiveRecord::Base
   
   def mini_name
     self.name[0..9]
+  end
+  
+  def view_count
+    self.viewings.where("currently_viewing = ?", true).count
+  end
+  
+  def clear_viewings
+    Viewing.update_all({:currently_viewing => false}, ["viewer_id = ? AND currently_viewing = ?", self.id, true])
   end
   
   private

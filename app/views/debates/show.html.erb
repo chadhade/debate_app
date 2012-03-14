@@ -1,6 +1,6 @@
 <span class="page-title"><h1>DeBunk!</h1></span>
 
-<span class="waiting-icon"><%= render :partial => "/debates/waiting", :locals => {:debate => @debate} %> </span>
+<span class="waiting-icon"><%= render :partial => "/debates/waiting", :locals => {:debate => @debate, :debater => @currentdebater, :participant => @participant, :status => @status} %> </span>
 
 <br />
 
@@ -24,17 +24,17 @@
 	debate_id = <%= @debateid %>; 
 </script>
 
-<%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate} %>
+<%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate, :debater => @currentdebater} %>
 
 <script>
 	function debateEnd() {
 		var debate_id = $(".debate").attr("data-id");
 		url = "/debates/" + debate_id + "/end.js";
 		
-		<% if @debate.creator == @currentdebater %>	
+		<% if @is_creator %>	
 			endAjax(url);
 		<% end %>
-		if((<%= @debate.joiner == @currentdebater %>) || (joiner[<%= @debateid %>] == <%= @currentdebater.id %>)) {
+		if((<%= @is_joiner %>) || (joiner[<%= @debateid %>] == <%= @currentdebater.id %>)) {
 			setTimeout("endAjax(url)", 1000);
 		}
 	}
@@ -42,10 +42,10 @@
 	function endSingle(clock_position) {
 		var debate_id = $(".debate").attr("data-id");
 		url = "/debates/" + debate_id + "/end_single.js?clock_position=" + clock_position
-		<% if @debate.creator == @currentdebater %>
+		<% if @is_creator %>
 			endAjax(url);
 		<% end %>
-		if((<%= @debate.joiner == @currentdebater %>) || (joiner[<%= @debateid %>] == <%= @currentdebater.id %>)) {
+		if((<%= @is_joiner %>) || (joiner[<%= @debateid %>] == <%= @currentdebater.id %>)) {
 			setTimeout("endAjax(url)", 1000);
 		}
 	}
@@ -55,7 +55,7 @@
 		$('#judge-timer').remove();
 		$('.judging_form').remove();
 		url = "/debates/" + debate_id + "/end_judge.js"
-		<% if @debate.creator == @currentdebater or @debate.judge_id == @currentdebater.id %>
+		<% if @is_creator or @is_judger %>
 			endAjax(url);
 		<% end %>
 	}
@@ -92,7 +92,7 @@
 			</div>
 			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid} %>			  
 		</div>
-		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater} %>
+		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater, :is_creator => @is_creator, :participant => @participant} %>
 	</div>
 
 <script>
@@ -137,7 +137,7 @@
 		
 		<!-- Show Debater Rating Form -->
 		<% if @status[:status_code] == 5 %>
-			<% if @debate.participant?(current_or_guest_debater) %>
+			<% if @participant %>
 				<% if @currentdebater.id == @judging.winner_id and @judging.winner_approve.nil? %>
 					<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debateid} %>
 				<% end %>

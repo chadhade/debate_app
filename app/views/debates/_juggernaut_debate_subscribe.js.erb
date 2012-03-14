@@ -10,8 +10,8 @@
 			<% end %>
  			$(".debate[data-id="+ <%= debate.id %> +"]").prop({ scrollTop: $(".debate[data-id="+ <%= debate.id %> +"]").prop("scrollHeight") });
 			
-			<% if !current_or_guest_debater.nil? %>
-				if ("<%= current_or_guest_debater.email %>" == data.obj.current_turn) {
+			<% if !debater.nil? %>
+				if ("<%= debater.email %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 				}
@@ -106,8 +106,8 @@
 			<% if Rails.env.development? or Rails.env.test? %>      	
 				$('#statuspanel').append(data.obj.judging_results);
 				
-				<% if !current_or_guest_debater.nil? %>
-					if((<%= current_or_guest_debater.id %> == data.obj.winner_id) || (<%= current_or_guest_debater.id %> == data.obj.loser_id)) {
+				<% if !debater.nil? %>
+					if((<%= debater.id %> == data.obj.winner_id) || (<%= debater.id %> == data.obj.loser_id)) {
 						$('#statuspanel').append(data.obj.ratings_form);
 					}
 				<% end %>
@@ -115,8 +115,8 @@
 			<% else %>
 				$('#statuspanel').append(data.obj.judging_results[0]);
 				
-				<% if !current_or_guest_debater.nil? %>
-					if((<%= current_or_guest_debater.id %> == data.obj.winner_id) || (<%= current_or_guest_debater.id %> == data.obj.loser_id)) {
+				<% if !debater.nil? %>
+					if((<%= debater.id %> == data.obj.winner_id) || (<%= debater.id %> == data.obj.loser_id)) {
 						$('#statuspanel').append(data.obj.ratings_form[0]);
 					}
 				<% end %>
@@ -145,8 +145,8 @@
 			voteable[<%= debate.id %>] = true;
 			abort_timer[<%= debate.id %>] = 0;
 			
-			<% if !current_or_guest_debater.nil? %>
-				if ("<%= current_or_guest_debater.email %>" == data.obj.current_turn) {
+			<% if !debater.nil? %>
+				if ("<%= debater.email %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 				}
@@ -172,8 +172,8 @@
 
 		if (data.func == "end_single") {
 			
-			<% if !current_or_guest_debater.nil? %>
-				if ("<%= current_or_guest_debater.email %>" == data.obj.current_turn) {   	
+			<% if !debater.nil? %>
+				if ("<%= debater.email %>" == data.obj.current_turn) {   	
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();	
 				}
@@ -193,13 +193,13 @@
 		}
 		
 		if (data.func == "end_debate") {
-				if((<%= debate.participant?(current_or_guest_debater) %>) || (<%= current_or_guest_debater.id %> == data.obj.joiner_id)) {	  	
+				if((<%= debate.participant?(debater) %>) || (<%= debater.id %> == data.obj.joiner_id)) {	  	
 					$(".chat_to_debate").show();
 				}
 		}
 	});
 	
-	<% if current_or_guest_debater != debate.judger %>
+	<% if debater != debate.judger %>
 		jug.subscribe("debate_" + <%= debate.id %> + "_votes", function(votes){
 		
 			if (votes.obj.type == "true") {
@@ -211,7 +211,7 @@
 		});
 	<% end %>
 	
-	<% if current_or_guest_debater == debate.judger %>
+	<% if debater == debate.judger %>
 		jug.subscribe("debate_" + <%= debate.id %> + "_judge", function(data){
 			if (data.judging_form =="clear_form") {
 				$('.judging_form').remove();
