@@ -4,10 +4,10 @@ class ViewingsController < ApplicationController
 
   	if !params[:debate_id].nil?
   	  @debate = Debate.find(params[:debate_id])
-  	  update_viewings(@currentdebater, @debate)
   	  @is_creator = @debate.creator?(@currentdebater)
   	  @is_joiner = @debate.joiner?(@currentdebater)
   	  @is_judger = @debate.judger?(@currentdebater)
+  	  update_viewings(@currentdebater, @debate, @is_creator, @is_joiner)
   	  
   	  if !@currentdebater.nil?
   	    if @is_creator and !@debate.joined?

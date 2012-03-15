@@ -190,4 +190,8 @@ class ArgumentsController < ApplicationController
       return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
   end
   
+  private
+    def show_footnote
+  	  self.content_foot.html_safe
+    end
 end

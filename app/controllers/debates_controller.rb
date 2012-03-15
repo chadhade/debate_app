@@ -62,12 +62,14 @@ class DebatesController < ApplicationController
   
   def join
     @currentdebater = current_or_guest_debater
-    # if debater was currently waiting for another debate, he is not allowed to join
-  	if @currentdebater.waiting_for
+    @debate = Debate.find(params[:id])
+    
+    # if debater was currently waiting for another debate, or is the creator, he is not allowed to join
+  	if @currentdebater.waiting_for or @currentdebater.id == @debate.creator_id
   	  return
   	end
   	
-    @debate = Debate.find(params[:id])
+    
   	# link debater to debate
   	@currentdebater.debations.create(:debate_id => params[:id])
     @currentid = @currentdebater.id
@@ -83,7 +85,7 @@ class DebatesController < ApplicationController
   	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at, :joiner_id => @currentid)
   	
   	# update joiner column of viewings
-  	update_viewings(@currentdebater, @debate)
+  	update_viewings(@currentdebater, @debate, false, true)
 	
   	# Check if there are footnotes attached
 	  if @argument.has_footnote?
@@ -106,7 +108,7 @@ class DebatesController < ApplicationController
 	  
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
 	  
-	  @currentdebater.guest? ? joinerpath = "<a href=\"/debaters/#{@currentdebater.id.to_s}\">#{@currentdebater.mini_name}</a>" : joinerpath = @currentdebater.mini_name + " : "
+	  @currentdebater.guest? ? joinerpath = @currentdebater.mini_name + " : " : joinerpath = "<a href=\"/debaters/#{@currentdebater.id.to_s}\">#{@currentdebater.mini_name}</a>"
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :current_turn => @debate.current_turn.name, 
@@ -281,7 +283,7 @@ end
   	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => true, :creator => creator, :joiner => joiner)
   	else
   	  existing_viewing.each do |viewing| 
-  	    viewing.update_attributes(:currently_viewing => true) unless viewing.current_viewing
+  	    viewing.update_attributes(:currently_viewing => true) unless viewing.currently_viewing
 	    end
   	end    
   end

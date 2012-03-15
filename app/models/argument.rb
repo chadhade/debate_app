@@ -60,36 +60,40 @@ class Argument < ActiveRecord::Base
   end
 
   def save_footnote(thedebate)
-	  content = self.content
+	  content = self.content.gsub("\"", "\'") # Replace double quotes with single quotes
   	endposition = -2
   	content_stripped = ""
   	content_html = content
-	
+
   	#Find the position of the first footnote
   	startposition = content.index(/\(\((.+)\)\)/)
-	
+
   	#Save the footnote and its position. Then find the position of the next footnote.
   	until startposition.nil? do
   		content_stripped = content_stripped + content[endposition + 2..startposition - 1] #Produce a version without footnotes
-		
+
   		endposition = content.index(/\)\)/, startposition - 1)
   		@footnote = content[startposition + 2..endposition - 1]
   		footcount = thedebate.footnotes.count + 1
   		footnotes.create!(:content => @footnote, :position => startposition, :foot_count => footcount)
+  		oldstart = startposition
   		startposition = content.index(/\(\((.+)\)\)/, endposition)
-	
+
   		#Produce a version with footnotes turned into html
-  		content_html = content_html.sub(/\(\(#{@footnote}\)\)/,"<a href=\"#\" title=\"#{@footnote}\" class=\"footnote\"> 
-  		               <span>#{footcount}</span> </a>")
-	end
+      #content_html = content_html.sub(/\(\(#{@footnote}\)\)/,"<a href=\"#\" title=\"#{@footnote}\" class=\"footnote\"> <span>#{footcount}</span> </a>")
+  		content_html = content_html + "a"
+  		content_html.chop!
+  		content_html["((" + @footnote + "))"] = "<a href=\"#\" title=\"#{@footnote}\" class=\"footnote\"> <span>#{footcount}</span> </a>"
+  		#content_html.slice! "((" + @footnote + "))"
+  		#content_html.insert oldstart, "<a href=\"#\" title=\"#{@footnote}\" class=\"footnote\"> <span>#{footcount}</span> </a>"
+    end
 	
-	self.update_attributes(:content => content_stripped, :any_footnotes => true, :content_foot => content_html)
+	 self.update_attributes(:content => content_stripped, :any_footnotes => true, :content_foot => content_html)
 	
   end
   
   def show_footnote
 	  self.content_foot.html_safe
   end
-  
-  end
+end
 
