@@ -1,21 +1,21 @@
 <% if !judging.winner_approve.nil? or !judging.loser_approve.nil? %>
 	<div class='debater_ratings'>
 		<% unless judging.winner_approve.nil? %>
-			<% debater = Debater.find(judging.winner_id) %>
-			<% if debater.current_sign_in_at %>
-				<%= link_to debater.name, debater %>
-			<% else %>
+			<% judging.winner_id == 0 ? debater = Debater.find(debate.creator_id) : debater = Debater.find(judging.winner_id) %>
+			<% if debater.guest? %>
 				<%= debater.name %>
+			<% else %>
+				<%= link_to debater.name, debater %>
 			<% end %>
 			declares the judge was <strong><%= judging.winner_approve ? "fair." : "not fair." %></strong> <br />
 		<% end %> 
 	
 		<% unless judging.loser_approve.nil? %>
-			<% debater = Debater.find(judging.loser_id) %>
-			<% if debater.current_sign_in_at %>
-				<%= link_to debater.name, debater %>
-			<% else %>
+			<% judging.winner_id == 0 ? debater = Debater.find(debate.joiner_id) : debater = Debater.find(judging.loser_id) %>
+			<% if debater.guest? %>
 				<%= debater.name %>
+			<% else %>
+				<%= link_to debater.name, debater %>
 			<% end %> 
 			declares the judge was <strong><%= judging.loser_approve ? "fair." : "not fair." %><strong> <br />
 		<% end %>

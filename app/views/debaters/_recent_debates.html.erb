@@ -15,15 +15,19 @@
 							<%= link_to debate.tp.topic, debate %> </span>
 						</div> 
 						<div class = "topic-starter-width">
-							<% winner = Debater.find_by_id(debate.winner_id) %>
-							<% if !winner.nil? %>
-								<% if winner.sign_in_count > 0 %>
-									<%= link_to winner.name, winner %>
-								<% else %>
-									<%= winner.mini_name %>
-								<% end %>
+							<% if debate.winner_id == 0 %>
+								<%= "Draw." %>
 							<% else %>
-								&nbsp
+								<% winner = Debater.find_by_id(debate.winner_id) %>
+								<% if !winner.nil? %>
+									<% if winner.sign_in_count > 0 %>
+										<%= link_to winner.name, winner %>
+									<% else %>
+										<%= winner.mini_name %>
+									<% end %>
+								<% else %>
+									&nbsp
+								<% end %>
 							<% end %>
 						</div>
 						<div class = "topic-argument-width">

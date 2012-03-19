@@ -38,10 +38,11 @@ class DebatersController < ApplicationController
       @recentdebates = @debates.all(:order => "created_at DESC").last(30)
       @recentdebates = @recentdebates.paginate(:page => params[:page], :per_page => 10)
       
-      @debateswon = Judging.where("winner_id = ?", @debater.id).count
-      @debateslost = Judging.where("loser_id = ?", @debater.id).count
-      @debatesnoresults = @debates.count - (@debateswon + @debateslost)
-      @debaterjudgings = Judging.where("debater_id = ? AND winner_id > ?", @debater.id, 0).count  
+      @debateswon = @debates.where("winner_id = ?", @debater.id).count
+      @debateslost = @debates.where("loser_id = ?", @debater.id).count
+      @debatestied = @debates.where("winner_id = ?", 0).count
+      @debatesnoresults = @debates.count - (@debateswon + @debateslost + @debatestied)
+      @debaterjudgings = Judging.where("debater_id = ? AND winner_id >= ?", @debater.id, 0).count  
       
       argument_ids = @debater.arguments.collect{|u| u.id}
       @positivevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", argument_ids, "Argument", true).count
@@ -55,29 +56,21 @@ class DebatersController < ApplicationController
         team_ids = @teammates.collect{|u| u.id}
         teamargument_ids = Argument.where(:debater_id => team_ids).collect(&:id)
       
-        #@teamdebates = 0
-        #@teamjudgepoints = 0
-        #@teammates.each do |deb|
-          #if Rails.env.development? or Rails.env.test?
-            #@teamdebates += deb.debates.where("end_time > ?", 0).count
-          #else
-            #@teamdebates += deb.debates.where("end_time > ?", "01/01/01").count
-          #end
-          #@teamjudgepoints += deb.judge_points
-          #teamargument_ids =  teamargument_ids + deb.arguments.collect{|u| u.id}
-        #end
         if Rails.env.development? or Rails.env.test?
-          @teamdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, 0).count
+          @tdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, 0)
+          @teamdebates = @tdebates.count
         else
-          @teamdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, "01/01/01").count
+          @tdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, "01/01/01")
+          @teamdebates = @tdebates.count
         end
         
         @teamjudgepoints = Debater.where("id IN (?)", team_ids).sum(:judge_points)
         
-        @teamdebateswon = Judging.where("winner_id IN (?)", team_ids).count
-        @teamdebateslost = Judging.where("loser_id IN (?)", team_ids).count
-        @teamdebatesnoresults = @teamdebates - (@teamdebateswon + @teamdebateslost)
-        @teamjudgings = Judging.where("debater_id IN (?) AND winner_id > ?", team_ids, 0).count
+        @teamdebateswon = @tdebates.where("winner_id IN (?)", team_ids).count
+        @teamdebateslost = @tdebates.where("loser_id IN (?)", team_ids).count
+        @teamdebatestied = @tdebates.where("winner_id = ?", 0).count
+        @teamdebatesnoresults = @teamdebates - (@teamdebateswon + @teamdebateslost + @teamdebatestied)
+        @teamjudgings = Judging.where("debater_id IN (?) AND winner_id >= ?", team_ids, 0).count
       
         @teampositivevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", teamargument_ids, "Argument", true).count
         @teamnegativevotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ?", teamargument_ids, "Argument", false).count
@@ -95,7 +88,7 @@ class DebatersController < ApplicationController
       #end
       
       @followdebates = Debate.where("creator_id IN (?) or joiner_id IN (?)", follow_ids, follow_ids)
-      @followdebates = @followdebates.all(:order => "id DESC").last(30)
+      @followdebates = @followdebates.all(:order => "updated_at DESC").first(30)
       @followdebates = @followdebates.paginate(:page => params[:following_page], :per_page => 8)
       
       @ajaxupdate = 1 if !params[:page].nil?

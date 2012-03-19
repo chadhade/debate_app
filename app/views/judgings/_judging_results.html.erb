@@ -1,11 +1,15 @@
 <!-- must pass in judging to partial!!! -->
 <div class='judging_results'>
 	<strong>Winner:</strong> 
-	<% debater = Debater.find(judging.winner_id) %>
-	<% if !debater.guest? %>
-		<%= link_to debater.name, debater %>
+	<% if judging.winner_id == 0 %>
+		<%= "Draw." %>
 	<% else %>
-		<%= debater.name %>
+		<% debater = Debater.find(judging.winner_id) %>
+		<% if !debater.guest? %>
+			<%= link_to debater.name, debater %>
+		<% else %>
+			<%= debater.name %>
+		<% end %>
 	<% end %>
 	<br> 
 	

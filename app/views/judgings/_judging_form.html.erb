@@ -3,7 +3,7 @@
 	<%= form_for judging, :remote => true, :url => submission_judging_path(judging) do |f| %>
 		<div class = "field">
 			Select a winner:<br>
-			<%= f.select(:winner_id, [[judging.debate.creator.name, judging.debate.creator.id], [judging.debate.joiner.name, judging.debate.joiner.id]]) %><br />
+			<%= f.select(:winner_id, [["Draw", 0], [judging.debate.creator.name, judging.debate.creator.id], [judging.debate.joiner.name, judging.debate.joiner.id]]) %><br />
 			<%= f.label :comments %> <br/>
 			<%= f.text_area :comments, :size => "10x2", :onkeyup => "textCounter(this, this.form.current_count, 1000);" %>
 		</div>
