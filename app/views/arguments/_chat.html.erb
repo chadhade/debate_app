@@ -11,5 +11,11 @@
 		<% end %>
 	</div>
 	
-	<span class = "argument">: <%= argument.content %></span>
+	<span class = "argument">: <%= argument.content %>
+		<% if argument.image_url %>
+			<br />
+			<%= image_tag(argument.image_url, :onMouseOver => "imgEnlarge(this);", :onMouseOut => "imgReduce(this);") %>
+		<% end %>
+	</span>
 </div>
+

@@ -39,7 +39,6 @@ $("#info-footnotes").qtip({
 });
 
 $("#info-votes").qtip({
-	//content: 'Click on the numbers below to upvote or downvote an argument.',
 	content: false,
 	position: {
      	corner: {
@@ -94,7 +93,6 @@ $(".topic-link-width").qtip({
 });
 
 $(".topic_vote").qtip({
-	//content: 'Click on the numbers below to upvote or downvote an argument.',
 	content: 'UpVote this topic.',
 	position: {
      	corner: {
@@ -130,4 +128,40 @@ $("#judge_inactive").qtip({
 		tip: 'topMiddle'
 	},
 	show: { delay: 200 }
+});
+
+$(".footnote").qtip({
+	content: false,
+	position: {
+     	corner: {
+    		target: 'topLeft',
+    		tooltip: 'bottomMiddle'
+      }
+   	},
+	style: { 
+	 	name: 'light',
+		color: 'black',
+		'font-size': 13,
+		tip: 'bottomMiddle'
+	},
+	show: { delay: 50 }
+});
+
+$("#add_image").qtip({
+	content: false,
+	position: {
+     	corner: {
+    		target: 'topMiddle',
+    		tooltip: 'rightMiddle'
+      }
+   	},
+	style: { 
+	 	name: 'blue',
+		color: 'black',
+		border: {
+			width: 1,
+			color: '#0000FF'
+		},
+		tip: 'rightMiddle',
+	}
 });

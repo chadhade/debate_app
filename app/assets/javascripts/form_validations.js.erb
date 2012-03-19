@@ -72,7 +72,20 @@ function toggleTopic(position, formtype) {
 $(document).ready(function() {
 	// Clears Chat form after Submit button is pressed
 	$('#argument_chat').live("ajax:beforeSend", function(event,xhr,status){
-	  $('#argument_content').val('');
+	  	$('#argument_content').val('');
+	}),
+	
+	$('#argument_debunk').live("ajax:beforeSend", function(event,xhr,status){
+		$('#image_url_field').val('http://');
+	}),
+	
+	$('#rate_judge').live("ajax:complete", function(event,xhr,status){
+	  	$('.rating_form').remove();
+	}),
+	
+	$('#argument_chat').live("ajax:complete", function(event,xhr,status){
+	  	$('#chat_button').attr('disabled', true);
+		$('#chat_textarea').val('');
 	}),
 	
 	// Submits the form when user presses Enter (but not Shift + Enter)
@@ -115,6 +128,7 @@ $(document).ready(function() {
 				}
 		    });
 			$('#argument_textarea').val('');
+			$('#image_url_field').val('http://');
 			// Re-enable the Submit Button
 			setTimeout("$('#debunk_button').val('deBunk!'); $('#debunk_button').attr('disabled', false);", 500);
 		}
@@ -137,15 +151,6 @@ $(document).ready(function() {
 				}
 		    });
 		}
-	}),
-	
-	$('#rate_judge').live("ajax:complete", function(event,xhr,status){
-	  $('.rating_form').remove();
-	}),
-	
-	$('#argument_chat').live("ajax:complete", function(event,xhr,status){
-	  	$('#chat_button').attr('disabled', true);
-		$('#chat_textarea').val('');
 	})
 	
 	

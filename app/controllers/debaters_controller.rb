@@ -7,6 +7,7 @@ class DebatersController < ApplicationController
    
   def new
     @debater = Debater.new
+    @image = "http://railslab.newrelic.com/images/theme/masthead-scalingrails.png?1318048919\" width=\"50\""
   end
   
   def create
@@ -34,7 +35,7 @@ class DebatersController < ApplicationController
         @debates = @debater.debates.where("end_time > ?", "01/01/01")
       end
     
-      @recentdebates = @debates.all(:order => "created_at DESC")
+      @recentdebates = @debates.all(:order => "created_at DESC").last(30)
       @recentdebates = @recentdebates.paginate(:page => params[:page], :per_page => 10)
       
       @debateswon = Judging.where("winner_id = ?", @debater.id).count
@@ -51,28 +52,28 @@ class DebatersController < ApplicationController
       
       if !@teammates.empty? # Only perform calculations if debater has teammates
         @teammates << @debater
-        teamargument_ids = Array.new
+        team_ids = @teammates.collect{|u| u.id}
+        teamargument_ids = Argument.where(:debater_id => team_ids).collect(&:id)
       
+        #@teamdebates = 0
+        #@teamjudgepoints = 0
+        #@teammates.each do |deb|
+          #if Rails.env.development? or Rails.env.test?
+            #@teamdebates += deb.debates.where("end_time > ?", 0).count
+          #else
+            #@teamdebates += deb.debates.where("end_time > ?", "01/01/01").count
+          #end
+          #@teamjudgepoints += deb.judge_points
+          #teamargument_ids =  teamargument_ids + deb.arguments.collect{|u| u.id}
+        #end
         if Rails.env.development? or Rails.env.test?
-          @teamdebates = 0
-          @teamjudgepoints = 0
-          @teammates.each do |deb|
-            @teamdebates += deb.debates.where("end_time > ?", 0).count
-            @teamjudgepoints += deb.judge_points
-            teamargument_ids =  teamargument_ids + deb.arguments.collect{|u| u.id}
-          end
+          @teamdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, 0).count
         else
-          @teamdebates = 0
-          @teamjudgepoints = 0
-          @teammates.each do |deb|
-            @teamdebates += deb.debates.where("end_time > ?", "01/01/01").count
-            @teamjudgepoints += deb.judge_points
-            teamargument_ids = teamargument_ids + deb.arguments.collect{|u| u.id}
-          end
+          @teamdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, "01/01/01").count
         end
         
-        team_ids = @teammates.collect{|u| u.id}
-      
+        @teamjudgepoints = Debater.where("id IN (?)", team_ids).sum(:judge_points)
+        
         @teamdebateswon = Judging.where("winner_id IN (?)", team_ids).count
         @teamdebateslost = Judging.where("loser_id IN (?)", team_ids).count
         @teamdebatesnoresults = @teamdebates - (@teamdebateswon + @teamdebateslost)
@@ -83,16 +84,18 @@ class DebatersController < ApplicationController
       
       end
       
-      follow_ids = Array.new
       @following = @debater.following
       @following.empty? ? return : nil # Exit if there are no 'followees'
       
-      @following.each do |debater|
-        debater.debates.all(:order => "id DESC").first(20).each do |debate|
-          follow_ids << debate.id
-        end
-      end
-      @followdebates = Debate.where("id IN (?)", follow_ids).last(30)
+      follow_ids = @following.collect{|u| u.id}
+      #@following.each do |debater|
+        #debater.debates.all(:order => "id DESC").first(20).each do |debate|
+          #follow_ids << debate.id
+        #end
+      #end
+      
+      @followdebates = Debate.where("creator_id IN (?) or joiner_id IN (?)", follow_ids, follow_ids)
+      @followdebates = @followdebates.all(:order => "id DESC").last(30)
       @followdebates = @followdebates.paginate(:page => params[:following_page], :per_page => 8)
       
       @ajaxupdate = 1 if !params[:page].nil?
@@ -172,7 +175,7 @@ class DebatersController < ApplicationController
       debaters.each do |mate|
         mate.sign_in_count = -1 #Unique way to identify teammates
       end
-      test = Array.new #Subtracting this array converts the result to an array
+      test = Array.new #Subtracting an empty array converts the result to an array
       @debaters = (debaters - test).paginate(:page => params[:page], :per_page => 15)
       render 'show_network_team'
     else

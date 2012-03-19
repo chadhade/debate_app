@@ -1,0 +1,14 @@
+function imgEnlarge(imgcontainer) {
+	cont = imgcontainer;
+	imgEn = setTimeout("imgEnlarge2(cont)", 750);
+};
+
+function imgEnlarge2(container) {
+	$(container).css('max-width', '375px');
+	$(container).css('max-height', '200px');
+};
+function imgReduce(imgcontainer) {
+	clearTimeout(imgEn);
+	$(imgcontainer).css('max-width', '300px');
+	$(imgcontainer).css('max-height', '100px');
+};

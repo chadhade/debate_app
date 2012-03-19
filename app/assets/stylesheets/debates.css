@@ -12,7 +12,7 @@
 
 .debatecontainer {
 	padding: 10px 10px;
-	height: 310px;
+	height: 350px;
 	width: 480px;
 	margin: 5px 10px;
 	margin-bottom: 15px;
@@ -31,7 +31,7 @@
 	font-family: Ariel;
 	font-size: 15px;
 	background-color: #fafafa;
-	height: 250px;
+	height: 300px;
 	overflow: auto;
 }
 
@@ -92,7 +92,7 @@
 
 #statuspanel {
 	padding: 10px 10px;
-	height: 314px;
+	height: 351px;
 	width: 245px;
 	margin: 5px 10px;	
 	border:1px solid #ccc;

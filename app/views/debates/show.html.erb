@@ -11,6 +11,7 @@
 <%= javascript_include_tag "tracking" %>
 <%= javascript_include_tag "jquery.qtip" %>
 <%= javascript_include_tag "timed_out" %>
+<%= javascript_include_tag "image_sizes" %>
 
 <%= render :partial => "/shared/init_juggernaut" %>
 
@@ -41,7 +42,7 @@
 	
 	function endSingle(clock_position) {
 		var debate_id = $(".debate").attr("data-id");
-		url = "/debates/" + debate_id + "/end_single.js?clock_position=" + clock_position
+		url = "/debates/" + debate_id + "/end_single.js?clock_position=" + clock_position;
 		<% if @is_creator %>
 			endAjax(url);
 		<% end %>
@@ -54,7 +55,7 @@
 		var debate_id = $(".debate").attr("data-id");
 		$('#judge-timer').remove();
 		$('.judging_form').remove();
-		url = "/debates/" + debate_id + "/end_judge.js"
+		url = "/debates/" + debate_id + "/end_judge.js";
 		<% if @is_creator or @is_judger %>
 			endAjax(url);
 		<% end %>
@@ -165,7 +166,7 @@
 		<% if @status[:status_code] >= 3 %>
 			abort_timer[<%= @debateid %>] = 0;
 		<% end %>
-		setTimeout("javascript_countdown.startTimers()", 500); 
+		setTimeout("javascript_countdown.startTimers()", 500);
 	});
 </script>
 

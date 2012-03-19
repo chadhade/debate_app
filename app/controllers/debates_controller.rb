@@ -9,7 +9,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 90.seconds
+  $debatetime = 30.seconds
   
   #before_filter :authenticate_debater!
   #skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -21,24 +21,24 @@ class DebatesController < ApplicationController
   end
   
   def create
-  	
+  	@currentdebater = current_or_guest_debater
   	# if debater was currently waiting for another debate, he is not allowed to create a new debate
-  	if current_or_guest_debater.waiting_for
+  	if @currentdebater.waiting_for
   	  return
   	end
   	
   	# create a new debate linked to debater
-  	@debate = Debate.new(:joined => false, :judge => false, :creator_id => current_or_guest_debater.id)
+  	@debate = Debate.new(:joined => false, :judge => false, :creator_id => @currentdebater.id)
   	@debate.save
-  	current_or_guest_debater.debations.create(:debate_id => @debate.id)
+  	@currentdebater.debations.create(:debate_id => @debate.id)
   	
   	# if debater was currently waiting for another debate, he now stops waiting
-  	if current_or_guest_debater.waiting_for
-  	  current_or_guest_debater.update_attributes(:waiting_for => nil)
+  	if @currentdebater.waiting_for
+  	  @currentdebater.update_attributes(:waiting_for => nil)
   	end
   	
   	# update topic position with the debate id
-  	@topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position])
+  	@topic_position = TopicPosition.new(:debater_id => @currentdebater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position], :debate_id => @debate.id)
   	#@topic_position = TopicPosition.find(params[:argument][:topic_position_id])
   	@topic_position.update_attributes(:debate_id => @debate.id)
 	
@@ -48,7 +48,7 @@ class DebatesController < ApplicationController
   	#The amount of time Debater 1 has left.  
   	@Seconds_Left_1 = $debatetime
 		
-  	@argument = current_or_guest_debater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
+  	@argument = @currentdebater.arguments.create(:content => @content_of_post, :debate_id => @debate.id, :time_left => @Seconds_Left_1)
   	
     # Juggernaut.publish("judging_index", {:append => {:debate_id => @debate.id}})
     # debate_link_unjoined = render(:partial => "/judgings/debate_link_unjoined", :locals => {:debate => @debate}, :layout => false)
@@ -373,7 +373,7 @@ end
     @debateid = @debate.id
     
     #Make sure this is only done once and that time is really up
-    if @debate.end_time and Time.now + 2.seconds > self.end_time + $judgetime
+    if @debate.end_time and Time.now + 2.seconds > @debate.end_time + $judgetime
       # update status bar on show page
       Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
   

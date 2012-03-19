@@ -1,5 +1,7 @@
 class ArgumentsController < ApplicationController
 
+  require 'uri'
+  
   def create    	
   	@debate_id = params[:argument][:debate_id]
     @debate = Debate.find_by_id(@debate_id)
@@ -31,6 +33,18 @@ class ArgumentsController < ApplicationController
     		  @argfoot = true
     		end
   		
+  		  # Check if there is an image
+  		  @imglink = params[:argument][:image_url]
+  		  if @imglink and @imglink =~ /\.jpg|\.gif|\.png|\.bmp/i # Make sure link contains valid image format
+  		    @imglink[0..2] == "www" ? @imglink = "http://" + @imglink : nil
+  		    @imglink = URI.parse(@imglink)
+  		    if @imglink.class == URI::HTTP
+  		      @current_argument.update_attributes(:image_url => @imglink.to_s)
+  		    else
+  		      @imglink = nil
+  		    end
+  		  end
+  		  
     		# publish new argument
     	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => @currentdebater.id, :status => @debate.status}, :layout => false)
     	  reset_invocation_response # allow double rendering
