@@ -145,6 +145,21 @@ class Debater < ActiveRecord::Base
     (wins == 0) ? rank = 0 : rank = wins.to_f/(wins + losses)
   end
   
+  def rating_adjust(debater2, outcome)
+    games_played1 = self.debates.where("winner_id >= ?", 0).count
+    games_played2 = debater2.debates.where("winner_id >= ?", 0).count
+    player1 = Elo::Player.new(:games_played => games_played1, :rating => self.rating)
+    player2 = Elo::Player.new(:games_played => games_played2, :rating => debater2.rating)
+    
+    game = player1.versus(player2, :result => outcome)
+    
+    self.rating = player1.rating
+    self.save
+    debater2.rating = player2.rating
+    debater2.save
+    return [player1.rating, player2.rating]
+  end
+  
   def mini_name
     self.name[0..9]
   end

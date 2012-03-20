@@ -5,7 +5,7 @@
 
 <div class = "profile">
 	<div class = "sidebar round">
-		Rank: Beta Mode.
+		dScore: <%= @debater.rating %>
 		<%= render 'stats' %>
 		<% if signed_in? %>
 			<%= render 'follow_form' %>

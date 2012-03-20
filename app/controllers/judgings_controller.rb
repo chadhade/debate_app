@@ -60,20 +60,20 @@ class JudgingsController < ApplicationController
     @judgeid = @judging.debater_id
     
     @debate = @judging.debate
-    winner_id = params[:judging][:winner_id].to_i
-    case winner_id
-    when @debate.creator_id
-      loser_id = @debate.joiner_id
-    when @debate.joiner_id
-      loser_id = @debate.creator_id
-    when 0
-      loser_id = nil
-    end
-    #@debate.creator_id.to_s == params[:judging][:winner_id] ? @loser_id = @debate.joiner_id : @loser_id = @debate.creator_id
     
     #Make sure it is submitted at the proper time and only once
-    if @debate.end_time and !@debate.winner_id
+    if @debate.end_time and !@debate.winner_id and !params[:judging][:winner_id].nil?
       if Time.now < @debate.end_time + $judgetime
+        
+        winner_id = params[:judging][:winner_id].to_i
+        case winner_id
+        when @debate.creator_id
+          loser_id = @debate.joiner_id
+        when @debate.joiner_id
+          loser_id = @debate.creator_id
+        when 0
+          loser_id = nil
+        end
         @judging.update_attributes(:winner_id => winner_id, :comments => params[:judging][:comments], :loser_id => loser_id)
       
         @debate.update_attributes(:winner_id => winner_id, :loser_id => loser_id)
@@ -92,6 +92,22 @@ class JudgingsController < ApplicationController
           downvotes = downvotes + votes_against
         end
       
+        #Adjust Debater Ratings
+        d1 = Debater.find_by_id(@debate.creator_id)
+        d2 = Debater.find_by_id(@debate.joiner_id)
+        rating_adjust = false
+        unless (d1.guest? or d2.guest?)
+          rating_change = true
+          d1_old = d1.rating
+          d2_old = d2.rating
+          if winner_id == 0
+            result = 0.5
+          else
+            winner_id == @debate.creator_id ? result = 1 : result = 0
+          end
+          new_ratings = d1.rating_adjust(d2, result)
+        end
+        
         judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging, :upvotes => upvotes, :downvotes => downvotes})
         reset_invocation_response # allow double rendering
       
@@ -100,7 +116,8 @@ class JudgingsController < ApplicationController
       
         reset_invocation_response # allow double rendering
         Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "judge_results", :obj => {:judging_results => judging_results, :judge_votes => @votes, :judgeid => @judgeid, :ratings_form => ratings_form_render, 
-                            :winner_id => winner_id == 0 ? @debate.creator_id : winner_id, :loser_id => winner_id == 0 ? @debate.joiner_id : loser_id}})
+                            :winner_id => winner_id == 0 ? @debate.creator_id : winner_id, :loser_id => winner_id == 0 ? @debate.joiner_id : loser_id, :rating_change => rating_change, 
+                            :d1_old => d1_old, :d2_old => d2_old, :d1 => new_ratings[0], :d2 => new_ratings[1], :joiner_id => @debate.joiner_id}})
         reset_invocation_response # allow double rendering
         Juggernaut.publish("debate_" + @debate.id.to_s + "_judge", {:judging_form => "clear_form"})
     
@@ -153,7 +170,7 @@ class JudgingsController < ApplicationController
     # update status bar on show page
     ratings_render = render(:partial => "judgings/debater_ratings", :locals => {:judging => @judging, :debate => @debate}, :layout => false)
     reset_invocation_response # allow double rendering
-    Juggernaut.publish("debate_" + params[:judging][:debate_id], {:func => "debater_ratings", :obj => {:ratings => ratings_render}})
+    Juggernaut.publish("debate_" + params[:judging][:debate_id], {:func => "debater_ratings", :obj => {:ratings => ratings_render, :rater_id => @currentdebater.id}})
     
     respond_to do |format|
   	  format.html

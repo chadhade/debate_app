@@ -201,7 +201,7 @@ img.gravatar {
 	padding: 10px 10px;
 	min-height: 250px;
 	max-height: 500px;
-	width: 700px;
+	width: 780px;
 	border: 1px solid silver;
 	background-color: #fafafa;
 	line-height: 30px;
@@ -230,15 +230,15 @@ img.gravatar {
 }
 
 .list_names {
-	width: 25%;
-	margin-right:5px;
+	width: 22%;
+	margin-right:7px;
 	float:left;
 }
 
 .list_ranks {
-	width: 25%;
+	width: 15%;
 	float:left;
-	margin-right: 5px;
+	margin-right: 7px;
 }
 
 .list_joined {
@@ -247,7 +247,7 @@ img.gravatar {
 }
 
 .list_points {
-	width: 23%;
+	width: 20%;
 	float: left;
-	margin-right: 5px;
+	margin-right: 7px;
 }

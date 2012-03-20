@@ -130,18 +130,25 @@
 		<% end %>
 		
 		<div id="debater-ratings">
-			<!-- Show Debater Ratings -->
+			<!-- Show Debater Judge Ratings -->
 			<% if @status[:status_code] == 5 %>
 				<%= render :partial => "/judgings/debater_ratings", :locals => {:judging => @judging, :debate => @debate} %>
 			<% end %>
 		</div>
 		
+		<div class="score-updates hidden">
+			<!-- Show Debater Scores -->
+			<% unless @currentdebater.guest? %>
+				<%= render :partial => "/debates/debater_scores" %>
+			<% end %>
+		</div>
+		
 		<!-- Show Debater Rating Form -->
 		<% if @status[:status_code] == 5 %>
-			<% if @debate.creator?(@currentdebater) and @judging.winner_approve.nil? %>
+			<% if @judging.winner_approve.nil? and ((@currentdebater.id == @judging.winner_id) or (@judging.winner_id == 0 and @currentdebater.id == @debate.creator_id)) %>
 				<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debateid} %>
 			<% end %>
-			<% if @debate.joiner?(@currentdebater) and @judging.loser_approve.nil? %>
+			<% if @judging.loser_approve.nil? and ((@currentdebater.id == @judging.loser_id) or (@judging.winner_id == 0 and @currentdebater.id == @debate.joiner_id)) %>
 				<%= render :partial => "/judgings/rate_judge", :locals => {:judging => @judging, :debateid => @debateid} %>
 			<% end %>
 		<% end %>
