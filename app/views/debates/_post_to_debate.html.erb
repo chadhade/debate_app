@@ -13,6 +13,7 @@
 				<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => ""} %>
 			<% else %>
 				<% if debate.status[:status_code] <= 4 %>
+					<%= render :partial => "arguments/form_argument", :locals => {:debate => debate, :hidden => "hidden"} if debate.started_at.nil? %>
 					<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => "hidden"} %>
 				<% end %>
 			<% end %>
