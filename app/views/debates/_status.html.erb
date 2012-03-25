@@ -15,3 +15,7 @@
 		</div> 
 	</div><br><br>
 </div>
+
+<div id="pick-judge-options">
+	<%= render :partial => "/debates/form_no_judge", :locals => {:status => status, :debate => debate, :is_creator => is_creator, :is_joiner => is_joiner}  %>
+</div>

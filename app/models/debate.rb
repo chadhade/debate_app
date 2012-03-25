@@ -22,11 +22,13 @@ class Debate < ActiveRecord::Base
   
   def status
     if self.end_time.nil?
-      return @status = {:status_code => 0, :status_value => "Waiting for Debater and Judge"} if !self.joined and !self.judge
-      return @status = {:status_code => 1, :status_value => "Two Debaters on Board! Waiting for Judge"} if self.joined and !self.judge
+      return @status = {:status_code => 0, :status_value => "Waiting for Debater and Judge"} if !self.joined and !self.judge and self.no_judge == 0
+      return @status = {:status_code => 0.5, :status_value => "Waiting for Debater"} if !self.joined and !self.judge and self.no_judge == 1
+      return @status = {:status_code => 1, :status_value => "Two Debaters on Board! Waiting for Judge"} if self.joined and !self.judge and self.no_judge != 3
       return @status = {:status_code => 2, :status_value => "We've got a Debater and a Judge! Waiting for Second Debater"} if !self.joined and self.judge
-      return @status = {:status_code => 3, :status_value => "Ongoing Debate!"} if self.joined and self.judge and self.end_time.nil?
+      return @status = {:status_code => 3, :status_value => "Ongoing Debate!"} if self.joined and (self.judge or self.no_judge == 3)
     else
+      return @status = {:status_code => 7, :status_value => "Completed Debate without Judge."} if self.no_judge == 3
       return @status = {:status_code => 4, :status_value => "Waiting for Judging Results!"} if Time.now <= self.end_time + $judgetime and self.judge_entry.winner_id.nil?
       return @status = {:status_code => 5, :status_value => "Completed Debate"} if !self.judge_entry.winner_id.nil?
       return @status = {:status_code => 6, :status_value => "Debate Over, But No Judging Results Submitted"} if self.judge_entry.winner_id.nil?
@@ -90,7 +92,7 @@ class Debate < ActiveRecord::Base
     if self.arguments.last(:order => "created_at ASC").Repeat_Turn == true 
 		  self.last_debater
 	  else
-		  self.arguments.size % 2 == 0 ? self.creator : self.debaters[1]
+		  self.arguments.size % 2 == 0 ? self.creator : self.joiner
 	  end
   end
   
@@ -166,7 +168,10 @@ class Debate < ActiveRecord::Base
   end
   
   def self.judging_priority(max)
-    joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
+    #joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
+    max == 1 ? judge_order = "joined_at DESC" : judge_order = "joined_at ASC"
+    joined_no_judge = self.where("joined = ? AND judge = ? AND no_judge != ?", true, false, 3).order(judge_order)
+    
     joined_no_judge_cv = Array.new
     joined_no_judge.each do |debate|
       if debate.joiner.active? and debate.creator.active?
@@ -174,6 +179,11 @@ class Debate < ActiveRecord::Base
           joined_no_judge_cv << debate
           max -= 1
           return joined_no_judge_cv if max == 0
+        end
+      else
+        # If the joiner and creator are no longer active, declare the debate as over
+        if !(debate.joiner.active? or debate.creator.active?)
+          debate.update_attributes(:end_time => Time.now, :no_judge => 3)
         end
       end
     end

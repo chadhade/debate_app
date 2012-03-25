@@ -54,6 +54,7 @@ DebateApp::Application.routes.draw do
   resources :debates do
     member do
   	  post 'join'
+  	  post 'no_judge'
   	  post 'end'
   	  post 'end_single'
   	  post 'end_judge'

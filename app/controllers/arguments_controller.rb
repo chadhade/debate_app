@@ -14,7 +14,7 @@ class ArgumentsController < ApplicationController
 	
     	# Check if argument is made on time
   	
-      if (@timeleft > 0) && (@debate.current_turn?(@currentdebater)) && (@debate.judge)
+      if (@timeleft > 0) && (@debate.current_turn?(@currentdebater)) && (@debate.started_at)
     		# create a new argument and redirect to debate page 
     		# -- Make the repeat_turn column true if it was true before
     		if @lastargument.Repeat_Turn == true 
@@ -54,7 +54,7 @@ class ArgumentsController < ApplicationController
   		
     		Juggernaut.publish("debate_" + @debate_id, {:func => "argument", :obj => {:timers => showtimers(@debate, @current_argument, @lastargument), 
     		                  :argument => argument_render, :current_turn => @debate.current_turn.email, 
-    		                  :footnotes => footnotes_render, :judge => @debate.judge}})
+    		                  :footnotes => footnotes_render, :judge_needed => @debate.started_at.nil?}})
     	  reset_invocation_response # allow double rendering
       end
     end

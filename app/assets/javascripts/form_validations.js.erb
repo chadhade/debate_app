@@ -76,7 +76,7 @@ $(document).ready(function() {
 	}),
 	
 	$('#argument_debunk').live("ajax:beforeSend", function(event,xhr,status){
-		$('#image_url_field').val('http://');
+		$('#image_url_field').val('');
 	}),
 	
 	$('#rate_judge').live("ajax:complete", function(event,xhr,status){
@@ -128,7 +128,7 @@ $(document).ready(function() {
 				}
 		    });
 			$('#argument_textarea').val('');
-			$('#image_url_field').val('http://');
+			$('#image_url_field').val('');
 			// Re-enable the Submit Button
 			setTimeout("$('#debunk_button').val('deBunk!'); $('#debunk_button').attr('disabled', false);", 500);
 		}
@@ -151,7 +151,20 @@ $(document).ready(function() {
 				}
 		    });
 		}
-	})
+	}),
 	
+	$('#judge-check-box').click(function() {
+		$('#judge-check-box').attr('disabled', true);
+		post_url = "/debates/" + debate_id + "/no_judge.js";
+		jQuery.ajax({
+			type: "POST",
+			url: post_url,
+	      	data: $('#form-no-judge').serialize(),
+	      	dataType: "json",
+			success: function(result){
+			}
+	    });
+		setTimeout("$('#judge-check-box').attr('disabled', false);", 1000);
+	});
 	
 });

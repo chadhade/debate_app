@@ -17,7 +17,7 @@
 				<% end %>
 			<% end %>
 		
-			<% if debate.judge %>
+			<% if debate.judge or debate.no_judge == 3 %>
 				<% if debate.current_turn?(currentdebater) %>
 		  			<%= render :partial => "arguments/form_argument", :locals => {:debate => debate, :hidden => ""} %>
 				<% else %>

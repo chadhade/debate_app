@@ -75,6 +75,7 @@
 }
 
 .topic-argument-width {
+	font-size: 12px;
 	width: 27%;
 	height: 18px;
 	overflow: hidden;

@@ -30,7 +30,7 @@
 					});
 				<% end %>
 			}
-			if (data.obj.judge == true) {
+			if (data.obj.judge_needed == false) {
 				abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
 				
 				moving_clock_adjusted = data.obj.timers.movingclock;
@@ -45,8 +45,16 @@
 	
 		if (data.func == "update_status") {
 			$(".status").html("<h2 status_code=\"" + data.obj.status_code + "\">" + data.obj.status_value + "</h2>");
+			if (data.obj2 != "") {
+				<% if Rails.env.development? or Rails.env.test? %>      	
+					$('#text-no-judge').html(data.obj2);			
+				<% else %>
+					$('#text-no-judge').html(data.obj2[0]);
+				<% end %>
+			}
 			if (data.obj.status_code > 2) {
 				$(".waiting-icon").remove();
+				$("#pick-judge-options").remove();
 			}
 		}
 		
@@ -151,7 +159,7 @@
 			}
 		}
 		
-		if (data.func == "judge_arrived") {
+		if (data.func == "start_debate") {
 			//abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
 			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
 			voteable[<%= debate.id %>] = true;
@@ -172,7 +180,10 @@
 			$("#timer2-<%= debate.id %>").html(format_output(data.obj.timers.staticclock));
 			voteable[<%= debate.id %>] = false;
 			joiner[<%= debate.id %>] = data.obj.joinerid;
-			
+			if (<%= debater.id %> == data.obj.joinerid) { 
+				$("#judge-check-box").show();
+				$("#nojudge-label").show();
+			}
 			<% if Rails.env.development? or Rails.env.test? %>      	
 				$(".waiting-icon").html(data.obj.waiting_icon);
 			<% else %>
@@ -205,6 +216,7 @@
 		}
 		
 		if (data.func == "end_debate") {
+				$(".post_to_debate").hide();
 				if((<%= debate.participant?(debater) %>) || (<%= debater.id %> == data.obj.joiner_id)) {	  	
 					$(".chat_to_debate").show();
 				}
@@ -247,9 +259,9 @@
 		});
 	<% end %>
 	
-	if(<%= @debate.judge and @debate.joined and debater_signed_in? %>) {
+	<% if @debate.started_at and @debate.joined and debater_signed_in? %>
 		voteable[<%= debate.id %>] = true;
-	}
+	<% end %>
 	
 	function format_output(timetoformat) {
 		var hours, minutes, seconds;

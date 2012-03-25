@@ -87,7 +87,7 @@
 		<div class="debatecontainer">
 			<div class="containerpanel">
 				<h2>
-				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debateid, :debater1name => @debater1name, :debater2name => @debater2name, :debaters => @debaters, :judge => @debate.judge} %>
+				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debateid, :debater1name => @debater1name, :debater2name => @debater2name, :debaters => @debaters} %>
 				<%# render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 				</h2>
 			</div>
@@ -105,7 +105,7 @@
 
 	<div id="statuspanel">
 		<!-- Show Debate Status -->
-		<%= render :partial => "/debates/status", :locals => {:status => @status, :debate => @debate}  %>
+		<%= render :partial => "/debates/status", :locals => {:status => @status, :debate => @debate, :is_creator => @is_creator, :is_joiner => @is_joiner}  %>
 		
 		<!-- Show Judge Timer -->
 		<% if @status[:status_code] == 4 %>

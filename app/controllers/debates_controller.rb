@@ -28,9 +28,11 @@ class DebatesController < ApplicationController
   	end
   	
   	# create a new debate linked to debater
-  	@debate = Debate.new(:joined => false, :judge => false, :creator_id => @currentdebater.id)
-  	@debate.save
-  	@currentdebater.debations.create(:debate_id => @debate.id)
+  	  @debate = Debate.new(:joined => false, :judge => false, :creator_id => @currentdebater.id)
+    	# Check if Debater agrees to start without a judge
+    	  params[:argument][:Repeat_Turn] == 1.to_s ? @debate.no_judge = 1 : nil
+    	@debate.save
+    	@currentdebater.debations.create(:debate_id => @debate.id)
   	
   	# if debater was currently waiting for another debate, he now stops waiting
   	if @currentdebater.waiting_for
@@ -41,7 +43,7 @@ class DebatesController < ApplicationController
   	@topic_position = TopicPosition.new(:debater_id => @currentdebater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position], :debate_id => @debate.id)
   	#@topic_position = TopicPosition.find(params[:argument][:topic_position_id])
   	@topic_position.update_attributes(:debate_id => @debate.id)
-	
+	  
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
 	
@@ -112,7 +114,7 @@ class DebatesController < ApplicationController
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :current_turn => @debate.current_turn.name, 
-	                                              :footnotes => footnotes_render, :judge => @debate.judge}})
+	                                              :footnotes => footnotes_render, :judge_needed => @debate.started_at.nil?}})
 	  
 	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => "/debaters/" + current_or_guest_debater.id.to_s, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
 	  Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => @currentdebater.mini_name, :joinerpath => joinerpath, :joinerid => @currentid, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
@@ -122,7 +124,7 @@ class DebatesController < ApplicationController
 	  Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debatestatus[:status_value], :status_code => @debatestatus[:status_code]}})
 	  
 	  # update judgings index
-    debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate, :joined_no_judge => Array(Debate.judging_priority(30).last)}, :layout => false)	  
+    debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate, :joined_no_judge => Array(Debate.judging_priority(1).last)}, :layout => false)	  
 	  Juggernaut.publish("judging_index", {:function => "append_to_joined", :debate_id => @debate.id, :object => debate_link_joined}) if !@debate.judge
 	  reset_invocation_response # allow double rendering
 	  
@@ -190,7 +192,7 @@ end
   	end
   	
   	#toggle judgings index if applicable
-  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@is_creator or @is_joiner) and @debate.currently_viewing(@debate.creator_id) and (@debate.currently_viewing(@debate.joiner_id) if @debate.joined)
+  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@is_creator or @is_joiner) and @debate.currently_viewing(@debate.creator_id) and (@debate.currently_viewing(@debate.joiner_id) if (@debate.joined and @debate.no_judge != 3))
 	  
   	# Add footnotes, if any exist
   	@arguments.each do |argument|
@@ -200,7 +202,7 @@ end
 	  #Tally up the judge votes if the debate is over
 	  @upvotes = 0
     @downvotes = 0
-	  if @debate.end_time
+	  if @debate.end_time and @debate.no_judge != 3
 	    if !@debate.judge_entry.winner_id.nil?
         @arguments.each do |argument|
           @upvotes = @upvotes + argument.votes_for_by(@debate.judge_id)
@@ -235,15 +237,15 @@ end
   	@currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].mini_name
   	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].mini_name
 	
-	  # If no judge has joined, timers do not move
-	  if @debate.judge == false
+	  # If no judge has joined, timers do not move (for judged debates)
+	  if @debate.judge == false and @debate.no_judge != 3
 	    @movingclock = @arguments.first(:order => "created_at ASC").time_left
 	    @staticclock = @previoustimeleft
 	    @movingposition = 0
 	    return
 	  end
 	  
-	  @voteable = true #At this point, we know there are 2 debaters and a judge.  Hence, votes are allowed.
+	  @voteable = true #At this point, we know there are 2 debaters and a judge (if requested).  Hence, votes are allowed.
 	  
   	@timeleft = time_left(@debate)
   	
@@ -318,6 +320,58 @@ end
   	end
   end
   
+  def no_judge
+    @debate = Debate.find(params[:id])
+    
+    if @debate.started_at.nil? 
+      @currentdebater = current_or_guest_debater
+      @debate.creator?(@currentdebater) ? iscreator = 1 : iscreator = 0
+  	  @debate.joiner?(@currentdebater) ? isjoiner = 1 : isjoiner = 0
+  	  
+  	  if iscreator or isjoiner
+  	    case @debate.no_judge
+  	    when 0
+  	      @debate.no_judge = (iscreator * 1) + (isjoiner * 2)
+  	    when 1
+  	      @debate.no_judge = (iscreator * 0) + (isjoiner * 3)
+  	    when 2
+  	      @debate.no_judge = (iscreator * 3) + (isjoiner * 0)
+  	    end
+  	    @debate.save
+  	    
+  	    #no_judge_render = render(:partial => "/debates/form_no_judge", :locals => {:status => @debate.status, :debate => @debate, :is_creator => iscreator, :is_joiner => isjoiner}, :layout => false)
+  	    #reset_invocation_response # allow double rendering
+  	    case @debate.no_judge
+	      when 0
+	        text_nojudge = " "
+  	    when 1
+    			text_nojudge = "Debunker1 agrees to start without a Judge."
+    		when 2
+    			text_nojudge = "Debunker2 agrees to start without a Judge."
+    		when 3
+    		  text_nojudge = " "
+    		  @debate.update_attributes(:started_at => Time.now)
+    		  #Start Timers
+    		  firstarg = @debate.arguments.first(:order => "created_at ASC")
+          secondarg = @debate.arguments.all(:order => "created_at ASC").second
+          currentturn = @debate.creator.email
+          Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "start_debate", :obj => {:timers => {:movingclock => firstarg.time_left, :staticclock => secondarg.time_left, :movingposition => 1, 
+                            :debateid => @debate.id}, :current_turn => currentturn}})
+          # remove debate from judging index page
+          Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
+          # Publish to waiting channel
+          Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debate.status[:status_value], :status_code => @debate.status[:status_code]}})
+    		end
+  	    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status, :obj2 => text_nojudge})
+  	  end
+    end
+      
+    respond_to do |format|
+  	  format.html {render :nothing => true}
+  	  format.js {render :nothing => true}
+  	end
+  end
+  
   def end
     @debate = Debate.find(params[:id])
     @debateid = @debate.id
@@ -325,16 +379,20 @@ end
     debatetime = arguments[0].time_left.seconds + arguments[1].time_left.seconds
     
     #Make sure this is only done once and that time is really up
-    if @debate.status[:status_code] == 3 and (Time.now + 2.seconds > @debate.judge_entry.created_at + debatetime) #Allow a 2 second leeway
+    if @debate.status[:status_code] == 3 and (Time.now + 2.seconds > @debate.started_at + debatetime) #Allow a 2 second leeway
       @debate.update_attributes(:end_time => Time.now)
     
-      judgetime_div = render :partial => "/judgings/judging_timer"
-      reset_invocation_response # allow double rendering    
-      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "judge_timer", :obj => {:judgetime_div => judgetime_div, :judgetime => $judgetime}})
-      judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
-      reset_invocation_response # allow double rendering
-      Juggernaut.publish("debate_" + @debateid.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})    
-    
+      if @debate.judge
+        judgetime_div = render :partial => "/judgings/judging_timer"
+        reset_invocation_response # allow double rendering    
+        Juggernaut.publish("debate_" + @debateid.to_s, {:func => "judge_timer", :obj => {:judgetime_div => judgetime_div, :judgetime => $judgetime}})
+        judging_form = render(:partial => "/judgings/judging_form", :locals => {:judging => @debate.judge_entry}, :layout => false)
+        reset_invocation_response # allow double rendering
+        Juggernaut.publish("debate_" + @debateid.to_s + "_judge", {:func => "judging_form", :obj => {:judging_form => judging_form}})    
+      else
+        Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
+      end
+      
       # update status bar on show page
       Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
     

@@ -30,12 +30,16 @@
 								<% end %>
 							<% end %>
 						</div>
-						<div class = "topic-argument-width">
-							<% judge_comments = debate.judge_entry.comments %>
-							<% if !judge_comments.nil? %>
-								- <%= link_to "\"#{judge_comments[0..14]}\"", debate, :title => "\"#{judge_comments}\"" %>
+						<% debate.no_judge == 3 ? judge_comments = "Not Judged." : judge_comments = debate.judge_entry.comments %>
+						<div class = "topic-argument-width" title = "<%= judge_comments unless judge_comments.nil? %>">
+							<% if debate.no_judge == 3 %>
+								<span style="color: #555555">Not Judged.</span>
 							<% else %>
-								&nbsp
+								<% if !judge_comments.nil? %>
+									- <%= "\"#{judge_comments[0..14]}\"" %>
+								<% else %>
+									&nbsp
+								<% end %>
 							<% end %>
 						</div> 
 					</li>

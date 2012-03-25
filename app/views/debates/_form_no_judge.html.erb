@@ -1,0 +1,26 @@
+<% if status[:status_code] < 3 %>
+	<div class = "small-font" id="text-no-judge">
+		<% if debate.no_judge == 1 %>
+			Debunker1 agrees to start without a Judge.
+		<% end %>
+		<% if debate.no_judge == 2 %>
+			Debunker2 agrees to start without a Judge.
+		<% end %>
+	</div>
+
+	<%= form_for Debate.new, :url => {:controller => "debates", :action => "no_judge"}, :html => {:name => 'pickjudgeform', :id => 'form-no-judge'}, :remote => true do |f| %>
+		<% if is_creator or is_joiner %>
+			<% if (is_creator and debate.no_judge == 1) or (is_joiner and debate.no_judge == 2)%>
+				<%= f.check_box :no_judge, :checked => true, :id => 'judge-check-box' %>
+			<% else %>
+				<%= f.check_box :no_judge, :checked => false, :id => 'judge-check-box' %>
+			<% end %>
+			<%= f.label "Do Not Wait for a Judge.", :class => "small-font", :id => 'nojudge-label' %>
+		<% else %>
+			<%= f.check_box :no_judge, :checked => false, :id => 'judge-check-box', :hidden => true %>
+			<%= f.label "Do Not Wait for a Judge.", :class => "small-font", :id => 'nojudge-label', :hidden => true %>
+		<% end %>
+		
+	<% end %>
+
+<% end %>

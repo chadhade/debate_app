@@ -2,6 +2,8 @@ class JudgingsController < ApplicationController
   before_filter :authenticate_debater!
   skip_before_filter :authenticate_debater!, :only => [:rating]
   
+  require 'will_paginate/array'
+  
   def index
     judging_priority = Debate.judging_priority(30)
     if !judging_priority.empty?
@@ -22,7 +24,7 @@ class JudgingsController < ApplicationController
       if !@debate.creator?(@currentdebater) and !@debate.joiner?(@currentdebater) and !@debate.judge
         @judge = Judging.new(:debater_id => @currentdebater.id, :debate_id => @debate.id)
         @judge.save
-        @debate.update_attributes(:judge => true, :judge_id => @currentdebater.id)
+        @debate.update_attributes(:judge => true, :judge_id => @currentdebater.id, :started_at => Time.now)
     	
       	@debatestatus = @debate.status
     	
@@ -36,8 +38,8 @@ class JudgingsController < ApplicationController
           #@firstarg.update_attributes(:time_left => @timeleft)
           @currentturn = @debate.arguments.first(:order => "created_at ASC").debater.email
  
-          Juggernaut.publish("debate_" + params[:debate_id], {:func => "judge_arrived", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
-                            :debateid => params[:debate_id]}, :argument => "", :judge => true, :current_turn => @currentturn}})
+          Juggernaut.publish("debate_" + params[:debate_id], {:func => "start_debate", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
+                            :debateid => params[:debate_id]}, :current_turn => @currentturn}})
         end
         # remove debate from judging index page
         Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})

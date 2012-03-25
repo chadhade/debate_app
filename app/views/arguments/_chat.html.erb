@@ -3,10 +3,10 @@
 		<% if argument.debater_id == judgeid %>
 			judge
 		<% else %>
-			<% if debate.winner_id > 0 %>
-				<%= argument.debater_id == debate.winner_id ? "winner" : "un-winner" %> 
-			<% else %>
+			<% if debate.winner_id.nil? or debate.winner_id == 0 %>
 				<%= argument.debater.mini_name %>
+			<% else %>
+				<%= argument.debater_id == debate.winner_id ? "winner" : "un-winner" %> 
 			<% end %>
 		<% end %>
 	</div>

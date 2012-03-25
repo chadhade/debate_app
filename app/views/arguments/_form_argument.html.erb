@@ -8,7 +8,7 @@
 		</div>
 		<%= f.hidden_field :debate_id, :value => debate.id %>
 		<%= f.label "Image address:", :id => "imagelabel", :hidden => true %>
-		<%= f.url_field :image_url, :hidden => true, :value => "http://", :id => "image_url_field", :onClick => "this.select();", :size => 46 %>
+		<%= f.url_field :image_url, :hidden => true, :id => "image_url_field", :onClick => "this.select();", :size => 46 %>
 		<div class = "action">
 			<%= f.submit "deBunk!", :disable_with => 'Debunking...', :id => "debunk_button" %>
 		</div>	

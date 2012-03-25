@@ -16,12 +16,12 @@ class ApplicationController < ActionController::Base
 			return timeleft
 		end
 		
-    if thisdebate.judge
-  		# If there are only 2 arguments, you know the timers first started as soon as the judge joined
+    if thisdebate.judge or thisdebate.no_judge == 3
+  		# If there are only 2 arguments, use the 'started_at' field to determine when the debate started
   		if arguments.count == 2
-  		  return arguments.first(:order => "created_at ASC").time_left - (Time.now - thisdebate.judge_entry.created_at).seconds.to_i
+  		  return arguments.first(:order => "created_at ASC").time_left - (Time.now - thisdebate.started_at).seconds.to_i
   		else
-  		# Otherwise, the timers started when the last argument was made
+  		# Otherwise, use the time that the last argument was made
   			timeleft = thisdebate.arguments[-2].time_left - (Time.now - arglast.created_at).seconds.to_i
   		end
 		else
