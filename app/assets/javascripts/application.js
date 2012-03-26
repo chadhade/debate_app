@@ -7,3 +7,15 @@
 //= require jquery
 //= require jquery_ujs
 // require_tree .
+
+// If there is a 401 error (likely because debater timed out), redirect to sign-in page.
+$(document).ajaxError(function(e, error) {
+	switch(error.status) {
+
+    	case 401: {
+	      // unauthorised (possible timeout)
+	      window.location = "/debaters/sign_in";
+	      break;
+	    }
+	}
+});

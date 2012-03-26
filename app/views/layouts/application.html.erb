@@ -13,6 +13,7 @@
 	<%= render :partial => "/layouts/navigation", :locals => {:thisdebater => @thisdebater} %>
 	
 	<%= render :partial => "/layouts/instruction_boxes" %>
+	<%= render :partial => "/shared/init_juggernaut" %>
 	
 	<div class= "sitewidth">
 		<% flash.each do |key, value| %>
@@ -22,7 +23,7 @@
 		<%= yield %>
 	</div>
 	<%= render :partial => "/layouts/waiting_box", :locals => {:thisdebater => @thisdebater} %>
-	<%= render :partial => "/shared/init_juggernaut" %>
+	
 	<script>
 		// Subscribe debater to the Waiting Channel if he/she is currently waiting
 		$(document).ready(function(){
