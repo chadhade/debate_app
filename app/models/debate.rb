@@ -1,13 +1,13 @@
 class Debate < ActiveRecord::Base
   # associations for matching and judging
-  has_many :judgings
-  has_many :topic_positions
+  has_many :judgings, :dependent => :destroy
+  has_one :topic_position, :dependent => :destroy
   
   # associations for viewings
   has_many :viewings, :dependent => :destroy
   
   # associations for debate participation
-  has_many :debations
+  has_many :debations, :dependent => :destroy
   has_many :debaters, :through => :debations
   
   # associations for debate tracking
@@ -105,12 +105,15 @@ class Debate < ActiveRecord::Base
   end
   
   def tp
-    self.topic_positions.first(:order => "created_at ASC")
+    self.topic_position
   end
   
   def self.search(search)
 	  if search
-      @debates = Array.new; all.each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.match(/#{search}/))}
+      @debates = Array.new; 
+      #all.each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.match(/#{search}/))}
+      limit = Time.now - 5.days
+      Debate.where("started_at > ?", limit).each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.match(/#{search}/))}
 	    @debates
     else
       find(:all)
@@ -170,8 +173,9 @@ class Debate < ActiveRecord::Base
   def self.judging_priority(max)
     #joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
     max == 1 ? judge_order = "joined_at DESC" : judge_order = "joined_at ASC"
-    joined_no_judge = self.where("joined = ? AND judge = ? AND no_judge != ?", true, false, 3).order(judge_order)
-    
+    #joined_no_judge = self.where("joined = ? AND judge = ? AND no_judge != ?", true, false, 3).order(judge_order)
+    joined_no_judge = self.where("joined = ? AND judge = ?", true, false)
+    joined_no_judge = joined_no_judge.where("no_judge != ?", 3).order(judge_order) unless joined_no_judge.nil?
     joined_no_judge_cv = Array.new
     joined_no_judge.each do |debate|
       if debate.joiner.active? and debate.creator.active?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120321184550) do
+ActiveRecord::Schema.define(:version => 20120326025732) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -25,6 +25,9 @@ ActiveRecord::Schema.define(:version => 20120321184550) do
     t.boolean  "debate_over"
     t.text     "image_url"
   end
+
+  add_index "arguments", ["debate_id"], :name => "index_arguments_on_debate_id"
+  add_index "arguments", ["debater_id"], :name => "index_arguments_on_debater_id"
 
   create_table "blockings", :force => true do |t|
     t.integer  "blocker_id"
@@ -67,7 +70,9 @@ ActiveRecord::Schema.define(:version => 20120321184550) do
 
   add_index "debaters", ["confirmation_token"], :name => "index_debaters_on_confirmation_token", :unique => true
   add_index "debaters", ["email"], :name => "index_debaters_on_email", :unique => true
+  add_index "debaters", ["name"], :name => "index_debaters_on_name", :unique => true
   add_index "debaters", ["reset_password_token"], :name => "index_debaters_on_reset_password_token", :unique => true
+  add_index "debaters", ["sign_in_count"], :name => "index_debaters_on_sign_in_count"
   add_index "debaters", ["unlock_token"], :name => "index_debaters_on_unlock_token", :unique => true
 
   create_table "debates", :force => true do |t|
@@ -87,12 +92,20 @@ ActiveRecord::Schema.define(:version => 20120321184550) do
     t.integer  "no_judge",      :default => 0
   end
 
+  add_index "debates", ["creator_id"], :name => "index_debates_on_creator_id"
+  add_index "debates", ["joiner_id"], :name => "index_debates_on_joiner_id"
+  add_index "debates", ["judge", "joined"], :name => "index_debates_on_judge_and_joined"
+  add_index "debates", ["started_at"], :name => "index_debates_on_started_at"
+
   create_table "debations", :force => true do |t|
     t.integer  "debater_id"
     t.integer  "debate_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "debations", ["debate_id"], :name => "index_debations_on_debate_id"
+  add_index "debations", ["debater_id"], :name => "index_debations_on_debater_id"
 
   create_table "footnotes", :force => true do |t|
     t.string  "content"
@@ -121,6 +134,9 @@ ActiveRecord::Schema.define(:version => 20120321184550) do
     t.boolean  "loser_approve"
   end
 
+  add_index "judgings", ["debate_id"], :name => "index_judgings_on_debate_id"
+  add_index "judgings", ["debater_id"], :name => "index_judgings_on_debater_id"
+
   create_table "relationships", :force => true do |t|
     t.integer  "follower_id"
     t.integer  "followed_id"
@@ -139,6 +155,8 @@ ActiveRecord::Schema.define(:version => 20120321184550) do
     t.datetime "updated_at"
   end
 
+  add_index "suggested_topics", ["rating"], :name => "index_suggested_topics_on_rating"
+
   create_table "topic_positions", :force => true do |t|
     t.integer  "debater_id"
     t.integer  "debate_id"
@@ -147,6 +165,8 @@ ActiveRecord::Schema.define(:version => 20120321184550) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "topic_positions", ["debate_id"], :name => "index_topic_positions_on_debate_id"
 
   create_table "trackings", :force => true do |t|
     t.integer  "debater_id"
@@ -166,6 +186,10 @@ ActiveRecord::Schema.define(:version => 20120321184550) do
     t.boolean  "joiner"
   end
 
+  add_index "viewings", ["currently_viewing", "creator"], :name => "index_viewings_on_currently_viewing_and_creator"
+  add_index "viewings", ["debate_id"], :name => "index_viewings_on_debate_id"
+  add_index "viewings", ["viewer_id"], :name => "index_viewings_on_viewer_id"
+
   create_table "votes", :force => true do |t|
     t.boolean  "vote",          :default => false
     t.integer  "voteable_id",                      :null => false
@@ -176,7 +200,7 @@ ActiveRecord::Schema.define(:version => 20120321184550) do
     t.datetime "updated_at"
   end
 
-  add_index "votes", ["voteable_id", "voteable_type"], :name => "index_votes_on_voteable_id_and_voteable_type"
-  add_index "votes", ["voter_id", "voter_type"], :name => "index_votes_on_voter_id_and_voter_type"
+  add_index "votes", ["voteable_id"], :name => "index_votes_on_voteable_id"
+  add_index "votes", ["voter_id"], :name => "index_votes_on_voter_id"
 
 end
