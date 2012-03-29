@@ -144,7 +144,9 @@ class Debate < ActiveRecord::Base
               words.each do |word|
                 # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
                 match = true if current_word.length >= 4 and word.length >= 4 and current_word[/..../] == word[/..../] and !pronouns.include?(current_word)
-                match = true if current_word.length >= 3 and word.length >= 3 and current_word == word and !pronouns.include?(current_word)
+                if !match
+                  match = true if current_word.length >= 3 and word.length >= 3 and current_word == word and !pronouns.include?(current_word)
+                end
               end
             end
           end

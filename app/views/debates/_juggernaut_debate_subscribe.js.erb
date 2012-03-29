@@ -134,10 +134,12 @@
 			}
 			if(data.obj.rating_change == true) {
 				if(<%= debater.id %> == <%= debate.creator_id %>) {
+					rating_changed = true;
 					$("#oldscore").html(data.obj.d1_old);
 					$("#newscore").html(data.obj.d1);
 				}
 				if(<%= debater.id %> == data.obj.joiner_id) {
+					rating_changed = true;
 					$("#oldscore").html(data.obj.d2_old);
 					$("#newscore").html(data.obj.d2);	
 				}	
@@ -150,7 +152,8 @@
 			<% else %>
 				$('#debater-ratings').html(data.obj.ratings[0]);
 			<% end %>
-			if(<%= debater.id %> == data.obj.rater_id) {
+			alert(typeof rating_changed);
+			if((<%= debater.id %> == data.obj.rater_id) && (typeof rating_changed != 'undefined')) {
 				$(".score-updates").show();
 			}
 		}

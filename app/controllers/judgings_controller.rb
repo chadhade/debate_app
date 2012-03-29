@@ -98,7 +98,7 @@ class JudgingsController < ApplicationController
         d1 = Debater.find_by_id(@debate.creator_id)
         d2 = Debater.find_by_id(@debate.joiner_id)
         rating_adjust = false
-        unless (d1.guest? or d2.guest?)
+        if !(d1.guest? or d2.guest?)
           rating_change = true
           d1_old = d1.rating
           d2_old = d2.rating
@@ -108,6 +108,8 @@ class JudgingsController < ApplicationController
             winner_id == @debate.creator_id ? result = 1 : result = 0
           end
           new_ratings = d1.rating_adjust(d2, result)
+        else
+          new_ratings = [d1_old, d2_old]
         end
         
         judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging, :upvotes => upvotes, :downvotes => downvotes})
