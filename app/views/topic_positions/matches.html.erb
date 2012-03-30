@@ -63,7 +63,9 @@
 
 <div class="create_container">
 	<h2> Matches </h2>
-	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position, :hidden => (!@matches.nil? or @matching.nil?)} %>
+	<div id ='create-debate' class="<%= 'hidden' if (@matching.nil? or !@matching[:matching_debates].empty?) %>">
+		<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position} %>
+	</div>
 	<div id="matching-debates" class="list_matches_container">
 			<%= render :partial => "/topic_positions/list_matching_debates", :locals => {:matching => @matching} %> 	
 	</div>
@@ -71,7 +73,10 @@
 	<div id="suggested-debates" class="list_matches_container">
 		<%= render :partial => "/topic_positions/list_suggested_debates", :locals => {:matching => @matching} %>
 	</div>
-	
+	<div id="create-debate-link" class="<%= 'hidden' if (@matching.nil? or !@matching[:matching_debates].empty?) %>" onClick="matchHide();">
+		<br />
+		Create Your Own Debate
+	</div>
 </div>
 
 <script>
@@ -80,14 +85,21 @@
 	function matchShow() {
 		$('#matching-debates').show();
 		$('#suggested-debates').show();
-		$('.create_form_container').hide();
+		$('#create-debate').hide();
+	}
+	
+	function matchHide() {
+		$('#matching-debates').hide();
+		$('#create-debate-link').hide();
+		$('#create-debate').show();
+		$('#first-argument').focus();
 	}
 </script>
 
 <% if @from_landing == true %> 
 	<script>	
 		//Update the "First Argument" text box, if debater is allowed to create a new debate
-		<% unless current_or_guest_debater.waiting_for or @matching == nil %>
+		<% unless current_or_guest_debater.waiting_for or @matching.nil? %>
 			$('.create_form_container').html("<%= escape_javascript(render(:partial => "topic_positions/form_new_debate", :locals => {:topic_position => @topic_position}, :layout => false) ) %>");
 			$('#first-argument').attr('disabled', false);
 			$('#first-argument').css('background-color', "#ffffff");
@@ -102,6 +114,8 @@
 			$('#first-argument').focus();
 			$('#matching-debates').removeClass('pop');
 			$('#matching-debates').hide();
+			$('#create-debate-link').hide();
+			
 		<% else %>
 			// If there are matches, make the matches container pop out
 			$('#matching-debates').addClass('pop');

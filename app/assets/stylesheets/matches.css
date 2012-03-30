@@ -60,6 +60,10 @@
 	height: 105px;
 }
 
+#create-debate-link {
+	color: #0000FF;
+	text-decoration: underline;
+}
 .flat {
 	-webkit-box-shadow:0 0 0px #000;
 	-moz-box-shadow: 0 0 0px #000;

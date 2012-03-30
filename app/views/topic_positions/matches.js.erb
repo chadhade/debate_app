@@ -21,14 +21,16 @@ $('#topic-position-field').val("<%= @topic_position.topic %>");
 
 // Ff there are no matches, Focus on the create box.  Hide 'suggested' boxes.
 <% if @matching[:matching_debates].empty? %>
-	$('.create_form_container').show();
-	$('#first-argument').focus();
-	//$('#matching-debates').removeClass('pop');
+	$('#matching-debates').removeClass('pop');
 	$('#matching-debates').hide();
+	$('#create-debate').show();
+	$('#first-argument').focus();
+	$('#create-debate-link').hide();
 	//$('#suggested-debates').hide();
 <% else %>
-	// If there are matches, make the matches container pop out
+	// If there are matches, make the matches container pop out.  Show create-own-debate link.
 	$('#matching-debates').addClass('pop');
+	$('#create-debate-link').show();
 <% end %>
 
 //  For use with javascript popups to show entire argument, when it doesn't fit on the screen
