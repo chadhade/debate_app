@@ -48,10 +48,7 @@
 		</div>
 	</div>
 	
-	<br />
-	<br />
 	
-	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position, :hidden => (!@matches.nil? or @matching.nil?)} %> 
 	<br />
 	<div id="suggested-topics" class="list_matches_container flat">
 		<%= render :partial => "/topic_positions/list_suggested_topics", :locals => {:trending => @trending} %>
@@ -66,7 +63,7 @@
 
 <div class="create_container">
 	<h2> Matches </h2>
-	
+	<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position, :hidden => (!@matches.nil? or @matching.nil?)} %>
 	<div id="matching-debates" class="list_matches_container">
 			<%= render :partial => "/topic_positions/list_matching_debates", :locals => {:matching => @matching} %> 	
 	</div>
@@ -75,10 +72,18 @@
 		<%= render :partial => "/topic_positions/list_suggested_debates", :locals => {:matching => @matching} %>
 	</div>
 	
-	
 </div>
 
- 
+<script>
+	$('#topic-position-field').focus();
+	
+	function matchShow() {
+		$('#matching-debates').show();
+		$('#suggested-debates').show();
+		$('.create_form_container').hide();
+	}
+</script>
+
 <% if @from_landing == true %> 
 	<script>	
 		//Update the "First Argument" text box, if debater is allowed to create a new debate
@@ -94,9 +99,9 @@
 
 		// Scroll to the bottom of the page if there are no matches.  Focus on the create box
 		<% if @matching[:matching_debates].empty? %>
-			window.scrollTo(0,100);
 			$('#first-argument').focus();
 			$('#matching-debates').removeClass('pop');
+			$('#matching-debates').hide();
 		<% else %>
 			// If there are matches, make the matches container pop out
 			$('#matching-debates').addClass('pop');

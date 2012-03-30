@@ -19,11 +19,12 @@ $('#suggested-debates').html("<%= escape_javascript(render(:partial => "topic_po
 //Refresh the topic field with the topic, in case the topic was chosen by clicking an outside link
 $('#topic-position-field').val("<%= @topic_position.topic %>");
 
-// Scroll to the bottom of the page if there are no matches.  Focus on the create box
+// Ff there are no matches, Focus on the create box.  Hide 'suggested' boxes.
 <% if @matching[:matching_debates].empty? %>
-	window.scrollTo(0,100);
 	$('#first-argument').focus();
-	$('#matching-debates').removeClass('pop');
+	//$('#matching-debates').removeClass('pop');
+	$('#matching-debates').hide();
+	//$('#suggested-debates').hide();
 <% else %>
 	// If there are matches, make the matches container pop out
 	$('#matching-debates').addClass('pop');
