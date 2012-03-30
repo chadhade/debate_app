@@ -5,6 +5,7 @@ class JudgingsController < ApplicationController
   require 'will_paginate/array'
   
   def index
+    
     judging_priority = Debate.judging_priority(30)
     if !judging_priority.empty?
       @joined_no_judge = judging_priority.paginate(:page => params[:page], :per_page => 15)

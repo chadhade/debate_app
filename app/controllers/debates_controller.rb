@@ -132,7 +132,7 @@ class DebatesController < ApplicationController
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debatestatus})
     
     # update individ status
-    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "debater2", :who_value => "Debater2"}})
+    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_exists", :obj => {:who_code => "debater2", :who_value => "Debunker2"}})
     Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true", :who_message =>"A Debunker has joined this debate."}})
 	  
 	  respond_to do |format|

@@ -101,6 +101,8 @@ class DebatersController < ApplicationController
   
   def index
     @title = "All Debaters"
+    @bg2 = true # Use different background
+    
     debaters = Debater.where("sign_in_count > ?", 0)
     @debaterranks = Array.new
     

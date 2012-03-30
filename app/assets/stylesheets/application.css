@@ -17,6 +17,10 @@ body {
 	background-attachment: fixed;
 }
 
+body.bg2 {
+	background-image: url(sanzio.jpg);
+}
+
 .page-title h1 {
 	border: 1px solid silver;
 	background-color: white;
@@ -83,6 +87,11 @@ body {
 	-webkit-box-shadow:0 0 10px #000;
     -moz-box-shadow: 0 0 10px #000;
     box-shadow:0 2.5px 5px #000;
+}
+
+.sitewidth.bg2 {
+	margin-top: 2.5em;
+	background-image: url(landscape_debunky.jpg);
 }
 
 .round {

@@ -8,14 +8,14 @@
   	<%= csrf_meta_tags %>
 		
 </head>
-<body>
+<body class="<%= @bg2 ? 'bg2' : ''%>">
 	<% @thisdebater = current_or_guest_debater %>
 	<%= render :partial => "/layouts/navigation", :locals => {:thisdebater => @thisdebater} %>
 	
 	<%= render :partial => "/layouts/instruction_boxes" %>
 	<%= render :partial => "/shared/init_juggernaut" %>
 	
-	<div class= "sitewidth">
+	<div class= "sitewidth <%= @bg2 ? 'bg2' : ''%>">
 		<% flash.each do |key, value| %>
 			<div class="flash <%= key %>"><%= value %></div>
 		<% end %>
