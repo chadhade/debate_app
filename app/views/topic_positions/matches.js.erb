@@ -29,6 +29,9 @@ $('#topic-position-field').val("<%= @topic_position.topic %>");
 	//$('#suggested-debates').hide();
 <% else %>
 	// If there are matches, make the matches container pop out.  Show create-own-debate link.
+	$('#matching-debates').show();
+	$('#suggested-debates').show();
+	$('#create-debate').hide();
 	$('#matching-debates').addClass('pop');
 	$('#create-debate-link').show();
 <% end %>
