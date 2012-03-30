@@ -152,7 +152,7 @@
 			<% else %>
 				$('#debater-ratings').html(data.obj.ratings[0]);
 			<% end %>
-			alert(typeof rating_changed);
+			//alert(typeof rating_changed);
 			if((<%= debater.id %> == data.obj.rater_id) && (typeof rating_changed != 'undefined')) {
 				$(".score-updates").show();
 			}
