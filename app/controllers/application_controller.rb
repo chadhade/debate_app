@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
 	def after_sign_in_path_for(resource)
 		debater = current_debater
 		debater.last_request_at = Time.now
+		debater.rating.nil? ? debater.rating = 1000 : nil
 		debater.save
 		stored_location_for(resource) || "/pages/landing"
 	end
