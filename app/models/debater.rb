@@ -21,6 +21,8 @@ class Debater < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation, :remember_me, :login
   
   acts_as_voter
+  has_many :votes, :as => :voter_id, :dependent => :destroy
+  
   attr_accessible :arg_upvotes, :arg_downvotes, :judge_points
   
   attr_accessible :waiting_for
