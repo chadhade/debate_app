@@ -11,7 +11,7 @@
  			$(".debate[data-id="+ <%= debate.id %> +"]").prop({ scrollTop: $(".debate[data-id="+ <%= debate.id %> +"]").prop("scrollHeight") });
 			
 			<% if !debater.nil? %>
-				if ("<%= debater.email %>" == data.obj.current_turn) {
+				if ("<%= debater.name %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 					$("#argument_textarea").focus();
@@ -170,7 +170,7 @@
 			abort_timer[<%= debate.id %>] = 0;
 			
 			<% if !debater.nil? %>
-				if ("<%= debater.email %>" == data.obj.current_turn) {
+				if ("<%= debater.name %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 					$("#argument_textarea").focus();
@@ -206,7 +206,7 @@
 		if (data.func == "end_single") {
 			
 			<% if !debater.nil? %>
-				if ("<%= debater.email %>" == data.obj.current_turn) {   	
+				if ("<%= debater.name %>" == data.obj.current_turn) {   	
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
 					$("#argument_textarea").focus();	

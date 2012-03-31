@@ -53,7 +53,7 @@ class ArgumentsController < ApplicationController
     		@argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
   		
     		Juggernaut.publish("debate_" + @debate_id, {:func => "argument", :obj => {:timers => showtimers(@debate, @current_argument, @lastargument), 
-    		                  :argument => argument_render, :current_turn => @debate.current_turn.email, 
+    		                  :argument => argument_render, :current_turn => @debate.current_turn.name, 
     		                  :footnotes => footnotes_render, :judge_needed => @debate.started_at.nil?}})
     	  reset_invocation_response # allow double rendering
       end

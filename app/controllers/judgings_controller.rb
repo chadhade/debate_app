@@ -37,7 +37,7 @@ class JudgingsController < ApplicationController
           @oldtime = @firstarg.time_left
           @timeleft = @oldtime + (Time.now - @judge.created_at).seconds.to_i
           #@firstarg.update_attributes(:time_left => @timeleft)
-          @currentturn = @debate.arguments.first(:order => "created_at ASC").debater.email
+          @currentturn = @debate.arguments.first(:order => "created_at ASC").debater.name
  
           Juggernaut.publish("debate_" + params[:debate_id], {:func => "start_debate", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
                             :debateid => params[:debate_id]}, :current_turn => @currentturn}})

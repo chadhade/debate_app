@@ -112,9 +112,9 @@ class DebatesController < ApplicationController
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
 	  
 	  @guest ? joinerpath = @currentdebater.mini_name + " : " : joinerpath = "<a href=\"/debaters/#{@currentdebater.id.to_s}\">#{@currentdebater.mini_name}</a>"
-	  
+	  @debatestatus[:status_code] == 3 ? current_turn = @debate.current_turn.name : current_turn = ""
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
-	                                              :argument => argument_render, :current_turn => @debate.current_turn.name, 
+	                                              :argument => argument_render, :current_turn => current_turn, 
 	                                              :footnotes => footnotes_render, :judge_needed => @debate.started_at.nil?}})
 	  
 	  #Juggernaut.publish("debate_" + params[:id], {:func => "joiner", :obj => {:joiner => current_or_guest_debater.mini_name, :joinerpath => "/debaters/" + current_or_guest_debater.id.to_s, :waiting_icon => waiting_icon_render, :timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}}})
@@ -355,7 +355,7 @@ end
     		  #Start Timers
     		  firstarg = @debate.arguments.first(:order => "created_at ASC")
           secondarg = @debate.arguments.all(:order => "created_at ASC").second
-          currentturn = @debate.creator.email
+          currentturn = @debate.creator.name
           Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "start_debate", :obj => {:timers => {:movingclock => firstarg.time_left, :staticclock => secondarg.time_left, :movingposition => 1, 
                             :debateid => @debate.id}, :current_turn => currentturn}})
           # remove debate from judging index page
@@ -416,7 +416,7 @@ end
       @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
       @debate = Debate.find(params[:id])
     
-  	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:current_turn => @debate.current_turn.email, :position => (params[:clock_position].to_i - 3).abs}})
+  	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:current_turn => @debate.current_turn.name, :position => (params[:clock_position].to_i - 3).abs}})
     
       reset_invocation_response # allow double rendering
     end
