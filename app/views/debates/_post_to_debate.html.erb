@@ -3,7 +3,7 @@
 	<%# ALL FORMS ARE RENDERED %>
 	<%# THE FORMS NOT NEEDED ARE HIDDEN %>
 	
-	<% if debate.debaters.size == 1 %>
+	<% if debatercount == 1 %>
 	  	<% if !is_creator %>
 			<%= render :partial => "debates/form_join_debate", :locals => {:debate => debate, :hidden => "", :debater => currentdebater} %>
 			<script>
@@ -16,10 +16,10 @@
 	
 	<% else %>	
 		<% if participant %>
-			<% if debate.status[:status_code] > 4 %>
+			<% if status[:status_code] > 4 %>
 				<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => ""} %>
 			<% else %>
-				<% if debate.status[:status_code] <= 4 %>
+				<% if status[:status_code] <= 4 %>
 					<%= render :partial => "arguments/form_argument", :locals => {:debate => debate, :hidden => "hidden"} if debate.started_at.nil? %>
 					<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => "hidden"} %>
 				<% end %>

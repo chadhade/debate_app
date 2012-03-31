@@ -93,7 +93,7 @@
 			</div>
 			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid} %>			  
 		</div>
-		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater, :is_creator => @is_creator, :participant => @participant} %>
+		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater, :is_creator => @is_creator, :participant => @participant, :debatercount => @debatercount, :status => @status} %>
 	</div>
 
 <script>

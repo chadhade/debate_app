@@ -231,6 +231,7 @@ end
   		@movingposition = 2
   	  @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].mini_name
   		@debater2name = "Waiting"
+  		@debatercount = 1
   		return
   	end
 	
