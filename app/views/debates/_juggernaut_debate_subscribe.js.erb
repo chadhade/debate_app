@@ -14,6 +14,7 @@
 				if ("<%= debater.email %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
+					$("#argument_textarea").focus();
 				}
 				else {
 					$(".post_to_debate").hide();
@@ -172,13 +173,19 @@
 				if ("<%= debater.email %>" == data.obj.current_turn) {
 					$('#argument_textarea').val('');
 					$(".post_to_debate").show();
+					$("#argument_textarea").focus();
 				}
 			<% end %>
 		}
 
 		if (data.func == "joiner")	{
 			//$(".timertitle-2").html("<a href='" + data.obj.joinerpath + "'>" + data.obj.joiner + "</a>:  ");
-			$(".timertitle-2").html(data.obj.joinerpath);
+			if (<%= debater.id %> == data.obj.joinerid) {
+				$(".timertitle-2").html("You: ")
+			}
+			else {
+				$(".timertitle-2").html(data.obj.joinerpath);
+			}
 			moving_clock[data.obj.timers.debateid] = data.obj.timers.staticclock;
 			$("#timer2-<%= debate.id %>").html(format_output(data.obj.timers.staticclock));
 			voteable[<%= debate.id %>] = false;
@@ -201,7 +208,8 @@
 			<% if !debater.nil? %>
 				if ("<%= debater.email %>" == data.obj.current_turn) {   	
 					$('#argument_textarea').val('');
-					$(".post_to_debate").show();	
+					$(".post_to_debate").show();
+					$("#argument_textarea").focus();	
 				}
 				else {
 					$(".post_to_debate").hide();
@@ -222,6 +230,7 @@
 				$(".post_to_debate").hide();
 				if((<%= debate.participant?(debater) %>) || (<%= debater.id %> == data.obj.joiner_id)) {	  	
 					$(".chat_to_debate").show();
+					$("#chat_textarea").focus();
 				}
 		}
 	});
@@ -249,6 +258,7 @@
 				<% else %>
 					$('#statuspanel').append(data.obj.judging_form[0]);
 				<% end %>
+				$('.judging_form').focus();
 			}
 			if (data.func == "judge_votes") {
 				if (data.obj.votes.type == "true") {

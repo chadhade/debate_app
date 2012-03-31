@@ -64,6 +64,7 @@ class DebatesController < ApplicationController
   
   def join
     @currentdebater = current_or_guest_debater
+    @guest = @currentdebater.guest?
     @debate = Debate.find(params[:id])
     
     # if debater was currently waiting for another debate, or is the creator, he is not allowed to join
@@ -110,7 +111,7 @@ class DebatesController < ApplicationController
 	  
     @argfoot == true ? footnotes_render = render(@debate.footnotes, :layout => false) : footnotes_render = false
 	  
-	  @currentdebater.guest? ? joinerpath = @currentdebater.mini_name + " : " : joinerpath = "<a href=\"/debaters/#{@currentdebater.id.to_s}\">#{@currentdebater.mini_name}</a>"
+	  @guest ? joinerpath = @currentdebater.mini_name + " : " : joinerpath = "<a href=\"/debaters/#{@currentdebater.id.to_s}\">#{@currentdebater.mini_name}</a>"
 	  
 	  Juggernaut.publish("debate_" + params[:id], {:func => "argument", :obj => {:timers => {:movingclock => @movingclock, :staticclock => @Seconds_Left_2, :movingposition => 1, :debateid => @debate.id}, 
 	                                              :argument => argument_render, :current_turn => @debate.current_turn.name, 

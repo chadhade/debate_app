@@ -1,14 +1,14 @@
 <div class = "post_to_debate <%= hidden %>", data-id="<%= debate.id %>">
 	<span style="margin-left: 240px;">
-		<%= image_tag("image_link.jpg", :alt => "Add Image", :onclick => '$("#image_url_field").toggle(); $("#imagelabel").toggle();', :size => "25x25", :id => "add_image") %>
+		<%= image_tag("image_link.jpg", :alt => "Add Image", :onclick => '$("#image_url_field").toggle(); $("#imagelabel").toggle(); $("#image_url_field").focus();', :size => "25x25", :id => "add_image") %>
 	</span>
 	<%= form_for Argument.new, :html => {:id => 'argument_debunk', :name => 'debunkform'}, :remote => true do |f| %>
 		<div class = "field">
-			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);", :id => "argument_textarea" %>
+			<%= f.text_area :content, :size => "36x5", :onkeyup => "textCounter(this, 1000);", :id => "argument_textarea", :tabindex => 1 %>
 		</div>
 		<%= f.hidden_field :debate_id, :value => debate.id %>
 		<%= f.label "Image address:", :id => "imagelabel", :hidden => true %>
-		<%= f.url_field :image_url, :hidden => true, :id => "image_url_field", :onClick => "this.select();", :size => 46 %>
+		<%= f.url_field :image_url, :hidden => true, :id => "image_url_field", :onClick => "this.select();", :size => 46, :tabindex => 2 %>
 		<div class = "action">
 			<%= f.submit "deBunk!", :disable_with => 'Debunking...', :id => "debunk_button" %>
 		</div>	

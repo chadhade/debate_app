@@ -173,6 +173,8 @@
 	$(document).ready(function() {
 		<% if @status[:status_code] >= 3 %>
 			abort_timer[<%= @debateid %>] = 0;
+		<% else %>
+			$(window).scrollTop(65);
 		<% end %>
 		setTimeout("javascript_countdown.startTimers()", 500);
 	});

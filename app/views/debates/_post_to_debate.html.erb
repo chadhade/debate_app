@@ -4,9 +4,16 @@
 	<%# THE FORMS NOT NEEDED ARE HIDDEN %>
 	
 	<% if debate.debaters.size == 1 %>
-	  	<%= render :partial => "debates/form_join_debate", :locals => {:debate => debate, :hidden => "", :debater => currentdebater} if !is_creator %>
+	  	<% if !is_creator %>
+			<%= render :partial => "debates/form_join_debate", :locals => {:debate => debate, :hidden => "", :debater => currentdebater} %>
+			<script>
+			// Focus on the join form
+				$('#respond_textarea').focus();
+			</script>
+		<% end %>
 		<%= render :partial => "arguments/form_argument", :locals => {:debate => debate, :hidden => "hidden"} %>
 		<%= render :partial => "arguments/form_chat", :locals => {:debate => debate, :hidden => "hidden"} %>
+	
 	<% else %>	
 		<% if participant %>
 			<% if debate.status[:status_code] > 4 %>
