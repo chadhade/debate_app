@@ -27,7 +27,7 @@ class RelationshipsController < ApplicationController
     end
     
     respond_to do |format|
-      format.html {redirect_to following_debater_path(currentid)}
+      format.html {redirect_to following_debater_path(current_debater.name)}
       format.js
     end
   end
@@ -38,7 +38,7 @@ class RelationshipsController < ApplicationController
     unless relationship.nil?
       relationship.update_attributes(:teammate => false)
     end
-    params[:page]=="Teammates" ? @path = teammates_debater_path(currentid) : @path = following_debater_path(currentid)
+    params[:page]=="Teammates" ? @path = teammates_debater_path(current_debater.name) : @path = following_debater_path(current_debater.name)
     
     respond_to do |format|
       format.html {redirect_to @path}

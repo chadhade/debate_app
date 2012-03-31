@@ -48,6 +48,10 @@ class Debater < ActiveRecord::Base
   
   scope :teammates, lambda { |debater| team_debaters(debater)}
   
+  def to_param
+    name
+  end
+    
   def active?
     return false if !self.current_sign_in_at 
     !self.timedout?(self.last_request_at)
