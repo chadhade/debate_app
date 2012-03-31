@@ -17,6 +17,10 @@ class Argument < ActiveRecord::Base
     Vote.where(:voteable_id => self.id, :vote => false,:voter_id => debater_id).count
   end
   
+  def votes_by(debater_id)
+    Vote.where(:voteable_id => self.id, :voter_id => debater_id).count
+  end
+  
   def votes_for_except(debater_id)
     Vote.where("voteable_id = ? AND voteable_type = ? AND vote = ? AND voter_id != ?", self.id, self.class.name, true, debater_id).count
   end

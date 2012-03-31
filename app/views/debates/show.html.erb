@@ -15,6 +15,8 @@
 
 <script>
 	voteable[<%= @debateid %>] = <%= @voteable == true && !@guest %>;
+	argvoteable = new Array();
+	argvoteable[0] = 1;
 	joiner = new Array();
 	joiner[<%= @debateid %>] = 0;
 	// Exit tracking will catch a departing (participating) debater, unless "debater_waiting" becomes true by clicking the waiting icon

@@ -13,8 +13,8 @@
 
 <div class = "votes" data-argument_id = "<%= argument.id %>">	
 	<% if currentid != judgeid %>
-			<%= render :partial => "/votes/vote", :locals => {:argument => argument, :judgeid => judgeid, :status => status} %>
+			<%= render :partial => "/votes/vote", :locals => {:argument => argument, :judgeid => judgeid, :status => status, :currentid => currentid} %>
 	<% else %>
-			<%= render :partial => "/votes/vote_judge", :locals => {:argument => argument, :judgeid => judgeid, :status => status} %>
+			<%= render :partial => "/votes/vote_judge", :locals => {:argument => argument, :judgeid => judgeid, :status => status, :currentid => currentid} %>
 	<% end %>
 </div>
