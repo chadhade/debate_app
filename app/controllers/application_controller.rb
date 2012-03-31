@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
     u.current_sign_in_at = Time.now
     u.last_request_at = Time.now
     u.rating = 1000
-    u.save!
+    u.save
     u
   end
  
