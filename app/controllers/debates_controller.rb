@@ -246,7 +246,7 @@ end
 	    return
 	  end
 	  
-	  @voteable = true #At this point, we know there are 2 debaters and a judge (if requested).  Hence, votes are allowed.
+	  @voteable = true unless (@is_creator or @is_joiner) #We know there are 2 debaters and a judge (if requested). So, votes are allowed.
 	  
   	@timeleft = time_left(@debate)
   	

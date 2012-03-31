@@ -166,7 +166,9 @@
 			soundGavel.play(); // Play the gavel sound
 			
 			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
-			voteable[<%= debate.id %>] = true;
+			if(<%= debate.creator_id != debater.id %> && <%= debater.id %> != joiner[<%= debate.id %>]) {
+				voteable[<%= debate.id %>] = true; // Everyone can vote except creator and joiner
+			}
 			abort_timer[<%= debate.id %>] = 0;
 			
 			<% if !debater.nil? %>
