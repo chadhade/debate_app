@@ -39,6 +39,8 @@
 									if(data.obj.status_code == 3) {
 										$(".waiting_box").children("h3").html("Debate Started!");
 										$(".waiting_box").children("h3").css("background-color", "red");
+										soundGavel = document.getElementById('soundHandle');
+										soundGavel.play(); // Play the gavel sound
 									}
 								}	
 							});

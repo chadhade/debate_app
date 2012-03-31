@@ -160,6 +160,10 @@
 		
 		if (data.func == "start_debate") {
 			//abort_timer[<%= debate.id %>] = 1;  // Stop the previous timer from running
+			
+			soundGavel = document.getElementById('soundHandle');
+			soundGavel.play(); // Play the gavel sound
+			
 			javascript_countdown.init(data.obj.timers.movingclock, data.obj.timers.staticclock, data.obj.timers.movingposition, data.obj.timers.debateid);
 			voteable[<%= debate.id %>] = true;
 			abort_timer[<%= debate.id %>] = 0;

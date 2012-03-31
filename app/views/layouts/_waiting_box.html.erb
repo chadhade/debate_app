@@ -5,5 +5,9 @@
 			<h3>Waiting...</h3>
 				<strong><%= link_to debate.tp.topic.upcase, debate %> </strong> - <div class="waiting_content"> <%= debate.status[:status_value] %></div>
 		</div>
+		<audio id="soundHandle" style="display: none;" preload="auto" autobuffer>
+			<source src="/assets/gavel.wav" type="audio/wav"/>
+			<source src="/assets/gavel.mp3" type="audio/mpeg" />
+		</audio>
 	<% end %>
 <% end %>
