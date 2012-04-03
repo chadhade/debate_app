@@ -9,7 +9,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 30.minutes
+  $debatetime = 30.seconds
   
   #before_filter :authenticate_debater!
   #skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -40,7 +40,8 @@ class DebatesController < ApplicationController
   	end
   	
   	# update topic position with the debate id
-  	@topic_position = TopicPosition.new(:debater_id => @currentdebater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position], :debate_id => @debate.id)
+  	@topic_position = TopicPosition.new(:debater_id => @currentdebater.id, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position], :debate_id => @debate.id)
+	  @topic_position.save
 	  
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
@@ -150,8 +151,8 @@ end
     # pull all arguments from that debate and pass debate object
   	@debate = Debate.find(params[:id])
   	@debateid = @debate.id
-  	@arguments = @debate.arguments
-  	@argument_last = @arguments.last(:order => "created_at ASC")
+  	@arguments = @debate.arguments(:order => "created_at ASC")
+  	@argument_last = @arguments.last
   	@previoustimeleft = @argument_last.time_left
   	@currentdebater = current_or_guest_debater
   	@guest = @currentdebater.guest?
@@ -191,8 +192,9 @@ end
   	end
   	
   	#toggle judgings index if applicable
-  	Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@is_creator or @is_joiner) and @debate.currently_viewing(@debate.creator_id) and (@debate.currently_viewing(@debate.joiner_id) if (@debate.joined and @debate.no_judge != 3))
-	  
+  	#Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@is_creator or @is_joiner) and @debate.currently_viewing(@debate.creator_id) and (@debate.currently_viewing(@debate.joiner_id) if (@debate.joined and @debate.no_judge != 3))
+	  Juggernaut.publish("judging_index", {:function => "unhide_joined", :debate_id => @debateid}) if (@debate.joined and @debate.no_judge != 3) and ((@is_creator and @debate.currently_viewing(@debate.joiner_id)) or (@is_joiner and @debate.currently_viewing(@debate.creator_id)))
+  	
   	# Add footnotes, if any exist
   	@arguments.each do |argument|
   		argument.any_footnotes ? argument.content = argument.show_footnote : nil
@@ -201,14 +203,18 @@ end
 	  #Tally up the judge votes if the debate is over
 	  @upvotes = 0
     @downvotes = 0
-	  if @debate.end_time and @debate.no_judge != 3
-	    if !@debate.winner_id.nil?
-        @arguments.each do |argument|
-          @upvotes = @upvotes + argument.votes_for_by(@debate.judge_id)
-          @downvotes = @downvotes + argument.votes_against_by(@debate.judge_id)
-        end
-      end
+	  
+    if !@debate.winner_id.nil?
+      #@arguments.each do |argument|
+        #@upvotes = @upvotes + argument.votes_for_by(@debate.judge_id)
+        #@downvotes = @downvotes + argument.votes_against_by(@debate.judge_id)
+      #end
+      argument_ids = @arguments.collect{|a| a.id}
+    
+      @upvotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ? AND voter_id = ?", argument_ids, "Argument", true, @debate.judge_id).count
+      @downvotes = Vote.where("voteable_id IN (?) AND voteable_type = ? AND vote = ? ANd voter_id = ?", argument_ids, "Argument", false, @debate.judge_id).count
     end
+   
     
   	# Calculate the amount of time left for use in javascript timers
   	
@@ -217,25 +223,30 @@ end
       @movingclock = 0
       @staticclock = 0
       @movingposition = 0
-      @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].mini_name
-    	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].mini_name
+      @creator = @debate.creator
+      @joiner = @debate.joiner
+      @is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
+    	@is_joiner ? @debater2name = "You" : @debater2name = @joiner.mini_name
     	return
     end
     
   	# If there is only 1 debater, debater 2 has 0 seconds left
-  	if @debaters.count == 1
+  	if !@debate.joined
   		@movingclock = 0
   		@staticclock = @previoustimeleft
   		@movingposition = 2
-  	  @currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].mini_name
+  	  @creator = @debate.creator
+  	  @is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
   		@debater2name = "Waiting"
   		@debatercount = 1
   		return
   	end
 	
   	# Debater names
-  	@currentdebater == @debaters[0] ? @debater1name = "You" : @debater1name = @debaters[0].mini_name
-  	@currentdebater == @debaters[1] ? @debater2name = "You" : @debater2name = @debaters[1].mini_name
+  	@creator = @debate.creator
+    @joiner = @debate.joiner
+  	@is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
+  	@is_joiner ? @debater2name = "You" : @debater2name = @joiner.mini_name
 	
 	  # If no judge has joined, timers do not move (for judged debates)
 	  if @debate.judge == false and @debate.no_judge != 3
@@ -434,7 +445,7 @@ end
       @debate.arguments.where("debater_id = ?", @debater_timeleft.id).last(:order => "created_at ASC").update_attributes(:Repeat_Turn => true)
       @debate = Debate.find(params[:id])
     
-  	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:current_turn => @debate.current_turn.name, :position => (params[:clock_position].to_i - 3).abs}})
+  	  Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "end_single", :obj => {:current_turn => @debater_timeleft.name, :position => (params[:clock_position].to_i - 3).abs}})
     
       reset_invocation_response # allow double rendering
     end

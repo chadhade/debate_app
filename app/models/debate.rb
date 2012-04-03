@@ -89,10 +89,11 @@ class Debate < ActiveRecord::Base
     if self.end_time # Check if Debate has ended
       return nil 
     end
-    if self.arguments.last(:order => "created_at ASC").Repeat_Turn == true 
+    arguments = self.arguments
+    if arguments.last(:order => "created_at ASC").Repeat_Turn == true 
 		  self.last_debater
 	  else
-		  self.arguments.size % 2 == 0 ? self.creator : self.joiner
+		  arguments.size % 2 == 0 ? self.creator : self.joiner
 	  end
   end
   
@@ -200,7 +201,7 @@ class Debate < ActiveRecord::Base
   
   def currently_viewing(debater_id)
     return false if debater_id.nil?
-    self.viewings.where("viewer_id = ?", debater_id).currently_viewing
+    self.viewings.where("viewer_id = ?", debater_id).first(:order => "created_at ASC").currently_viewing
   end
   
   def self.load_pronouns

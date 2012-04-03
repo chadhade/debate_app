@@ -32,36 +32,40 @@ class Argument < ActiveRecord::Base
   def has_footnote?
     content = self.content
     
-    if content.index(/\(\((.+)\)\)/) # check for footnoote
-        #Make sure there isn't a footnote inside of a footnote -- Can make this search more efficient?
-        searchstart = 0
-        searchend = 1
-        alarm = false
-        alarm2 = false
+    if /\(\(/ =~ content # Quick search to determine if a full search is necessary. Only looks for the opening parenthesis
+      if content.index(/\(\((.+)\)\)/) # full search for footnote - ((example of a footnote))
+          
+          #Make sure there isn't a footnote inside of a footnote -- Can make this search more efficient?
+            searchstart = 0
+            searchend = 1
+            alarm = false
+            alarm2 = false
         
-        if (content.scan((/\(\((.+)\)\)/)).to_s.length + 4)== content.length #Argument cannot consist of just a footnote
-          return false
-        end
+            if (content.scan((/\(\((.+)\)\)/)).to_s.length + 4) == content.length #Argument cannot consist of just a footnote
+              return false
+            end
+            
+            return true if content.count('\(') == 2
+            
+            until ((searchend == content.length) or (alarm2 == true)) do
+              if (content[searchstart..searchend]) == "(("
+                alarm == true ? alarm2 = true : alarm = true
+              end
+              if ((content[searchstart..searchend])) == "))"
+                alarm == true ? alarm = false : nil
+              end
+              searchstart = searchstart + 1
+              searchend = searchend + 1
+            end
         
-        until ((searchend == content.length) or (alarm2 == true)) do
-          if (content[searchstart..searchend]) == "(("
-            alarm == true ? alarm2 = true : alarm = true
-          end
-          if ((content[searchstart..searchend])) == "))"
-            alarm == true ? alarm = false : nil
-          end
-          searchstart = searchstart + 1
-          searchend = searchend + 1
-        end
-        
-        if (alarm2 == true)
-          return false
-        else
-          return true
-        end
-    else
-      return false
+            if (alarm2 == true)
+              return false
+            else
+              return true
+            end
+      end
     end
+    return false
   end
 
   def save_footnote(thedebate)

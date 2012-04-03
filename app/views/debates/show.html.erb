@@ -25,7 +25,7 @@
 	debate_id = <%= @debateid %>; 
 </script>
 
-<%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate, :debater => @currentdebater} %>
+<%= render :partial => "/debates/juggernaut_debate_subscribe.js", :locals => {:debate => @debate, :debater => @currentdebater, :participant => @participant} %>
 
 <script>
 	function debateEnd() {
@@ -78,7 +78,7 @@
 
 <div class="topic_position_container">
 	"<%= "#{@debate.tp.topic}" %>"
-	<%= render :partial => "/debates/viewing", :locals => {:debate_id => @debateid} %>
+	<%# render :partial => "/debates/viewing", :locals => {:debate_id => @debateid} %>
 </div>
 <%= debater_signed_in? ? nil : "<br /> <br />".html_safe %>
 
@@ -87,18 +87,18 @@
 		<div class="debatecontainer">
 			<div class="containerpanel">
 				<h2>
-				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debateid, :debater1name => @debater1name, :debater2name => @debater2name, :debaters => @debaters} %>
+				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debateid, :debater1name => @debater1name, :debater2name => @debater2name, :creator => @creator, :joiner => @joiner} %>
 				<%# render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 				</h2>
 			</div>
-			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid} %>			  
+			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid, :arguments => @arguments} %>			  
 		</div>
 		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater, :is_creator => @is_creator, :participant => @participant, :debatercount => @debatercount, :status => @status} %>
 	</div>
 
 <script>
 	javascript_countdown.init(<%= @movingclock %>, <%= @staticclock %>, <%= @movingposition %>, <%= @debateid %>);
-	<% if @debaters.count <= 1 %>
+	<% if !@debate.joined %>
 		abort_timer[<%= @debateid %>] = 1;
 	<% end %>
 </script>
@@ -118,7 +118,7 @@
 		
 		<!-- Show Judging Form -->
 		<% @judging = @debate.judge_entry %>
-		<% if !@judging.nil? and @currentdebater == @debate.judger and @judging.winner_id.nil? %>
+		<% if !@judging.nil? and @currentdebater.id == @debate.judge_id and @judging.winner_id.nil? %>
 			<% if !@debate.end_time.nil? and Time.now < @debate.end_time + $judgetime %>
 				<%= render :partial => "/judgings/judging_form", :locals => {:judging => @judging} %>
 			<% end %>

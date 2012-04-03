@@ -1,7 +1,7 @@
 <div class="timer">
 	<span class="timertitle-1">
-	<% if !debaters[0].guest? %>
-		<%= link_to debater1name, debaters[0] %>
+	<% if !creator.guest? %>
+		<%= link_to debater1name, creator %>
 	<% else %>
 		<%= debater1name %>
 	<% end %>
@@ -13,11 +13,11 @@
 
 <div class="timer">
 	<span class="timertitle-2">
-		<% if debaters[1].nil? %>
+		<% if joiner.nil? %>
 			<%= debater2name %>
 		<% else %>
-			<% if !debaters[1].guest? %>
-				<%= link_to debater2name, debaters[1] %>
+			<% if !joiner.guest? %>
+				<%= link_to debater2name, joiner %>
 			<% else %>
 				<%= debater2name %>
 			<% end %>

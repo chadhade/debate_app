@@ -230,14 +230,14 @@
 		
 		if (data.func == "end_debate") {
 				$(".post_to_debate").hide();
-				if((<%= debate.participant?(debater) %>) || (<%= debater.id %> == data.obj.joiner_id)) {	  	
+				if((<%= participant %>) || (<%= debater.id %> == data.obj.joiner_id)) {	  	
 					$(".chat_to_debate").show();
 					$("#chat_textarea").focus();
 				}
 		}
 	});
 	
-	<% if debater != debate.judger %>
+	<% if debater.id != debate.judge_id %>
 		jug.subscribe("debate_" + <%= debate.id %> + "_votes", function(votes){
 		
 			if (votes.obj.type == "true") {
@@ -249,7 +249,7 @@
 		});
 	<% end %>
 	
-	<% if debater == debate.judger %>
+	<% if debater.id == debate.judge_id %>
 		jug.subscribe("debate_" + <%= debate.id %> + "_judge", function(data){
 			if (data.judging_form =="clear_form") {
 				$('.judging_form').remove();

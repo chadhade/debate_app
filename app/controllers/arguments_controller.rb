@@ -8,13 +8,13 @@ class ArgumentsController < ApplicationController
     @currentdebater = current_or_guest_debater
     
     if @debate.end_single_id != @currentdebater.id
-    	@lastargument = @debate.arguments.last(:order => "created_at ASC")
     	@timeleft = time_left(@debate)
       # File.open("listener_log", 'a+') {|f| f.write("first time: #{@timeleft}") }
 	
     	# Check if argument is made on time
   	
       if (@timeleft > 0) && (@debate.current_turn?(@currentdebater)) && (@debate.started_at)
+    		@lastargument = @debate.arguments.last(:order => "created_at ASC")
     		# create a new argument and redirect to debate page 
     		# -- Make the repeat_turn column true if it was true before
     		if @lastargument.Repeat_Turn == true 
@@ -171,12 +171,10 @@ class ArgumentsController < ApplicationController
   
   def showtimers(debate, argument_last, argument_second_last)
   	@previoustimeleft = argument_last.time_left
-  	@currentdebater = current_or_guest_debater
-  	@debaters = debate.debaters
     
     # Calculate the amount of time left for use in javascript timers
   	# If there is only 1 debater, debater 2 has 0 seconds left
-  	if @debaters.size == 1
+  	if !debate.joined
   		@movingclock = 0
   		@staticclock = @previoustimeleft
   		@movingposition = 2  	    		
@@ -192,7 +190,7 @@ class ArgumentsController < ApplicationController
   		@movingclock = argument_last.time_left - (Time.now - argument_last.created_at).seconds.to_i
   		@staticclock = 0
   		@movingposition = (argument_last.debater_id != debate.creator_id) ? 2 : 1
-  		debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
+  		#debate = Debate.find(params[:id]) # Reset the debate variable so the view can properly invoke "current_turn"
   		return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
   	end
 
@@ -200,7 +198,11 @@ class ArgumentsController < ApplicationController
     	argument_last.Repeat_Turn == true ? @previoustimeleft = 0 : nil
     	@movingclock = @timeleft 
     	@staticclock = @previoustimeleft
-    	debate.current_turn == debate.creator ? @movingposition = 1 : @movingposition = 2
+    	@movingposition = 2
+    	current_turn = debate.current_turn
+    	unless current_turn.nil?
+    	  current_turn.id == debate.creator_id ? @movingposition = 1 : nil
+    	end
       return {:movingclock => @movingclock, :staticclock => @staticclock, :movingposition => @movingposition, :debateid => debate.id}
   end
   
