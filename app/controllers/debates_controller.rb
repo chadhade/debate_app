@@ -9,7 +9,7 @@ class DebatesController < ApplicationController
   
   #Global Variables
   $judgetime = 30.seconds
-  $debatetime = 30.seconds
+  $debatetime = 30.minutes
   
   #before_filter :authenticate_debater!
   #skip_before_filter :authenticate_debater!, :only => [:show, :index]
@@ -41,8 +41,6 @@ class DebatesController < ApplicationController
   	
   	# update topic position with the debate id
   	@topic_position = TopicPosition.new(:debater_id => @currentdebater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position], :debate_id => @debate.id)
-  	#@topic_position = TopicPosition.find(params[:argument][:topic_position_id])
-  	@topic_position.update_attributes(:debate_id => @debate.id)
 	  
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
@@ -204,7 +202,7 @@ end
 	  @upvotes = 0
     @downvotes = 0
 	  if @debate.end_time and @debate.no_judge != 3
-	    if !@debate.judge_entry.winner_id.nil?
+	    if !@debate.winner_id.nil?
         @arguments.each do |argument|
           @upvotes = @upvotes + argument.votes_for_by(@debate.judge_id)
           @downvotes = @downvotes + argument.votes_against_by(@debate.judge_id)
@@ -253,7 +251,7 @@ end
   	
   	#If a debater has run out of time, the other debater can continuously post
   	if (@timeleft <=0) && (@argument_last.Repeat_Turn != true)
-  		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true, :content => "test")
+  		@argument_last.update_attributes(:time_left => @argument_last.time_left + @arguments[-2].time_left, :Repeat_Turn => true)
   		@movingclock = @argument_last.time_left - (Time.now - @argument_last.created_at).seconds.to_i
   		@staticclock = 0
   		@movingposition = (@argument_last.debater_id != @debate.creator_id) ? 2 : 1
@@ -265,7 +263,11 @@ end
   	@argument_last.Repeat_Turn == true ? @previoustimeleft = 0 : nil
   	@movingclock = @timeleft 
   	@staticclock = @previoustimeleft
-  	@debate.current_turn == @debate.creator ? @movingposition = 1 : @movingposition = 2
+  	@movingposition = 2
+  	current_turn = @debate.current_turn
+  	unless current_turn.nil?
+  	  current_turn.id == @debate.creator_id ? @movingposition = 1 : nil
+  	end
   end
 
 ##############################################################################  
@@ -302,9 +304,18 @@ end
     @debates_completed = Array.new
 
     @debates.each do |debate|
-    	@debates_ongoing.unshift(debate) if debate.end_time.nil? and debate.judge and debate.joined and time_left(debate) != nil and time_left(debate) > 0
-      @debates_completed.unshift(debate) if !debate.end_time.nil? and debate.judge and debate.joined
-      @debates_in_limbo.unshift(debate) if debate.end_time.nil? and (!debate.judge or !debate.joined)
+    	if !debate.end_time.nil? and debate.judge and debate.joined
+    	  @debates_completed.unshift(debate)
+    	else
+    	  if debate.end_time.nil? and debate.judge and debate.joined
+    	    timeleft = time_left(debate)
+    	    @debates_ongoing.unshift(debate) if timeleft != nil and timeleft > 0
+    	  end
+    	end
+    	
+    	#@debates_ongoing.unshift(debate) if debate.end_time.nil? and debate.judge and debate.joined and time_left(debate) != nil and time_left(debate) > 0
+      #@debates_completed.unshift(debate) if !debate.end_time.nil? and debate.judge and debate.joined
+      #@debates_in_limbo.unshift(debate) if debate.end_time.nil? and (!debate.judge or !debate.joined)
 	  end
 	  
 	  @debates_ongoing = @debates_ongoing.first(30)
@@ -339,20 +350,26 @@ end
   	    when 2
   	      @debate.no_judge = (iscreator * 3) + (isjoiner * 0)
   	    end
-  	    @debate.save
+  	    
   	    
   	    #no_judge_render = render(:partial => "/debates/form_no_judge", :locals => {:status => @debate.status, :debate => @debate, :is_creator => iscreator, :is_joiner => isjoiner}, :layout => false)
   	    #reset_invocation_response # allow double rendering
   	    case @debate.no_judge
 	      when 0
 	        text_nojudge = " "
+	        @debate.save
   	    when 1
     			text_nojudge = "Debunker1 agrees to start without a Judge."
+    			@debate.save
     		when 2
     			text_nojudge = "Debunker2 agrees to start without a Judge."
+    			@debate.save
     		when 3
     		  text_nojudge = " "
-    		  @debate.update_attributes(:started_at => Time.now)
+    		  @debate.started_at = Time.now
+    		  @debate.save
+    		  
+    		  @debatestatus = @debate.status
     		  #Start Timers
     		  firstarg = @debate.arguments.first(:order => "created_at ASC")
           secondarg = @debate.arguments.all(:order => "created_at ASC").second
@@ -362,9 +379,9 @@ end
           # remove debate from judging index page
           Juggernaut.publish("judging_index", {:function => "remove", :debate_id => @debate.id})
           # Publish to waiting channel
-          Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debate.status[:status_value], :status_code => @debate.status[:status_code]}})
+          Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debatestatus[:status_value], :status_code => @debatestatus[:status_code]}})
     		end
-  	    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debate.status, :obj2 => text_nojudge})
+  	    Juggernaut.publish("debate_" + @debate.id.to_s, {:func => "update_status", :obj => @debatestatus ? @debatestatus : @debate.status, :obj2 => text_nojudge})
   	  end
     end
       

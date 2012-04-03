@@ -1,6 +1,6 @@
 <span class="page-title"><h1>DeBunk!</h1></span>
 
-<span class="waiting-icon"><%= render :partial => "/debates/waiting", :locals => {:debate => @debate, :debater => @currentdebater, :participant => @participant, :status => @status} %> </span>
+<span class="waiting-icon imgicon"><%= render :partial => "/debates/waiting", :locals => {:debate => @debate, :debater => @currentdebater, :participant => @participant, :status => @status} %> </span>
 
 <br />
 
@@ -74,7 +74,7 @@
 
 <!-- <div id="tracking" data-id="<%= @debate.id %>" data-debater_id="<%= @currentid %>" onclick="startTracking()"> Click to start tracking this debate</div> -->
 
-<span class="topic_vote"><%= render :partial => "/debates/topic_vote", :locals => {:debate => @debate} %> </span>
+<span class="topic_vote imgicon"><%= render :partial => "/debates/topic_vote", :locals => {:debate => @debate} %> </span>
 
 <div class="topic_position_container">
 	"<%= "#{@debate.tp.topic}" %>"

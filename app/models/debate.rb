@@ -200,7 +200,7 @@ class Debate < ActiveRecord::Base
   
   def currently_viewing(debater_id)
     return false if debater_id.nil?
-    self.viewings.where("viewer_id = ?", debater_id).first(:order => "created_at ASC").currently_viewing
+    self.viewings.where("viewer_id = ?", debater_id).currently_viewing
   end
   
   def self.load_pronouns
