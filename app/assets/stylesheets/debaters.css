@@ -241,13 +241,13 @@ img.gravatar {
 	margin-right: 7px;
 }
 
-.list_joined {
-	width: 23%;
-	float:left;
-}
-
 .list_points {
 	width: 20%;
 	float: left;
 	margin-right: 7px;
+}
+
+.list_joined {
+	width: 22%;
+	float:left;
 }

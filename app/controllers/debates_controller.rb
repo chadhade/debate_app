@@ -433,12 +433,11 @@ end
     @debateid = @debate.id
     
     #Make sure this is only done once and that time is really up
-    if @debate.end_time and Time.now + 2.seconds > @debate.end_time + $judgetime
+    if @debate.end_time and Time.now + 2.seconds > @debate.end_time + $judgetime and @debate.participant?(current_or_guest_debater)
       # update status bar on show page
       Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_status", :obj => @debate.status})
-  
-      # Provide all participants with ability to chat, if judge's submission did not do this already
-        Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
+      # Let participants chat
+      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "end_debate", :obj => {:joiner_id => @debate.joiner_id}})
     end
       
     respond_to do |format|

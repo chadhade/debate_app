@@ -31,7 +31,7 @@ class Debate < ActiveRecord::Base
       return @status = {:status_code => 7, :status_value => "Completed Debate without Judge."} if self.no_judge == 3
       return @status = {:status_code => 4, :status_value => "Waiting for Judging Results!"} if Time.now <= self.end_time + $judgetime and self.judge_entry.winner_id.nil?
       return @status = {:status_code => 5, :status_value => "Completed Debate"} if !self.judge_entry.winner_id.nil?
-      return @status = {:status_code => 6, :status_value => "Debate Over, But No Judging Results Submitted"} if self.judge_entry.winner_id.nil?
+      return @status = {:status_code => 6, :status_value => "Debate Over, But No Judging Results Submitted"} #if self.judge_entry.winner_id.nil?
     end
     @status
   end
@@ -64,19 +64,19 @@ class Debate < ActiveRecord::Base
   #end
   
   def creator?(debater)
-    self.creator == debater
+    self.creator_id == debater.id
   end
 
   def joiner?(debater)
-    self.joiner == debater
+    self.joiner_id == debater.id
   end
   
   def judger?(debater)
-    self.judger == debater
+    self.judge_id == debater.id
   end
   
   def participant?(debater)
-    self.creator == debater || self.joiner == debater || self.judge_id == debater.id
+    self.creator_id == debater.id || self.joiner_id == debater.id || self.judge_id == debater.id
   end
   
   def last_debater
