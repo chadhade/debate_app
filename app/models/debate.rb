@@ -109,12 +109,12 @@ class Debate < ActiveRecord::Base
     self.topic_position
   end
   
-  def self.search(search)
+  def self.search(search=search.downcase)
 	  if search
       @debates = Array.new; 
       #all.each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.match(/#{search}/))}
       limit = Time.now - 5.days
-      Debate.where("started_at > ?", limit).each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.match(/#{search}/))}
+      Debate.where("started_at > ?", limit).each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.downcase.match(/#{search}/))}
 	    @debates
     else
       find(:all)

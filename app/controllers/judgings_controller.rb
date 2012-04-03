@@ -31,13 +31,14 @@ class JudgingsController < ApplicationController
     	
         # If judge joined after both debaters joined, add time spent waiting for judge back to debater 1's time bank
         # Then start timers
-        if @debate.arguments.count == 2
-          @firstarg = @debate.arguments.first(:order => "created_at ASC")
-          @secondarg = @debate.arguments.all(:order => "created_at ASC").second
+        @arguments = @debate.arguments.all(:order => "created_at ASC")
+        if @debate.joiner
+          @firstarg = @arguments.first
+          @secondarg = @arguments.second
           @oldtime = @firstarg.time_left
           @timeleft = @oldtime + (Time.now - @judge.created_at).seconds.to_i
           #@firstarg.update_attributes(:time_left => @timeleft)
-          @currentturn = @debate.arguments.first(:order => "created_at ASC").debater.name
+          @currentturn = @firstarg.debater.name
  
           Juggernaut.publish("debate_" + params[:debate_id], {:func => "start_debate", :obj => {:timers => {:movingclock => @oldtime, :staticclock => @secondarg.time_left, :movingposition => 1, 
                             :debateid => params[:debate_id]}, :current_turn => @currentturn}})
@@ -96,8 +97,8 @@ class JudgingsController < ApplicationController
         end
       
         #Adjust Debater Ratings
-        d1 = Debater.find_by_id(@debate.creator_id)
-        d2 = Debater.find_by_id(@debate.joiner_id)
+        d1 = @debate.creator
+        d2 = @debate.joiner
         rating_adjust = false
         if !(d1.guest? or d2.guest?)
           rating_change = true
@@ -108,7 +109,7 @@ class JudgingsController < ApplicationController
           else
             winner_id == @debate.creator_id ? result = 1 : result = 0
           end
-          judge = Debater.find_by_id(@judgeid)
+          judge = @debate.judger
           new_ratings = d1.rating_adjust(d2, result, judge.rating)
         else
           new_ratings = [d1_old, d2_old]
