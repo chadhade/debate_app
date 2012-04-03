@@ -108,7 +108,8 @@ class JudgingsController < ApplicationController
           else
             winner_id == @debate.creator_id ? result = 1 : result = 0
           end
-          new_ratings = d1.rating_adjust(d2, result)
+          judge = Debater.find_by_id(@judgeid)
+          new_ratings = d1.rating_adjust(d2, result, judge.rating)
         else
           new_ratings = [d1_old, d2_old]
         end
