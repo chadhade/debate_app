@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120326025732) do
+ActiveRecord::Schema.define(:version => 20120404202117) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -200,7 +200,7 @@ ActiveRecord::Schema.define(:version => 20120326025732) do
     t.datetime "updated_at"
   end
 
-  add_index "votes", ["voteable_id"], :name => "index_votes_on_voteable_id"
+  add_index "votes", ["voteable_id", "voteable_type"], :name => "index_votes_on_voteable_id_and_voteable_type"
   add_index "votes", ["voter_id"], :name => "index_votes_on_voter_id"
 
 end

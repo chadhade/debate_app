@@ -181,7 +181,9 @@ class Debate < ActiveRecord::Base
     joined_no_judge = joined_no_judge.where("no_judge != ?", 3).order(judge_order) unless joined_no_judge.nil?
     joined_no_judge_cv = Array.new
     joined_no_judge.each do |debate|
-      if debate.joiner.active? and debate.creator.active?
+      activejoiner = debate.joiner.active?
+      activecreator = debate.creator.active?
+      if activejoiner and activecreator
         if debate.currently_viewing(debate.creator_id) and debate.currently_viewing(debate.joiner_id)
           joined_no_judge_cv << debate
           max -= 1
@@ -189,7 +191,7 @@ class Debate < ActiveRecord::Base
         end
       else
         # If the joiner and creator are no longer active, declare the debate as over
-        if !(debate.joiner.active? or debate.creator.active?)
+        if !(activejoiner or activecreator)
           debate.update_attributes(:end_time => Time.now, :no_judge => 3)
         end
       end
