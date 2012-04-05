@@ -310,19 +310,23 @@ end
   
   def index
     # returns debates that match search criterion or all debates if empty string submitted
-  	@debates = Debate.search(params[:search]).last(100)
+  	@debates = Debate.search(params[:search], 100)
+  	debate_ids = @debates.collect(&:id)
   	
+  	@debates = Debate.where(:id => debate_ids).includes(:judging, :topic_position).order("started_at DESC")
   	@debates_ongoing = Array.new
     @debates_in_limbo = Array.new
     @debates_completed = Array.new
 
     @debates.each do |debate|
     	if !debate.end_time.nil? and debate.judge and debate.joined
-    	  @debates_completed.unshift(debate)
+    	  #@debates_completed.unshift(debate)
+    	  @debates_completed << debate
     	else
     	  if debate.end_time.nil? and debate.judge and debate.joined
     	    timeleft = time_left(debate)
-    	    @debates_ongoing.unshift(debate) if timeleft != nil and timeleft > 0
+    	    #@debates_ongoing.unshift(debate) if timeleft != nil and timeleft > 0
+    	    @debates_ongoing << debate if timeleft != nil and timeleft > 0
     	  end
     	end
     	
@@ -331,9 +335,7 @@ end
       #@debates_in_limbo.unshift(debate) if debate.end_time.nil? and (!debate.judge or !debate.joined)
 	  end
 	  
-	  @debates_ongoing = @debates_ongoing.first(30)
 	  @debates_ongoing = @debates_ongoing.paginate(:page => params[:ongoing_page], :per_page => 10) 
-	  @debates_completed = @debates_completed.first(30)
 	  @debates_completed = @debates_completed.paginate(:page => params[:completed_page], :per_page => 10)
 	
 	  @ajaxupdate = 1 if !params[:ongoing_page].nil?
