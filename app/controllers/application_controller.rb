@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
       debater.waiting_for = nil
       debater.current_sign_in_at = nil
       debater.save
-      debater.clear_viewings if debater.view_count > 0
+      debater.clear_viewings if debater.viewings.any?
     end
     stored_location_for(resource) || "/debaters/sign_in"
   end

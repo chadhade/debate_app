@@ -7,9 +7,9 @@ class ViewingsController < ApplicationController
   	  @is_creator = @debate.creator?(@currentdebater)
   	  @is_joiner = @debate.joiner?(@currentdebater)
   	  @is_judger = @debate.judger?(@currentdebater)
-  	  update_viewings(@currentdebater, @debate, @is_creator, @is_joiner)
+  	  update_viewings(@currentdebater, @debate, @is_creator)
   	  
-  	  if !@currentdebater.nil?
+  	  if !@currentdebater.nil? and (@is_creator or @is_joiner or @is_judger)
   	    if @is_creator and !@debate.joined?
     	    Juggernaut.publish("matches", {:func => "hide", :obj => @debate.id})
       	  reset_invocation_response # allow double rendering
@@ -32,7 +32,7 @@ class ViewingsController < ApplicationController
     	end
     	
   	else
-  	  update_viewings(@currentdebater, @currentdebater.tracking_debates, @is_creator, @is_joiner)
+  	  #update_viewings(@currentdebater, @currentdebater.tracking_debates, @is_creator, @is_joiner)
   	end
     
   	respond_to do |format|
@@ -48,27 +48,27 @@ class ViewingsController < ApplicationController
   #######################################################
   
 ##############################################################################  
-  def update_viewings(currentdebater, debates, is_creator, is_joiner)
+  def update_viewings(currentdebater, debates, is_creator)
 	# set viewer variable
 	viewer = currentdebater
 	
 	# go through debates and update viewings for viewer and debate
 	if debates.kind_of?(Array)
-	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate, is_creator, is_joiner)}
+	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate, is_creator)}
 	else
-	  update_viewings_for_viewer_debate(viewer, debates, is_creator, is_joiner)
+	  update_viewings_for_viewer_debate(viewer, debates, is_creator)
 	end	
   end
   
-  def update_viewings_for_viewer_debate(viewer, debate, creator, joiner)
-  	existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
-  	if existing_viewing.empty?
-  	  viewer.viewings.create(:debate_id => debate.id, :currently_viewing => false, :creator => creator, :joiner => joiner)
-  	else
-  	  existing_viewing.each do |viewing| 
-  	    viewing.update_attributes(:currently_viewing => false)
-	    end
-  	end    
+  def update_viewings_for_viewer_debate(viewer, debate, creator)
+  	#existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
+  	existing_viewing = debate.viewings.where("viewer_id = ?", viewer.id)
+  	if existing_viewing.any?
+  	  #debate.viewings.create(:viewer_id => viewer.id, :currently_viewing => false, :creator => creator, :joiner => joiner)
+  	  existing_viewing.each do |viewing|
+  	    viewing.destroy
+  	  end
+  	end
   end
 ##############################################################################  
 

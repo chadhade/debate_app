@@ -202,7 +202,10 @@ class Debater < ActiveRecord::Base
   end
   
   def clear_viewings
-    Viewing.update_all({:currently_viewing => false}, ["viewer_id = ? AND currently_viewing = ?", self.id, true])
+    #Viewing.update_all({:currently_viewing => false}, ["viewer_id = ? AND currently_viewing = ?", self.id, true])
+    self.viewings.each do |viewing|
+      viewing.destroy
+    end
   end
   
   private

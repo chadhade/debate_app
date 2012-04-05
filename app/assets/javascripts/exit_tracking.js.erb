@@ -1,7 +1,7 @@
 window.onbeforeunload = OnBeforeUnLoad;
 function OnBeforeUnLoad () {
 	
-	if(debater_waiting != true && debater_participant == true) { 
+	if(debater_waiting != true) { 
 		//$.getScript(window.location.pathname + "/leaving.js");
 		path_url = window.location.pathname + "/leaving.js"
 		$.ajax({
@@ -15,8 +15,10 @@ function OnBeforeUnLoad () {
 			}
           } // end error handler
 		});
-		$(".debate[data-id="+ debate_id +"]").append('<br>');
-		$(".debate[data-id="+ debate_id +"]").append("<div class='debate-message'> Refresh page to rejoin debate. </div>");
+		if(debater_participant == true) {
+			$(".debate[data-id="+ debate_id +"]").append('<br>');
+			$(".debate[data-id="+ debate_id +"]").append("<div class='debate-message'> Refresh page to rejoin debate. </div>");
+		}
 	}
 	//return "DeBunky says ALWAYS CLICK LEAVE PAGE!";
 	

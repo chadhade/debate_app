@@ -60,9 +60,6 @@ class Debate < ActiveRecord::Base
     self.judging
   end
   
-  #def judge_id
-  #end
-  
   def creator?(debater)
     self.creator_id == debater.id
   end
@@ -127,7 +124,9 @@ class Debate < ActiveRecord::Base
     viewing_by_creator_ids = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("judge DESC", "created_at ASC").includes(:debaters, :topic_position, :arguments)
     @debates.each do |debate|
-      unless debate.tp.nil? or !debate.creator.active? 
+      
+      #unless debate.tp.nil? or !debate.creator.active? 
+      unless debate.tp.nil? or !debate.debaters.first.active?  
         topic = debate.tp.topic.upcase
         position = debate.tp.position
         words = topic.split(/\s/)
@@ -152,6 +151,9 @@ class Debate < ActiveRecord::Base
           debate.position_match = position_match
           match ? @matching_debates << debate : @suggested_debates << debate
       end
+      
+      #If the debate's creator is inactive, clear his session
+      clear_session(debate.debaters.first) if !debate.debaters.first.active?
     end
     
     #Sort the matches so that opposing positions appear at the topic
@@ -172,16 +174,14 @@ class Debate < ActiveRecord::Base
   end
   
   def self.judging_priority(max)
-    #joined_no_judge = self.where(:joined => true, :judge => false).order("joined_at ASC")
     max == 1 ? judge_order = "joined_at DESC" : judge_order = "joined_at ASC"
-    #joined_no_judge = self.where("joined = ? AND judge = ? AND no_judge != ?", true, false, 3).order(judge_order)
     joined_no_judge = self.where("joined = ? AND judge = ?", true, false)
     joined_no_judge = joined_no_judge.where("no_judge != ?", 3).order(judge_order) unless joined_no_judge.nil?
     joined_no_judge_cv = Array.new
     joined_no_judge.each do |debate|
       activejoiner = debate.joiner.active?
       activecreator = debate.creator.active?
-      if activejoiner and activecreator
+      if activejoiner and activecreator debate.viewings.size > 0
         if debate.currently_viewing(debate.creator_id) and debate.currently_viewing(debate.joiner_id)
           joined_no_judge_cv << debate
           max -= 1
@@ -201,7 +201,17 @@ class Debate < ActiveRecord::Base
   
   def currently_viewing(debater_id)
     return false if debater_id.nil?
-    self.viewings.where("viewer_id = ?", debater_id).first(:order => "created_at ASC").currently_viewing
+    #self.viewings.where("viewer_id = ?", debater_id).first(:order => "created_at ASC").currently_viewing
+    self.viewings.where("viewer_id = ?", debater_id).any?
+  end
+  
+  def clean_session(debater)
+    if debater
+      debater.waiting_for = nil
+      debater.current_sign_in_at = nil
+      debater.save
+      debater.clear_viewings if debater.viewings.any?
+    end
   end
   
   def self.load_pronouns

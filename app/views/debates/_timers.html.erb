@@ -29,7 +29,7 @@
 <div class="vote_titles">
 	Votes
 	<% debater_signed_in? ? vote_tip = "Click on the numbers below to upvote or downvote an argument." : vote_tip = "Sign up for the ability to vote and be ranked!" %>
-	<% vote_tip = vote_tip + " (Judge votes are blue.)" if status[:status_code] == 5 %>
+	<% vote_tip = vote_tip + " (Judge votes are blue.)" if status[:status_code] == 5 and debate.judge_id != currentid %>
 	<div class="info-icon" id="info-votes" title="<%= vote_tip %>">
 		<%= image_tag("question.gif", :alt => "Voting Help") %>
 	</div>
