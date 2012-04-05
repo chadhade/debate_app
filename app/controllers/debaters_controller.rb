@@ -87,8 +87,9 @@ class DebatersController < ApplicationController
         #end
       #end
       
-      @followdebates = Debate.where("creator_id IN (?) or joiner_id IN (?)", follow_ids, follow_ids)
-      @followdebates = @followdebates.all(:order => "updated_at DESC").first(30)
+      followdebate_ids = Debate.where("creator_id IN (?) or joiner_id IN (?)", follow_ids, follow_ids).order("updated_at DESC").first(30).collect(&:id)
+      @followdebates = Debate.where(:id => followdebate_ids).order("updated_at DESC").includes(:judging, :topic_position)
+      #@followdebates = @followdebates.all(:order => "updated_at DESC").first(30)
       @followdebates = @followdebates.paginate(:page => params[:following_page], :per_page => 8)
       
       @ajaxupdate = 1 if !params[:page].nil?
