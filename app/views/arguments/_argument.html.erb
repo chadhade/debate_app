@@ -1,5 +1,6 @@
-<div class="argument_container <%= argument.debater.creator?(argument.debate) ? "creator" : "joiner" %>">
-	<div class="<%= argument.debater.creator?(argument.debate) ? "name-creator" : "name-joiner" %>"> <%= argument.debater.mini_name %>
+<% argcreator = argument.debater.creator?(debate) %>
+<div class="argument_container <%= argcreator ? "creator" : "joiner" %>">
+	<div class="<%= argcreator ? "name-creator" : "name-joiner" %>"> <%= argument.debater.mini_name %>
 		</div>:
 	<span class = "argument"><%= argument.any_footnotes ? argument.show_footnote : argument.content %>
 		<% if argument.image_url %>

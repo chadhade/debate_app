@@ -5,7 +5,7 @@
 				<% if argument.debate_over %>
 					<%= render :partial => "/arguments/chat", :locals => {:argument => argument, :judgeid => debate.judge_id, :currentid => currentid, :debate => debate} %>
 				<% else %>
-					<%= render :partial => "/arguments/argument", :locals => {:argument => argument, :judgeid => debate.judge_id, :status => debate.status, :currentid => currentid} %>
+					<%= render :partial => "/arguments/argument", :locals => {:argument => argument, :judgeid => debate.judge_id, :status => status, :currentid => currentid, :debate => debate} %>
 				<% end %>
 		
 			<% end %>

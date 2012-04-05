@@ -46,7 +46,7 @@ class ArgumentsController < ApplicationController
   		  end
   		  
     		# publish new argument
-    	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => @currentdebater.id, :status => @debate.status}, :layout => false)
+    	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @current_argument, :judgeid => @debate.judge_id, :currentid => @currentdebater.id, :status => @debate.status, :debate => @debate}, :layout => false)
     	  reset_invocation_response # allow double rendering
         
     		@debate = Debate.find_by_id(@debate_id)

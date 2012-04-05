@@ -1,21 +1,25 @@
 <%# last_vote_for = argument.votes.where("vote = ?", "t").last(:order => "created_at ASC") %>
 <%# last_vote_against = argument.votes.where("vote = ?", "f").last(:order => "created_at ASC") %>
-
+<% currentvotecount = argument.votes.find_all{|vote| vote[:voter_id] == currentid}.size %>
 <div class = "votes_for" data-argument_id = "<%= argument.id %>">
-	<div class="votes_for_count" onclick="upVote(<%= argument.id.to_s %>, true, <%= argument.debate_id %>, <%= argument.votes_by(currentid) %>)" data-argument_id="<%= argument.id %>">
-	<%= argument.votes_for_except(judgeid) %>
+	<div class="votes_for_count" onclick="upVote(<%= argument.id.to_s %>, true, <%= argument.debate_id %>, <%= currentvotecount %>)" data-argument_id="<%= argument.id %>">
+	<%# argument.votes_for_except(judgeid) %>
+	<%= argument.votes.find_all{|vote| vote[:vote] == true and vote[:voter_id] != judgeid}.size %>
    </div>
 </div>
 
 <div class = "votes_against" data-argument_id = "<%= argument.id %>"> 
-   <div class="votes_against_count" onclick="downVote(<%= argument.id.to_s %>, false, <%= argument.debate_id %>, <%= argument.votes_by(currentid) %>)" data-argument_id="<%= argument.id %>">
-     	-<%= argument.votes_against_except(judgeid) %>
+   <div class="votes_against_count" onclick="downVote(<%= argument.id.to_s %>, false, <%= argument.debate_id %>, <%= currentvotecount %>)" data-argument_id="<%= argument.id %>">
+     	<%# argument.votes_against_except(judgeid) %>
+		-<%= argument.votes.find_all{|vote| vote[:vote] == false and vote[:voter_id] != judgeid}.size %>
    </div>
 </div>
  
 <div class="votes_total_judge" data-argument_id = "<%= argument.id %>">
 	<% if status[:status_code] == 5 %>
-		<%= argument.votes_for_by(judgeid) - argument.votes_against_by(judgeid) %>
+		<%# argument.votes_for_by(judgeid) - argument.votes_against_by(judgeid) %>
+		<%= (argument.votes.find_all{|vote| vote[:vote] == true and vote[:voter_id] == judgeid}.size) -
+		(argument.votes.find_all{|vote| vote[:vote] == false and vote[:voter_id] == judgeid}.size) %>
 	<% end %>
 
 </div>

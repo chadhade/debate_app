@@ -4,7 +4,7 @@
 	<% if judging.winner_id == 0 %>
 		<%= "Draw." %>
 	<% else %>
-		<% debater = Debater.find(judging.winner_id) %>
+		<% judging.winner_id == creator.id ? debater = creator : debater = joiner %>
 		<% if !debater.guest? %>
 			<%= link_to debater.name, debater %>
 		<% else %>

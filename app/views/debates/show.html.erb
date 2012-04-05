@@ -87,11 +87,11 @@
 		<div class="debatecontainer">
 			<div class="containerpanel">
 				<h2>
-				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debateid, :debater1name => @debater1name, :debater2name => @debater2name, :creator => @creator, :joiner => @joiner} %>
+				<%= render :partial => "/debates/timers", :locals => {:debate_id => @debateid, :debater1name => @debater1name, :debater2name => @debater2name, :creator => @creator, :joiner => @joiner, :status => @status} %>
 				<%# render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 				</h2>
 			</div>
-			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid, :arguments => @arguments} %>			  
+			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid, :arguments => @arguments, :status => @status} %>			  
 		</div>
 		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater, :is_creator => @is_creator, :participant => @participant, :debatercount => @debatercount, :status => @status} %>
 	</div>
@@ -126,7 +126,7 @@
 		
 		<!-- Show Judging Results -->
 		<% if !@judging.nil? and !@judging.winner_id.nil? %>
-			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging} %>
+			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging, :creator => @creator, :joiner => @joiner} %>
 		<% end %>
 		
 		<div id="debater-ratings">

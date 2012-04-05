@@ -5,14 +5,16 @@
   <div class="votes_for_count" onclick="upVote(<%= argument.id.to_s %>, true, <%= argument.debate_id %>, '-1')" 
 		data-argument_id="<%= argument.id %>">
     	
-<%= argument.votes_for_by(judgeid) %>
+		<%# argument.votes_for_by(judgeid) %>
+		<%= (argument.votes.find_all{|vote| vote[:vote] == true and vote[:voter_id] == judgeid}.size) %>
   </div>
 </div>
 
 <div class = "votes_against" data-argument_id = "<%= argument.id %>"> 
   <div class="votes_against_count" onclick="downVote(<%= argument.id.to_s %>, false, <%= argument.debate_id %>, '-1')" 
 		data-argument_id="<%= argument.id %>">
-    	-<%= argument.votes_against_by(judgeid) %>
+    	<%# argument.votes_against_by(judgeid) %>
+		-<%= (argument.votes.find_all{|vote| vote[:vote] == false and vote[:voter_id] == judgeid}.size) %>
   </div>
 </div>
   

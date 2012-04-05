@@ -102,7 +102,7 @@ class DebatesController < ApplicationController
 	  @debatestatus = @debate.status
 	  
 	  # publish to appropriate channels
-	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id, :currentid => @currentid, :status => @debatestatus}, :layout => false)
+	  argument_render = render(:partial => "arguments/argument", :locals => {:argument => @argument, :judgeid => @debate.judge_id, :currentid => @currentid, :status => @debatestatus, :debate => @debate}, :layout => false)
 	  reset_invocation_response # allow double rendering
 	  
 	  waiting_icon_render = render(:partial => "debates/waiting", :locals => {:debate => @debate, :status => @debatestatus, :debater => @currentdebater, :participant => true}, :layout => false)
@@ -151,7 +151,8 @@ end
     # pull all arguments from that debate and pass debate object
   	@debate = Debate.find(params[:id])
   	@debateid = @debate.id
-  	@arguments = @debate.arguments(:order => "created_at ASC")
+  	#@arguments = @debate.arguments(:order => "created_at ASC")
+  	@arguments = @debate.arguments(:order => "created_at ASC").includes(:debater, :votes)
   	@argument_last = @arguments.last
   	@previoustimeleft = @argument_last.time_left
   	@currentdebater = current_or_guest_debater
@@ -227,6 +228,7 @@ end
       @joiner = @debate.joiner
       @is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
     	@is_joiner ? @debater2name = "You" : @debater2name = @joiner.mini_name
+    	@voteable = true unless (@is_creator or @is_joiner)
     	return
     end
     
