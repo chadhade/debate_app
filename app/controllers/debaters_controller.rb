@@ -30,18 +30,18 @@ class DebatersController < ApplicationController
     
     # Individual Stats
       if Rails.env.development? or Rails.env.test?
-        @debates = @debater.debates.where("end_time > ?", 0)
+        @debates = @debater.debates.where("end_time > ?", 0).includes(:judging, :topic_position)
       else
-        @debates = @debater.debates.where("end_time > ?", "01/01/01")
+        @debates = @debater.debates.where("end_time > ?", "01/01/01").includes(:judging, :topic_position)
       end
     
       @recentdebates = @debates.all(:order => "created_at DESC").last(30)
       @recentdebates = @recentdebates.paginate(:page => params[:page], :per_page => 10)
       
-      @debateswon = @debates.where("winner_id = ?", @debater.id).count
-      @debateslost = @debates.where("loser_id = ?", @debater.id).count
-      @debatestied = @debates.where("winner_id = ?", 0).count
-      @debatesnoresults = @debates.count - (@debateswon + @debateslost + @debatestied)
+      @debateswon = @debates.where("winner_id = ?", @debater.id).size
+      @debateslost = @debates.where("loser_id = ?", @debater.id).size
+      @debatestied = @debates.where("winner_id = ?", 0).size
+      @debatesnoresults = @debates.size - (@debateswon + @debateslost + @debatestied)
       @debaterjudgings = Judging.where("debater_id = ? AND winner_id >= ?", @debater.id, 0).count  
       
       argument_ids = @debater.arguments.collect{|u| u.id}

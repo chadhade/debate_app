@@ -1,6 +1,6 @@
 class Debate < ActiveRecord::Base
   # associations for matching and judging
-  has_many :judgings, :dependent => :destroy
+  has_one :judging, :dependent => :destroy
   has_one :topic_position, :dependent => :destroy
   
   # associations for viewings
@@ -57,7 +57,7 @@ class Debate < ActiveRecord::Base
   end
   
   def judge_entry
-    self.judgings.first(:order => "created_at ASC")
+    self.judging
   end
   
   #def judge_id
