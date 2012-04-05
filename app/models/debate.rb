@@ -125,10 +125,9 @@ class Debate < ActiveRecord::Base
     @suggested_debates = Array.new
     
     viewing_by_creator_ids = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
-    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("judge DESC", "created_at ASC")
-    
+    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("judge DESC", "created_at ASC").includes(:debaters, :topic_position, :arguments)
     @debates.each do |debate|
-      unless debate.tp.nil? or !debate.creator.active?
+      unless debate.tp.nil? or !debate.creator.active? 
         topic = debate.tp.topic.upcase
         position = debate.tp.position
         words = topic.split(/\s/)
@@ -157,7 +156,7 @@ class Debate < ActiveRecord::Base
     
     #Sort the matches so that opposing positions appear at the topic
     @matching_debates = @matching_debates.sort_by {|a| a.position_match ? 0 : 1}
-      
+    @matching_debates = @matching_debates.first(max1)  
     @suggested_debates = @suggested_debates.first(max2)
     
     # return the array
