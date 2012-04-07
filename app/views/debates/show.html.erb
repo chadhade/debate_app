@@ -11,7 +11,7 @@
 <%= javascript_include_tag "tracking" %>
 <%= javascript_include_tag "image_sizes" %>
 
-<%# render :partial => "/shared/init_juggernaut" %>
+<%= render :partial => "/shared/init_juggernaut" %>
 
 <script>
 	voteable[<%= @debateid %>] = <%= @voteable == true && !@guest %>;
@@ -78,7 +78,7 @@
 
 <div class="topic_position_container">
 	"<%= "#{@debate.tp.topic}" %>"
-	<%# render :partial => "/debates/viewing", :locals => {:debate_id => @debateid} %>
+	<%= render :partial => "/debates/viewing", :locals => {:debate => @debate, :viewers => @viewers} %>
 </div>
 <%= debater_signed_in? ? nil : "<br /> <br />".html_safe %>
 

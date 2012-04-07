@@ -125,8 +125,8 @@ class Debate < ActiveRecord::Base
     @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("judge DESC", "created_at ASC").includes(:debaters, :topic_position, :arguments)
     @debates.each do |debate|
       
-      #unless debate.tp.nil? or !debate.creator.active? 
-      unless debate.tp.nil? or !debate.debaters.first.active?  
+      creator = debate.debaters.first
+      unless debate.tp.nil? or !creator.active?  
         topic = debate.tp.topic.upcase
         position = debate.tp.position
         words = topic.split(/\s/)
@@ -153,7 +153,7 @@ class Debate < ActiveRecord::Base
       end
       
       #If the debate's creator is inactive, clear his session
-      clear_session(debate.debaters.first) if !debate.debaters.first.active?
+      creator.clear_session if !creator.active?
     end
     
     #Sort the matches so that opposing positions appear at the topic
@@ -181,7 +181,7 @@ class Debate < ActiveRecord::Base
     joined_no_judge.each do |debate|
       activejoiner = debate.joiner.active?
       activecreator = debate.creator.active?
-      if activejoiner and activecreator debate.viewings.size > 0
+      if activejoiner and activecreator and debate.viewings.size > 1
         if debate.currently_viewing(debate.creator_id) and debate.currently_viewing(debate.joiner_id)
           joined_no_judge_cv << debate
           max -= 1
@@ -203,15 +203,6 @@ class Debate < ActiveRecord::Base
     return false if debater_id.nil?
     #self.viewings.where("viewer_id = ?", debater_id).first(:order => "created_at ASC").currently_viewing
     self.viewings.where("viewer_id = ?", debater_id).any?
-  end
-  
-  def clean_session(debater)
-    if debater
-      debater.waiting_for = nil
-      debater.current_sign_in_at = nil
-      debater.save
-      debater.clear_viewings if debater.viewings.any?
-    end
   end
   
   def self.load_pronouns
@@ -293,4 +284,5 @@ class Debate < ActiveRecord::Base
       "yourself", 
       "yourselves"]
   end
+  
 end

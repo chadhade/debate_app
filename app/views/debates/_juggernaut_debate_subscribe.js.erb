@@ -81,6 +81,10 @@
 			//$(".debate[data-id="+ <%= debate.id %> +"]").append('<br>');
 		}
 		
+		if(data.func == "update_viewers") {
+			$(".viewing_count").html(data.obj.viewers);
+		}
+		
 		if (data.func == "chat") {
 			<% if Rails.env.development? or Rails.env.test? %>
 				$(".debate[data-id="+ <%= debate.id %> +"]").append(data.obj.chat);

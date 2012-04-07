@@ -208,6 +208,13 @@ class Debater < ActiveRecord::Base
     end
   end
   
+  def clear_session
+    self.waiting_for = nil
+    self.current_sign_in_at = nil
+    self.save
+    self.clear_viewings if self.viewings.any?
+  end
+  
   private
   
     def self.team_debaters(debater)

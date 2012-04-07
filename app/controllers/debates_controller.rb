@@ -86,8 +86,8 @@ class DebatesController < ApplicationController
   	# update joined columns of debates
   	@debate.update_attributes(:joined => true, :joined_at => @argument.created_at, :joiner_id => @currentid)
   	
-  	# update joiner column of viewings
-  	update_viewings(@currentdebater, @debate, false, true)
+  	# update viewings
+  	update_viewings(@currentdebater, @debate, false)
 	
   	# Check if there are footnotes attached
 	  if @argument.has_footnote?
@@ -166,7 +166,15 @@ end
 	  @is_judger = @debate.judger?(@currentdebater)
   	
   	# for viewings
-  	update_viewings(@currentdebater, @debate, @is_creator)
+  	unless @debate.end_time or @debate.updated_at < (Time.now - 1.day)
+  	  if update_viewings(@currentdebater, @debate, @is_creator) == 1
+  	    @viewers = @debate.viewings.size + 1
+  	    if @viewers == 5 or (@viewers % 10).zero?
+  	      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_viewers", :obj => {:viewers => @viewers}})
+  	    end
+  	  end
+  	end
+  	
   	@participant = @is_creator or @is_joiner or @is_judger
   	
   	if !@currentdebater.nil?
@@ -297,6 +305,7 @@ end
   	existing_viewing = debate.viewings.where("viewer_id = ?", viewer.id)
   	if existing_viewing.empty?
   	  debate.viewings.create(:viewer_id => viewer.id, :creator => creator)
+      return 1
   	end    
   end
 ##############################################################################  

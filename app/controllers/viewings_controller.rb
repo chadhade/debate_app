@@ -7,7 +7,7 @@ class ViewingsController < ApplicationController
   	  @is_creator = @debate.creator?(@currentdebater)
   	  @is_joiner = @debate.joiner?(@currentdebater)
   	  @is_judger = @debate.judger?(@currentdebater)
-  	  update_viewings(@currentdebater, @debate, @is_creator)
+  	  update_viewings(@currentdebater, @debate, @is_creator) unless @debate.end_time
   	  
   	  if !@currentdebater.nil? and (@is_creator or @is_joiner or @is_judger)
   	    if @is_creator and !@debate.joined?
