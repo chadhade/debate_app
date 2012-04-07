@@ -4,7 +4,7 @@ class Debater < ActiveRecord::Base
   has_many :topic_positions
   
   # associations for viewings
-  has_many :viewings, :as => :viewer, :dependent => :destroy
+  has_many :viewings, :foreign_key => "viewer_id", :dependent => :destroy
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :rememberable, and :omniauthable

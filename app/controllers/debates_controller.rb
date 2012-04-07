@@ -88,7 +88,8 @@ class DebatesController < ApplicationController
   	
   	# update viewings
   	update_viewings(@currentdebater, @debate, false)
-	
+	  @viewers = 1
+	  
   	# Check if there are footnotes attached
 	  if @argument.has_footnote?
 		  @argument.save_footnote(@debate)

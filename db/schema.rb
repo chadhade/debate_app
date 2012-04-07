@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120405053738) do
+ActiveRecord::Schema.define(:version => 20120407225250) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -179,15 +179,10 @@ ActiveRecord::Schema.define(:version => 20120405053738) do
   create_table "viewings", :force => true do |t|
     t.integer  "debate_id"
     t.integer  "viewer_id"
-    t.string   "viewer_type"
-    t.boolean  "currently_viewing"
     t.datetime "created_at"
-    t.datetime "updated_at"
     t.boolean  "creator"
-    t.boolean  "joiner"
   end
 
-  add_index "viewings", ["currently_viewing", "creator"], :name => "index_viewings_on_currently_viewing_and_creator"
   add_index "viewings", ["debate_id"], :name => "index_viewings_on_debate_id"
   add_index "viewings", ["viewer_id"], :name => "index_viewings_on_viewer_id"
 
