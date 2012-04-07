@@ -7,7 +7,7 @@ class ViewingsController < ApplicationController
   	  @is_creator = @debate.creator?(@currentdebater)
   	  @is_joiner = @debate.joiner?(@currentdebater)
   	  @is_judger = @debate.judger?(@currentdebater)
-  	  update_viewings(@currentdebater, @debate, @is_creator) unless @debate.end_time
+  	  update_viewings(@currentdebater, @debate) unless @debate.end_time
   	  
   	  if !@currentdebater.nil? and (@is_creator or @is_joiner or @is_judger)
   	    if @is_creator and !@debate.joined?
@@ -48,23 +48,22 @@ class ViewingsController < ApplicationController
   #######################################################
   
 ##############################################################################  
-  def update_viewings(currentdebater, debates, is_creator)
-	# set viewer variable
-	viewer = currentdebater
+  def update_viewings(currentdebater, debates)
+	  # set viewer variable
+  	viewer = currentdebater
 	
-	# go through debates and update viewings for viewer and debate
-	if debates.kind_of?(Array)
-	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate, is_creator)}
-	else
-	  update_viewings_for_viewer_debate(viewer, debates, is_creator)
-	end	
+  	# go through debates and update viewings for viewer and debate
+  	if debates.kind_of?(Array)
+  	  debates.each {|debate| update_viewings_for_viewer_debate(viewer, debate)}
+  	else
+  	  update_viewings_for_viewer_debate(viewer, debates)
+  	end	
   end
   
-  def update_viewings_for_viewer_debate(viewer, debate, creator)
+  def update_viewings_for_viewer_debate(viewer, debate)
   	#existing_viewing = viewer.viewings.where("debate_id = ?", debate.id)
   	existing_viewing = debate.viewings.where("viewer_id = ?", viewer.id)
   	if existing_viewing.any?
-  	  #debate.viewings.create(:viewer_id => viewer.id, :currently_viewing => false, :creator => creator, :joiner => joiner)
   	  existing_viewing.each do |viewing|
   	    viewing.destroy
   	  end
