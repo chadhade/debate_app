@@ -125,7 +125,7 @@ class DebatesController < ApplicationController
 	  Juggernaut.publish("waiting_channel", {:func => "debate_update", :obj => {:debate => @debate.id, :status_value => @debatestatus[:status_value], :status_code => @debatestatus[:status_code]}})
 	  
 	  # update judgings index
-    debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate, :joined_no_judge => Array(Debate.judging_priority(1).last)}, :layout => false)	  
+    debate_link_joined = render(:partial => "/judgings/debate_link_joined", :locals => {:debate => @debate, :joined_no_judge => Array(Debate.judging_priority(1,[0]).last)}, :layout => false)	  
 	  Juggernaut.publish("judging_index", {:function => "append_to_joined", :debate_id => @debate.id, :object => debate_link_joined}) if !@debate.judge
 	  reset_invocation_response # allow double rendering
 	  
@@ -243,6 +243,7 @@ end
   		@staticclock = @previoustimeleft
   		@movingposition = 2
   	  @creator = @debate.creator
+  	  @blocking = @creator.is_blocking.map(&:id).include?(@currentdebater.id)
   	  @is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
   		@debater2name = "Waiting"
   		@debatercount = 1
@@ -389,7 +390,7 @@ end
     		  @debate.started_at = Time.now
     		  @debate.save
     		  
-    		  @debatestatus = @debate.status
+    		  @debatestatus = {:status_code => 3, :status_value => "Ongoing Debate!"}
     		  #Start Timers
     		  firstarg = @debate.arguments.first(:order => "created_at ASC")
           secondarg = @debate.arguments.all(:order => "created_at ASC").second

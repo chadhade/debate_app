@@ -119,12 +119,12 @@ class Debate < ActiveRecord::Base
     end    
   end
   
-  def self.matching_debates(current_tp, max1, max2)
+  def self.matching_debates(current_tp, max1, max2, blocked)
     @matching_debates = Array.new
     @suggested_debates = Array.new
     
-    viewing_by_creator_ids = Viewing.where("creator = ?", true).map{|v| v.debate_id}
-    
+    viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
+    #viewing_by_creator_ids = Viewing.where("creator = ?", true).map{|v| v.debate_id}
     @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters)
     @debates.each do |debate|
       
@@ -176,9 +176,9 @@ class Debate < ActiveRecord::Base
     @position_match = new_match
   end
   
-  def self.judging_priority(max)
+  def self.judging_priority(max, blocked)
     max == 1 ? judge_order = "joined_at DESC" : judge_order = "joined_at ASC"
-    joined_no_judge = self.where("joined = ? AND judge = ?", true, false)
+    joined_no_judge = self.where("joined = ? AND judge = ? AND creator_id not in (?)", true, false, blocked)
     joined_no_judge = joined_no_judge.where("no_judge != ?", 3).order(judge_order) unless joined_no_judge.nil?
     joined_no_judge_cv = Array.new
     joined_no_judge.each do |debate|

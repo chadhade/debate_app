@@ -9,6 +9,8 @@
   end
   
   def matches
+    currentdebater = current_or_guest_debater
+    
     params[:topic2] ? topic = params[:topic_position][:topic] + " vs " + params[:topic2] : topic = params[:topic_position][:topic]
     if params[:topic_position][:position] == "vs" or  params[:topic_position][:position] == ""
       @position = "null"
@@ -16,9 +18,11 @@
       @position = params[:topic_position][:position].to_s
     end
     
-    @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater.id, :topic => topic, :position => @position)    
+    @topic_position = TopicPosition.new(:debater_id => currentdebater.id, :topic => topic, :position => @position)    
     @trending = Suggested_Topic.trending(10)
-    @matching = Debate.matching_debates(@topic_position, 30, 15)
+    
+    currentdebater.guest? ? blocked_ids = [0] : blocked_ids = currentdebater.is_blocking.map(&:id) + [0]
+    @matching = Debate.matching_debates(@topic_position, 30, 15, blocked_ids)
 	  @from_landing = true
 	  
     respond_to do |format|

@@ -5,8 +5,10 @@ class JudgingsController < ApplicationController
   require 'will_paginate/array'
   
   def index
+    currentdebater = current_or_guest_debater
+    blocker_ids = currentdebater.blockers.map(&:id) + [0]
     
-    judging_priority = Debate.judging_priority(30)
+    judging_priority = Debate.judging_priority(30, blocker_ids)
     if !judging_priority.empty?
       @joined_no_judge = judging_priority.paginate(:page => params[:page], :per_page => 15)
     end
@@ -21,7 +23,7 @@ class JudgingsController < ApplicationController
     @debate = Debate.find(params[:debate_id])
     @currentdebater = current_or_guest_debater
     
-    unless @currentdebater.waiting_for != nil
+    if !(@currentdebater.waiting_for != nil or @debate.creator.is_blocking?(@currentdebater.id))
       if !@debate.creator?(@currentdebater) and !@debate.joiner?(@currentdebater) and !@debate.judge
         @judge = Judging.new(:debater_id => @currentdebater.id, :debate_id => @debate.id)
         @judge.save
@@ -32,7 +34,7 @@ class JudgingsController < ApplicationController
         # If judge joined after both debaters joined, add time spent waiting for judge back to debater 1's time bank
         # Then start timers
         @arguments = @debate.arguments.all(:order => "created_at ASC")
-        if @debate.joiner
+        if @debate.joined
           @firstarg = @arguments.first
           @secondarg = @arguments.second
           @oldtime = @firstarg.time_left
@@ -56,6 +58,8 @@ class JudgingsController < ApplicationController
       else
         redirect_to :controller => "judgings", :action => "index"
       end
+    else
+      redirect_to :controller => "judgings", :action => "index"
     end
   end
   
