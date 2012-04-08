@@ -167,7 +167,7 @@ end
 	  @is_judger = @debate.judger?(@currentdebater)
   	
   	# for viewings
-  	unless @debate.end_time or @debate.updated_at < (Time.now - 1.day)
+  	unless @debate.end_time or @debate.updated_at < (Time.now - 12.hours)
   	  if update_viewings(@currentdebater, @debate, @is_creator) == 1
   	    @viewers = @debate.viewings.size + 1
   	    if @viewers == 5 or (@viewers % 10).zero?

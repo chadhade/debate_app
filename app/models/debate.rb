@@ -124,7 +124,7 @@ class Debate < ActiveRecord::Base
     #viewing_by_creator_ids = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     viewing_by_creator_ids = Viewing.where("creator = ?", true).map{|v| v.debate_id}
     
-    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("judge DESC", "created_at ASC").includes(:debaters, :topic_position, :arguments)
+    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters, :topic_position, :arguments)
     @debates.each do |debate|
       
       creator = debate.debaters.first

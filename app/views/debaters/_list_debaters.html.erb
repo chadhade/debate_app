@@ -16,7 +16,7 @@
 
 <% debaterranks.each do |debater| %>
 	<div class = "list_names">
-		<span class = "list_name"><%= gravatar_for debater[:debater], :size => 15 %><%= link_to debater[:debater].name, debater[:debater] %></span><br />
+		<span class = "list_name"><span class = "gravatar"><%= gravatar_for debater[:debater], :size => 15 %></span><%= link_to debater[:debater].name, debater[:debater] %></span><br />
 	</div>
 	<div class = "list_ranks" style="color: #006666;">
 		<%= debater[:debater][:rating] %>

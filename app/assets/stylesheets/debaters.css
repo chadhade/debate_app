@@ -235,6 +235,10 @@ img.gravatar {
 	float:left;
 }
 
+.gravatar {
+	max-width: 20px;
+}
+
 .list_ranks {
 	width: 15%;
 	float:left;
