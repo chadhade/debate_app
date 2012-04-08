@@ -32,7 +32,7 @@ class VotesController < ApplicationController
   end
 
   def topicvote
-    topic = TopicPosition.find_by_id(params[:topic_id])
+    topic = Debate.find_by_id(params[:topic_id])
     current_debater.vote(topic, :direction => :up)
     
     respond_to do |format|

@@ -3,7 +3,7 @@
 	<% if !trending.nil? %>
 		<% if !trending.empty? %>
 			<% trending.each do |topic| %>
-				<li> <%= link_to topic.topic, topic_positions_matches_path(:topic_position => {:topic => topic.topic, :position => false}), :method => :post, :remote => true %> </li>
+				<li> <%= link_to topic.topic, topic_positions_matches_path(:topic_position => {:topic => topic.topic, :position => nil}), :method => :post, :remote => true %> </li>
 			<% end %>
 		<% else %>
 			No Trending Topics

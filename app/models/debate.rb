@@ -111,7 +111,8 @@ class Debate < ActiveRecord::Base
 	  limit = Time.now - 15.days
 	  if search
       @debates = Array.new; 
-      Debate.where("started_at > ?", limit).order("started_at DESC").first(max).each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.downcase.match(/#{search.downcase}/))}
+      #Debate.where("started_at > ?", limit).order("started_at DESC").first(max).each {|debate| @debates << debate if (!debate.tp.nil? and debate.tp.topic.downcase.match(/#{search.downcase}/))}
+	    Debate.where("started_at > ?", limit).order("started_at DESC").first(max).each {|debate| @debates << debate if (debate.topic.downcase.match(/#{search.downcase}/))}
 	    @debates
     else
       Debate.where("started_at > ?", limit).order("started_at DESC").first(max)
