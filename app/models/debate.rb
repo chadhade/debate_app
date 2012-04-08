@@ -98,12 +98,13 @@ class Debate < ActiveRecord::Base
     self.current_turn == debater
   end
   
-  def topic
-    @topic = self.arguments.first(:order => "created_at ASC").content
-  end
+  #def topic
+    #@topic = self.arguments.first(:order => "created_at ASC").content
+  #end
   
   def tp
-    self.topic_position
+    #self.topic_position
+    self
   end
   
   def self.search(search, max)
