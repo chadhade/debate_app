@@ -30,9 +30,9 @@ class DebatersController < ApplicationController
     
     # Individual Stats
       if Rails.env.development? or Rails.env.test?
-        @debates = @debater.debates.where("end_time > ?", 0).includes(:judging, :topic_position)
+        @debates = @debater.debates.where("end_time > ?", 0).includes(:judging)
       else
-        @debates = @debater.debates.where("end_time > ?", "01/01/01").includes(:judging, :topic_position)
+        @debates = @debater.debates.where("end_time > ?", "01/01/01").includes(:judging)
       end
     
       @recentdebates = @debates.all(:order => "created_at DESC").last(30)
@@ -81,14 +81,9 @@ class DebatersController < ApplicationController
       @following.empty? ? return : nil # Exit if there are no 'followees'
       
       follow_ids = @following.collect{|u| u.id}
-      #@following.each do |debater|
-        #debater.debates.all(:order => "id DESC").first(20).each do |debate|
-          #follow_ids << debate.id
-        #end
-      #end
       
       followdebate_ids = Debate.where("creator_id IN (?) or joiner_id IN (?)", follow_ids, follow_ids).order("updated_at DESC").first(30).collect(&:id)
-      @followdebates = Debate.where(:id => followdebate_ids).order("updated_at DESC").includes(:judging, :topic_position)
+      @followdebates = Debate.where(:id => followdebate_ids).order("updated_at DESC").includes(:judging)
       #@followdebates = @followdebates.all(:order => "updated_at DESC").first(30)
       @followdebates = @followdebates.paginate(:page => params[:following_page], :per_page => 8)
       

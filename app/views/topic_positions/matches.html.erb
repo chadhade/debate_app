@@ -98,7 +98,10 @@
 
 <% if @from_landing == true %> 
 	<script>	
-		//Update the "First Argument" text box, if debater is allowed to create a new debate
+		// Set the Position Drop Down menu equal to the position chosen
+		$('#select-position-field').attr('value', <%= @position %>);
+		
+		//Update the "First Argument" text box, if debater is asked to create a new debate
 		<% unless current_or_guest_debater.waiting_for or @matching.nil? %>
 			$('.create_form_container').html("<%= escape_javascript(render(:partial => "topic_positions/form_new_debate", :locals => {:topic_position => @topic_position}, :layout => false) ) %>");
 			$('#first-argument').attr('disabled', false);

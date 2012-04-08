@@ -123,14 +123,13 @@ class Debate < ActiveRecord::Base
     @matching_debates = Array.new
     @suggested_debates = Array.new
     
-    #viewing_by_creator_ids = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     viewing_by_creator_ids = Viewing.where("creator = ?", true).map{|v| v.debate_id}
     
-    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters, :arguments)
+    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters)
     @debates.each do |debate|
       
       creator = debate.debaters.first
-      unless debate.tp.nil? or !creator.active?  
+      unless !creator.active?  
         topic = debate.tp.topic.upcase
         position = debate.tp.position
         words = topic.split(/\s/)

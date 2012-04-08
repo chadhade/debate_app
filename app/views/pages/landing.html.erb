@@ -6,10 +6,20 @@
 <div class="landing_container_left">
 	<h2>Debunk </h2>
 	<div class="middlelanding">
-		<div class="buttond2">
-			<span class="debate-topic-position">
-				<%= render '/topic_positions/form_landing_topic' %>
-			</span>
+		<div id ="topicform">
+			<div class="buttond2">
+				<span class="debate-topic-position">
+					<%= render '/topic_positions/form_landing_topic' %>
+				</span>
+			</div>
+		</div>
+		
+		<div id="versusform" class="hidden">
+			<div class="buttond2">
+				<span class="debate-topic-position">
+					<%= render '/topic_positions/form_landing_versus' %>
+				</span>
+			</div>
 		</div>
 	</div>
 </div>

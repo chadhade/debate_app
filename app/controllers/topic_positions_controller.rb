@@ -10,13 +10,13 @@
   
   def matches
     params[:topic2] ? topic = params[:topic_position][:topic] + " vs " + params[:topic2] : topic = params[:topic_position][:topic]
-    if params[:topic_position][:position] == "vs" or  params[:topic_position][:position] == nil
-      position = nil
+    if params[:topic_position][:position] == "vs" or  params[:topic_position][:position] == ""
+      @position = "null"
     else
-      position = params[:topic_position][:position]
+      @position = params[:topic_position][:position].to_s
     end
     
-    @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater.id, :topic => topic, :position => position)    
+    @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater.id, :topic => topic, :position => @position)    
     @trending = Suggested_Topic.trending(10)
     @matching = Debate.matching_debates(@topic_position, 30, 15)
 	  @from_landing = true
@@ -31,6 +31,7 @@
     @matching = nil
     @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => "...", :position => nil)
     @trending = Suggested_Topic.trending(10)
+    @position = "null"
     
     respond_to do |format|
   	  format.html {render "matches"}
