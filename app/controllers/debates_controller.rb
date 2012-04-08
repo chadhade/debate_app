@@ -326,11 +326,13 @@ end
     	  #@debates_completed.unshift(debate)
     	  @debates_completed << debate
     	else
-    	  if debate.end_time.nil? and debate.judge and debate.joined
-    	    timeleft = time_left(debate)
-    	    #@debates_ongoing.unshift(debate) if timeleft != nil and timeleft > 0
-    	    @debates_ongoing << debate if timeleft != nil and timeleft > 0
-    	  end
+    	  unless @debates_ongoing.size == 25
+    	    if debate.end_time.nil? and debate.judge and debate.joined
+      	    timeleft = time_left(debate)
+      	    #@debates_ongoing.unshift(debate) if timeleft != nil and timeleft > 0
+      	    @debates_ongoing << debate if timeleft != nil and timeleft > 0
+      	  end
+      	end
     	end
     	
     	#@debates_ongoing.unshift(debate) if debate.end_time.nil? and debate.judge and debate.joined and time_left(debate) != nil and time_left(debate) > 0

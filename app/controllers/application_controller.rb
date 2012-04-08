@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
 		
     if thisdebate.judge or thisdebate.no_judge == 3
   		# If there are only 2 arguments, use the 'started_at' field to determine when the debate started
-  		if arguments.count == 2
+  		if arguments.size == 2
   		  return arguments.first(:order => "created_at ASC").time_left - (Time.now - thisdebate.started_at).seconds.to_i
   		else
   		# Otherwise, use the time that the last argument was made
