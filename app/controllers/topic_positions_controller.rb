@@ -3,7 +3,7 @@
   
   def create
     @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position])
-    @topic_position.save
+    #@topic_position.save
     
     redirect_to :controller => "debates", :action => 'create', :argument => {:content => params[:argument][:content], :topic_position_id => @topic_position.id}
   end

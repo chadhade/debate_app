@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120408030206) do
+ActiveRecord::Schema.define(:version => 20120408033828) do
 
   create_table "arguments", :force => true do |t|
     t.integer  "debater_id"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20120408030206) do
     t.integer  "viewings_count", :default => 0
     t.text     "topic"
     t.boolean  "position"
+    t.text     "firstarg"
   end
 
   add_index "debates", ["creator_id"], :name => "index_debates_on_creator_id"

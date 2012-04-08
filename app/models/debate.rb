@@ -1,7 +1,7 @@
 class Debate < ActiveRecord::Base
   # associations for matching and judging
   has_one :judging, :dependent => :destroy
-  has_one :topic_position, :dependent => :destroy
+  #has_one :topic_position, :dependent => :destroy
   
   # associations for viewings
   has_many :viewings, :dependent => :destroy
@@ -125,7 +125,7 @@ class Debate < ActiveRecord::Base
     #viewing_by_creator_ids = Viewing.where("currently_viewing = ? AND creator = ?", true, true).map{|v| v.debate_id}
     viewing_by_creator_ids = Viewing.where("creator = ?", true).map{|v| v.debate_id}
     
-    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters, :topic_position, :arguments)
+    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters, :arguments)
     @debates.each do |debate|
       
       creator = debate.debaters.first

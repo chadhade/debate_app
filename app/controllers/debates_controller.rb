@@ -28,7 +28,7 @@ class DebatesController < ApplicationController
   	end
   	
   	# create a new debate linked to debater
-  	  @debate = Debate.new(:joined => false, :judge => false, :creator_id => @currentdebater.id)
+  	  @debate = Debate.new(:joined => false, :judge => false, :creator_id => @currentdebater.id, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position], :firstarg => params[:argument][:content])
     	# Check if Debater agrees to start without a judge
     	  params[:argument][:Repeat_Turn] == 1.to_s ? @debate.no_judge = 1 : nil
     	@debate.save
@@ -40,8 +40,8 @@ class DebatesController < ApplicationController
   	end
   	
   	# update topic position with the debate id
-  	@topic_position = TopicPosition.new(:debater_id => @currentdebater.id, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position], :debate_id => @debate.id)
-	  @topic_position.save
+  	#@topic_position = TopicPosition.new(:debater_id => @currentdebater.id, :topic => params[:argument][:topic_position_topic], :position => params[:argument][:topic_position_position], :debate_id => @debate.id)
+	  #@topic_position.save
 	  
   	# create a new argument object
   	@content_of_post = params[:argument][:content]
@@ -316,7 +316,7 @@ end
   	@debates = Debate.search(params[:search], 100)
   	debate_ids = @debates.collect(&:id)
   	
-  	@debates = Debate.where(:id => debate_ids).includes(:judging, :topic_position).order("started_at DESC")
+  	@debates = Debate.where(:id => debate_ids).includes(:judging).order("started_at DESC")
   	@debates_ongoing = Array.new
     @debates_in_limbo = Array.new
     @debates_completed = Array.new
