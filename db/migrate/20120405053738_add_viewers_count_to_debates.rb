@@ -5,7 +5,7 @@ class AddViewersCountToDebates < ActiveRecord::Migration
 
     Debate.reset_column_information  
     Debate.find_each do |d|  
-      Debate.reset_counters d.id :viewings  
+      Debate.reset_counters d.id, :viewings  
     end  
   end  
 
