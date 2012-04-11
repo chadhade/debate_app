@@ -1,7 +1,7 @@
 .create_container {
 	padding: 10px 10px;
 	min-height: 390px;
-	width: 325px;
+	width: 400px;
 	border: 1px solid silver;
 	background-color: #fafafa;
 
@@ -34,7 +34,7 @@
 	padding: 5px 10px 10px 10px;
 	min-height: 130px;
 	max-height: 330px;
-	width: 300px;
+	width: 375px;
 	border: 1px solid silver;
 	background-color: #fafafa;
 

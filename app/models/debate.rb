@@ -193,7 +193,12 @@ class Debate < ActiveRecord::Base
     @debates =
     Debate.solr_search do
       with(:id, viewing_by_creator_ids)
-      fulltext(current_tp.topic)
+      #with(:joined, false)
+      fulltext(current_tp.topic) do
+        boost(1.5) { with(:position, !current_tp.position) }
+        phrase_fields :topic => 2.0
+        phrase_fields :firstarg => 2.0
+      end
       
       order_by(:score, :desc)
       order_by(:created_at, :desc)

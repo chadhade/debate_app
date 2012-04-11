@@ -76,9 +76,14 @@
 
 .topic-argument-width {
 	font-size: 12px;
-	width: 27%;
-	height: 18px;
+	min-height: 18px;
+	max-height: 27px;
+	padding: 2px 1px 0 1px;
 	overflow: hidden;
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .topic-argument-width a {
