@@ -20,6 +20,18 @@ class Debate < ActiveRecord::Base
   # associations for footnotes
   has_many :footnotes, :through => :arguments
   
+  # Websolr/Sunspot indexing for search
+  searchable do
+    text :topic, :boost => 5.0
+    text :firstarg
+    
+    boolean :position
+    boolean :joined
+    integer :creator_id
+    time    :created_at
+  end
+    
+  
   def status
     if self.end_time.nil?
       return @status = {:status_code => 0, :status_value => "Waiting for Debater and Judge"} if !self.joined and !self.judge and self.no_judge == 0
@@ -125,6 +137,62 @@ class Debate < ActiveRecord::Base
     
     viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
     #viewing_by_creator_ids = Viewing.where("creator = ?", true).map{|v| v.debate_id}
+    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters)
+    @debates.each do |debate|
+      
+      creator = debate.debaters.first
+      unless !creator.active?  
+        topic = debate.tp.topic.upcase
+        position = debate.tp.position
+        words = topic.split(/\s/)
+        current_words = current_tp.topic.upcase.split(/\s/)
+        pronouns = self.load_pronouns
+        
+        current_tp.position != position ? position_match = true : position_match = false
+          
+          match = false
+          # set match to true if even one word matches and append debate to array
+          current_words.each do |current_word|
+            if current_word.length >= 3
+              words.each do |word|
+                # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
+                match = true if current_word.length >= 4 and word.length >= 4 and current_word[/..../] == word[/..../] and !pronouns.include?(current_word)
+                if !match
+                  match = true if current_word.length >= 3 and word.length >= 3 and current_word == word and !pronouns.include?(current_word)
+                end
+              end
+            end
+          end
+          debate.position_match = position_match
+          match ? @matching_debates << debate : @suggested_debates << debate
+      end
+      
+      #If the debate's creator is inactive, clear his session
+      creator.clear_session if !creator.active?
+    end
+    
+    #Sort the matches so that opposing positions appear at the topic
+    @matching_debates = @matching_debates.sort_by {|a| a.position_match ? 0 : 1}
+    @matching_debates = @matching_debates.first(max1)  
+    @suggested_debates = @suggested_debates.first(max2)
+    
+    # return the array
+    @matching = {:matching_debates => @matching_debates, :suggested_debates => @suggested_debates}
+  end
+  
+  def self.matching_debates2(current_tp, max1, max2, blocked)
+    @matching_debates = Array.new
+    @suggested_debates = Array.new
+    
+    viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
+    
+    Post.search do
+      with(:id, viewing_by_creator_ids)
+      fulltext(current_tp.topic)
+      
+      order_by(:score, :desc)
+      order_by(:created_at, :desc)
+    end
     @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters)
     @debates.each do |debate|
       
