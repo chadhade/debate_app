@@ -1,4 +1,5 @@
-<%= form_for :topic_position, :url => {:controller => "topic_positions", :action => "matches"}, :html => {:name => 'topicform', :class => 'new_topic_position'}, :remote => true do |f| %>
+<%# ALL DATA BELOW IS TEMPORARY %>
+<%= form_for :topic_position, :url => {:controller => "topic_positions", :action => "matches_solr"}, :html => {:name => 'topicform', :class => 'new_topic_position'}, :remote => true do |f| %>
 	<div class="field-topicposition">
 		<span class="field-topic">
 			<%= f.label :topic %> <br>
@@ -10,7 +11,8 @@
 		</span>
 	</div>
 	<div class="action-topicposition">
-		<%= f.submit "Match", :disable_with => 'Searching...', :disabled => true, :id => 'topicmatch_button' %>
+		<%= f.submit "Match with Websolr!", :disable_with => 'Searching...', :disabled => false, :id => 'topicmatch_button' %>
 	</div>	
 <% end %>
 
+<%###############%>

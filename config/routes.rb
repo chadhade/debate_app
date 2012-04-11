@@ -19,11 +19,14 @@ DebateApp::Application.routes.draw do
   resources :topic_positions do
     member do 
       post 'matches'
+      post 'matches_solr' #Temporary
     end
   end
   
   get "topic_positions/matches"
   post "topic_positions/matches"
+  get "topic_positions/matches_solr" #Temporary
+  post "topic_positions/matches_solr" #Temporary
   
   get "pages/landing"
 
