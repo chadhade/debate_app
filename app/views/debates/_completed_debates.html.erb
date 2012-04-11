@@ -34,7 +34,7 @@
 						<% end %>
 					<% end %>
 				</div>
-				<% judge_comments = debate.judge_entry.comments %>
+				<% judge_comments = debate.judge_entry.comments unless debate.judge_entry.nil? %>
 				<div class = "topic-argument-width" title="<%= judge_comments %>">	
 					<% if !judge_comments.nil? %>
 						- <%= link_to "\"#{judge_comments[0..14]}\"", debate %>

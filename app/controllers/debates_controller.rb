@@ -312,7 +312,7 @@ end
   end
 ##############################################################################  
   
-  def index
+  def indexold
     # returns debates that match search criterion or all debates if empty string submitted
   	@debates = Debate.search(params[:search], 100)
   	debate_ids = @debates.collect(&:id)
@@ -332,6 +332,64 @@ end
       	    timeleft = time_left(debate)
       	    #@debates_ongoing.unshift(debate) if timeleft != nil and timeleft > 0
       	    @debates_ongoing << debate if timeleft != nil and timeleft > 0
+      	  end
+      	end
+    	end
+    	
+    	#@debates_ongoing.unshift(debate) if debate.end_time.nil? and debate.judge and debate.joined and time_left(debate) != nil and time_left(debate) > 0
+      #@debates_completed.unshift(debate) if !debate.end_time.nil? and debate.judge and debate.joined
+      #@debates_in_limbo.unshift(debate) if debate.end_time.nil? and (!debate.judge or !debate.joined)
+	  end
+	  
+	  @debates_ongoing = @debates_ongoing.paginate(:page => params[:ongoing_page], :per_page => 10) 
+	  @debates_completed = @debates_completed.paginate(:page => params[:completed_page], :per_page => 10)
+	
+	  @ajaxupdate = 1 if !params[:ongoing_page].nil?
+    @ajaxupdate = 2 if !params[:completed_page].nil?
+  	@ajaxupdate = 3 if !params[:search].nil?
+  	
+  	respond_to do |format|
+  	  format.html
+  	  format.js
+  	end
+  end
+  
+  def index
+    # returns debates that match search criterion or all debates if empty string submitted
+  	#@debates = Debate.search(params[:search], 100)
+  	#debate_ids = @debates.collect(&:id)
+  	
+  	#@debates = Debate.where(:id => debate_ids).includes(:judging).order("started_at DESC")
+  	limit = 15.days.ago
+  	if params[:search] and params[:search] != ""
+  	  @debates =
+      Debate.solr_search(:include => [:judging]) do
+        with(:started_at, nil)
+        fulltext(params[:search]) do
+          phrase_fields :topic => 2.0
+          phrase_fields :firstarg => 2.0
+        end
+        paginate :page => 1, :per_page => 100
+        order_by(:score, :desc)
+        order_by(:started_at, :desc)
+      end
+      @debates = @debates.results
+    else
+      @debates = Debate.where("started_at > ?", limit).order("started_at DESC").includes(:judging).first(100)
+    end
+    
+  	@debates_ongoing = Array.new
+    @debates_in_limbo = Array.new
+    @debates_completed = Array.new
+
+    @debates.each do |debate|
+    	if !debate.end_time.nil? #and debate.judge and debate.joined
+    	  @debates_completed << debate
+    	else
+    	  unless @debates_ongoing.size == 25
+    	    if debate.end_time.nil? #and debate.judge and debate.joined
+      	    #timeleft = time_left(debate)
+      	    @debates_ongoing << debate #if timeleft != nil and timeleft > 0
       	  end
       	end
     	end

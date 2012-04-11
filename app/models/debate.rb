@@ -29,6 +29,7 @@ class Debate < ActiveRecord::Base
     boolean :joined
     integer :id
     integer :creator_id
+    time    :started_at
     time    :created_at
   end
     
@@ -191,7 +192,7 @@ class Debate < ActiveRecord::Base
     viewing_by_creator_ids = Debate.all.map{|v| v.id} #temporary
     
     @debates =
-    Debate.solr_search do
+    Debate.solr_search(:include => [:debaters]) do
       with(:id, viewing_by_creator_ids)
       #with(:joined, false)
       fulltext(current_tp.topic) do
@@ -208,7 +209,7 @@ class Debate < ActiveRecord::Base
     result_ids = Array.new if result_ids.nil?
     suggested_ids = viewing_by_creator_ids - result_ids
     
-    suggested_debates = self.where(:id => suggested_ids).order("created_at ASC").first(max2)
+    suggested_debates = self.where(:id => suggested_ids).order("created_at ASC").includes(:debaters).first(max2)
     
     # return the array
     @matching = {:matching_debates => @debates.results, :suggested_debates => suggested_debates}

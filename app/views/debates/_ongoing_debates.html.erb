@@ -27,7 +27,7 @@
 					<% end %>
 				</div> 
 				<div class = "topic-argument-width" style="font-size: 12px;">
-					 <%= "#{(Time.now - debate.judge_entry.created_at).to_i.seconds} seconds ago" %>
+					 <%= "#{(Time.now - debate.judge_entry.created_at).to_i.seconds unless debate.judge_entry.nil?} seconds ago" %>
 				</div> 
 			</li>
 		</div>
