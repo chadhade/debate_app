@@ -29,7 +29,7 @@
 								<%= starter.mini_name %>
 							<% end %>
 						</div>
-						<div class = "topic-argument-width" title = "<%= matching_debate.firstarg %>">
+						<div class = "topic-argument-width" title = "<%= matching_debate.firstarg[0..200] %>">
 							- <%= "\"#{matching_debate.firstarg[0..14]}\"" %>
 						</div> 
 					</li>

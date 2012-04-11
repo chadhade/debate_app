@@ -136,14 +136,18 @@ class Debate < ActiveRecord::Base
     @matching_debates = Array.new
     @suggested_debates = Array.new
     
-    viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
-    #viewing_by_creator_ids = Viewing.where("creator = ?", true).map{|v| v.debate_id}
-    @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters)
+    #viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
+    viewing_by_creator_ids = Debate.all.map{|v| v.id} #temporary
+    
+    #@debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters)
+    @debates = self.where(:id => viewing_by_creator_ids).order("created_at ASC").includes(:debaters) #temporary
+    
     @debates.each do |debate|
       
-      creator = debate.debaters.first
-      unless !creator.active?  
+      #Temporary creator = debate.debaters.first
+      #Temporary unless !creator.active?  
         topic = debate.tp.topic.upcase
+        topic = topic + ' ' + debate.firstarg.upcase unless debate.firstarg.nil? #temporary
         position = debate.tp.position
         words = topic.split(/\s/)
         current_words = current_tp.topic.upcase.split(/\s/)
@@ -166,10 +170,10 @@ class Debate < ActiveRecord::Base
           end
           debate.position_match = position_match
           match ? @matching_debates << debate : @suggested_debates << debate
-      end
+      #Temporary end
       
       #If the debate's creator is inactive, clear his session
-      creator.clear_session if !creator.active?
+      #Temporary creator.clear_session if !creator.active?
     end
     
     #Sort the matches so that opposing positions appear at the topic
@@ -182,10 +186,9 @@ class Debate < ActiveRecord::Base
   end
   
   def self.matching_debates2(current_tp, max1, max2, blocked)
-    @matching_debates = Array.new
-    @suggested_debates = Array.new
-    
-    viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
+  
+    #viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
+    viewing_by_creator_ids = Debate.all.map{|v| v.id} #temporary
     
     @debates =
     Debate.solr_search do
@@ -196,9 +199,14 @@ class Debate < ActiveRecord::Base
       order_by(:created_at, :desc)
     end
     
+    result_ids = @debates.results.map(&:id) unless @debates.results.nil?
+    result_ids = Array.new if result_ids.nil?
+    suggested_ids = viewing_by_creator_ids - result_ids
+    
+    suggested_debates = self.where(:id => suggested_ids).order("created_at ASC").first(max2)
     
     # return the array
-    @matching = {:matching_debates => @debates.results, :suggested_debates => @suggested_debates}
+    @matching = {:matching_debates => @debates.results, :suggested_debates => suggested_debates}
   end
   
   def position_match
