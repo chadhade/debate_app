@@ -31,29 +31,6 @@
   	end
   end
   
-  def matches_solr
-    currentdebater = current_or_guest_debater
-    
-    params[:topic2] ? topic = params[:topic_position][:topic] + " vs " + params[:topic2] : topic = params[:topic_position][:topic]
-    if params[:topic_position][:position] == "vs" or  params[:topic_position][:position] == ""
-      @position = "null"
-    else
-      @position = params[:topic_position][:position].to_s
-    end
-    
-    @topic_position = TopicPosition.new(:debater_id => currentdebater.id, :topic => topic, :position => @position)    
-    @trending = Suggested_Topic.trending(10)
-    
-    currentdebater.guest? ? blocked_ids = [0] : blocked_ids = currentdebater.is_blocking.map(&:id) + [0]
-    @matching = Debate.matching_debates2(@topic_position, 30, 15, blocked_ids)
-	  @from_landing = true
-	  
-    respond_to do |format|
-  	  format.html {render "matches"}
-  	  format.js {render "matches"}
-  	end
-  end
-  
   def index
     @matching = nil
     @topic_position = TopicPosition.new(:debater_id => current_or_guest_debater, :topic => "...", :position => nil)

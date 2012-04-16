@@ -19,14 +19,11 @@ DebateApp::Application.routes.draw do
   resources :topic_positions do
     member do 
       post 'matches'
-      post 'matches_solr' #Temporary
     end
   end
   
   get "topic_positions/matches"
   post "topic_positions/matches"
-  get "topic_positions/matches_solr" #Temporary
-  post "topic_positions/matches_solr" #Temporary
   
   get "pages/landing"
 
@@ -35,10 +32,6 @@ DebateApp::Application.routes.draw do
 
   devise_for :debaters, :controllers => {:omniauth_callbacks => "debaters/omniauth_callbacks"}
 
-  # RICK--IS THIS NESTED IN A NAMESPACE FOR SOME REASON?
-  # namespace :debater do
-  #   root :to => "pages#landing"
-  # end
   root :to => "pages#landing"
 
   resources :votes, :only => :create

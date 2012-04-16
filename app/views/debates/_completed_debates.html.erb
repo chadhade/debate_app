@@ -3,7 +3,7 @@
 <div class = "topic-starter-width topic-heading" > Winner </div>
 <div class = "topic-argument-width topic-heading" style="height: 30px;"> Judge Comments </div>
 
-<div class="containercontent">	
+<div class="containercontent" style="max-height: 300px;">	
 	<% debates_completed.each do |debate| %>
 		<div class="debate_link" data-id="<%= debate.id %>"> 
 			<li> 
@@ -34,10 +34,10 @@
 						<% end %>
 					<% end %>
 				</div>
-				<% judge_comments = debate.judge_entry.comments unless debate.judge_entry.nil? %>
+				<% judge_comments = debate.judge_entry.comments[0..150] unless debate.judge_entry.nil? or debate.judge_entry.comments.nil? %>
 				<div class = "topic-argument-width" title="<%= judge_comments %>">	
 					<% if !judge_comments.nil? %>
-						- <%= link_to "\"#{judge_comments[0..14]}\"", debate %>
+						<%= link_to "\"#{judge_comments[0..14]}\"", debate %>
 					<% else %>
 						&nbsp
 					<% end %>

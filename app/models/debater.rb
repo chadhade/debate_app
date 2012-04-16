@@ -21,7 +21,7 @@ class Debater < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation, :remember_me, :login
   
   acts_as_voter
-  has_many :votes, :as => :voter_id, :dependent => :destroy
+  has_many :votes, :as => :voter, :dependent => :destroy
   
   attr_accessible :arg_upvotes, :arg_downvotes, :judge_points
   
@@ -209,10 +209,10 @@ class Debater < ActiveRecord::Base
   end
   
   def clear_session
-    self.waiting_for = nil
-    self.current_sign_in_at = nil
-    self.save
-    self.clear_viewings if self.viewings.any?
+      self.waiting_for = nil
+      self.current_sign_in_at = nil
+      self.save
+      self.clear_viewings if self.viewings.any?
   end
   
   private

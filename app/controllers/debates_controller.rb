@@ -165,9 +165,10 @@ end
 	  @is_creator = @debate.creator?(@currentdebater)
 	  @is_joiner = @debate.joiner?(@currentdebater)
 	  @is_judger = @debate.judger?(@currentdebater)
+  	@participant = @is_creator or @is_joiner or @is_judger
   	
   	# for viewings
-  	unless @debate.end_time or @debate.updated_at < (Time.now - 12.hours)
+  	if !@debate.end_time and (@participant or @debate.updated_at < (Time.now - 12.hours))
   	  if update_viewings(@currentdebater, @debate, @is_creator) == 1
   	    @viewers = @debate.viewings.size + 1
   	    if @viewers == 5 or (@viewers % 10).zero?
@@ -176,7 +177,6 @@ end
   	  end
   	end
   	
-  	@participant = @is_creator or @is_joiner or @is_judger
   	
   	if !@currentdebater.nil?
     	if @is_creator and !@debate.joined?
@@ -229,8 +229,8 @@ end
       @movingclock = 0
       @staticclock = 0
       @movingposition = 0
-      @creator = @debate.creator
-      @joiner = @debate.joiner
+      @is_creator ? @creator = @currentdebater : @creator = @debate.creator
+      @is_joiner ? @joiner = @currentdebater : @joiner = @debate.joiner
       @is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
     	@is_joiner ? @debater2name = "You" : @debater2name = @joiner.mini_name
     	@voteable = true unless (@is_creator or @is_joiner)
@@ -242,7 +242,7 @@ end
   		@movingclock = 0
   		@staticclock = @previoustimeleft
   		@movingposition = 2
-  	  @creator = @debate.creator
+  	  @is_creator ? @creator = @currentdebater : @creator = @debate.creator
   	  @blocking = @creator.is_blocking.map(&:id).include?(@currentdebater.id)
   	  @is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
   		@debater2name = "Waiting"
@@ -251,8 +251,8 @@ end
   	end
 	
   	# Debater names
-  	@creator = @debate.creator
-    @joiner = @debate.joiner
+  	@is_creator ? @creator = @currentdebater : @creator = @debate.creator
+    @is_joiner ? @joiner = @currentdebater : @joiner = @debate.joiner
   	@is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
   	@is_joiner ? @debater2name = "You" : @debater2name = @joiner.mini_name
 	
@@ -364,7 +364,7 @@ end
   	if params[:search] and params[:search] != ""
   	  @debates =
       Debate.solr_search(:include => [:judging]) do
-        with(:started_at, nil)
+        with(:started_at).greater_than(limit)
         fulltext(params[:search]) do
           phrase_fields :topic => 2.0
           phrase_fields :firstarg => 2.0
@@ -383,13 +383,13 @@ end
     @debates_completed = Array.new
 
     @debates.each do |debate|
-    	if !debate.end_time.nil? #and debate.judge and debate.joined
+    	if !debate.end_time.nil? and debate.judge and debate.joined
     	  @debates_completed << debate
     	else
     	  unless @debates_ongoing.size == 25
-    	    if debate.end_time.nil? #and debate.judge and debate.joined
-      	    #timeleft = time_left(debate)
-      	    @debates_ongoing << debate #if timeleft != nil and timeleft > 0
+    	    if debate.end_time.nil? and debate.judge and debate.joined
+      	    timeleft = time_left(debate)
+      	    @debates_ongoing << debate if timeleft != nil and timeleft > 0
       	  end
       	end
     	end

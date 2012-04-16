@@ -86,6 +86,14 @@
 	border-radius: 5px;
 }
 
+.topic-time-width {
+	font-size: 12px;
+	min-height: 18px;
+	max-height: 27px;
+	padding: 2px 1px 0 1px;
+	overflow: hidden;
+}
+
 .topic-argument-width a {
 	color: #000000;
 	text-decoration: none;

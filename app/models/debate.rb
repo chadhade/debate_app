@@ -121,7 +121,7 @@ class Debate < ActiveRecord::Base
     self
   end
   
-  def self.search(search, max)
+  def self.search(search, max) #No longer used. Replaced by solr_search (debates index action)
 	  limit = Time.now - 15.days
 	  if search
       @debates = Array.new; 
@@ -134,86 +134,98 @@ class Debate < ActiveRecord::Base
   end
   
   def self.matching_debates(current_tp, max1, max2, blocked)
-    @matching_debates = Array.new
-    @suggested_debates = Array.new
+  
+    viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
     
-    #viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
-    viewing_by_creator_ids = Debate.all.map{|v| v.id} #temporary
-    
-    #@debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters)
-    @debates = self.where(:id => viewing_by_creator_ids).order("created_at ASC").includes(:debaters) #temporary
-    
-    @debates.each do |debate|
+    if viewing_by_creator_ids.any?
+      @debates =
+      Debate.solr_search(:include => [:debaters]) do
+        with(:id, viewing_by_creator_ids)
+        with(:joined, false)
+        fulltext(current_tp.topic) do
+          boost(1.5) { with(:position, !current_tp.position) }
+          phrase_fields :topic => 2.0
+          phrase_fields :firstarg => 2.0
+        end
       
-      #Temporary creator = debate.debaters.first
-      #Temporary unless !creator.active?  
-        topic = debate.tp.topic.upcase
-        topic = topic + ' ' + debate.firstarg.upcase unless debate.firstarg.nil? #temporary
-        position = debate.tp.position
-        words = topic.split(/\s/)
-        current_words = current_tp.topic.upcase.split(/\s/)
-        pronouns = self.load_pronouns
+        paginate :page => 1, :per_page => max1
+        order_by(:score, :desc)
+        order_by(:created_at, :asc)
+      end
+      searchresults = @debates.results
+      #Remove Debates where the creator is no longer active
+      searchresults.delete_if {|d| !d.creator.active? }
+      searchresults.each {|d| if !d.debaters[0].active?; d.debaters[0].clear_session; searchresults.delete(d); end }
+      
+      result_ids = searchresults.map(&:id) unless searchresults.nil?
+      result_ids = Array.new if result_ids.nil?
+      suggested_ids = viewing_by_creator_ids - result_ids
+    
+      suggested_debates = self.where(:id => suggested_ids).order("created_at ASC").includes(:debaters).first(max2)
+      #Remove Debates where the creator is no longer active
+      suggested_debates.each {|d| if !d.debaters[0].active?; d.debaters[0].clear_session; suggested_debates.delete(d); end }
+    else
+      searchresults = Array.new
+      suggested_debates = Array.new
+    end
+      
+    # return the array
+    @matching = {:matching_debates => searchresults, :suggested_debates => suggested_debates}
+  end
+  
+ # This is no longer in use  #######################
+    def self.matching_debates_old(current_tp, max1, max2, blocked) 
+      @matching_debates = Array.new
+      @suggested_debates = Array.new
+    
+      viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
+    
+      @debates = self.where(:id => viewing_by_creator_ids, :joined => false).order("created_at ASC").includes(:debaters)
+    
+      @debates.each do |debate|
+      
+        creator = debate.debaters.first
+        unless !creator.active?
+          topic = debate.tp.topic.upcase
+          topic = topic + ' ' + debate.firstarg.upcase unless debate.firstarg.nil? #temporary
+          position = debate.tp.position
+          words = topic.split(/\s/)
+          current_words = current_tp.topic.upcase.split(/\s/)
+          pronouns = self.load_pronouns
         
-        current_tp.position != position ? position_match = true : position_match = false
+          current_tp.position != position ? position_match = true : position_match = false
           
-          match = false
-          # set match to true if even one word matches and append debate to array
-          current_words.each do |current_word|
-            if current_word.length >= 3
-              words.each do |word|
-                # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
-                match = true if current_word.length >= 4 and word.length >= 4 and current_word[/..../] == word[/..../] and !pronouns.include?(current_word)
-                if !match
-                  match = true if current_word.length >= 3 and word.length >= 3 and current_word == word and !pronouns.include?(current_word)
+            match = false
+            # set match to true if even one word matches and append debate to array
+            current_words.each do |current_word|
+              if current_word.length >= 3
+                words.each do |word|
+                  # File.open("listener_log", 'a+') {|f| f.write("#{word}--------") }
+                  match = true if current_word.length >= 4 and word.length >= 4 and current_word[/..../] == word[/..../] and !pronouns.include?(current_word)
+                  if !match
+                    match = true if current_word.length >= 3 and word.length >= 3 and current_word == word and !pronouns.include?(current_word)
+                  end
                 end
               end
             end
-          end
-          debate.position_match = position_match
-          match ? @matching_debates << debate : @suggested_debates << debate
-      #Temporary end
+            debate.position_match = position_match
+            match ? @matching_debates << debate : @suggested_debates << debate
+        end
       
-      #If the debate's creator is inactive, clear his session
-      #Temporary creator.clear_session if !creator.active?
-    end
-    
-    #Sort the matches so that opposing positions appear at the topic
-    @matching_debates = @matching_debates.sort_by {|a| a.position_match ? 0 : 1}
-    @matching_debates = @matching_debates.first(max1)  
-    @suggested_debates = @suggested_debates.first(max2)
-    
-    # return the array
-    @matching = {:matching_debates => @matching_debates, :suggested_debates => @suggested_debates}
-  end
-  
-  def self.matching_debates2(current_tp, max1, max2, blocked)
-  
-    #viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
-    viewing_by_creator_ids = Debate.all.map{|v| v.id} #temporary
-    
-    @debates =
-    Debate.solr_search(:include => [:debaters]) do
-      with(:id, viewing_by_creator_ids)
-      #with(:joined, false)
-      fulltext(current_tp.topic) do
-        boost(1.5) { with(:position, !current_tp.position) }
-        phrase_fields :topic => 2.0
-        phrase_fields :firstarg => 2.0
+        #If the debate's creator is inactive, clear his session
+        #Temporary creator.clear_session if !creator.active?
       end
-      
-      order_by(:score, :desc)
-      order_by(:created_at, :desc)
+    
+      #Sort the matches so that opposing positions appear at the topic
+      @matching_debates = @matching_debates.sort_by {|a| a.position_match ? 0 : 1}
+      @matching_debates = @matching_debates.first(max1)  
+      @suggested_debates = @suggested_debates.first(max2)
+    
+      # return the array
+      @matching = {:matching_debates => @matching_debates, :suggested_debates => @suggested_debates}
     end
-    
-    result_ids = @debates.results.map(&:id) unless @debates.results.nil?
-    result_ids = Array.new if result_ids.nil?
-    suggested_ids = viewing_by_creator_ids - result_ids
-    
-    suggested_debates = self.where(:id => suggested_ids).order("created_at ASC").includes(:debaters).first(max2)
-    
-    # return the array
-    @matching = {:matching_debates => @debates.results, :suggested_debates => suggested_debates}
-  end
+############################################  
+  
   
   def position_match
     @position_match
