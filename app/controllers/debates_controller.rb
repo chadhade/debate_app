@@ -247,7 +247,7 @@ end
   	  @is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
   		@debater2name = "Waiting"
   		@debatercount = 1
-  		@timedout = @creator.timedout?(@creator.last_request_at) unless @is_creator
+  		@timedout = (@creator.timedout?(@creator.last_request_at) or !@debate.currently_viewing(@debate.creator_id)) unless @is_creator
   		return
   	end
 	

@@ -70,9 +70,12 @@
 		if (data.func == "update_individual_cv") {
 			if (data.obj.who_code == "debater1") {
 				$("#debater1").attr('currently_viewing', data.obj.who_value);
-				if (data.obj.joinable == true) {
+				if (data.obj.joinable == true && data.obj.who_value == "true") {
 					$(".join_to_debate").show();
 					$('#respond_textarea').focus();
+				}
+				if (data.obj.who_value == "false") {
+					$(".join_to_debate").hide();
 				}
 			}
 			if (data.obj.who_code == "debater2") {
