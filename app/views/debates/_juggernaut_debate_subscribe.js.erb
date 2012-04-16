@@ -70,6 +70,10 @@
 		if (data.func == "update_individual_cv") {
 			if (data.obj.who_code == "debater1") {
 				$("#debater1").attr('currently_viewing', data.obj.who_value);
+				if (data.obj.joinable == true) {
+					$(".join_to_debate").show();
+					$('#respond_textarea').focus();
+				}
 			}
 			if (data.obj.who_code == "debater2") {
 				$("#debater2").attr('currently_viewing', data.obj.who_value);
@@ -78,7 +82,7 @@
 				$("#judge").attr('currently_viewing', data.obj.who_value);
 			}
 			$(".debate[data-id="+ <%= debate.id %> +"]").append("<div class='debate-message'>" + data.obj.who_message + "</div>");
-			//$(".debate[data-id="+ <%= debate.id %> +"]").append('<br>');
+			
 		}
 		
 		if(data.func == "update_viewers") {

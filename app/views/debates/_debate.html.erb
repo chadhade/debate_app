@@ -10,9 +10,9 @@
 		
 			<% end %>
 			
-			<% if debatercount == 1 and creator.timedout?(creator.last_request_at) %>
+			<% if timedout %>
 				<span style="font-size:13px; float: left; color: #555555;">
-					<%= "#{creator.name} seems to have timed out." %> </span>
+					<%= "#{creatorname} seems to have timed out." %> </span>
 			<% end %>
 	</div>
 </div>

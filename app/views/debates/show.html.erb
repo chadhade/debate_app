@@ -91,9 +91,9 @@
 				<%# render :partial => "/debates/viewing", :locals => {:debate_id => @debate.id} %>
 				</h2>
 			</div>
-			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid, :arguments => @arguments, :status => @status, :debatercount => @debatercount, :creator => @creator} %>			  
+			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid, :arguments => @arguments, :status => @status, :timedout => @timedout, :creatorname => @debater1name} %>			  
 		</div>
-		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater, :is_creator => @is_creator, :participant => @participant, :debatercount => @debatercount, :status => @status} unless @blocking %>
+		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater, :is_creator => @is_creator, :participant => @participant, :debatercount => @debatercount, :status => @status, :timedout => @timedout } unless @blocking %>
 	</div>
 
 <script>

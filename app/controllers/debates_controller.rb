@@ -187,7 +187,7 @@ end
   	# set status
   	@status = @debate.status	  
     unless @currentdebater.nil?
-      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @is_creator
+      Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater1", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived.", :joinable => !@debate.joined}}) if @is_creator
     	Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "debater2", :who_value => "true", :who_message => "#{@currentdebater.mini_name} has arrived."}}) if @is_joiner
     	Juggernaut.publish("debate_" + @debateid.to_s, {:func => "update_individual_cv", :obj => {:who_code => "judge", :who_value => "true", :who_message => "Judge has arrived."}}) if @is_judger
   	end
@@ -247,6 +247,7 @@ end
   	  @is_creator ? @debater1name = "You" : @debater1name = @creator.mini_name
   		@debater2name = "Waiting"
   		@debatercount = 1
+  		@timedout = @creator.timedout?(@creator.last_request_at) unless @is_creator
   		return
   	end
 	
