@@ -32,12 +32,27 @@ class VotesController < ApplicationController
   end
 
   def topicvote
-    topic = Debate.find_by_id(params[:topic_id])
-    current_debater.vote(topic, :direction => :up)
+    
+    debate = Debate.find_by_id(params[:topic_id])
+    unless debate.nil?
+      topic = Suggested_Topic.find_by_topicd(debate.topic.downcase)
+      if topic.nil?
+        topic = Suggested_Topic.new(:topic => debate.topic, :topicd => debate.topic.downcase, :rating => 1)
+        topic.save
+        current_debater.vote(topic, :direction => :up)
+      else
+        unless topic.updated_at > (Time.now - 5.seconds)
+          newrating = topic.rating + 0.005
+          topic.update_attributes(:rating => newrating) 
+          current_debater.vote(topic, :direction => :up)
+        end
+      end
+      
+    end
     
     respond_to do |format|
 	    format.html {render :nothing => true}
-	    format.js {render :template => 'debates/topicvote'}
+	    format.js
 	  end
   end
 end
