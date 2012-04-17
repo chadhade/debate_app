@@ -12,13 +12,19 @@
 	background-color: #cccccc;
 }
 
+#first-argument {
+	font-size: 14px;
+}
 
 /*div class for topic field*/
 .field-topic {
 	float: left;
-	text-align: left;
 }
 
+#topic-position-field  {
+	font-size: 14px;
+	font-weight: bold;
+}
 
 .topic_container {
 	padding: 10px 10px;

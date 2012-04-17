@@ -6,7 +6,7 @@
 		</span>
 		<span class="field-position">		
 			<%= f.label "+" %> <br>	
-				<%= f.select(:position, [["", nil], ["vs.", "vs"], ["Pro", true], ["Con", false],], {:selected => nil}, :onchange => 'toggleTopic(this, "topicform");', :id => "select-position-field") %>
+				<%= f.select(:position, [["", nil], ["Pro", true], ["Con", false], ["vs.", "vs"]], {:selected => nil}, :onchange => 'toggleTopic(this, "topicform");', :id => "select-position-field", :size => 1) %>
 		</span>
 	</div>
 	<div class="action-topicposition">
