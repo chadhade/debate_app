@@ -87,7 +87,7 @@ class Debate < ActiveRecord::Base
   end
   
   def participant?(debater)
-    self.creator_id == debater.id || self.joiner_id == debater.id || self.judge_id == debater.id
+    ((self.creator_id == debater.id) or (self.joiner_id == debater.id) or (self.judge_id == debater.id))
   end
   
   def last_debater

@@ -165,7 +165,7 @@ end
 	  @is_creator = @debate.creator?(@currentdebater)
 	  @is_joiner = @debate.joiner?(@currentdebater)
 	  @is_judger = @debate.judger?(@currentdebater)
-  	@participant = @is_creator or @is_joiner or @is_judger
+  	@participant = (@is_creator or @is_joiner or @is_judger)
   	
   	# for viewings
   	if !@debate.end_time and (@participant or @debate.updated_at < (Time.now - 12.hours))
