@@ -65,8 +65,7 @@
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
 		<filter class="solr.StopFilterFactory" words="stopwords.txt" ignoreCase="true"/>
-		<filter class="solr.EdgeNGramFilterFactory"
-		      maxGramSize="10"/>
+		<filter class="solr.EdgeNGramFilterFactory" maxGramSize="10"/>
       </analyzer>
 	  <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
