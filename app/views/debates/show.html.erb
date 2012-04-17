@@ -94,7 +94,6 @@
 			<%= render :partial => "/debates/debate", :locals => {:debate => @debate, :currentid => @currentid, :arguments => @arguments, :status => @status, :timedout => @timedout, :creatorname => @debater1name} %>			  
 		</div>
 		<%= render :partial => "/debates/post_to_debate", :locals => {:debate => @debate, :currentdebater => @currentdebater, :is_creator => @is_creator, :participant => @participant, :debatercount => @debatercount, :status => @status, :timedout => @timedout } unless @blocking %>
-		<%= @is_judger %>
 	</div>
 
 <script>
