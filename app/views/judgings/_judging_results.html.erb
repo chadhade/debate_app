@@ -14,6 +14,8 @@
 	<br> 
 	
 	<strong>Judge <%= link_to judging.debater.name, judging.debater %> says:</strong> "<%= judging.comments %>". <br />
-	<span style="color: #0000FF;">Judge's votes are blue. </span>
+		<% unless is_judger %>
+			<span id="results-vote-info" style="color: #0000FF;">Judge's votes are blue. </span>
+		<% end %>
 	
 </div>

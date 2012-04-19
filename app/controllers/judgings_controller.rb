@@ -119,7 +119,7 @@ class JudgingsController < ApplicationController
           new_ratings = [d1_old, d2_old]
         end
         
-        judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging, :upvotes => upvotes, :downvotes => downvotes, :creator => d1, :joiner => d2})
+        judging_results = render(:partial => "/judgings/judging_results", :layout => false, :locals => {:judging => @judging, :upvotes => upvotes, :downvotes => downvotes, :creator => d1, :joiner => d2, :is_judger => false})
         reset_invocation_response # allow double rendering
       
         # Show Judge Rating form on status bar

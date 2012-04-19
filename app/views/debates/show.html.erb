@@ -126,7 +126,7 @@
 		
 		<!-- Show Judging Results -->
 		<% if !@judging.nil? and !@judging.winner_id.nil? %>
-			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging, :creator => @creator, :joiner => @joiner} %>
+			<%= render :partial => "/judgings/judging_results", :locals => {:judging => @judging, :creator => @creator, :joiner => @joiner, :is_judger => @is_judger} %>
 		<% end %>
 		
 		<div id="debater-ratings">
