@@ -90,7 +90,7 @@ input[type="submit"]:active {
 	background-color: white;
 }
 
-buttond {
+buttond, buttonsmall {
 	-o-transform-origin: 26px 16px;
 	background-attachment: scroll;
 	background-clip: border-box;
@@ -121,11 +121,17 @@ buttond {
 	margin: auto;
 }
 
+buttonsmall {
+	font-size: 13px;
+	padding: 6px 2px;
+	margin-right: 8px;
+}
 buttond a {
 	text-decoration: none;
 	vertical-align: middle;
 	padding: 6px 90px 4px 100px;
 }
+
 
 .largebutton {
 	font-size: 40px;
@@ -137,12 +143,17 @@ buttond a {
 buttond a:visited {
 	color: black;
 }
-buttond :hover {
+
+buttond a:hover {
 /*	box-shadow: 2px 2px 2px rgb(150, 150, 150), inset 0px 0px 2px rgb(150, 150, 150);*/
 /*	border-radius: 3px;*/
 /*	background-color: rgb(223, 223, 223);*/
-	
+
+	box-shadow: 2px 2px 2px rgb(150, 150, 150), inset 0px 0px 2px rgb(150, 150, 150);
+	border-radius: 3px;
+	background-color: rgb(223, 223, 223);	
 }
+
 
 buttond :active {
 	box-shadow: 2px 2px 2px rgb(233, 233, 233), inset 0px 0px 2px rgb(233, 233, 233);

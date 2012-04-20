@@ -76,10 +76,15 @@
 
 <span class="topic_vote imgicon"><%= render :partial => "/debates/topic_vote", :locals => {:debate => @debate} %> </span>
 
+<div class="debate_link">
+	<%= render :partial => "/debates/link_share" %>
+</div>
+
 <div class="topic_position_container">
 	"<%= "#{@debate.tp.topic}" %>"
 	<%= render :partial => "/debates/viewing", :locals => {:debate => @debate, :viewers => @viewers} %>
 </div>
+
 <%= debater_signed_in? ? nil : "<br /> <br />".html_safe %>
 
 <div id="debatebody">
