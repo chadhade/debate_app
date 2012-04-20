@@ -25,10 +25,10 @@ gem 'devise', :git => "https://github.com/plataformatec/devise.git"
 
 gem 'elo'
 
-gem 'sunspot_rails', '~> 1.3.0'
+gem 'sunspot_rails', :git => "https://github.com/outoftime/sunspot.git"
 
 group :development do
-    gem 'sunspot_solr'
+    gem 'sunspot_solr', :git => "https://github.com/outoftime/sunspot.git"
 end
 
 # Gems used only for assets and not required
