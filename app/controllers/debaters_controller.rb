@@ -54,21 +54,24 @@ class DebatersController < ApplicationController
       if !@teammates.empty? # Only perform calculations if debater has teammates
         @teammates << @debater
         team_ids = @teammates.collect{|u| u.id}
-        teamargument_ids = Argument.where(:debater_id => team_ids).collect(&:id)
+        #teamargument_ids = Argument.where(:debater_id => team_ids).collect(&:id)
       
         if Rails.env.development? or Rails.env.test?
           @tdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, 0)
-          @teamdebates = @tdebates.count
         else
           @tdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, "01/01/01")
-          @teamdebates = @tdebates.count
         end
         
+        #Don't include debates where teammates played each other
+        @tdebates.delete_if {|d| team_ids.include?(d.creator_id) and team_ids.include?(d.joiner_id)}
+        @teamdebates = @tdebates.size
+        
+        teamargument_ids = Argument.where(:debate_id => @tdebates.collect(&:id), :debater_id => team_ids).collect(&:id)
         @teamjudgepoints = Debater.where("id IN (?)", team_ids).sum(:judge_points)
         
-        @teamdebateswon = @tdebates.where("winner_id IN (?)", team_ids).count
-        @teamdebateslost = @tdebates.where("loser_id IN (?)", team_ids).count
-        @teamdebatestied = @tdebates.where("winner_id = ?", 0).count
+        @teamdebateswon = @tdebates.where("winner_id IN (?)", team_ids).size
+        @teamdebateslost = @tdebates.where("loser_id IN (?)", team_ids).size
+        @teamdebatestied = @tdebates.where("winner_id = ?", 0).size
         @teamdebatesnoresults = @teamdebates - (@teamdebateswon + @teamdebateslost + @teamdebatestied)
         @teamjudgings = Judging.where("debater_id IN (?) AND winner_id >= ?", team_ids, 0).count
       
