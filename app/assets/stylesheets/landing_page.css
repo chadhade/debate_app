@@ -1,12 +1,11 @@
 .landing_container_left {
-	padding: 10px 10px;
+	padding: 10px;
 	height: 250px;
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
 
 	position: relative;
-	overflow: auto;
 	float:left;
 	margin-left:10px;
 
@@ -20,14 +19,13 @@
 }
 
 .landing_container_right {
-	padding: 10px 10px;
+	padding: 10px;
 	height: 250px;
 	width: 325px;
 	border: 1px solid silver;
 	background-color: #fafafa;
 
 	position: relative;
-	overflow: auto;
 	float:right;
 	margin-right:10px;
 	
@@ -93,8 +91,8 @@
 }
 
 .middlelanding {
-	position: absolute;
-	top: 38%;
+	
+	margin-top: 18%;
 	left: 10%;
 	height: 50px;
 	text-align: center;
@@ -119,16 +117,11 @@
 	border-color: rgb(153, 153, 153);
 	border-style: solid;
 	border-width: 1px;
-/*	border-radius: 3px;*/
 
-/*	box-shadow: rgb(68, 150, 231) 0px 0px 5px 0px, rgb(255, 255, 255) 0px 0px 10px 0px inset;*/
 	box-sizing: border-box;
 /*	color: rgb(85, 85, 85);*/
 	column-gap: 11px;
 	display: inline-block;
-/*	font-family: Arial;
-	font-size: 15px;
-	font-weight: 700;*/
 	
 	outline-color: invert;
 	outline-style: none;
