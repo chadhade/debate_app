@@ -161,7 +161,7 @@ class Debate < ActiveRecord::Base
       result_ids = Array.new if result_ids.nil?
       suggested_ids = viewing_by_creator_ids - result_ids
     
-      suggested_debates = self.where(:id => suggested_ids).order("created_at ASC").includes(:debaters).first(max2)
+      suggested_debates = self.where(:id => suggested_ids, :joined => false).order("created_at ASC").includes(:debaters).first(max2)
       #Remove Debates where the creator is no longer active
       suggested_debates.each {|d| if !d.debaters[0].active?; d.debaters[0].clear_session; suggested_debates.delete(d); end }
     else
