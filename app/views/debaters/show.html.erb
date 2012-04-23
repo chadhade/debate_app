@@ -1,6 +1,6 @@
 <%# javascript_include_tag "jquery.qtip" %>
 
-<span class="page-title" style="float:left;"><h1 style ="height:60px;"><%= gravatar_for @debater %> <%= @debater.name %></h1></span>
+<span class="page-title" style="float:left;"><%= gravatar_for @debater %> <h1 style ="height:55px;"><%= @debater.name %></h1></span>
 
 <div class = "profile">
 	<div class = "sidebar round">
@@ -40,7 +40,13 @@
 	
 	<% if !@teammates.empty? %>
 		<div class="profile_box">
-			<h3> Team Stats </h3>
+			<h3> 
+				Team Stats 
+				<span id="info-votes" title="Team stats represent completed debates against Non-Teammates.">
+					<%= image_tag("question.gif", :alt => "Teammates Info") %>
+				</span>
+			</h3>
+			
 			<div class = "stat-heading">Total Debates</div>
 			<div class = "stat-heading">Debates Won </div>
 			<div class = "stat-heading">Debates Lost </div>
