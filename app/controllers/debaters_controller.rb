@@ -54,16 +54,14 @@ class DebatersController < ApplicationController
       if !@teammates.empty? # Only perform calculations if debater has teammates
         @teammates << @debater
         team_ids = @teammates.collect{|u| u.id}
-        #teamargument_ids = Argument.where(:debater_id => team_ids).collect(&:id)
       
+        # Include all team debates except those where teammates played each other
         if Rails.env.development? or Rails.env.test?
-          @tdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, 0)
+          @tdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND NOT (creator_id IN (?) AND joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, team_ids, team_ids, 0)
         else
-          @tdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, "01/01/01")
+          @tdebates = Debate.where("(creator_id IN (?) OR joiner_id IN (?)) AND NOT (creator_id IN (?) AND joiner_id IN (?)) AND end_time > ?", team_ids, team_ids, team_ids, team_ids, "01/01/01")
         end
         
-        #Don't include debates where teammates played each other
-        @tdebates.delete_if {|d| team_ids.include?(d.creator_id) and team_ids.include?(d.joiner_id)}
         @teamdebates = @tdebates.size
         
         teamargument_ids = Argument.where(:debate_id => @tdebates.collect(&:id), :debater_id => team_ids).collect(&:id)
