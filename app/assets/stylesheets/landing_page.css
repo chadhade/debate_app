@@ -118,8 +118,6 @@
 	border-style: solid;
 	border-width: 1px;
 
-	box-sizing: border-box;
-/*	color: rgb(85, 85, 85);*/
 	column-gap: 11px;
 	display: inline-block;
 	
@@ -132,8 +130,8 @@
 	white-space: nowrap;
 	word-wrap: break-word;
 	
-	width: 265px;
-	height: 110px;
+	width: 245px;
+	height: 100px;
 	margin: 0 auto;
 	
 	-webkit-box-shadow:0 0 10px #000;  
