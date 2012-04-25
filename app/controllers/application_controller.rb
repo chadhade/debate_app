@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
   # creating one as needed
   def guest_debater
     debater = Debater.find(session[:guest_debater_id].nil? ? session[:guest_debater_id] = create_guest_debater.id : session[:guest_debater_id])
-    debater.nil? ? debater = greate_guest_debater : debater
+    debater.nil? ? debater = create_guest_debater : debater
   end
 
   # called (once) when the user logs in, insert any code your application needs

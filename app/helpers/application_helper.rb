@@ -14,6 +14,7 @@ module ApplicationHelper
 
   def guest_debater
     Debater.find(session[:guest_debater_id].nil? ? session[:guest_debater_id] = create_guest_debater.id : session[:guest_debater_id])
+    debater.nil? ? debater = create_guest_debater : debater
   end
 
   # called (once) when the user logs in, insert any code your application needs
