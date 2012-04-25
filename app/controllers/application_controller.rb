@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
   # find guest_user object associated with the current session,
   # creating one as needed
   def guest_debater
-    debater = Debater.find(session[:guest_debater_id].nil? ? session[:guest_debater_id] = create_guest_debater.id : session[:guest_debater_id])
+    debater = Debater.find_by_id(session[:guest_debater_id].nil? ? session[:guest_debater_id] = create_guest_debater.id : session[:guest_debater_id])
     debater.nil? ? debater = create_guest_debater : debater
   end
 
