@@ -64,6 +64,21 @@
 	color: #0000FF;
 	text-decoration: underline;
 }
+
+#dscore-box {
+	width: 40px;
+	background-color: #FDFCDC;
+	font-weight: bold;
+}
+
+.matches-dscore {
+	font-family: Ariel;
+	font-size: 14px;
+	font-weight: bold;
+	color: #0000FF;
+	margin-right: 5px;
+}
+
 .flat {
 	-webkit-box-shadow:0 0 0px #000;
 	-moz-box-shadow: 0 0 0px #000;

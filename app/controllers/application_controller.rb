@@ -107,6 +107,7 @@ class ApplicationController < ActionController::Base
       if (Time.now > debater.last_request_at + 2.minutes)
         debater.last_request_at = Time.now
         debater.current_sign_in_at = Time.now if debater.current_sign_in_at.nil?
+        debater.rating = 1000 if debater.rating.nil?
         debater.save
       end
     end
