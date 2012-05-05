@@ -3,6 +3,7 @@
 <span class="page-title"><h1>Welcome to DeBunky!</h1></span>
 <br><br>
 
+<div>
 <div class="landing_container_left">
 	<h2>Debunk </h2>
 	<div class="middlelanding">
@@ -44,4 +45,12 @@
 
 <div class="or_container">
 	<h2>or</h2>
-<div>
+</div>
+</div>
+
+<div style="clear:both;">
+	<br/>
+	<div id="suggested-topics" class="list_matches_container">
+		<%= render :partial => "/topic_positions/list_suggested_topics_landing", :locals => {:trending => @trending} %>
+	</div>
+</div>
