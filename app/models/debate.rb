@@ -173,6 +173,25 @@ class Debate < ActiveRecord::Base
     @matching = {:matching_debates => searchresults, :suggested_debates => suggested_debates}
   end
   
+  def self.suggested_debates(max, blocked)
+    viewing_by_creator_ids = Viewing.where("creator = ? AND viewer_id not in (?)", true, blocked).map{|v| v.debate_id}
+    
+    if viewing_by_creator_ids.any?
+      suggested_ids = viewing_by_creator_ids
+      suggested_debates = self.where(:id => suggested_ids, :joined => false).order("created_at ASC").includes(:debaters).first(max + 5)
+      
+      #Remove Debates where the creator is no longer active
+      suggested_debates.each {|d| if !d.debaters[0].active?; d.debaters[0].clear_session; suggested_debates.delete(d); end }
+      
+      suggested_debates = suggested_debates.first(max)
+    else
+      suggested_debates = Array.new
+    end
+      
+    # return the array
+    @matching = {:matching_debates => Array.new, :suggested_debates => suggested_debates}
+  end
+  
  # This is no longer in use  #######################
     def self.matching_debates_old(current_tp, max1, max2, blocked) 
       @matching_debates = Array.new

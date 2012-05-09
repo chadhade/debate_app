@@ -68,7 +68,7 @@
 
 <div class="create_container">
 	<h2> Matches </h2>
-	<div id ='create-debate' class="<%= 'hidden' if (@matching.nil? or !@matching[:matching_debates].empty?) %>">
+	<div id ='create-debate' class="<%= 'hidden' if (@without_search or (@matching.nil? or !@matching[:matching_debates].empty?)) %>">
 		<%= render :partial => "/topic_positions/form_new_debate", :locals => {:topic_position => @topic_position} %>
 	</div>
 	<div id="matching-debates" class="list_matches_container">

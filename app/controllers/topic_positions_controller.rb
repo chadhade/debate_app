@@ -33,10 +33,12 @@
   
   def index
     @currentdebater = current_or_guest_debater
-    @matching = nil
+    @currentdebater.guest? ? blocked_ids = [0] : blocked_ids = @currentdebater.is_blocking.map(&:id) + [0]
+    @matching = Debate.suggested_debates(15, blocked_ids)
     @topic_position = TopicPosition.new(:debater_id => @currentdebater.id, :topic => "...", :position => nil)
     @trending = Suggested_Topic.trending(10)
     @position = "null"
+    @without_search = true
     
     respond_to do |format|
   	  format.html {render "matches"}
