@@ -1,18 +1,16 @@
 <h3 style="margin-bottom:5px;"> Trending Topics </h3>
-<div class="containercontent">
-	<% if !trending.nil? %>
-		<% if !trending.empty? %>
-			<center>
-				<ul id="mycarousel" class="jcarousel-skin-tango">
-				    <% trending.each do |topic| %>
-						<li> <%= link_to topic.topic, topic_positions_matches_path(:topic_position => {:topic => topic.topic, :position => nil}), :method => :post %> </li>
-					<% end %>
-				</ul>
-			</center>
-		<% else %>
-			No Trending Topics
-		<% end %>
+<% if !trending.nil? %>
+	<% if !trending.empty? %>
+		<center>
+			<ul id="mycarousel" class="jcarousel-skin-tango">
+			    <% trending.each do |topic| %>
+					<li> <%= link_to topic.topic, topic_positions_matches_path(:topic_position => {:topic => topic.topic, :position => nil}), :method => :post %> </li>
+				<% end %>
+			</ul>
+		</center>
 	<% else %>
 		No Trending Topics
 	<% end %>
-</div>
+<% else %>
+	No Trending Topics
+<% end %>
