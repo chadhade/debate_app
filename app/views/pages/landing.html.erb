@@ -1,4 +1,5 @@
 <%= javascript_include_tag "form_validations" %>
+<%= javascript_include_tag "jquery.jcarousel.min" %>
 
 <span class="page-title"><h1>Welcome to DeBunky!</h1></span>
 <br><br>
@@ -50,7 +51,38 @@
 
 <div style="clear:both;">
 	<br/>
-	<div id="suggested-topics" class="list_matches_container">
+	<div id="suggested-topics">
 		<%= render :partial => "/topic_positions/list_suggested_topics_landing", :locals => {:trending => @trending} %>
 	</div>
 </div>
+
+<script>
+	function mycarousel_initCallback(carousel)
+	{
+	    // Disable autoscrolling if the user clicks the prev or next button.
+	    carousel.buttonNext.bind('click', function() {
+	        carousel.startAuto(0);
+	    });
+
+	    carousel.buttonPrev.bind('click', function() {
+	        carousel.startAuto(0);
+	    });
+
+	    // Pause autoscrolling if the user moves with the cursor over the clip.
+	    carousel.clip.hover(function() {
+	        carousel.stopAuto();
+	    }, function() {
+	        carousel.startAuto();
+	    });
+	};
+	
+	$(document).ready(function() {
+	    $('#mycarousel').jcarousel({
+	     	auto: 1,
+			wrap: 'last',
+			scroll: 1,
+			vertical: true,
+			initCallback: mycarousel_initCallback
+	    });
+	});
+</script>
