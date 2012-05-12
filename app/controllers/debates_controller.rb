@@ -176,7 +176,7 @@ end
   	    end
   	  end
   	end
-  	
+  	@viewers = 1 if @viewers.nil?
   	
   	if !@currentdebater.nil?
     	if @is_creator and !@debate.joined?

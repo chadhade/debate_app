@@ -1,6 +1,6 @@
 <% if status[:status_code] <= 2 && participant && !debater.waiting_for %>
 	
 	<%= link_to image_tag("waiting.png", :alt => "Minimize Debate", :onclick => 'debater_waiting = true', :size => "50x50"), {:action => :waiting} %>
-	
+
 <% end %>
 

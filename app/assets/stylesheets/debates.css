@@ -317,11 +317,8 @@ h2[status_code="3"] {
 }
 .viewing_count {
 	float: right;
-	text-align: center;
-	padding-right: 30px;
-	background-image: url(whos_online.gif);
-	background-repeat: no-repeat;
-	background-position: right top;
+	font-size: 15px;
+	margin-right: 3px;
 }
 
 #slide_menu_1 {
@@ -386,7 +383,6 @@ h2[status_code="3"] {
 
 .debate_share_link {
 	float:right;
-	width: 250px;
 }
 
 .debate_link_button {
@@ -403,14 +399,15 @@ h2[status_code="3"] {
 }
 
 #debate-link-field {
-	float: left;
+	clear: both;
+	float: right;
 	width: 140px;
-	margin-top: 5px;
-	margin-left: 10px;
+	margin-top: -12px;
 }
 
 .topic_vote {
-	margin-left: 215px;
+	float:right;
+	margin-top: -3px;
 }
 
 .slide_menu_title {

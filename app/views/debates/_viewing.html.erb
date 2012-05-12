@@ -1,1 +1,4 @@
-<div class="viewing_count" data-id="<%= debate.id %>"><%= viewers %></div>
+<div class="viewing_count" data-id="<%= debate.id %>">
+	<div style="margin-top: 5px; margin-right: 9px; float: left;"> <%= viewers %> </div>
+	<%= image_tag("whos_online.gif", :alt => "Viewers", :title => "People Watching", :onclick => 'debater_waiting = true', :size => "25x25") %>
+</div>
