@@ -318,7 +318,7 @@ h2[status_code="3"] {
 .viewing_count {
 	float: right;
 	font-size: 15px;
-	margin-right: 3px;
+	margin-right: 5px;
 }
 
 #slide_menu_1 {
@@ -399,10 +399,11 @@ h2[status_code="3"] {
 }
 
 #debate-link-field {
-	clear: both;
+	cclear: both;
 	float: right;
-	width: 140px;
-	mmargin-top: -2px;
+	width: 120px;
+	margin-right: -175px;
+	margin-top: 2px;
 }
 
 .topic_vote {

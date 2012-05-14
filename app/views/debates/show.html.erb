@@ -4,7 +4,7 @@
 </div>
 <span class="round-title"> 
 	<h1>
-		"<%= "#{@debate.tp.topic}" %>" 
+		"<%= "#{@debate.tp.topic.upcase}" %>" 
 		<%= render :partial => "/debates/viewing", :locals => {:debate => @debate, :viewers => @viewers} %>
 	</h1>
 </span>

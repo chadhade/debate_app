@@ -44,7 +44,7 @@ body.bg2 {
 	margin:auto;
 	margin-right: 140px;
 	padding-top: 2px;
-	width:590px;
+	max-width:590px;
 	text-align:center;
 
 	-webkit-box-shadow:0 0 10px #000;  
