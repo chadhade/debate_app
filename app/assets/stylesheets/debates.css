@@ -402,7 +402,7 @@ h2[status_code="3"] {
 	clear: both;
 	float: right;
 	width: 140px;
-	margin-top: -12px;
+	mmargin-top: -2px;
 }
 
 .topic_vote {
